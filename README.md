@@ -11,7 +11,7 @@ npm install .
 service redis start
 ```
 
-##Configure JBrowse
+##Configure JBrowse Server
 - setup JBrowse root directory.
 - setup Galaxy root directory.
 - setup Galaxy API key.
