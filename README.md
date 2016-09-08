@@ -19,7 +19,7 @@ service redis start
 nano config/globals.js
 ```
 
-Optionally, change the server port
+Server port is 1337.  Optionally, change the server port
 ```
 nano config/local.js
 ```
