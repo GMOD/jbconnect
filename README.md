@@ -12,7 +12,9 @@ service redis start
 ```
 
 ##Configure JBrowse
-Point to the JBrowse root directory
+- setup JBrowse root directory.
+- setup Galaxy root directory.
+- setup Galaxy API key.
 ```
 nano config/globals.js
 ```
