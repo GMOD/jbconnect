@@ -11,18 +11,27 @@ npm install .
 service redis start
 ```
 
-## configure jbrowse directory
-(TBD)
+##Configure JBrowse
+Point to the JBrowse root directory
+```
+nano config/globals.js
+```
+
+Optionally, change the server port
+```
+nano config/local.js
+```
+
 
 ##Start the server
 ```
-sails lift (port 1337)
+sails lift (default port 1337)
 ```
 
 ##Launch JBrowse (served by the JBrowse Server)
 ```
-http://[server address]:1337/jbrowse
 http://localhost:1337/jbrowse
+http://[server address]:1337/jbrowse
 ```
 
 ##View Jobs in Kue
