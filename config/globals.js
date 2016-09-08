@@ -15,9 +15,10 @@ module.exports.globals = {
     jbrowse: {
         galaxyUrl: "http://localhost:8080",
         galaxyAPIKey: "2bb67717b99a37e92e59003f93625c9b",
+        jbrowseRest: "http://localhost:1337",
 
-        jbrowsePath: "/var/www/html/jb-galaxy-blaster/",
-        jbrowseURL: "http://localhost/jb-galaxy-blaster/",
+        jbrowsePath: "/var/www/html/jbrowse/",
+        jbrowseURL: "http://localhost/jbrowse/",
         dataSet: [
             {
                 dataPath: "sample_data/json/volvox/"
@@ -25,10 +26,9 @@ module.exports.globals = {
         ],
 
         // jbrowse temp directory location 
-        filePath: "/var/www/html/jb-galaxy-blaster/tmp/",
-        urlPath: "http://localhost/jb-galaxy-blaster/tmp/",
+        filePath: "/var/www/html/jbrowse/tmp/",
+        urlPath: "http://localhost/jbrowse/tmp/",
 
-        jbrowseRest: "http://localhost:1337",
         jblast: {
             blastResultPath: "jblast",
         }
