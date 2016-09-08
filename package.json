@@ -5,6 +5,7 @@
   "description": "JBrowse Server",
   "keywords": [],
   "dependencies": {
+    "compression": "^1.6.2",
     "cors": "^2.8.0",
     "deferred": "^0.7.5",
     "ejs": "2.5.1",

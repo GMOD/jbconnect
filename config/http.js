@@ -18,11 +18,12 @@ module.exports.http = {
         console.log("config of Middleware config/http.js for jbrowse");
         
         var express = require('express');
-	
+	var compression = require('compression');
+        
         // setup jbrowse route
         // todo: make this configurable in globals.js 
-	app.use(express.logger());
-	app.use(express.compress());
+	//app.use(express.logger());    // this is replaced by morgan package in node 4
+	app.use(compression);
 	app.use('/jbrowse', express.static('/var/www/html/jb-galaxy-blaster/'));
 
         
@@ -35,7 +36,7 @@ module.exports.http = {
         
         g.kue_ui.setup({
             apiURL: '/api', // IMPORTANT: specify the api url
-            baseURL: '/kue', // IMPORTANT: specify the base url
+            baseURL: '/kue' // IMPORTANT: specify the base url
             //updateInterval: 5000 // Optional: Fetches new data every 5000 ms
         });
 /*  
