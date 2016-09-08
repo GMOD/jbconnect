@@ -23,10 +23,9 @@ module.exports.http = {
         // setup jbrowse route
         // todo: make this configurable in globals.js 
 	//app.use(express.logger());    // this is replaced by morgan package in node 4
-	app.use(compression);
+	//app.use(compression);         // causing problems: pages don't load.
 	app.use('/jbrowse', express.static('/var/www/html/jb-galaxy-blaster/'));
 
-        
         // setup kue and kue-ui
         var g = sails.config.globals;
 
@@ -60,7 +59,6 @@ module.exports.http = {
         // These are used for kue testing and diagnostics - disable for production
         app.use('/api', g.kue.app);
         app.use('/kue', g.kue_ui.app);
-        
         
         
         /* for debugging
