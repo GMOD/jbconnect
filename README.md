@@ -41,7 +41,7 @@ http://[server address]:1337/kue
 
 ##Useful
 ```
-npm installredis-commander
+npm install redis-commander -g
 ```
 https://www.npmjs.com/package/redis-commander
 
