@@ -19,15 +19,14 @@ service redis start
 nano config/globals.js
 ```
 
-Server port is 1337.  Optionally, change the server port
+Server port default is 1337.  Optionally, change the server port
 ```
 nano config/local.js
 ```
 
-
 ##Start the server
 ```
-sails lift (default port 1337)
+sails lift
 ```
 
 ##Launch JBrowse (served by the JBrowse Server)
@@ -36,12 +35,14 @@ http://localhost:1337/jbrowse
 http://[server address]:1337/jbrowse
 ```
 
-##View Jobs in Kue
+##Queue Diagnostics
+This is useful for browsing the queue.
 ```
 http://[server address]:1337/kue
 ```
 
-##Useful
+##Redis Diagnostics
+This is useful for browse and manage the Redis database.
 ```
 npm install redis-commander -g
 ```
