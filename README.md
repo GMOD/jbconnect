@@ -41,8 +41,9 @@ http://[server address]:1337/kue
 
 ##Useful
 ```
-npm redis-commander
+npm installredis-commander
 ```
+https://www.npmjs.com/package/redis-commander
 
 
 A [Sails](http://sailsjs.org) application
