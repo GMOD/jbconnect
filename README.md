@@ -1,21 +1,16 @@
-# JBrowse Server
-
-##Requires:
-
-node.js 4 or better, 
-sails.js, 
-Will make this more automatic, later.
+# JBrowse Server (Work-in-progress)
 
 ##Installation
 ```
 git clone https://github.com/GMOD/jbserver.git
 npm install .
 ```
+
 ##Relies on redis server; start redis service first.
 ```
-
 service redis start
 ```
+
 ## configure jbrowse directory
 (TBD)
 
