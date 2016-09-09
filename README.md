@@ -9,8 +9,12 @@ npm install .
 ##Relies on redis server; start redis service first.
 ```
 service redis start
-```
 
+```
+To configure redis to start upon boot
+```
+chkconfig redis on
+```
 ##Configure JBrowse Server
 - setup JBrowse root directory.
 - setup Galaxy root directory.
