@@ -4,6 +4,11 @@
   "version": "0.0.0",
   "description": "JBrowse Server",
   "keywords": [],
+
+  "scripts": {
+    "postinstall": "./bin/postinstall.js"
+  },
+  
   "dependencies": {
     "compression": "^1.6.2",
     "cors": "^2.8.0",
