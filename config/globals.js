@@ -25,10 +25,6 @@ module.exports.globals = {
             }
         ],
 
-        // jbrowse temp directory location 
-        //filePath: "/var/www/html/jbrowse/tmp/",
-        //urlPath: "http://localhost/jbrowse/tmp/",
-
         jblast: {
             blastResultPath: "jblast",
         }
