@@ -141,7 +141,7 @@ function syncGalaxyJobs(hist) {
                 // send job count change event
                 if (jobCount != lastJobCount) {
                     console.log("job event job count "+jobCount);
-                    Test.message(1, {message:"job-count",count:jobCount});
+                    sails.hooks['jbcore'].sendEvent("job-count",{count:jobCount});
                     lastJobCount = jobCount;
                 }
                 
@@ -174,7 +174,7 @@ function syncGalaxyJobs(hist) {
                             
                             if (kJob.data.galaxy_data.state !== gJob.state) {   // todo: handle more than state change
                                 console.log(gJob.hid+" event job-change "+kJob.id);
-                                Test.message(1, {message:"job-change",job:kJob1});
+                                sails.hooks['jbcore'].sendEvent("job-change",{job:kJob1});
                             }
                             kJob.state(convertGalaxyState(gJob.state));
                             kJob.data.galaxy_data = gJob;
@@ -186,7 +186,7 @@ function syncGalaxyJobs(hist) {
                     if (!found) {
                         // delete
                         var id = kJob.id;
-                        Test.message(1, {message:"job-remove",job_id:id});
+                        sails.hooks['jbcore'].sendEvent("job-remove",{job_id:id});
                         //console.dir(kJob);
                         kJob.remove( function(){
                           console.log(kJob.data.galaxy_data.hid+' event removed job '+id);
@@ -209,7 +209,7 @@ function syncGalaxyJobs(hist) {
                                     done[x] = true;
                                     console.log(kJob.data.galaxy_data.hid+" adding job id = "+kJob.id);
                                     
-                                    Test.message(1, {message:"job-add",job:jData(kJob)});
+                                    sails.hooks['jbcore'].sendEvent("job-add",{job:jData(kJob)});
                                     jobCreateAny();     // call again when we are done, to look for the next thingy
                                 }
                                 // todo: handle errors
@@ -248,7 +248,9 @@ function syncGalaxyJobs(hist) {
         }
     });
 }
-/* galaxy job states / kue job state mapping
+
+
+/** galaxy job states / kue job state mapping
     ‘new’               inactive
     ‘upload’            active
     ‘waiting’           inactive
@@ -303,7 +305,7 @@ function forEachKueJob(jobType,callback) {
         // report changes in active count
         if (kJobs.length !== lastActiveCount) {
             console.log("job event active count "+kJobs.length);
-            Test.message(1, {message:"job-active",count:kJobs.length});
+            sails.hooks['jbcore'].sendEvent("job-active",{count:kJobs.length});
             lastActiveCount = kJobs.length;
         }
         

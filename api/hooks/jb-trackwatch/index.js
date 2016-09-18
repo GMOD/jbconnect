@@ -46,14 +46,14 @@ module.exports = function trackWatchHook(sails) {
                     //console.dir(req.params);
                     console.log("received value = "+req.params.value);
                     
-                    JbTrack.message(1, {msg:"track-test",value:req.params.value});
+                    sails.hooks['jbcore'].sendEvent("track-test",{value:req.params.value});
                     //JbTrack.publishCreate({msg:"track-test",value:req.params.value});
                     res.send({result:"success"});
                     //return next();
                 },
                 'get /jbtrack/test': function (req, res, next) {
                     console.log("jb-trackwatch /jbtrack/test called");
-                    JbTrack.message(1, {msg:"track-test",value:"JBrowse test"});
+                    sails.hooks['jbcore'].sendEvent("track-test",{value:"JBrowse test"});
 
                     res.send({result:"success"});
                     //return next();
@@ -162,11 +162,11 @@ function addTrackJson(req,res,next) {
  
             // publish notifications
             deferred.map (addedTracks, function (track) {
-                JbTrack.message(1, {msg:"track-new","value":track});
+                sails.hooks['jbcore'].sendEvent("track-new",{"value":track});
                 console.log ("Announced new track " + track.label);
             });
             deferred.map (replacedTracks, function (track) {
-                JbTrack.message(1, {msg:"track-replace","value":track});
+                sails.hooks['jbcore'].sendEvent("track-replace",{value:track});
                 console.log ("Announced replacement track " + track.label);
             });
         //});
