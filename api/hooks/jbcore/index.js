@@ -53,13 +53,23 @@ module.exports = function (sails) {
                 }
             }
         },
-        getGlobals: function(cb) {
-            return {hello:'there'};
-        },
+        /**
+         * 
+         */
         setGlobalSection: function(data,name,cb) {
             return storeInSection(data,name,cb);
+        },
+        /**
+         * 
+         * @param {type} eventName
+         * @param {type} data
+         * @returns {undefined}
+         */
+        sendEvent: function(eventName,data) {
+            //Test.message(1, {message:eventName,data:data});
+
+            sails.sockets.blast(eventName, data);
         }
-    }
 };
 
 /**
