@@ -1,6 +1,21 @@
 # JBrowse Server (Work-in-progress)
 
 ##Installation
+
+###Make sure npm is up to date
+```
+npm install -g npm
+```
+###Make sure nodejs is up to date
+```
+npm install n -g
+n stable
+```
+###Make sure sails is installed and up to date (version + 0.12.x
+```
+npm install -g sails
+```
+
 ```
 git clone https://github.com/GMOD/jbserver.git
 npm install .
@@ -17,8 +32,8 @@ chkconfig redis on
 ```
 ##Configure JBrowse Server
 - setup JBrowse root directory.
-- setup Galaxy root directory.
-- setup Galaxy API key.
+- setup Galaxy root directory. (requirement will be removed)
+- setup Galaxy API key. (requirement will be removed)
 ```
 nano config/globals.js
 ```
