@@ -3,12 +3,24 @@
  */
 var fs = require("fs");
 
-//var globalPath = "/etc/jbrowse";
-//var globalFile = globalPath + "/globals.dat";
+// launches redis however it must first be installed with 'yum install redis'
+var RedisServer = require('redis-server');
+var redisPort = 6379;
+var redisServerInstance = new RedisServer(redisPort);
+ 
+redisServerInstance.open(function (error) {
+ 
+  if (error) {
+    throw new Error(error);
+  }
+  
+  console.log('redis server, port '+redisPort);
+ 
+});
 
 module.exports = function (sails) {
-   var mySails = sails; 
-   return {
+    var mySails = sails; 
+    return {
 
         initialize: function(cb) {
             console.log("jbcore initialize"); 
@@ -70,6 +82,7 @@ module.exports = function (sails) {
 
             sails.sockets.blast(eventName, data);
         }
+    }
 };
 
 /**
@@ -161,5 +174,5 @@ function storeInSection (data,name,cb) {
         }
     });
     return 0; // success
-}
 
+}
