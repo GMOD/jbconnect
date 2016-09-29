@@ -22,7 +22,7 @@ module.exports.http = {
         var g = sails.config.globals;
         var jbrowsePath = g.jbrowse.jbrowsePath;
         
-        // setup jbrowse route
+        // setup jbrowse static route
         // todo: make this configurable in globals.js 
 	//app.use(express.logger());    // this is replaced by morgan package in node 4
 	//app.use(compression);         // causing problems: pages don't load.
