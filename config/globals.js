@@ -8,25 +8,19 @@
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.globals.html
  */
-module.exports.globals = {
+var g = {
+//module.exports.globals = {
     
     // jbrowse - galaxy keys
     // eventually, the fixed API key should give way to a per user API key
     jbrowse: {
-        galaxyUrl: "http://localhost:8080",
-        galaxyAPIKey: "2bb67717b99a37e92e59003f93625c9b",
         jbrowseRest: "http://localhost:1337",
-
         jbrowsePath: "/var/www/html/jbrowse/",
         dataSet: [
             {
                 dataPath: "sample_data/json/volvox/"
             }
         ],
-
-        jblast: {
-            blastResultPath: "jblast",
-        }
     }
 
   /****************************************************************************
@@ -80,3 +74,20 @@ module.exports.globals = {
 
 	// models: true
 };
+
+
+/*
+ * import jblast globals
+ */
+try {
+    var jblastglobals = require('/var/www/html/jbrowse/config/globals.js');
+    for(var i in jblastglobals) {
+        g.jbrowse[i] = jblastglobals[i];
+    }
+}
+catch (err) {
+    console.log('failed to load jblast');
+}
+
+module.exports.globals = g;
+
