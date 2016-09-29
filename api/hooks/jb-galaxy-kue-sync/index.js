@@ -81,7 +81,7 @@ function read_workflows() {
     
     var g = sails.config.globals;
     
-    request(g.jbrowse.galaxyUrl +"/api/workflows?key="+g.jbrowse.galaxyAPIKey, function (error, response, body) {
+    request(g.jbrowse.galaxy.galaxyUrl +"/api/workflows?key="+g.jbrowse.galaxy.galaxyAPIKey, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             //console.log(body);
             
@@ -98,7 +98,7 @@ function syncGalaxyHistories() {
     var g = sails.config.globals;
     
     // find out the default history
-    request(g.jbrowse.galaxyUrl +"/api/histories"+"?key="+g.jbrowse.galaxyAPIKey, function (error, response, body) {
+    request(g.jbrowse.galaxy.galaxyUrl +"/api/histories"+"?key="+g.jbrowse.galaxy.galaxyAPIKey, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             var hist = JSON.parse(body);
             syncGalaxyJobs(hist[0].id);    // currently only gets the first history.
@@ -121,8 +121,8 @@ function syncGalaxyJobs(hist) {
     var thisB = this;
     var g = sails.config.globals;
     
-    //request(g.jbrowse.galaxyUrl +"/api/jobs"+"?key="+g.jbrowse.galaxyAPIKey, function (error, response, body) {
-    request(g.jbrowse.galaxyUrl +"/api/histories/"+hist+"/contents"+"?key="+g.jbrowse.galaxyAPIKey, function (error, response, body) {
+    //request(g.jbrowse.galaxy.galaxyUrl +"/api/jobs"+"?key="+g.jbrowse.galaxy.galaxyAPIKey, function (error, response, body) {
+    request(g.jbrowse.galaxy.galaxyUrl +"/api/histories/"+hist+"/contents"+"?key="+g.jbrowse.galaxy.galaxyAPIKey, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             //console.log(body);
             //console.log(prettyjson.render(jobs,pOptions)); // Print the body of response.
