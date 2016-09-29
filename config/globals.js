@@ -9,7 +9,6 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.globals.html
  */
 var g = {
-//module.exports.globals = {
     
     // jbrowse - galaxy keys
     // eventually, the fixed API key should give way to a per user API key
@@ -78,9 +77,10 @@ var g = {
 
 /*
  * import jblast globals
+ * the require referense should where the /jblast-tools resides.
  */
 try {
-    var jblastglobals = require('/var/www/html/jbrowse/config/globals.js');
+    var jblastglobals = require('/var/www/html/jbrowse/jblast-tools/globals.js');
     for(var i in jblastglobals) {
         g.jbrowse[i] = jblastglobals[i];
     }
