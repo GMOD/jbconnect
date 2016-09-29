@@ -3,7 +3,10 @@
  */
 var fs = require("fs");
 
-// launches redis however it must first be installed with 'yum install redis'
+
+/* 
+ * launches redis however it must first be installed with 'yum install redis'
+ */
 var RedisServer = require('redis-server');
 var redisPort = 6379;
 var redisServerInstance = new RedisServer(redisPort);
@@ -29,6 +32,8 @@ module.exports = function (sails) {
 
                 //console.log(JbGlobal,JbTrack);
                 storeGlobals();
+                
+                console.log('globals',sails.config.globals.jbrowse);
                 
                 return cb();
 
