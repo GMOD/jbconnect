@@ -14,12 +14,7 @@ var g = {
     // eventually, the fixed API key should give way to a per user API key
     jbrowse: {
         jbrowseRest: "http://localhost:1337",
-        jbrowsePath: "/var/www/html/jbrowse/",
-        dataSet: [
-            {
-                dataPath: "sample_data/json/volvox/"
-            }
-        ],
+        jbrowsePath: "/var/www/html/jbrowse/"
     }
 
   /****************************************************************************
@@ -80,7 +75,7 @@ var g = {
  * the require referense should where the /jblast-tools resides.
  */
 try {
-    var jblastglobals = require('/var/www/html/jbrowse/jblast-tools/globals.js');
+    var jblastglobals = require('/var/www/html/jbrowse/jblast-tools/config.js');
     for(var i in jblastglobals) {
         g.jbrowse[i] = jblastglobals[i];
     }
