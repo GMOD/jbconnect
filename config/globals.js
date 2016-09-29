@@ -18,7 +18,6 @@ module.exports.globals = {
         jbrowseRest: "http://localhost:1337",
 
         jbrowsePath: "/var/www/html/jbrowse/",
-        jbrowseURL: "http://localhost/jbrowse/",
         dataSet: [
             {
                 dataPath: "sample_data/json/volvox/"
