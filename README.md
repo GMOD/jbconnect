@@ -1,4 +1,9 @@
-# JBrowse Server (Work-in-progress)
+# JBrowse Server
+(work-in-progress; not ready for prime time)
+
+The JBrowse server is an optional component to JBrowse.
+As an optionally installed package, it sits outside of the jbrowse directory.
+When running, it serves jbrowse through http://<ip address>:1337/jbrowse.
 
 ##Installation
 
@@ -21,9 +26,11 @@ git clone https://github.com/GMOD/jbserver.git
 npm install .
 ```
 
-##Relies on redis server; start redis service first.
+##Relies on redis server
+install redis start redis service first.
 ```
-service redis start
+yum install redis
+service redis start (now, it will start the redis service on its own)
 
 ```
 To configure redis to start upon boot
@@ -53,6 +60,9 @@ sails lift
 http://localhost:1337/jbrowse
 http://[server address]:1337/jbrowse
 ```
+
+## Daemonize
+(tbd)
 
 ##Queue Diagnostics
 This is useful for browsing the queue.
