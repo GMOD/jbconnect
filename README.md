@@ -7,12 +7,9 @@ When running, it serves jbrowse through http://<ip address>:1337/jbrowse.
 
 ##Installation
 
-###Make sure npm is up to date
+###Make sure npm and nodejs are up to date
 ```
 npm install -g npm
-```
-###Make sure nodejs is up to date
-```
 npm install n -g
 n stable
 ```
