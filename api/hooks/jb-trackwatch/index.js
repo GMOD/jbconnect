@@ -12,11 +12,16 @@ module.exports = function trackWatchHook(sails) {
         initialize: function(cb) {
             console.log("Sails Hook: jb-trackwatch initialized");
             
+            setTimeout(function(){
+                syncTracks();
+            },1000);
+            
             return cb();
         },
         routes: {
             before: {
                 // given a reference to the trackList.json, it begins tracking the file
+                /*
                 'get /jbtrack/watch': function (req, res, next) {
                     console.log("jb-trackwatch /jbtrack/watch called");
                     tracklist = req.param("trackList");
@@ -26,6 +31,7 @@ module.exports = function trackWatchHook(sails) {
                     res.send({result:"success"});
                     //return next();
                 },
+                */
                 'post /jbtrack/addTrack': function (req, res, next) {
                     console.log("jb-trackwatch /jbtrack/addTrack called");
                     var result = addTrackJson(req,res,next);
@@ -57,16 +63,171 @@ module.exports = function trackWatchHook(sails) {
 
                     res.send({result:"success"});
                     //return next();
+                },
+                'get /jbtrack/removeall': function(req,res,next) {
+                    console.log("jb-trackwatch /jbtrack/removeall called");
+                    var g = sails.config.globals.jbrowse;
+                    var trackListPath = g.jbrowsePath + g.dataSet[0].dataPath + 'trackList.json';
+
+                    var dataSet = g.dataSet[0].dataPath;
+                    JbTrack.destroy({dataSet:dataSet}).exec(function (err){
+                      if (err) {
+                        res.send({result:"failed"});
+                        //return; //res.negotiate(err);
+                      }
+                      sails.log('success');
+                      res.send({result:"success"});
+                      //return; // res.ok();
+                    });                    
+                },
+                'get /jbtracks/sync': function(req,res,next) {
+                    sails.log.info(path.basename(__filename),"/jbtrack/sync");
+                    syncTracks();
+                },
+                'get /jbtracks/save': function(req,res,next) {
+                    sails.log.info(path.basename(__filename),"/jbtrack/save");
                 }
             }
+        },
+        syncTracks: function() {
+            syncTracks();
+        },
+        saveTracks: function(dataSet) {
+            saveTracks(dataSet);
         }
     };
 }
 
 function startTracking(tracklist) {
-    
-    
 }
+/**
+ * Save model tracks to trackList.json
+ * @param {type} dataSet, if dataset is not defined, all models are committed.
+ * @returns {undefined}
+ */
+function saveTracks(dataSet) {
+    
+    var g = sails.config.globals.jbrowse;
+    var trackListPath = g.jbrowsePath + g.dataSet[0].dataPath + 'trackList.json';
+    var dataSet = g.dataSet[0].dataPath;
+    sails.log.debug('saveTracks('+dataSet+')');
+
+    JbTrack.find({dataSet:dataSet}).exec(function (err, modelTracks){
+      if (err) {
+        sails.log.error('modelTracks, failed to read');
+        return;   // failed
+      }
+      sails.log.debug("modelTracks",modelTracks.length);
+      
+      var tracks = [];
+      for(var k in modelTracks)
+          tracks.push(modelTracks[k].trackData);
+
+      // read trackList.json, modify, and write
+      try {
+        var trackListData = fs.readFileSync (trackListPath);
+        var config = JSON.parse(trackListData);
+        config['tracks'] = tracks;
+        fs.writeFileSync(trackListPath,JSON.stringify(config,null,4));
+      }
+      catch(err) {
+          sails.log.error("failed",trackListPath,err);
+      }
+    });
+}
+/**
+ * Sync tracklist.json tracks with JbTrack model
+ * @param {type} req
+ * @param {type} res
+ * @param {type} next
+ * @returns {addTrackJson.indexAnonym$8}
+ */
+function syncTracks() {
+    
+    var g = sails.config.globals.jbrowse;
+    var trackListPath = g.jbrowsePath + g.dataSet[0].dataPath + 'trackList.json';
+    var dataSet = g.dataSet[0].dataPath;
+    sails.log.debug('syncTracks()');
+
+    JbTrack.find({dataSet:dataSet}).exec(function (err, modelTracks){
+      if (err) {
+        sails.log.error('modelTracks, failed to read');
+        return;   // failed
+      }
+      sails.log.debug("modelTracks",modelTracks.length);
+      //if (modelTracks.length === 0) return;
+      
+      var mTracks = {};
+      for(var i in modelTracks)
+        mTracks[modelTracks[i].lkey] = modelTracks[i];
+      
+      // read file tracks
+      var trackListData = fs.readFileSync (trackListPath);
+      var fileTracks = JSON.parse(trackListData).tracks;
+      
+      sails.log.debug('fileTracks',fileTracks.length);
+      
+      var fTracks = {};
+      for(var i in fileTracks)
+        fTracks[fileTracks[i].label] = fileTracks[i];
+
+      // delete model items that don't exist in file
+      var toDel = [];
+      for(var k in mTracks) {
+          if (typeof fTracks[k] === 'undefined')
+              toDel.push(mTracks[k].id);
+      }
+      
+      if (toDel.length) {
+        sails.log.debug("ids to delete",toDel);
+        JbTrack.destroy({dataSet:dataSet,id: toDel}).exec(function (err){
+          if (err) {
+              sails.log.error("tracks delete failed:",toDel);
+          }
+          else
+            sails.log.debug("tracks deleted:",toDel);
+        });
+      }
+      
+      //sails.log(fTracks);
+      
+      // add or update file items to model
+      for(var k in fTracks) {
+        //sails.log('fTracks[i]',i,fTracks[i])
+        if (typeof mTracks[k] === 'undefined') {
+            // create model record
+            JbTrack.create({
+                    dataSet: dataSet,
+                    lkey: fTracks[k].label,
+                    trackData: fTracks[k]
+            }).exec(function (err, item){
+              if (err) {
+                sails.log.error('track create failed:',item.id,item.lkey);
+              }
+              else {
+                sails.log.debug('track created:',item.id,item.lkey);
+              }
+            });
+        }
+        // update model if they are different
+        else {
+            if (JSON.stringify(mTracks[k].trackData) != JSON.stringify(fTracks[k])) {
+                //update model record
+                JbTrack.update({dataSet:dataSet,lkey:k},{trackData:fTracks[k]}).exec(function afterwards(err, item){
+                  if (err) {
+                    sails.log.error("track update failed:",item[0].id,item[0].lkey);
+                  }
+                  else
+                    sails.log.debug("track updated:",item[0].id,item[0].lkey);
+                });
+            }
+        }
+      }
+      
+      return 0;     // success
+    });
+}
+
 
 function addTrackJson(req,res,next) {
 
@@ -75,7 +236,7 @@ function addTrackJson(req,res,next) {
     var newTrackJson = req.body.addTracks;
     //var trackListPath = req.body.trackListPath;
 
-    console.log('globals',g);
+    //console.log('globals',g);
     
     //todo: make this configurable later
     var trackListPath = g.jbrowsePath + g.dataSet[0].dataPath + 'trackList.json';
