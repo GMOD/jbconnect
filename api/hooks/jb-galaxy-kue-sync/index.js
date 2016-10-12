@@ -96,16 +96,11 @@ function read_workflows() {
 
 function syncGalaxyHistories() {
     var g = sails.config.globals;
-    
-    // find out the default history
-    request(g.jbrowse.galaxy.galaxyUrl +"/api/histories"+"?key="+g.jbrowse.galaxy.galaxyAPIKey, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            var hist = JSON.parse(body);
-            syncGalaxyJobs(hist[0].id);    // currently only gets the first history.
-            
-            // todo: handle multiple histories
-        }
-    });
+    /*
+    */
+    var historyId = sails.hooks['jb-galaxy-blast'].getHistoryId();
+   
+    syncGalaxyJobs(historyId);
 };
 
 /*
