@@ -33,7 +33,7 @@ module.exports = function (sails) {
                 //console.log(JbGlobal,JbTrack);
                 storeGlobals();
                 
-                console.log('globals',sails.config.globals.jbrowse);
+                //console.log('globals',sails.config.globals.jbrowse);
                 
                 return cb();
 
@@ -120,7 +120,7 @@ function storeGlobals () {
                   console.log(err);
                   return;
                 }
-                console.log("globals updated from globals.js");
+                sails.log.info("JbGlobal model updated from globals.js");
             });
         }
     });
