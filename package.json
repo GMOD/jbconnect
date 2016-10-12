@@ -5,6 +5,7 @@
   "description": "JBrowse Server",
   "keywords": [],
   "dependencies": {
+    "bluebird": "^3.4.6",
     "compression": "^1.6.2",
     "cors": "^2.8.0",
     "deferred": "^0.7.5",
@@ -29,14 +30,14 @@
     "node-getopt": "^0.2.3",
     "rc": "1.1.6",
     "redis-server": "0.0.3",
+    "request-promise": "^4.1.1",
     "sails": "~0.12.1",
     "sails-disk": "~0.10.9",
     "socket.io-redis": "^1.0.0"
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "node app.js",
-    "setup": "node ./bin/postinstall.js"
+    "start": "node app.js"
   },
   "main": "app.js",
   "repository": {
