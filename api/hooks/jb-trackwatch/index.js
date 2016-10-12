@@ -1,9 +1,9 @@
 /* 
  */
-
-var fs = require('fs'),
-    path = require('path'),
-    deferred = require('deferred')
+var Promise = require("bluebird");
+var fs = Promise.promisifyAll(require("fs"));
+var path = require('path');
+var deferred = require('deferred');
 
 
 module.exports = function trackWatchHook(sails) {
@@ -136,13 +136,101 @@ function saveTracks(dataSet) {
     });
 }
 /**
- * Sync tracklist.json tracks with JbTrack model
+ * Sync tracklist.json tracks with JbTrack model (promises version)
  * @param {type} req
  * @param {type} res
  * @param {type} next
  * @returns {addTrackJson.indexAnonym$8}
  */
 function syncTracks() {
+    var g = sails.config.globals.jbrowse;
+    var trackListPath = g.jbrowsePath + g.dataSet[0].dataPath + 'trackList.json';
+    var dataSet = g.dataSet[0].dataPath;
+    sails.log.debug('syncTracks()');
+    var mTracks = {};
+    var fTracks = {};
+
+    var deleteModelItems = function(mTracks,fTracks) {
+        var toDel = [];
+        for(var k in mTracks) {
+            if (typeof fTracks[k] === 'undefined')
+                toDel.push(mTracks[k].id);
+        }
+        if (toDel.length) {
+          sails.log.debug("ids to delete",toDel);
+          JbTrack.destroy({dataSet:dataSet,id: toDel})
+            .then(function(deleted){
+              sails.log.debug("tracks deleted:",deleted);
+            })
+            .catch(function(err) {
+                sails.log.error("tracks delete failed:",toDel);
+            });
+        }
+    };
+    var addOrUpdateItemsToModel = function(mTracks,fTracks) {
+        // add or update file items to model
+        var createList = [];
+        var updateList = [];
+        for(var k in fTracks) {
+          //sails.log('fTracks[i]',i,fTracks[i])
+          if (typeof mTracks[k] === 'undefined') {
+                var data = {
+                      dataSet: dataSet,
+                      lkey: fTracks[k].label,
+                      trackData: fTracks[k]
+                };
+                JbTrack.create(data)
+                .then(function(item) {
+                    sails.log.debug("track created:",item[0].id,item[0].lkey);
+                })        
+                .catch(function(err) {
+                    sails.log.error("track create failed");
+                });
+          }
+          // update model if they are different
+          else {
+              if (JSON.stringify(mTracks[k].trackData) != JSON.stringify(fTracks[k])) {
+                  //update model record
+                  JbTrack.update({dataSet:dataSet,lkey:k},{trackData:fTracks[k]})
+                  .then(function(item) {
+                      sails.log.debug("track updated:",item[0].id,item[0].lkey);
+                  })        
+                  .catch(function(err) {
+                      sails.log.error("track update failed:",item[0].id,item[0].lkey);
+                  });
+              }
+          }
+        }
+        
+    };
+
+    JbTrack.find({dataSet:dataSet})
+        .then(function(modelTracks) {
+            sails.log.debug("modelTracks",modelTracks.length);
+
+            for(var i in modelTracks)
+              mTracks[modelTracks[i].lkey] = modelTracks[i];
+
+            // read file tracks
+            return fs.readFileAsync(trackListPath);
+        })
+        .then(function(trackListData) {
+            var fileTracks = JSON.parse(trackListData).tracks;
+
+            sails.log.debug('fileTracks',fileTracks.length);
+
+            for(var i in fileTracks)
+              fTracks[fileTracks[i].label] = fileTracks[i];
+
+            deleteModelItems(mTracks,fTracks);
+            addOrUpdateItemsToModel(mTracks,fTracks);            
+        })    
+        .catch(function(err) {
+            sails.log.error(err);
+        });
+    
+}
+function syncTracks2() {
     
     var g = sails.config.globals.jbrowse;
     var trackListPath = g.jbrowsePath + g.dataSet[0].dataPath + 'trackList.json';
