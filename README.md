@@ -28,8 +28,12 @@ install redis start redis service first.
 ```
 yum install redis
 service redis start (now, it will start the redis service on its own)
-
 ```
+```
+nano /etc/redis.conf
+```
+modify 'appendonly yes'
+
 To configure redis to start upon boot
 ```
 chkconfig redis on
