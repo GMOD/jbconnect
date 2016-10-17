@@ -106,6 +106,8 @@ function syncGalaxyHistories() {
 /*
  * Synchronizes kue queue with galaxy job queue.
  * @returns {undefined}
+ * 
+ * kJobs are kue jobs and gJobs are galaxy history entries.
  */
 var jobCount = 0;
 var lastJobCount = 0;
