@@ -315,8 +315,13 @@ function syncTracks2() {
       return 0;     // success
     });
 }
-
-
+/**
+ * addTrackJson()
+ * @param {type} req
+ * @param {type} res
+ * @param {type} next
+ * @returns {addTrackJson.indexAnonym$21}
+ */
 function addTrackJson(req,res,next) {
 
     var g = sails.config.globals.jbrowse;
