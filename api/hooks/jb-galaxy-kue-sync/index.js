@@ -55,8 +55,8 @@ module.exports = function galaxyKueSyncHook(sails) {
                   res.send({result:"jb-galaxy-kue-sync cleanquemodel"});
                   //return next();
               },
-              'get /jbapi/testmsg': function (req, res, next) {
-                    console.log("jb-galaxy-kue-sync /jbapi/testmsg called");
+              'get /test/testmsg': function (req, res, next) {
+                    console.log("jb-galaxy-kue-sync /test/testmsg called");
                     console.dir(req.params);
                     return res.send("Hi there!");
               }
