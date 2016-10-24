@@ -160,7 +160,7 @@ function syncTracks() {
           sails.log.debug("ids to delete",toDel);
           JbTrack.destroy({dataSet:dataSet,id: toDel})
             .then(function(deleted){
-              sails.log.debug("tracks deleted:",deleted);
+              sails.log.debug("tracks deleted:",deleted.length);
             })
             .catch(function(err) {
                 sails.log.error("tracks delete failed:",toDel);
