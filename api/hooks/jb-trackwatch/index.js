@@ -184,7 +184,7 @@ function syncTracks() {
                     sails.log.debug("track created:",item[0].id,item[0].lkey);
                 })        
                 .catch(function(err) {
-                    sails.log.error("track create failed");
+                    sails.log.error("track create failed",err);
                 });
           }
           // update model if they are different
