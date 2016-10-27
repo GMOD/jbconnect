@@ -10,8 +10,6 @@
  */
 var g = {
     
-    // jbrowse - galaxy keys
-    // eventually, the fixed API key should give way to a per user API key
     jbrowse: {
         jbrowseRest: "http://localhost:1337",
         jbrowsePath: "/var/www/html/jbrowse/"
