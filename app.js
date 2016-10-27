@@ -18,6 +18,8 @@
  * `node app.js --silent --port=80 --prod`
  */
 
+findhooks = require('./bin/findhooks');
+
 // Ensure we're in the project directory, so relative paths work as expected
 // no matter where we actually lift from.
 process.chdir(__dirname);
@@ -53,11 +55,7 @@ process.chdir(__dirname);
     }
   }
 
-    /*
-     * Start Galaxy Kue
-     */
-    //sails.log.info("starting galaxyKue !!");
-//    var galaxyKue = require('./jbplugins/GalaxyBlaster/galaxykue');
+findhooks.mapJbrowsePlugins(__dirname);
     
     // Start server
     sails.lift(rc('sails'));
