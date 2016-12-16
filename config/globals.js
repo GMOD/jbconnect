@@ -12,7 +12,12 @@ var g = {
     
     jbrowse: {
         jbrowseRest: "http://localhost:1337",
-        jbrowsePath: "/var/www/html/jbrowse/"
+        jbrowsePath: "/var/www/html/jbrowse/",
+        dataSet: [
+            {
+                dataPath: "sample_data/json/volvox/"
+            }
+        ]
     }
 
   /****************************************************************************
@@ -72,8 +77,9 @@ var g = {
  * import jblast globals
  * the require referense should where the /jblast-tools resides.
  */
+
 try {
-    var jblastglobals = require('/var/www/html/jbrowse/jblast-tools/config.js');
+    var jblastglobals = require(g.jbrowse.jbrowsePath+'jblast-tools/config.js');
     for(var i in jblastglobals) {
         g.jbrowse[i] = jblastglobals[i];
     }
