@@ -5,12 +5,12 @@
   "main": "index.js",
   "sails": {
     "isHook": true
-  },  
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-   "sails": "~0.11.0"
+    "sails": "^0.12.11"
   },
   "keywords": [
     "JBrowse",
@@ -18,5 +18,6 @@
     "Blast"
   ],
   "author": "eyao",
-  "license": "GNU LESSER GENERAL PUBLIC LICENSE"
+  "license": "GNU LESSER GENERAL PUBLIC LICENSE",
+  "dependencies": {}
 }

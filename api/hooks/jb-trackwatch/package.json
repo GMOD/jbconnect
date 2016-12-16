@@ -5,12 +5,12 @@
   "main": "index.js",
   "sails": {
     "isHook": true
-  },  
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-   "sails": "~0.11.0"
+    "sails": "^0.12.11"
   },
   "keywords": [
     "JBrowse",
