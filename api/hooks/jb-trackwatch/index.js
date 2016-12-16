@@ -144,6 +144,8 @@ function saveTracks(dataSet) {
  */
 function syncTracks() {
     var g = sails.config.globals.jbrowse;
+    
+    // todo: handle trackList.json open error / not found
     var trackListPath = g.jbrowsePath + g.dataSet[0].dataPath + 'trackList.json';
     var dataSet = g.dataSet[0].dataPath;
     sails.log.debug('syncTracks()');
@@ -181,7 +183,7 @@ function syncTracks() {
                 };
                 JbTrack.create(data)
                 .then(function(item) {
-                    sails.log.debug("track created:",item[0].id,item[0].lkey);
+                    sails.log.debug("track created:",item.id,item.lkey);
                 })        
                 .catch(function(err) {
                     sails.log.error("track create failed",err);
@@ -196,7 +198,7 @@ function syncTracks() {
                       sails.log.debug("track updated:",item[0].id,item[0].lkey);
                   })        
                   .catch(function(err) {
-                      sails.log.error("track update failed:",item[0].id,item[0].lkey);
+                      sails.log.error("track update failed:",err);
                   });
               }
           }
