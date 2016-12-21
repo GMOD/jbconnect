@@ -34,6 +34,7 @@
     "request-promise": "^4.1.1",
     "sails": "^0.12.11",
     "sails-disk": "~0.10.9",
+    "sails.io.js": "github:balderdashy/sails.io.js#v1.1.4",
     "socket.io-redis": "^1.1.1"
   },
   "scripts": {
