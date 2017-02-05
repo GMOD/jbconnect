@@ -5,6 +5,7 @@
   "description": "JBrowse Server",
   "keywords": [],
   "dependencies": {
+    "bcryptjs": "^2.4.0",
     "bluebird": "^3.4.6",
     "compression": "^1.6.2",
     "cors": "^2.8.0",
@@ -28,6 +29,9 @@
     "kue": "^0.11.5",
     "kue-ui": "^0.1.0",
     "node-getopt": "^0.2.3",
+    "passport": "^0.3.2",
+    "passport-http-bearer": "^1.0.1",
+    "passport-local": "^1.0.0",
     "rc": "1.1.6",
     "redis": "^2.6.3",
     "redis-server": "0.0.3",
@@ -35,7 +39,8 @@
     "sails": "^0.12.11",
     "sails-disk": "~0.10.9",
     "sails.io.js": "github:balderdashy/sails.io.js#v1.1.4",
-    "socket.io-redis": "^1.1.1"
+    "socket.io-redis": "^1.1.1",
+    "validator": "^6.2.1"
   },
   "scripts": {
     "debug": "node debug app.js",
