@@ -97,6 +97,10 @@ var AuthController = {
     });
   },
 
+  loginstate: function (req, res) {
+    res.send({loginstate: req.session.authenticated});
+  },
+
   /**
    * Create a third-party authentication endpoint
    *
