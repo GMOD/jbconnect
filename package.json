@@ -7,6 +7,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.0",
     "bluebird": "^3.4.6",
+    "bootstrap": "^3.3.7",
     "compression": "^1.6.2",
     "cors": "^2.8.0",
     "deferred": "^0.7.5",
@@ -28,6 +29,7 @@
     "jsdom": "^9.8.3",
     "kue": "^0.11.5",
     "kue-ui": "^0.1.0",
+    "mv": "^2.1.1",
     "node-getopt": "^0.2.3",
     "passport": "^0.3.2",
     "passport-http-bearer": "^1.0.1",
