@@ -1,4 +1,5 @@
-<% if (errors) {%>
+<% if (errors.length) {%>
+ <%- JSON.stringify(errors) %>
   <% errors.forEach(function (error) { %>
     <%= __(error) %>
   <% }) %>
