@@ -11,6 +11,7 @@
     "compression": "^1.6.2",
     "cors": "^2.8.0",
     "deferred": "^0.7.5",
+    "directory-copy": "^0.1.0",
     "ejs": "2.5.1",
     "grunt": "1.0.1",
     "grunt-contrib-clean": "1.0.0",
@@ -29,7 +30,6 @@
     "jsdom": "^9.8.3",
     "kue": "^0.11.5",
     "kue-ui": "^0.1.0",
-    "mv": "^2.1.1",
     "node-getopt": "^0.2.3",
     "passport": "^0.3.2",
     "passport-http-bearer": "^1.0.1",
@@ -45,6 +45,7 @@
     "validator": "^6.2.1"
   },
   "scripts": {
+    "setup": "node ./bin/postinstall.js",
     "debug": "node debug app.js",
     "start": "node app.js"
   },

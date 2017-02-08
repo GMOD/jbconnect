@@ -5,21 +5,28 @@ console.log("jbserver post install...");
 var fs = require("fs");
 var g = require("../config/globals.js").globals;
 
-//console.log(g);
+var cp = require('directory-copy');
 
-var blastPath = g.jbrowse.jbrowsePath + g.jbrowse.dataSet[0].dataPath + g.jbrowse.jblast.blastResultPath;
-blastPath += '/';
+var options =    { 
+        src: __dirname + '/../node_modules/bootstrap/dist', 
+        dest: __dirname + '/../assets/bootstrap'
+    };
+ 
+console.log("options",options);
 
-console.log('blastPath',blastPath);
+//process.exit(1);
 
-// if direcgtory doesn't exist, create it
-if (!fs.existsSync(blastPath)){
-    fs.mkdirSync(blastPath);
-}  
+cp(options    
+  , function () {
+    console.log('done!')
+  })
+  .on('log', function (msg, level) {
+    // Level is debug, info, warn or error 
+    console.log(level + ': ' + msg)
+  })
 
-// copy template file
-var tFile = "inMemTemplate.json";
 
-console.log('Copying template file', tFile);
 
-fs.createReadStream('./bin/'+tFile).pipe(fs.createWriteStream(blastPath+tFile));
+
+
+
