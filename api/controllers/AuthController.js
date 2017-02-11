@@ -31,6 +31,7 @@ var AuthController = {
    * @param {Object} res
    */
   login: function (req, res) {
+    sails.log.debug("/login");
     var strategies = sails.config.passport
       , providers  = {};
 
@@ -68,12 +69,20 @@ var AuthController = {
    * @param {Object} res
    */
   logout: function (req, res) {
+    sails.log.debug("/logout");
     req.logout();
     
     // mark the user as logged out for auth purposes
     req.session.authenticated = false;
     
-    res.redirect('/');
+    sails.log.info("User Logged Out: ",req.session.user.username);
+
+    var redirectTo = '/login';
+    
+    if (typeof res.query.next !== 'undefined')
+        redirectTo = res.query.next;
+      
+    res.redirect('/login');
   },
 
   /**
@@ -92,13 +101,19 @@ var AuthController = {
    * @param {Object} res
    */
   register: function (req, res) {
-    res.view({
+    sails.log.debug("/register");
+    res.view('auth/bregister',{
       errors: req.flash('error')
     });
   },
 
   loginstate: function (req, res) {
-    res.send({loginstate: req.session.authenticated});
+    sails.log.info("/loginstate");
+    
+    res.send({
+        loginstate: req.session.authenticated,
+        user: req.session.user
+    });
   },
 
   /**
@@ -128,6 +143,7 @@ var AuthController = {
    * @param {Object} res
    */
   callback: function (req, res) {
+    //  sails.log.debug("authController callback()");
     function tryAgain (err) {
 
       // Only certain error messages are returned via req.flash('error', someError)
@@ -170,11 +186,21 @@ var AuthController = {
         }
         
         // Mark the session as authenticated to work with default Sails sessionAuth.js policy
-        req.session.authenticated = true
-        
+        req.session.authenticated = true;
+        req.session.user = {
+            username: user.username,
+            email: user.email
+        }
+              sails.log.info("User Logged In: ",user.username);
+              sails.log.info("params",req.query.next);
+              
+              var redirectTo = "/";
+              if (typeof req.query.next != 'undefined')
+                  redirectTo = req.query.next;
+
         // Upon successful login, send the user to the homepage were req.user
         // will be available.
-        res.redirect('/');
+        res.redirect(redirectTo);
       });
     });
   },
@@ -186,6 +212,7 @@ var AuthController = {
    * @param {Object} res
    */
   disconnect: function (req, res) {
+      sails.log.debug("authController disconnect()");
     passport.disconnect(req, res);
   }
 };
