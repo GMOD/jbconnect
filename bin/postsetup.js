@@ -27,3 +27,10 @@ fs.copy(__dirname + '/../node_modules/jquery-ui-dist',__dirname + '/../assets/jq
         console.log("copied assets/jquery.");
     });
 });
+fs.copy(__dirname + '/../node_modules/normalize.css',__dirname + '/../assets/normalize',function(err) {
+    if (err) {
+        console.log("error copying normalize.css",err);
+        return;
+    }
+    console.log("copied assets/normalize.");
+});
