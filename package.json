@@ -26,7 +26,7 @@
     "grunt-sails-linker": "~0.10.1",
     "grunt-sync": "0.6.2",
     "include-all": "~0.1.6",
-    "jquery": "^3.1.1",
+    "jquery-ui-dist": "^1.12.1",
     "jsdom": "^9.8.3",
     "kue": "^0.11.5",
     "kue-ui": "^0.1.0",
