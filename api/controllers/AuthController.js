@@ -75,14 +75,18 @@ var AuthController = {
     // mark the user as logged out for auth purposes
     req.session.authenticated = false;
     
-    sails.log.info("User Logged Out: ",req.session.user.username);
+    if (typeof req.session.user !== 'undefined')
+        sails.log.info("User Logged Out: ",req.session.user.username);
 
-    var redirectTo = '/login';
-    
-    if (typeof res.query.next !== 'undefined')
-        redirectTo = res.query.next;
+    var redirectTo = '/jbrowse';
+
+    if (typeof req.query.next !== 'undefined'){
+        sails.log.debug("req.query.next",req.query.next);
+        redirectTo = req.query.next;
+    }
+    sails.log.info("redirecting to"+redirectTo);
       
-    res.redirect('/login');
+    res.redirect(redirectTo);
   },
 
   /**
@@ -198,8 +202,7 @@ var AuthController = {
               if (typeof req.query.next != 'undefined')
                   redirectTo = req.query.next;
 
-        // Upon successful login, send the user to the homepage were req.user
-        // will be available.
+        sails.log.info("redirecting to"+redirectTo);
         res.redirect(redirectTo);
       });
     });
