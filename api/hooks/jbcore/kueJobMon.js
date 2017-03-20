@@ -81,7 +81,8 @@ module.exports = {
                 job1 = {
                     id: job.id,
                     type: job.type,
-                    progress: data
+                    progress: data,
+                    data: { name: job.data.name }
                 };
             }
 
