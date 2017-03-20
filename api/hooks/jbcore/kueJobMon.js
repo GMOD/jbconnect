@@ -1,10 +1,3 @@
-/*
- * JBrowse Server Plugin - Galaxy Kue Sync module
- * note g.kue, g.kue_queue are defined in config/http.js
- */
-
-//var request = require('request');
-//var requestp = require('request-promise');
 
 module.exports = {
     start: function() {
@@ -14,11 +7,26 @@ module.exports = {
             thisB.monitor();
             //thisB.test();
         },1000);
+
     },
     monitor: function() {
         var g = sails.config.globals;
         var thisB = this;
-        
+        var lastActiveCount = -1;
+
+        // notify if detect active galaxy-workflow-watch count changed
+        setInterval(function() {
+            g.kue.Job.rangeByType('galaxy-workflow-watch', 'active', 0 , n, 'asc', function(err, kJobs) {
+
+                // report changes in active count
+                if (kJobs.length !== lastActiveCount) {
+                    sails.log.info("queue event active count "+kJobs.length);
+                    sails.hooks['jbcore'].sendEvent("queue-active",{count:kJobs.length});
+                    lastActiveCount = kJobs.length;
+                }
+            });
+        },2000);
+
         g.kue_queue.on('job enqueue', function(id, data){
           thisB.processEvent('enqueue',id,data);
         });        
