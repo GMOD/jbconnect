@@ -3,6 +3,8 @@
  */
 var fs = require("fs");
 
+var kueJobMon = require('./kueJobMon');
+
 
 /* 
  * launches redis however it must first be installed with 'yum install redis'
@@ -28,6 +30,9 @@ module.exports = function (sails) {
 
         initialize: function(cb) {
             console.log("jbcore initialize"); 
+
+            // sets up event handling for kue job events
+            kueJobMon.start();
 
             sails.on('hook:orm:loaded', function() {
 
