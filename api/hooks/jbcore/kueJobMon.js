@@ -13,6 +13,7 @@ module.exports = {
         var g = sails.config.globals;
         var thisB = this;
         var lastActiveCount = -1;
+        var n = 1000000;
 
         // notify if detect active galaxy-workflow-watch count changed
         setInterval(function() {
