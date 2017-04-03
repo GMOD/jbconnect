@@ -82,6 +82,16 @@ module.exports = function (sails) {
         setGlobalSection: function(data,name,cb) {
             return storeInSection(data,name,cb);
         },
+        /*
+         * intercept res.send for debugging
+         * @param {type} res
+         * @param {type} data
+         * @returns {unresolved}
+         */
+        resSend(res,data) {
+            sails.log.debug("******** resSend",data);
+            return res.send(data);
+        },
         /**
          * 
          * @param {type} eventName
@@ -90,7 +100,7 @@ module.exports = function (sails) {
          */
         sendEvent: function(eventName,data) {
             //Test.message(1, {message:eventName,data:data});
-
+            //sails.log.debug("*** sendEvent: %s",eventName);
             sails.sockets.blast(eventName, data);
         }
     }
