@@ -77,7 +77,7 @@ var g = {
  * import jblast globals
  * the require referense should where the /jblast-tools resides.
  */
-
+// todo: this will be changed later.
 try {
     var jblastglobals = require(g.jbrowse.jbrowsePath+'jblast-tools/config.js');
     for(var i in jblastglobals) {
@@ -85,7 +85,7 @@ try {
     }
 }
 catch (err) {
-    console.log('failed to load jblast');
+    sails.log.error('failed to load jblast globals');
 }
 
 module.exports.globals = g;
