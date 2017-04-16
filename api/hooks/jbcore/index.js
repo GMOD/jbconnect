@@ -9,11 +9,12 @@ var kueJobMon = require('./kueJobMon');
 /* 
  * launches redis however it must first be installed with 'yum install redis'
  */
-
+/*
 var RedisServer = require('redis-server');
 var redisPort = 6379;
 var redisServerInstance = new RedisServer(redisPort);
- 
+
+
 redisServerInstance.open(function (error) {
  
   if (error) {
@@ -23,7 +24,7 @@ redisServerInstance.open(function (error) {
   console.log('redis server, port '+redisPort);
  
 });
-
+*/
 module.exports = function (sails) {
     var mySails = sails; 
     return {
