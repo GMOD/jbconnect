@@ -27,6 +27,7 @@ redisServerInstance.open(function (error) {
 */
 module.exports = function (sails) {
     var mySails = sails; 
+    
     return {
 
         initialize: function(cb) {
@@ -39,8 +40,6 @@ module.exports = function (sails) {
 
                 //console.log(JbGlobal,JbTrack);
                 storeGlobals();
-                
-                //console.log('globals',sails.config.globals.jbrowse);
                 
                 return cb();
 
