@@ -13,6 +13,7 @@ var g = {
     jbrowse: {
         jbrowseRest: "http://localhost:1337",
         jbrowsePath: "/var/www/html/jbrowse/",
+        routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
         dataSet: [
             {
                 dataPath: "sample_data/json/volvox/"
@@ -78,6 +79,7 @@ var g = {
  * the require referense should where the /jblast-tools resides.
  */
 // todo: this will be changed later.
+/*
 try {
     var jblastglobals = require(g.jbrowse.jbrowsePath+'jblast-tools/config.js');
     for(var i in jblastglobals) {
@@ -87,6 +89,6 @@ try {
 catch (err) {
     sails.log.error('failed to load jblast globals');
 }
-
+*/
 module.exports.globals = g;
 
