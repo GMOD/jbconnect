@@ -8,6 +8,8 @@
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.http.html
  */
+var fs = require('fs');
+
 
 module.exports.http = {
 
@@ -17,16 +19,28 @@ module.exports.http = {
     customMiddleware: function (app) {
         console.log("config of Middleware config/http.js for jbrowse");
         
+        //sails.config.globals.jbrowse.app = app;
+        
         var express = require('express');
+        //sails.config.globals.jbrowse.express = express;
+        
 	var compression = require('compression');
         var g = sails.config.globals;
         var jbrowsePath = g.jbrowse.jbrowsePath;
+        var routePrefix = g.jbrowse.routePrefix || "";
         
         // setup jbrowse static route
         // todo: make this configurable in globals.js 
 	//app.use(express.logger());    // this is replaced by morgan package in node 4
 	//app.use(compression);         // causing problems: pages don't load.
-	app.use('/jbrowse', express.static(jbrowsePath));
+	
+        sails.log("globals",g.jbrowse);
+        
+	sails.log.info('jbrowse route /'+routePrefix,jbrowsePath);        
+	app.use('/'+routePrefix, express.static(jbrowsePath));
+	//app.use('/jbrowse/plugins/JBClient', express.static('/var/www/html/2jbserver/plugins/JBClient'));
+
+        injectPluginRoutes();
 
         // setup kue and kue-ui
         var g = sails.config.globals;
@@ -69,6 +83,25 @@ module.exports.http = {
           next();
         })
         */
+        function injectPluginRoutes() {
+            // inject plugin routes
+            var g = sails.config.globals.jbrowse;
+
+            var sh = require('shelljs');
+            var cwd = sh.pwd();
+            var items = fs.readdirSync('plugins');
+
+            for(var i in items) {
+                
+                // todo: ignore files in this directory
+                
+                var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
+                var target = cwd+'/plugins/'+items[i];
+                sails.log.info("plugin route",pluginRoute,target);
+                app.use(pluginRoute, express.static(target));
+            }
+        }
+    
     }
   /****************************************************************************
   *                                                                           *
