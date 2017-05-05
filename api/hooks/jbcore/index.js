@@ -30,8 +30,16 @@ module.exports = function (sails) {
     
     return {
 
+        configure: function() {
+            sails.log("jbcore configure");
+            if (typeof sails.config.globals.jbrowse !== 'undefined') sails.log("globals.jbrowse exist");
+            if (typeof sails.config.globals.jbhooks === 'undefined') sails.config.globals.jbhooks = [];
+            sails.config.globals.jbhooks.splice(0, 0, "jbcore");
+            
+            //JbUtils.testFunction("called from jbcore.configure()");
+        },
         initialize: function(cb) {
-            console.log("jbcore initialize"); 
+            sails.log("jbcore initialize"); 
 
             // sets up event handling for kue job events
             kueJobMon.start();
@@ -40,6 +48,8 @@ module.exports = function (sails) {
 
                 //console.log(JbGlobal,JbTrack);
                 storeGlobals();
+                
+                JbUtils.testFunction("called from jbcore.initialize()");
                 
                 return cb();
 
