@@ -20,6 +20,7 @@ module.exports.http = {
         console.log("config of Middleware config/http.js for jbrowse");
         
         //sails.config.globals.jbrowse.app = app;
+        sails.log('jbhooks',sails.config.globals.jbhooks);
         
         var express = require('express');
         //sails.config.globals.jbrowse.express = express;
