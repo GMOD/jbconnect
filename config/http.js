@@ -9,7 +9,7 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.http.html
  */
 var fs = require('fs');
-
+var glob = require('glob');
 
 module.exports.http = {
 
@@ -37,8 +37,18 @@ module.exports.http = {
 	
         sails.log("globals",g.jbrowse);
         
-	sails.log.info('jbrowse route /'+routePrefix,jbrowsePath);        
-	app.use('/'+routePrefix, express.static(jbrowsePath));
+        //if (typeof sails.config.globals.jbroutes === 'undefined') sails.config.globals.jbroutes = [];
+        //sails.config.globals.jbroutes.splice(0, 0, {route:'/'+routePrefix+"",path:jbrowsePath});
+        
+        
+        //jbroutes = sails.config.globals.jbroutes;
+        
+        //for(var i in jbroutes) {
+        //    sails.log.info('jbrowse route',jbroutes[i].route,jbroutes[i].path);        
+        //    app.use(jbroutes[i], express.static(jbroutes[i].path));
+        //}
+	//sails.log.info('jbrowse route /'+routePrefix,jbrowsePath);        
+	//app.use('/'+routePrefix, express.static(jbrowsePath));
 	//app.use('/jbrowse/plugins/JBClient', express.static('/var/www/html/2jbserver/plugins/JBClient'));
 
         injectPluginRoutes();
@@ -84,6 +94,11 @@ module.exports.http = {
           next();
         })
         */
+        /**
+         * inject client-side plugins into the clinet plugin directory as routes.
+         * handles submodules plugins too.
+         * @returns {undefined}
+         */
         function injectPluginRoutes() {
             // inject plugin routes
             var g = sails.config.globals.jbrowse;
@@ -101,8 +116,26 @@ module.exports.http = {
                 sails.log.info("plugin route",pluginRoute,target);
                 app.use(pluginRoute, express.static(target));
             }
+            glob('node_modules/jbh-*', function (err, subplugins) {
+                if (err) return;
+                for(var j in subplugins) {
+                    var tmp = subplugins[j].split('/');                
+                    var pluginName = tmp[tmp.length-1];
+                    var pluginRoute = '/'+g.routePrefix+'/plugins/'+pluginName;
+                    var target = cwd+'/'+subplugins[i];
+
+                    sails.log.info("jbh module found",pluginRoute,target);
+                    app.use(pluginRoute, express.static(target));
+                }
+            });            
         }
-    
+    },
+    addPluginRoute: function(pluginPath){
+        
+        var sh = require('shelljs');
+        var cwd = sh.pwd();
+        
+        sails.log.debug('addPluginRoute()', pluginPath);
     }
   /****************************************************************************
   *                                                                           *
