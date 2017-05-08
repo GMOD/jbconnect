@@ -81,31 +81,37 @@ module.exports.http = {
 
             var sh = require('shelljs');
             var cwd = sh.pwd();
-            var items = fs.readdirSync('plugins');
-
-            // setup local plugins
-            for(var i in items) {
-                
-                // todo: ignore files in this directory
-                
-                var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
-                var target = cwd+'/plugins/'+items[i];
-                sails.log.info("plugin route",pluginRoute,target);
-                app.use(pluginRoute, express.static(target));
-            }
             // setup sub-module plugins
-            glob('node_modules/jbh-*', function (err, subplugins) {
-                if (err) return;
-                for(var j in subplugins) {
-                    var tmp = subplugins[j].split('/');                
-                    var pluginName = tmp[tmp.length-1];
-                    var pluginRoute = '/'+g.routePrefix+'/plugins/'+pluginName;
-                    var target = cwd+'/'+subplugins[i];
+            glob('node_modules/jbh-*', function (err, submodules) {
+                // setup local plugins
+                var items = fs.readdirSync('plugins');
+                for(var i in items) {
 
-                    sails.log.info("jbh module found",pluginRoute,target);
-                    app.use(pluginRoute, express.static(target));
+                    var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
+                    var target = cwd+'/plugins/'+items[i];
+                    
+                    if (fs.lstatSync(target).isDirectory())
+                        addRoute('this module',pluginRoute,target);
                 }
-            });            
+                if (err) return;
+                for(var j in submodules) {
+                    var tmp = submodules[j].split('/');                
+                    var moduleName = tmp[tmp.length-1];
+
+                    var items = fs.readdirSync(cwd+'/'+submodules[j]+'/plugins');
+                    for(var i in items) {
+                        var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
+                        var target = cwd+'/'+submodules[j]+'/plugins/'+items[i];
+                        if (fs.lstatSync(target).isDirectory())
+                            addRoute(moduleName,pluginRoute,target);
+                    }
+                }
+            });
+            
+            function addRoute(module,route,target) {
+                sails.log.info("adding plugin route (%s) %s %s",module,route,target);
+                app.use(route, express.static(target));
+            }
         }
     }
     
