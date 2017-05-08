@@ -19,39 +19,14 @@ module.exports.http = {
     customMiddleware: function (app) {
         console.log("config of Middleware config/http.js for jbrowse");
         
-        //sails.config.globals.jbrowse.app = app;
-        sails.log('jbhooks',sails.config.globals.jbhooks);
-        
         var express = require('express');
-        //sails.config.globals.jbrowse.express = express;
         
 	var compression = require('compression');
         var g = sails.config.globals;
         var jbrowsePath = g.jbrowse.jbrowsePath;
         var routePrefix = g.jbrowse.routePrefix || "";
         
-        // setup jbrowse static route
-        // todo: make this configurable in globals.js 
-	//app.use(express.logger());    // this is replaced by morgan package in node 4
-	//app.use(compression);         // causing problems: pages don't load.
-	
-        sails.log("globals",g.jbrowse);
-        
-        //if (typeof sails.config.globals.jbroutes === 'undefined') sails.config.globals.jbroutes = [];
-        //sails.config.globals.jbroutes.splice(0, 0, {route:'/'+routePrefix+"",path:jbrowsePath});
-        
-        
-        //jbroutes = sails.config.globals.jbroutes;
-        
-        //for(var i in jbroutes) {
-        //    sails.log.info('jbrowse route',jbroutes[i].route,jbroutes[i].path);        
-        //    app.use(jbroutes[i], express.static(jbroutes[i].path));
-        //}
-	//sails.log.info('jbrowse route /'+routePrefix,jbrowsePath);        
-	//app.use('/'+routePrefix, express.static(jbrowsePath));
-	//app.use('/jbrowse/plugins/JBClient', express.static('/var/www/html/2jbserver/plugins/JBClient'));
-
-        injectPluginRoutes();
+        addPluginRoutes();
 
         // setup kue and kue-ui
         var g = sails.config.globals;
@@ -74,7 +49,7 @@ module.exports.http = {
          });    
 */ 
         // for handling POST requests - JSON bodies
-        var bodyParser = require('body-parser')
+        var bodyParser = require('body-parser');
         app.use( bodyParser.json() );       // to support JSON-encoded bodies
         app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
           extended: true
@@ -94,12 +69,13 @@ module.exports.http = {
           next();
         })
         */
+       
         /**
          * inject client-side plugins into the clinet plugin directory as routes.
          * handles submodules plugins too.
          * @returns {undefined}
          */
-        function injectPluginRoutes() {
+        function addPluginRoutes() {
             // inject plugin routes
             var g = sails.config.globals.jbrowse;
 
@@ -107,6 +83,7 @@ module.exports.http = {
             var cwd = sh.pwd();
             var items = fs.readdirSync('plugins');
 
+            // setup local plugins
             for(var i in items) {
                 
                 // todo: ignore files in this directory
@@ -116,6 +93,7 @@ module.exports.http = {
                 sails.log.info("plugin route",pluginRoute,target);
                 app.use(pluginRoute, express.static(target));
             }
+            // setup sub-module plugins
             glob('node_modules/jbh-*', function (err, subplugins) {
                 if (err) return;
                 for(var j in subplugins) {
@@ -129,14 +107,8 @@ module.exports.http = {
                 }
             });            
         }
-    },
-    addPluginRoute: function(pluginPath){
-        
-        var sh = require('shelljs');
-        var cwd = sh.pwd();
-        
-        sails.log.debug('addPluginRoute()', pluginPath);
     }
+    
   /****************************************************************************
   *                                                                           *
   * Express middleware to use for every Sails request. To add custom          *
