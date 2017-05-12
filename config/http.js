@@ -26,6 +26,8 @@ module.exports.http = {
         var jbrowsePath = g.jbrowse.jbrowsePath;
         var routePrefix = g.jbrowse.routePrefix || "";
         
+        app.use('/'+routePrefix, express.static(jbrowsePath));
+        
         addPluginRoutes();
 
         // setup kue and kue-ui
@@ -81,8 +83,10 @@ module.exports.http = {
 
             var sh = require('shelljs');
             var cwd = sh.pwd();
+            
             // setup sub-module plugins
-            glob('node_modules/jbh-*', function (err, submodules) {
+            var submodules = glob.sync('node_modules/jbh-*');
+            
                 // setup local plugins
                 var items = fs.readdirSync('plugins');
                 for(var i in items) {
@@ -93,7 +97,7 @@ module.exports.http = {
                     if (fs.lstatSync(target).isDirectory())
                         addRoute('this module',pluginRoute,target);
                 }
-                if (err) return;
+                
                 for(var j in submodules) {
                     var tmp = submodules[j].split('/');                
                     var moduleName = tmp[tmp.length-1];
@@ -106,7 +110,7 @@ module.exports.http = {
                             addRoute(moduleName,pluginRoute,target);
                     }
                 }
-            });
+            
             
             function addRoute(module,route,target) {
                 sails.log.info("adding plugin route (%s) %s %s",module,route,target);
