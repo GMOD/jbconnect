@@ -9,7 +9,7 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.http.html
  */
 var fs = require('fs');
-var glob = require('glob');
+var jbRouteUtil = require('../api/services/jbRouteUtil');
 
 module.exports.http = {
 
@@ -28,7 +28,7 @@ module.exports.http = {
         
         app.use('/'+routePrefix, express.static(jbrowsePath));
         
-        addPluginRoutes();
+        jbRouteUtil.addPluginRoutes({app:app,express:express});
 
         // setup kue and kue-ui
         var g = sails.config.globals;
@@ -71,52 +71,6 @@ module.exports.http = {
           next();
         })
         */
-       
-        /**
-         * inject client-side plugins into the clinet plugin directory as routes.
-         * handles submodules plugins too.
-         * @returns {undefined}
-         */
-        function addPluginRoutes() {
-            // inject plugin routes
-            var g = sails.config.globals.jbrowse;
-
-            var sh = require('shelljs');
-            var cwd = sh.pwd();
-            
-            // setup sub-module plugins
-            var submodules = glob.sync('node_modules/jbh-*');
-            
-                // setup local plugins
-                var items = fs.readdirSync('plugins');
-                for(var i in items) {
-
-                    var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
-                    var target = cwd+'/plugins/'+items[i];
-                    
-                    if (fs.lstatSync(target).isDirectory())
-                        addRoute('this module',pluginRoute,target);
-                }
-                
-                for(var j in submodules) {
-                    var tmp = submodules[j].split('/');                
-                    var moduleName = tmp[tmp.length-1];
-
-                    var items = fs.readdirSync(cwd+'/'+submodules[j]+'/plugins');
-                    for(var i in items) {
-                        var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
-                        var target = cwd+'/'+submodules[j]+'/plugins/'+items[i];
-                        if (fs.lstatSync(target).isDirectory())
-                            addRoute(moduleName,pluginRoute,target);
-                    }
-                }
-            
-            
-            function addRoute(module,route,target) {
-                sails.log.info("adding plugin route (%s) %s %s",module,route,target);
-                app.use(route, express.static(target));
-            }
-        }
     }
     
   /****************************************************************************
