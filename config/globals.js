@@ -73,7 +73,16 @@ var g = {
 	// models: true
 };
 
-
+g.libroutes = require("./libroutes");
+//console.log('>>>>globals.libroutes'.g.libroutes);
+/*
+g.libroutes = {
+            'jquery-ui-dist':   '/jblib/jqueryui',
+            'jquery':           '/jblib/jquery',
+            'bootstrap':        '/jblib/bootstrap'
+    
+};
+*/
 /*
  * import jblast globals
  * the require referense should where the /jblast-tools resides.
