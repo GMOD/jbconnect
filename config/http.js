@@ -29,6 +29,7 @@ module.exports.http = {
         app.use('/'+routePrefix, express.static(jbrowsePath));
         
         jbRouteUtil.addPluginRoutes({app:app,express:express});
+        jbRouteUtil.addLibRoutes({app:app,express:express});
 
         // setup kue and kue-ui
         var g = sails.config.globals;

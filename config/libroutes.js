@@ -2,7 +2,7 @@
  */
 
 module.exports = {
-    libroutes: {
+    lib: {
             'jquery-ui-dist':   '/jblib/jqueryui',
             'jquery':           '/jblib/jquery',
             'bootstrap':        '/jblib/bootstrap'
