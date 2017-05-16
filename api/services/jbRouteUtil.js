@@ -56,7 +56,7 @@ module.exports = {
             var moduleRoutes = require(cwd+'/'+routefile[k]);
             libRoutes.lib = merge(libRoutes.lib,moduleRoutes.lib);
         }
-        sails.log.debug('>>> libRoutes',libRoutes);
+        //sails.log.debug('>>> libRoutes',libRoutes);
 
         for(var i in libRoutes.lib) {
             // look for submodule
