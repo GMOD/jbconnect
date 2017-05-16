@@ -39,7 +39,7 @@ module.exports = function (sails) {
             //JbUtils.testFunction("called from jbcore.configure()");
         },
         initialize: function(cb) {
-            sails.log("jbcore initialize"); 
+            sails.log("Hook: jbcore initialize"); 
 
             // sets up event handling for kue job events
             kueJobMon.start();
