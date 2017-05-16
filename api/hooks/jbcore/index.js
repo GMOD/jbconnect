@@ -31,10 +31,10 @@ module.exports = function (sails) {
     return {
 
         configure: function() {
-            sails.log("jbcore configure");
-            if (typeof sails.config.globals.jbrowse !== 'undefined') sails.log("globals.jbrowse exist");
-            if (typeof sails.config.globals.jbhooks === 'undefined') sails.config.globals.jbhooks = [];
-            sails.config.globals.jbhooks.splice(0, 0, "jbcore");
+            //sails.log("jbcore configure");
+            //if (typeof sails.config.globals.jbrowse !== 'undefined') sails.log("globals.jbrowse exist");
+            //if (typeof sails.config.globals.jbhooks === 'undefined') sails.config.globals.jbhooks = [];
+            //sails.config.globals.jbhooks.splice(0, 0, "jbcore");
             
             //JbUtils.testFunction("called from jbcore.configure()");
         },
@@ -49,7 +49,7 @@ module.exports = function (sails) {
                 //console.log(JbGlobal,JbTrack);
                 storeGlobals();
                 
-                JbUtils.testFunction("called from jbcore.initialize()");
+                //JbUtils.testFunction("called from jbcore.initialize()");
                 
                 return cb();
 
