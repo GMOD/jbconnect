@@ -10,7 +10,7 @@ module.exports = function trackWatchHook(sails) {
     return {
 
         initialize: function(cb) {
-            console.log("Sails Hook: jb-trackwatch initialized");
+            sails.log.debug("Hook: trackwatch initialize");
             
             setTimeout(function(){
                 syncTracks();
