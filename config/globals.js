@@ -7,6 +7,8 @@
  *
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.globals.html
+ * 
+ * Note: globals defined in jbserver take precedent over jbh-* module globals.js definitions. 
  */
 var g = {
     
@@ -18,7 +20,10 @@ var g = {
             {
                 dataPath: "sample_data/json/volvox/"
             }
-        ]
+        ],
+        galaxy: {
+            galaxyAPIKey: "acbacd90d8f6bd0a34428673cabad6d1"
+        }
     }
 
   /****************************************************************************
