@@ -7,17 +7,23 @@
  *
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.globals.html
+ * 
+ * Note: globals defined in jbserver take precedent over jbh-* module globals.js definitions. 
  */
 var g = {
     
     jbrowse: {
         jbrowseRest: "http://localhost:1337",
         jbrowsePath: "/var/www/html/jbrowse/",
+        routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
         dataSet: [
             {
                 dataPath: "sample_data/json/volvox/"
             }
-        ]
+        ],
+        galaxy: {
+            galaxyAPIKey: "acbacd90d8f6bd0a34428673cabad6d1"
+        }
     }
 
   /****************************************************************************
@@ -72,12 +78,22 @@ var g = {
 	// models: true
 };
 
-
+g.libroutes = require("./libroutes");
+//console.log('>>>>globals.libroutes'.g.libroutes);
+/*
+g.libroutes = {
+            'jquery-ui-dist':   '/jblib/jqueryui',
+            'jquery':           '/jblib/jquery',
+            'bootstrap':        '/jblib/bootstrap'
+    
+};
+*/
 /*
  * import jblast globals
  * the require referense should where the /jblast-tools resides.
  */
 // todo: this will be changed later.
+/*
 try {
     var jblastglobals = require(g.jbrowse.jbrowsePath+'jblast-tools/config.js');
     for(var i in jblastglobals) {
@@ -87,6 +103,6 @@ try {
 catch (err) {
     sails.log.error('failed to load jblast globals');
 }
-
+*/
 module.exports.globals = g;
 

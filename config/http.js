@@ -8,6 +8,8 @@
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.http.html
  */
+var fs = require('fs');
+var jbRouteUtil = require('../api/services/jbRouteUtil');
 
 module.exports.http = {
 
@@ -18,18 +20,20 @@ module.exports.http = {
         console.log("config of Middleware config/http.js for jbrowse");
         
         var express = require('express');
+        
 	var compression = require('compression');
         var g = sails.config.globals;
         var jbrowsePath = g.jbrowse.jbrowsePath;
+        var routePrefix = g.jbrowse.routePrefix || "";
         
-        // setup jbrowse static route
-        // todo: make this configurable in globals.js 
-	//app.use(express.logger());    // this is replaced by morgan package in node 4
-	//app.use(compression);         // causing problems: pages don't load.
-	app.use('/jbrowse', express.static(jbrowsePath));
+        //sails.log('>>> globals',g);
+        
+        app.use('/'+routePrefix, express.static(jbrowsePath));
+        
+        jbRouteUtil.addPluginRoutes({app:app,express:express});
+        jbRouteUtil.addLibRoutes({app:app,express:express});
 
         // setup kue and kue-ui
-        var g = sails.config.globals;
 
         g.kue = require('kue');
         g.kue_ui = require('kue-ui');
@@ -49,7 +53,7 @@ module.exports.http = {
          });    
 */ 
         // for handling POST requests - JSON bodies
-        var bodyParser = require('body-parser')
+        var bodyParser = require('body-parser');
         app.use( bodyParser.json() );       // to support JSON-encoded bodies
         app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
           extended: true
@@ -70,6 +74,7 @@ module.exports.http = {
         })
         */
     }
+    
   /****************************************************************************
   *                                                                           *
   * Express middleware to use for every Sails request. To add custom          *
