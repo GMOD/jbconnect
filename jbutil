@@ -1,0 +1,55 @@
+#!/usr/bin/env node
+
+var argv = require('yargs').argv;
+var glob = require('glob');
+var sh = require('shelljs');
+var fs = require('fs');
+var merge = require('merge');
+
+var cwd = sh.pwd();
+var subCount = 0;
+var scripts = glob.sync('node_modules/jbh-*');
+
+for(var i in scripts) {
+    console.log('script found - ',scripts[i]);
+    var path = cwd+'/'+scripts[i];
+    var extScript = './'+scripts[i]+'/bin/jbutil-ext.js';
+    if (fs.existsSync(extScript)) { 
+      // do something 
+      var ext = require(extScript);
+      ext.process(argv,path);
+      subCount++;
+    }
+}
+
+if (subCount == 0) {
+    //console.log('no submodule scripts found');
+    process.exit(0);
+}
+
+// --config - list config
+if (argv.config) {
+    
+    var merged = {};
+
+    var scripts = glob.sync('node_modules/jbh-*');
+
+    for(var i in scripts) {
+        console.log('script found - ',scripts[i]);
+        var path = cwd+'/'+scripts[i];
+        var extScript = './'+scripts[i]+'/config/globals.js';
+        if (fs.existsSync(extScript)) { 
+          // do something 
+          var extConfig = require(extScript).globals;
+          //console.log('extConfig',extConfig);
+          merged = merge.recursive(true,extConfig,merged);
+        }
+    }
+
+    var config = require('./config/globals.js').globals;
+    //console.log('config',config);
+    merged = merge.recursive(true,merged,config);
+
+    console.log('merged config:');
+    console.log(merged.jbrowse);
+}

@@ -10,6 +10,9 @@
  * 
  * Note: globals defined in jbserver take precedent over jbh-* module globals.js definitions. 
  */
+
+var merge = require('merge');
+
 var g = {
     
     jbrowse: {
@@ -20,10 +23,7 @@ var g = {
             {
                 dataPath: "sample_data/json/volvox/"
             }
-        ],
-        galaxy: {
-            galaxyAPIKey: "acbacd90d8f6bd0a34428673cabad6d1"
-        }
+        ]
     }
 
   /****************************************************************************
@@ -79,30 +79,8 @@ var g = {
 };
 
 g.libroutes = require("./libroutes");
-//console.log('>>>>globals.libroutes'.g.libroutes);
-/*
-g.libroutes = {
-            'jquery-ui-dist':   '/jblib/jqueryui',
-            'jquery':           '/jblib/jquery',
-            'bootstrap':        '/jblib/bootstrap'
-    
-};
-*/
-/*
- * import jblast globals
- * the require referense should where the /jblast-tools resides.
- */
-// todo: this will be changed later.
-/*
-try {
-    var jblastglobals = require(g.jbrowse.jbrowsePath+'jblast-tools/config.js');
-    for(var i in jblastglobals) {
-        g.jbrowse[i] = jblastglobals[i];
-    }
-}
-catch (err) {
-    sails.log.error('failed to load jblast globals');
-}
-*/
+var localconf = require("../config");
+g.jbrowse = merge.recursive(true,localconf.jbrowse,g.jbrowse);
+
 module.exports.globals = g;
 
