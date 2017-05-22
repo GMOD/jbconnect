@@ -10,6 +10,8 @@ var getopt = require('node-getopt');
 var cwd = sh.pwd();
 var subCount = 0;
 
+var mergedConfig = getMergedConfig();
+
 // local options
 var options = [
     ['','config', 'display merged config'],
@@ -53,17 +55,26 @@ if (!process.argv.slice(2).length) {
  ************************************************/
 
 doExtScripts(function(ext,path) {
-    ext.process(opt,path);
+    //console.log("mergedConfig",mergedConfig);
+    ext.process(opt,path,mergedConfig);
 });
 
 console.log("opt",opt);
 if (typeof opt.options['config'] !== 'undefined') proc_Config();  
 
 
+
+
+// --config - list config
+function proc_Config() {
+
+    console.log('Merged jbrowse configs from config/globals.js & config.js:');
+    console.log( mergedConfig );
+}
+
 /************************************************
  * Utility functions
  ************************************************/
-
 
 /**
  * Traverse jbutils-ext.js of submodules (jbh-*)
@@ -84,8 +95,11 @@ function doExtScripts(cb) {
     }
 }
 
-// --config - list config
-function proc_Config() {
+/**
+ * Returned merged jbrowse config.  
+ * Merged from jbh-* config/globals.js, local config/globals.js, & config.js
+ */
+function getMergedConfig() {
     var merged = {};
 
     var scripts = glob.sync('node_modules/jbh-*');
@@ -106,6 +120,5 @@ function proc_Config() {
     //console.log('config',config);
     merged = merge.recursive(true,merged,config);
 
-    console.log('Merged jbrowse configs from config/globals.js & config.js:');
-    console.log(merged.jbrowse);
+    return merged.jbrowse;
 }
