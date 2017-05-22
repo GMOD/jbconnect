@@ -4,7 +4,7 @@
 var glob = require('glob');
 var sh = require('shelljs');
 var fs = require('fs');
-var merge = require('merge');
+var merge = require('deepmerge');
 var getopt = require('node-getopt');
 
 var cwd = sh.pwd();
@@ -112,13 +112,13 @@ function getMergedConfig() {
           // do something 
           var extConfig = require(extScript).globals;
           //console.log('extConfig',extConfig);
-          merged = merge.recursive(true,extConfig,merged);
+          merged = merge(extConfig,merged);
         }
     }
 
     var config = require('./config/globals.js').globals;
     //console.log('config',config);
-    merged = merge.recursive(true,merged,config);
+    merged = merge(merged,config);
 
     return merged.jbrowse;
 }

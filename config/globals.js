@@ -11,7 +11,7 @@
  * Note: globals defined in jbserver take precedent over jbh-* module globals.js definitions. 
  */
 
-var merge = require('merge');
+var merge = require('deepmerge');
 
 var g = {
     
@@ -80,7 +80,8 @@ var g = {
 
 g.libroutes = require("./libroutes");
 var localconf = require("../config");
-g.jbrowse = merge.recursive(true,localconf.jbrowse,g.jbrowse);
+
+g.jbrowse = merge(g.jbrowse,localconf.jbrowse);
 
 module.exports.globals = g;
 
