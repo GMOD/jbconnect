@@ -1,8 +1,7 @@
 {
-  "name": "server",
-  "private": true,
-  "version": "0.0.0",
-  "description": "JBrowse Server",
+  "name": "jbserver",
+  "version": "0.0.101",
+  "description": "JBrowse Server (preliminary)",
   "keywords": [],
   "dependencies": {
     "bcryptjs": "^2.4.0",
@@ -60,6 +59,6 @@
     "type": "git",
     "url": "git://github.com/root/server.git"
   },
-  "author": "root",
-  "license": ""
+  "author": "enuggetry",
+  "license": "MIT"
 }
