@@ -18,7 +18,7 @@
  * `node app.js --silent --port=80 --prod`
  */
 
-findhooks = require('./bin/findhooks');
+//findhooks = require('./bin/findhooks');
 
 // Ensure we're in the project directory, so relative paths work as expected
 // no matter where we actually lift from.
@@ -55,9 +55,9 @@ process.chdir(__dirname);
     }
   }
 
-findhooks.mapJbrowsePlugins(__dirname);
+//findhooks.mapJbrowsePlugins(__dirname);
     
     // Start server
     sails.lift(rc('sails'));
     
-})();
+//})();
