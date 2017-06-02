@@ -4,9 +4,9 @@ define([
         'dojo/Deferred',
         'dojo/dom-construct',
         'dojo/query',
-        'JBrowse/Plugin',
-        '/js/socket.io.js',
-        '/js/sails.io.js'
+        'JBrowse/Plugin'
+        //'/js/socket.io.js',
+        //'/js/sails.io.js'
     ],
        function(
         declare,
@@ -14,9 +14,9 @@ define([
         Deferred,
         domConstruct,
         query,
-        JBrowsePlugin,
-        socketIOClient,
-        sailsIOClient
+        JBrowsePlugin
+        //socketIOClient,
+        //sailsIOClient
        ) {
 return declare( JBrowsePlugin,
 {
@@ -26,10 +26,10 @@ return declare( JBrowsePlugin,
         console.log("plugin: JBClient");
         
         
-        var io = sailsIOClient(socketIOClient);
+        //var io = sailsIOClient(socketIOClient);
         //io.sails.url = 'http:/example.com';
         setTimeout(function(){
-            browser.publish ('/jbrowse/jbclient_ready',io);
+            browser.publish ('/jbrowse/jbclient_ready',null);   // testing remove io
         },500);
         
         $.get("/loginstate",function(data) {
