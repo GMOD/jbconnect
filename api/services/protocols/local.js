@@ -48,6 +48,7 @@ exports.register = function (req, res, next) {
   , email    : email
   }, function (err, user) {
     if (err) {
+      sails.log("local.js, User.create error",err);
       if (err.code === 'E_VALIDATION') {
         if (err.invalidAttributes.email) {
           req.flash('error', 'Error.Passport.Email.Exists');
@@ -69,6 +70,7 @@ exports.register = function (req, res, next) {
     , accessToken : token
     }, function (err, passport) {
       if (err) {
+        sails.log("local.js Passport.create error",err);
         if (err.code === 'E_VALIDATION') {
           req.flash('error', 'Error.Passport.Password.Invalid');
         }

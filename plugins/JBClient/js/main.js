@@ -4,11 +4,9 @@ define([
         'dojo/Deferred',
         'dojo/dom-construct',
         'dojo/query',
-        'JBrowse/Plugin',
-// sails.io.js from jbserver/node_modules/sails.io.js
-// socket.io.js from jbserver/node_modules/socket.io-client
-        '/js/socket.io.js',
-        '/js/sails.io.js'
+        'JBrowse/Plugin'
+        //'/js/socket.io.js',
+        //'/js/sails.io.js'
     ],
        function(
         declare,
@@ -16,9 +14,9 @@ define([
         Deferred,
         domConstruct,
         query,
-        JBrowsePlugin,
-        socketIOClient,
-        sailsIOClient
+        JBrowsePlugin
+        //socketIOClient,
+        //sailsIOClient
        ) {
 return declare( JBrowsePlugin,
 {
@@ -28,10 +26,10 @@ return declare( JBrowsePlugin,
         console.log("plugin: JBClient");
         
         
-        var io = sailsIOClient(socketIOClient);
+        //var io = sailsIOClient(socketIOClient);
         //io.sails.url = 'http:/example.com';
         setTimeout(function(){
-            browser.publish ('/jbrowse/jbclient_ready',io);
+            browser.publish ('/jbrowse/jbclient_ready',null);   // testing remove io
         },500);
         
         $.get("/loginstate",function(data) {
@@ -39,7 +37,7 @@ return declare( JBrowsePlugin,
             var txt = "";
             if (data.loginstate !== true) {
                 txt += '<div class="dropdown">';
-                txt += '<button class="btn btn-secondary dropdown-toggle jb-dropdown jb-login-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown" >Login</button>';
+                txt += '<button class="btn btn-secondary dropdown-toggle jb-dropdown jb-login-icon" type="button" title="Login" alt="Login" id="dropdownMenuButton" data-toggle="dropdown" ></button>';
                 txt += '<div class="dropdown-menu dropdown-menu-right panel panel-default jb-login-panel"><div class="panel-body">';
                 txt +=   '<form id="form-login" class="form-group" role="form" action="/auth/local?next=/jbrowse" method="post">';
                 txt +=     '<div class="input-group">';

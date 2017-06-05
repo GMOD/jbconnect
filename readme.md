@@ -4,27 +4,27 @@ JBrowse Server is a server platform for JBrowse; however, it does not include th
 
 (it has not been officially released.)
 
-###Requires
+### Requires
 
 Install JBrowse
 
 ##Relies on redis server; start redis service first.
 service redis start (CentOS)
 
-###Install
+### Install
 ```
 git clone https://github.com/GMOD/jbserver.git
 cd jbserver
 ```
 
-###Launch
+### Launch
 ```
 sails lift (port 1337)
 ```
 
-##View Jobs in Kue
+## View Jobs in Kue
 http://localhost:1337/kue
 
-##Useful
+## Useful
 npm redis-commander
 
