@@ -37,7 +37,7 @@ return declare( JBrowsePlugin,
             var txt = "";
             if (data.loginstate !== true) {
                 txt += '<div class="dropdown">';
-                txt += '<button class="btn btn-secondary dropdown-toggle jb-dropdown jb-login-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown" >Login</button>';
+                txt += '<button class="btn btn-secondary dropdown-toggle jb-dropdown jb-login-icon" type="button" title="Login" alt="Login" id="dropdownMenuButton" data-toggle="dropdown" ></button>';
                 txt += '<div class="dropdown-menu dropdown-menu-right panel panel-default jb-login-panel"><div class="panel-body">';
                 txt +=   '<form id="form-login" class="form-group" role="form" action="/auth/local?next=/jbrowse" method="post">';
                 txt +=     '<div class="input-group">';

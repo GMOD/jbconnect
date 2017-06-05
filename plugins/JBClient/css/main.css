@@ -8,6 +8,10 @@ and open the template in the editor.
     Author     : Eric
 */
 
+/* this hides the original share button */
+xdiv.menuBar > span[widgetid*="dijit_form_Button_0"] {
+    display:none;
+}
 
 .jb-loginbox {
    position:absolute;
@@ -17,7 +21,7 @@ and open the template in the editor.
 
 .jb-dropdown {
     line-height: .9 !important;
-    padding-left: 40px !important;
+    padding-left: 13px !important;
     background-image: url("../img/user1.png");
     background-size: 20px 20px;
     background-repeat: no-repeat;
@@ -27,16 +31,39 @@ and open the template in the editor.
     padding-left: 10px;
 }
 .jb-user-icon {
-    background-image: url("../img/user1.png");
+    background-image: url("../img/user200w.png");
     background-size: 20px 20px;
     background-repeat: no-repeat;
-    background-position: 2px;
+    xxbackground-position: 2px;
+    color:#fff;
+
+    background-color: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: 0;
+    position: relative;
+    top: 0px;
+    height: 22px;	
+    padding-left:26px !important;
 }
 .jb-login-icon {
-    background-image: url("../img/login.png");
+    background-image: url("../img/key200w.png");
     background-size: 20px 20px;
     background-repeat: no-repeat;
     background-position: 2px;
+
+    background-color: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: 0;
+    position: relative;
+    top: 0px;
+    height: 22px;	
+	
 }
 .jb-form-button {
     margin-top: 5px;
@@ -44,4 +71,16 @@ and open the template in the editor.
 }
 .jb-login-panel {
      width: 300px;
+}
+
+.jb-share-button {
+    background-color: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: 0;
+    position: relative;
+    top: -1px;
+    height: 22px;	
 }
