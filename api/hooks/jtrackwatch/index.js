@@ -22,55 +22,55 @@ module.exports = function trackWatchHook(sails) {
             before: {
                 // given a reference to the trackList.json, it begins tracking the file
                 /*
-                'get /jbtrack/watch': function (req, res, next) {
-                    console.log("jb-trackwatch /jbtrack/watch called");
+                'get /track/watch': function (req, res, next) {
+                    console.log("jb-trackwatch /track/watch called");
                     tracklist = req.param("trackList");
                     console.log("tracklist = "+tracklist);
-                    //JbTrack.message(1, {msg:"track-test",value:"JBrowse test"});
+                    //Track.message(1, {msg:"track-test",value:"JBrowse test"});
 
                     res.send({result:"success"});
                     //return next();
                 },
                 */
-                'post /jbtrack/addTrack': function (req, res, next) {
-                    console.log("jb-trackwatch /jbtrack/addTrack called");
+                'post /track/addTrack': function (req, res, next) {
+                    console.log("jb-trackwatch /track/addTrack called");
                     var result = addTrackJson(req,res,next);
                     res.send(result);
                     //return next();
                 },
-                'get /jbtrack/removeTrack': function (req, res, next) {
-                    console.log("jb-trackwatch /jbtrack/removeTrack called");
+                'get /track/removeTrack': function (req, res, next) {
+                    console.log("jb-trackwatch /track/removeTrack called");
                     tracklist = req.param("trackList");
                     console.log("tracklist = "+tracklist);
-                    //JbTrack.message(1, {msg:"track-test",value:"JBrowse test"});
+                    //Track.message(1, {msg:"track-test",value:"JBrowse test"});
 
                     res.send({result:"success"});
                     //return next();
                 },
-                'get /jbtrack/test/:value': function (req, res, next) {
-                    console.log("jb-trackwatch /jbtrack/test/[value] called");
+                'get /track/test/:value': function (req, res, next) {
+                    console.log("jb-trackwatch /track/test/[value] called");
                     //console.dir(req.params);
                     console.log("received value = "+req.params.value);
                     
                     sails.hooks['jbcore'].sendEvent("track-test",{value:req.params.value});
-                    //JbTrack.publishCreate({msg:"track-test",value:req.params.value});
+                    //Track.publishCreate({msg:"track-test",value:req.params.value});
                     res.send({result:"success"});
                     //return next();
                 },
-                'get /jbtrack/test': function (req, res, next) {
-                    console.log("jb-trackwatch /jbtrack/test called");
+                'get /track/test': function (req, res, next) {
+                    console.log("jb-trackwatch /track/test called");
                     sails.hooks['jbcore'].sendEvent("track-test",{value:"JBrowse test"});
 
                     res.send({result:"success"});
                     //return next();
                 },
-                'get /jbtrack/removeall': function(req,res,next) {
-                    console.log("jb-trackwatch /jbtrack/removeall called");
+                'get /track/removeall': function(req,res,next) {
+                    console.log("jb-trackwatch /track/removeall called");
                     var g = sails.config.globals.jbrowse;
                     var trackListPath = g.jbrowsePath + g.dataSet[0].dataPath + 'trackList.json';
 
                     var dataSet = g.dataSet[0].dataPath;
-                    JbTrack.destroy({dataSet:dataSet}).exec(function (err){
+                    Track.destroy({dataSet:dataSet}).exec(function (err){
                       if (err) {
                         res.send({result:"failed"});
                         //return; //res.negotiate(err);
@@ -80,12 +80,12 @@ module.exports = function trackWatchHook(sails) {
                       //return; // res.ok();
                     });                    
                 },
-                'get /jbtracks/sync': function(req,res,next) {
-                    sails.log.info(path.basename(__filename),"/jbtrack/sync");
+                'get /track/sync': function(req,res,next) {
+                    sails.log.info(path.basename(__filename),"/track/sync");
                     syncTracks();
                 },
-                'get /jbtracks/save': function(req,res,next) {
-                    sails.log.info(path.basename(__filename),"/jbtrack/save");
+                'get /track/save': function(req,res,next) {
+                    sails.log.info(path.basename(__filename),"/track/save");
                 }
             }
         },
@@ -112,7 +112,7 @@ function saveTracks(dataSet) {
     var dataSet = g.dataSet[0].dataPath;
     sails.log.debug('saveTracks('+dataSet+')');
 
-    JbTrack.find({dataSet:dataSet}).exec(function (err, modelTracks){
+    Track.find({dataSet:dataSet}).exec(function (err, modelTracks){
       if (err) {
         sails.log.error('modelTracks, failed to read');
         return;   // failed
@@ -136,7 +136,7 @@ function saveTracks(dataSet) {
     });
 }
 /**
- * Sync tracklist.json tracks with JbTrack model (promises version)
+ * Sync tracklist.json tracks with Track model (promises version)
  * @param {type} req
  * @param {type} res
  * @param {type} next
@@ -160,7 +160,7 @@ function syncTracks() {
         }
         if (toDel.length) {
           sails.log.debug("ids to delete",toDel);
-          JbTrack.destroy({dataSet:dataSet,id: toDel})
+          Track.destroy({dataSet:dataSet,id: toDel})
             .then(function(deleted){
               sails.log.debug("tracks deleted:",deleted.length);
             })
@@ -181,7 +181,7 @@ function syncTracks() {
                       lkey: fTracks[k].label,
                       trackData: fTracks[k]
                 };
-                JbTrack.create(data)
+                Track.create(data)
                 .then(function(item) {
                     sails.log.debug("track created:",item.id,item.lkey);
                 })        
@@ -193,7 +193,7 @@ function syncTracks() {
           else {
               if (JSON.stringify(mTracks[k].trackData) != JSON.stringify(fTracks[k])) {
                   //update model record
-                  JbTrack.update({dataSet:dataSet,lkey:k},{trackData:fTracks[k]})
+                  Track.update({dataSet:dataSet,lkey:k},{trackData:fTracks[k]})
                   .then(function(item) {
                       sails.log.debug("track updated:",item[0].id,item[0].lkey);
                   })        
@@ -206,7 +206,7 @@ function syncTracks() {
         
     };
 
-    JbTrack.find({dataSet:dataSet})
+    Track.find({dataSet:dataSet})
         .then(function(modelTracks) {
             sails.log.debug("modelTracks",modelTracks.length);
 
@@ -239,7 +239,7 @@ function syncTracks2() {
     var dataSet = g.dataSet[0].dataPath;
     sails.log.debug('syncTracks()');
 
-    JbTrack.find({dataSet:dataSet}).exec(function (err, modelTracks){
+    Track.find({dataSet:dataSet}).exec(function (err, modelTracks){
       if (err) {
         sails.log.error('modelTracks, failed to read');
         return;   // failed
@@ -270,7 +270,7 @@ function syncTracks2() {
       
       if (toDel.length) {
         sails.log.debug("ids to delete",toDel);
-        JbTrack.destroy({dataSet:dataSet,id: toDel}).exec(function (err){
+        Track.destroy({dataSet:dataSet,id: toDel}).exec(function (err){
           if (err) {
               sails.log.error("tracks delete failed:",toDel);
           }
@@ -286,7 +286,7 @@ function syncTracks2() {
         //sails.log('fTracks[i]',i,fTracks[i])
         if (typeof mTracks[k] === 'undefined') {
             // create model record
-            JbTrack.create({
+            Track.create({
                     dataSet: dataSet,
                     lkey: fTracks[k].label,
                     trackData: fTracks[k]
@@ -303,7 +303,7 @@ function syncTracks2() {
         else {
             if (JSON.stringify(mTracks[k].trackData) != JSON.stringify(fTracks[k])) {
                 //update model record
-                JbTrack.update({dataSet:dataSet,lkey:k},{trackData:fTracks[k]}).exec(function afterwards(err, item){
+                Track.update({dataSet:dataSet,lkey:k},{trackData:fTracks[k]}).exec(function afterwards(err, item){
                   if (err) {
                     sails.log.error("track update failed:",item[0].id,item[0].lkey);
                   }
