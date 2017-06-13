@@ -97,7 +97,7 @@ function syncDatasets() {
                     if (err) {
                         return ('dataset delete failed',err);
                     }
-                    Dataset.publishDestroy(modelItemsp[j]);
+                    Dataset.publishDestroy(modelItems[j]);
                 });
             }
         }
