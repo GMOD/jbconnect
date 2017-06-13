@@ -12,9 +12,9 @@ module.exports = function trackWatchHook(sails) {
         initialize: function(cb) {
             sails.log.debug("Hook: trackwatch initialize");
             
-            setTimeout(function(){
-                syncTracks();
-            },1000);
+            //setTimeout(function(){
+            //    syncTracks();
+            //},1000);
             
             return cb();
         },
@@ -142,13 +142,13 @@ function saveTracks(dataSet) {
  * @param {type} next
  * @returns {addTrackJson.indexAnonym$8}
  */
-function syncTracks() {
+function xsyncTracks() {
     var g = sails.config.globals.jbrowse;
     
     // todo: handle trackList.json open error / not found
     var trackListPath = g.jbrowsePath + g.dataSet[0].dataPath + 'trackList.json';
     var dataSet = g.dataSet[0].dataPath;
-    sails.log.debug('syncTracks()');
+    sails.log.debug('syncTracks() xx');
     var mTracks = {};
     var fTracks = {};
 
@@ -232,7 +232,7 @@ function syncTracks() {
         });
     
 }
-function syncTracks2() {
+function xsyncTracks2() {
     
     var g = sails.config.globals.jbrowse;
     var trackListPath = g.jbrowsePath + g.dataSet[0].dataPath + 'trackList.json';
