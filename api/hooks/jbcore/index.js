@@ -41,23 +41,14 @@ module.exports = function (sails) {
         initialize: function(cb) {
             sails.log("Hook: jbcore initialize"); 
 
-            // sets up event handling for kue job events
-            kueJobMon.start();
-/*
-            sails.on('hook:orm:loaded', function() {
-
-                sails.log("sails.on 1");
-                //Track.startMonitor();
-                
-                return cb();
-
-            });
-*/
             sails.on('lifted', function() {
                 sails.log("sails lifted");
+                
                 Dataset.initialize(function() {
                     //Track.startMonitor(); 
                 });
+                
+                Job.start();
             });
             
             return cb();
