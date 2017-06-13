@@ -43,17 +43,24 @@ module.exports = function (sails) {
 
             // sets up event handling for kue job events
             kueJobMon.start();
-
+/*
             sails.on('hook:orm:loaded', function() {
 
-                //console.log(JbGlobal,JbTrack);
-                //storeGlobals();
-                
-                //JbUtils.testFunction("called from jbcore.initialize()");
+                sails.log("sails.on 1");
+                //Track.startMonitor();
                 
                 return cb();
 
             });
+*/
+            sails.on('lifted', function() {
+                sails.log("sails lifted");
+                Dataset.initialize(function() {
+                    //Track.startMonitor(); 
+                });
+            });
+            
+            return cb();
         },
         routes: {
             before: {
