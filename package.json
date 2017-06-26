@@ -28,7 +28,7 @@
     "grunt-sails-linker": "~0.10.1",
     "grunt-sync": "0.6.2",
     "include-all": "~0.1.6",
-    "jquery": "^3.2.1",    
+    "jquery": "^3.2.1",
     "jquery-ui-dist": "^1.12.1",
     "jsdom": "^9.8.3",
     "kue": "^0.11.5",
@@ -51,10 +51,17 @@
     "socket.io-redis": "^1.1.1",
     "validator": "^6.2.1"
   },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "selenium-webdriver": "^3.4.0",
+    "supertest": "^3.0.0"
+  },
   "scripts": {
     "setup": "node ./bin/postsetup.js",
     "debug": "node debug app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js"
   },
   "main": "app.js",
   "repository": {
