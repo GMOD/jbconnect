@@ -61,3 +61,4 @@ process.chdir(__dirname);
     sails.lift(rc('sails'));
     
 //})();
+});
