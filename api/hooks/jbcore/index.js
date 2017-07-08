@@ -44,9 +44,9 @@ module.exports = function (sails) {
             sails.on('lifted', function() {
                 sails.log("sails lifted");
                 
-                Dataset.initialize(function() {
+                //Dataset.initialize(function() {
                     //Track.startMonitor(); 
-                });
+                //});
                 
                 Job.start();
             });
