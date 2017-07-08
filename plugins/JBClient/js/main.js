@@ -63,6 +63,8 @@ return declare( JBrowsePlugin,
                 txt +=    '</div>';
             }
         $( "body" ).append( "<div class='jb-loginbox'>"+txt+"</div>" );
+        $( "body" ).append('<div class="jb-share" title="Share"></div>');
+
         });
         /*
          * class override function intercepts

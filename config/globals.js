@@ -21,7 +21,7 @@ var g = {
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
         dataSet: [
             {
-                dataPath: "sample_data/json/volvox/"
+                dataPath: "sample_data/json/volvox"
             }
         ]
     }

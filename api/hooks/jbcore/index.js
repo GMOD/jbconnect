@@ -41,19 +41,17 @@ module.exports = function (sails) {
         initialize: function(cb) {
             sails.log("Hook: jbcore initialize"); 
 
-            // sets up event handling for kue job events
-            kueJobMon.start();
-
-            sails.on('hook:orm:loaded', function() {
-
-                //console.log(JbGlobal,JbTrack);
-                storeGlobals();
+            sails.on('lifted', function() {
+                sails.log("sails lifted");
                 
-                //JbUtils.testFunction("called from jbcore.initialize()");
+                Dataset.initialize(function() {
+                    //Track.startMonitor(); 
+                });
                 
-                return cb();
-
+                Job.start();
             });
+            
+            return cb();
         },
         routes: {
             before: {
@@ -89,9 +87,11 @@ module.exports = function (sails) {
         /**
          * 
          */
+        /*
         setGlobalSection: function(data,name,cb) {
             return storeInSection(data,name,cb);
         },
+        */
         /*
          * intercept res.send for debugging
          * @param {type} res
@@ -120,6 +120,7 @@ module.exports = function (sails) {
  * Stores globals found in config/globals.js into the global JbGlobal model
  * @returns {undefined}
  */
+/*
 function storeGlobals () {
     
     var gStr = JSON.stringify(sails.config.globals.jbrowse,null,4);
@@ -152,12 +153,14 @@ function storeGlobals () {
     });
     
 }
+*/
 /**
  * Store section data in globals 
  * @param {type} sectionData
  * @param {type} sectionName
  * @returns 0 if successful; 1 if failed
  */
+/*
 function storeInSection (data,name,cb) {
 
     JbGlobal.findOne({'id':1}).exec(function (err, record) {
@@ -207,3 +210,4 @@ function storeInSection (data,name,cb) {
     return 0; // success
 
 }
+*/

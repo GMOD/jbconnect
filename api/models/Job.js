@@ -1,5 +1,23 @@
+/**
+ * Job.js
+ *
+ * @description :: TODO: You might write a short summary of how this model works and what it represents here.
+ * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
+ */
 
 module.exports = {
+
+    attributes: {
+        id: {
+            type: 'integer',
+            autoIncrement: false,
+            unique: true,
+            primaryKey: true
+        }
+    },
+    initialize: function() {
+        
+    },
     start: function() {
         sails.log.info('kue job monitor starting');
         var thisB = this;
@@ -15,9 +33,9 @@ module.exports = {
         var lastActiveCount = -1;
         var n = 1000000;
 
-        // notify if detect active galaxy-workflow-watch count changed
+        // notify if detect active workflow count changed
         setInterval(function() {
-            g.kue.Job.rangeByType('galaxy-workflow-watch', 'active', 0 , n, 'asc', function(err, kJobs) {
+            g.kue.Job.rangeByType('workflow', 'active', 0 , n, 'asc', function(err, kJobs) {
 
                 // report changes in active count
                 if (kJobs.length !== lastActiveCount) {
@@ -125,8 +143,9 @@ module.exports = {
         },2000);
         
     }
+    
+};
+
+function syncJobs() {
+    
 }
-
-
-
-
