@@ -1,17 +1,28 @@
 var nightwatch = require('nightwatch');
 
-console.log('login.test.js');
+var argv = require('minimist')(process.argv.slice(2));
+var nightwatchTest = argv['nightwatch-test'];
+if (typeof nightwatchTest === 'undefined') nightwatchTest = 'default';
+
+var nightwatchConf = require('../nightwatch.conf.js');
+var nw_conf = Object.assign(
+    nightwatchConf.test_settings[nightwatchTest]
+);
+var client = nightwatch.initClient(nw_conf);
+
+var browser = client.api();
+console.log('login.test.js','nightwatchTest',nightwatchTest);
 
 describe('JBlast Login', function() {
-
+/*
     var nightwatchConf = require('../nightwatch.conf.js');
     var nw_conf = Object.assign(
-        //nightwatchConf.test_settings.default
-        nightwatchConf.test_settings.phantomjs
+        nightwatchConf.test_settings[nightwatchTest]
     );
     var client = nightwatch.initClient(nw_conf);
 
     var browser = client.api();
+*/
 //    browser.globals = require('../browserGlobals.js');
     
     this.timeout(99999999);

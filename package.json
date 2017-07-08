@@ -7,11 +7,8 @@
     "setup": "node ./bin/postsetup.js",
     "debug": "node debug app.js",
     "start": "node app.js",
-    "xxxtest": "node ./node_modules/nightwatch/bin/nightwatch -c ./test/nightwatch.json ./test/google.test.js",
-    "xxxtest": "node ./node_modules/nightwatch/bin/nightwatch -c ./test/nightwatch.json ./test/google.test.js --env phantomjs",
-    "xxxtest": "node ./node_modules/nightwatch/bin/nightwatch ./test/nightwatch.json ./test/**/*.test.js",
-    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js",
-    "xxxtest": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js"
+    "xxxtest": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js",
+    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test phantomjs"
   },
   "dependencies": {
     "bcryptjs": "^2.4.0",
@@ -64,6 +61,7 @@
   "devDependencies": {
     "chai": "^4.0.2",
     "chromedriver": "^2.30.1",
+    "minimist": "^1.2.0",
     "mocha": "^3.4.2",
     "nightwatch": "^0.9.16",
     "phantomjs-prebuilt": "^2.1.14",
