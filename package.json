@@ -52,7 +52,6 @@
     "redis": "^2.6.3",
     "redis-server": "0.0.3",
     "request-promise": "^4.1.1",
-    "sails": "^0.12.13",
     "sails-disk": "~0.10.9",
     "sails.io.js": "github:balderdashy/sails.io.js#v1.1.4",
     "shelljs": "^0.7.8",
