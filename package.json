@@ -8,7 +8,7 @@
     "debug": "node debug app.js",
     "start": "node app.js",
     "xxxtest": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js",
-    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test phantomjs"
+    "test": "nyc node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test default"
   },
   "dependencies": {
     "async": "^2.5.0",
@@ -52,6 +52,7 @@
     "redis": "^2.6.3",
     "redis-server": "0.0.3",
     "request-promise": "^4.1.1",
+    "sails": "^0.12.13",
     "sails-disk": "~0.10.9",
     "sails.io.js": "github:balderdashy/sails.io.js#v1.1.4",
     "shelljs": "^0.7.8",
@@ -64,6 +65,7 @@
     "minimist": "^1.2.0",
     "mocha": "^3.4.2",
     "nightwatch": "^0.9.16",
+    "nyc": "^11.0.3",
     "phantomjs-prebuilt": "^2.1.14",
     "selenium-webdriver": "^3.4.0",
     "supertest": "^3.0.0"
