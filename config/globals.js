@@ -13,11 +13,13 @@
 
 var merge = require('deepmerge');
 
+var jbPath = process.cwd() + "/node_modules/jbrowse/";
+
 var g = {
     
     jbrowse: {
         jbrowseRest: "http://localhost:1337",
-        jbrowsePath: "/var/www/html/jbrowse/",
+        jbrowsePath: jbPath,                        // or "/var/www/jbrowse/"
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
         dataSet: [
             {
