@@ -13,6 +13,7 @@
   "dependencies": {
     "async": "^2.5.0",
     "bcryptjs": "^2.4.0",
+    "blastjs": "enuggetry/blastjs",
     "bluebird": "^3.4.6",
     "bootstrap": "^3.3.7",
     "compression": "^1.6.2",
