@@ -28,7 +28,11 @@ module.exports.http = {
         
         //sails.log('>>> globals',g);
         
+        // main JBrowse application route
         app.use('/'+routePrefix, express.static(jbrowsePath));
+        
+        // documentation route
+        app.use('/docs',express.static('./out'));
         
         jbRouteUtil.addPluginRoutes({app:app,express:express});
         jbRouteUtil.addLibRoutes({app:app,express:express});
