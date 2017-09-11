@@ -1,4 +1,4 @@
-/**
+/*
  * Passport configuration
  *
  * This is the configuration for your Passport.js setup and where you

@@ -1,4 +1,6 @@
-/* 
+/**
+ * @module hooks/jbcore
+ * @description
  * publish globals in a well known location
  */
 var fs = require("fs");

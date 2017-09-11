@@ -1,4 +1,7 @@
 /**
+ * @module
+ * 
+ * @description
  * Authentication Controller
  *
  * This is merely meant as an example of how your Authentication controller

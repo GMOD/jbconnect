@@ -1,5 +1,6 @@
-/*
- * isAdmin policy 
+/**
+ * @module
+ * @description isAdmin policy 
  */
 module.exports = function isAdmin(req, res, next) {
   //var targetFolderId = req.param('id');

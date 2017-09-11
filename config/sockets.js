@@ -1,4 +1,4 @@
-/**
+/*
  * WebSocket Server Settings
  * (sails.config.sockets)
  *

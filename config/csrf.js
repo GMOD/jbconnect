@@ -1,4 +1,6 @@
 /**
+ * @ignore
+ * @description
  * Cross-Site Request Forgery Protection Settings
  * (sails.config.csrf)
  *

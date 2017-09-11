@@ -2,6 +2,9 @@ var validator = require('validator');
 var crypto    = require('crypto');
 
 /**
+ * @module
+ * @ignore
+ * @description
  * Local Authentication Protocol
  *
  * The most widely used way for websites to authenticate users is via a username

@@ -1,4 +1,6 @@
 /**
+ * @ignore
+ * @description
  * Connections
  * (sails.config.connections)
  *

@@ -1,4 +1,4 @@
-/**
+/*
  * View Engine Configuration
  * (sails.config.views)
  *

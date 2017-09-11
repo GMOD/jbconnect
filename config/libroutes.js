@@ -1,4 +1,6 @@
-/* 
+/**
+ * @global
+ * @description
  * libroutes is a jbserver framework.
  * libroutes maps dependancy routes for client-side access.
  * The framework also looks for libroutes.js in jbh- (hook modules), in their respective config directories

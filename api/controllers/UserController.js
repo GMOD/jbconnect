@@ -1,7 +1,10 @@
 /**
+ * @module
+ * @ignore
+ * @description
  * UserController
  *
- * @description :: Server-side logic for managing users
+ * Server-side logic for managing users
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 

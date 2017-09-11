@@ -1,7 +1,6 @@
 /**
- * Dataset.js
+ * @module
  *
- * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
 
@@ -26,11 +25,8 @@ module.exports = {
 /**
  * sync globals globals.jbrowse.dataSet with Dataset model database
  * 
- * ref: http://sailsjs.com/documentation/reference/web-sockets/resourceful-pub-sub
+ * @see http://sailsjs.com/documentation/reference/web-sockets/resourceful-pub-sub
  * 
- * @param {type} req
- * @param {type} res
- * @param {type} next
  * @returns {addTrackJson.indexAnonym$8}
  */
 function syncDatasets() {

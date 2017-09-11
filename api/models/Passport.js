@@ -1,3 +1,7 @@
+/**
+ * @module
+ * 
+ */
 var bcrypt = require('bcryptjs');
 
 /**

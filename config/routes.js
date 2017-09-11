@@ -1,4 +1,5 @@
 /**
+ * @description
  * Route Mappings
  * (sails.config.routes)
  *

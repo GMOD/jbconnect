@@ -1,4 +1,5 @@
 /**
+ * @description
  * Policy Mappings
  * (sails.config.policies)
  *

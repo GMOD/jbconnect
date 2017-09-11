@@ -1,3 +1,12 @@
+/**
+ * @module
+ * 
+ * @description 
+ * This module provides functions to inject plugin routes and library routes
+ * that are accessible by the client side.
+ * 
+ * 
+ */
 var fs = require('fs');
 var glob = require('glob');
 var merge = require('merge');
@@ -42,7 +51,9 @@ module.exports = {
             }
         }
     },    
- 
+    /**
+     * Add library routes 
+     */
     addLibRoutes: function(params) {
         var g = sails.config.globals.jbrowse;
         var libRoutes = sails.config.globals.libroutes;
@@ -77,6 +88,15 @@ module.exports = {
         }
 
     },
+    /**
+     * Add a route
+     * 
+     * @param {type} params
+     * @param {type} module
+     * @param {type} route
+     * @param {type} target
+     * @returns {undefined}
+     */
     addRoute: function(params,module,route,target) {
         var app = params.app;
         var express = params.express;
