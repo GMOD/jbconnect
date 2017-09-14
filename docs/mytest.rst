@@ -1,5 +1,5 @@
 Module: ``BIG A``
-====================================
+=================
 
 
 .. contents:: Local Navigation
@@ -57,7 +57,7 @@ Member: ``redirectTo``:
 
 
 Module: ``BIG B``
-=================================
+=================
 
 
 .. contents:: Local Navigation
