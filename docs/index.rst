@@ -30,3 +30,9 @@ Contents
    module-api_services_passport
    module-api_services_protocols_local
    
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
