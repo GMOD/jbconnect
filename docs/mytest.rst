@@ -6,14 +6,14 @@ Module: ``BIG A``
    :local:
 
 Children
-========
+--------
 
 .. toctree::
    :maxdepth: 1
    
    
 Description
-===========
+-----------
 
 Authentication Controller
 
@@ -64,14 +64,14 @@ Module: ``BIG B``
    :local:
 
 Children
-========
+--------
 
 .. toctree::
    :maxdepth: 1
    
    
 Description
-===========
+-----------
 
 
 
@@ -80,7 +80,7 @@ Description
 
 
 Function: ``initialize``
-========================
+------------------------
 
 
 
@@ -92,7 +92,7 @@ Function: ``initialize``
 
 
 Function: ``syncDatasets``
-==========================
+--------------------------
 
 sync globals globals.jbrowse.dataSet with Dataset model database
 
