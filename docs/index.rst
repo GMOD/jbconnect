@@ -9,7 +9,7 @@ Contents
 
 .. toctree::
    :maxdepth: 1
-   
+   :caption: API
    mytest
    module-controllers_AuthController
    module-controllers_DatasetController
