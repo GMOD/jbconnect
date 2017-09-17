@@ -14,6 +14,10 @@ var ignore = ['conf.py','index.rst','readme.md'];
 if (fs.existsSync(outfile))
     fs.unlinkSync(outfile);
 
+// main title
+fs.appendFileSync(outfile,'***\nAPI\n***\n\n');
+
+
 fs.readdirSync(dirpath).forEach(file => {
 
     if (ignore.indexOf(file) == -1) {  // if file is not in ignore list
