@@ -38,7 +38,8 @@ module.exports.http = {
         app.use('/'+routePrefix, express.static(jbrowsePath));
         
         // documentation route
-        app.use('/docs',express.static('./docs'));
+        app.use('/docs',express.static('./docs/html'));
+        app.use('/docs2',express.static('./docs/docs/build/html'));
         
         jbRouteUtil.addPluginRoutes({app:app,express:express});
         jbRouteUtil.addLibRoutes({app:app,express:express});
