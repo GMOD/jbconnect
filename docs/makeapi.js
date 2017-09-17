@@ -14,6 +14,8 @@ var ignore = ['conf.py','index.rst','readme.md'];
 if (fs.existsSync(outfile))
     fs.unlinkSync(outfile);
 
+console.log('generating api.rst');
+
 // main title
 fs.appendFileSync(outfile,'***\nAPI\n***\n\n');
 
