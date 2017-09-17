@@ -8,8 +8,8 @@
     "debug": "node debug app.js",
     "start": "node app.js",
     "postinstall": "node ./bin/postinstall.js",
-    "xxxtest": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js",
-    "test": "nyc node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test phantomjs"
+    "test": "nyc node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test phantomjs",
+    "gendocs": "./node_modules/jsdoc/jsdoc.js -t node_modules/jsdoc-sphinx/template/ -d ./docs/genapi-rst ./api/**/*.js"
   },
   "dependencies": {
     "async": "^2.5.0",
@@ -38,8 +38,8 @@
     "grunt-sails-linker": "~0.10.1",
     "grunt-sync": "0.6.2",
     "include-all": "~0.1.6",
-    "jbrowse": "github:gmod/jbrowse#npm_install",
     "jbh-jblast": "0.0.243",
+    "jbrowse": "github:gmod/jbrowse#npm_install",
     "jquery": "^3.2.1",
     "jquery-ui-dist": "^1.12.1",
     "jsdom": "^9.8.3",
@@ -55,6 +55,7 @@
     "rc": "1.1.6",
     "redis": "^2.6.3",
     "redis-server": "0.0.3",
+    "replaceall": "^0.1.6",
     "request-promise": "^4.1.1",
     "sails": "^0.12.13",
     "sails-disk": "~0.10.9",
