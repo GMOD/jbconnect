@@ -10,9 +10,9 @@ Install
 
 or
 
-`git clone http://github.com/gmod/jbserver`
+``git clone http://github.com/gmod/jbserver``
 
-npm install
+``npm install``
 
 
 Setup
