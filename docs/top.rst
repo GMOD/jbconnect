@@ -34,9 +34,6 @@ Install optional jbh- hooks
 Setup
 =====
 
-Config File
------------
-
 Modify the configuration file as necessary.
 
 To view aggregate configuration: ``./jbutil --config``
@@ -52,11 +49,16 @@ Run
 
 ``sails lift``
 
+From a web browser, access the application
+
+``http://localhost:1337/jbrowse``
 
 Production Deployment
 ==========
 
-todo: production deployment
+.. todo:: 
+
+production deployment
 
 
 Test
