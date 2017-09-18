@@ -8,6 +8,6 @@ Contents
    :caption: API
 
    top
+   features
    hooks
-   architecture
    api
