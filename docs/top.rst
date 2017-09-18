@@ -6,7 +6,7 @@ JBServer - JBrowse (Optional) Server Module
 Install
 =======
 
-`npm install JBserver`
+``npm install JBserver``
 
 or
 
