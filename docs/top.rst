@@ -1,7 +1,8 @@
-*******************************************
-JBServer - JBrowse (Optional) Server Module
-*******************************************
+********
+JBServer 
+********
 
+JBrowse (Optional) Server Module
 
 Install
 =======
