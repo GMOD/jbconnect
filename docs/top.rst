@@ -15,11 +15,11 @@ ref: kue
 Install
 =======
 
+::
 
-``
-git clone http://github.com/gmod/jbserver
-npm install
-``
+    git clone http://github.com/gmod/jbserver
+    npm install
+
 
 Install JBrowse (Optional)
 --------------------------
