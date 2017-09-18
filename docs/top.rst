@@ -1,6 +1,6 @@
-********
-JBServer 
-********
+********************
+JBServer Quick Start
+********************
 
 JBServer is an optional analysis server framework for JBrowse (it does not contain JBrowse).
 JBServer is a sails.js application and provides a job execution engine (kue).  
