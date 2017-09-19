@@ -1,6 +1,8 @@
-***************************************************
-JBServer - an optional server framework for JBrowse
-***************************************************
+********
+JBServer
+********
+
+**an optional server framework for JBrowse**
 
 JBServer is an optional analysis server framework for JBrowse (it does not contain JBrowse).
 JBServer is a 
