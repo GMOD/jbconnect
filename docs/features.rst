@@ -42,7 +42,7 @@ Directory Layout
     ├── docs                            Documentation
     │   └── genapi-rst                  jsdoc generated rst files
     ├── plugins                         Client-side Plugins
-    │   ├── JBClient                    Client plugin             
+    │   └── JBClient                    Client plugin             
     ├── test                            Test
     ├── views                           View pages
     ├── Gruntfile.js          
@@ -55,13 +55,42 @@ Queue
 JBServer uses *Kue* as the queue framework.  Since Kue requires *redis* database, 
 the redis server must be running.
 
+Configuration
+=============
+
 Login / Logout
 ==============
 
-.. image:: img/login.jpg
+Stand-alone
+-----------
 
 .. image:: img/register.jpg
 
+.. image:: img/login.jpg
+
+Integrated
+----------
+
+To enable integrated login/logout interfaces within the JBrowse app, modify the dataset's 
+``trackList.json``, adding ``JBClient`` plugin to the configuration.
+
+*Note: the JBClient plugin is not physically in the JBrowse plugin directory.
+It is available as a route.*
+
+::
+
+  "plugins": [
+    "JBClient",                    <-----
+    "NeatHTMLFeatures",
+    "NeatCanvasFeatures",
+    "HideTrackLabels"
+  ],
+
+This makes the login panel available in JBrowse.
+
+Login Panel
+.. image:: img/login-integrated.jpg
+
+Loguot Panel
 .. image:: img/logout-integrated.jpg
 
-.. image:: img/login-integrated.jpg
