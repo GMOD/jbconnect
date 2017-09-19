@@ -131,7 +131,8 @@ Test framework uses
 * Istanbul for coverage
 
 To execute
-npm test
+
+``npm test``
 
 by default nightwatch is setup for phantomjs.
 Selenium requires running an additional selenium server

@@ -1,29 +1,19 @@
 ***********
 Quick Start
 ***********
-
-JBServer is an optional analysis server framework for JBrowse (it does not contain JBrowse).
-JBServer is a 
-`sails.js <http://sailsjs.com/>`_ application and provides a job execution engine 
-(`kue <https://www.npmjs.com/package/kue>`_).  
-It can be extended with special 
-`installable hooks <http://sailsjs.com/documentation/concepts/extending-sails/hooks/installable-hooks>`_ 
-modules (jbh-*) that can extend both the server end and inject client plugins to 
-JBrowse in a single package.  
  
 Pre-Install
 ===========
 
-JBServer requires `redis <https://redis.io/>`_.
+JBServer requires `redis <https://redis.io/>`_, which is used by the queue framework 
+(`kue <https://www.npmjs.com/package/kue>`_).
 
-Install and run `redis <https://redis.io/>`_, which is used by the queue framework.
-(`kue <https://www.npmjs.com/package/kue>`_)
+Install and run *redis*
 
 :: 
 
     yum install redis
     redis-server
-
 
 Install
 =======
@@ -39,9 +29,6 @@ Install the JBServer application.
     npm install jbrowse or npm install gmod/jbrowse
     ./jb_setup.js
 
-
-
-
 Run
 ===
 
@@ -52,14 +39,23 @@ From a web browser, access the application
 
 ``http://localhost:1337/jbrowse``
 
-Test
-====
-
-``npm test``
 
 
-Setup
-=====
+
+**************
+Advanced Setup
+**************
+
+JBrowse Install In Separate Directory 
+=====================================
+
+If JBrowse is already installed in another directory, use this command to specify
+the JBrowse directory.
+
+``todo: ./jbutil ...``
+
+Manual Configuration
+====================
 
 Modify the configuration file as necessary.
 
@@ -85,26 +81,9 @@ Edit config file: ``nano config/globals.js``
 
 
 
-Install JBrowse (Optional)
---------------------------
 
-If JBrowse is already installed in another directory, use this command to specify
-the JBrowse directory.
-
-``todo: ./jbutil ...``
-
-JBrowse can also be installed as a module:
-
-``npm install jbrowse`` or ``npm install gmod/jbrowse``
-
-By default, JBrowse is not installed with the demo app.  To install the demo app,
-run this from either the JBServer directory or the JBrowse installation directory.
-
-``./jb_setup.js``
-
-
-Install optional jbh- hooks
----------------------------
+Install Optional JBServer Hooks
+===============================
 
 ``npm install jbh-<hook name>`` (i.e. jbh-jblast)
 
