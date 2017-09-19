@@ -36,16 +36,19 @@ Directory Layout
     ├── api                             Standard sails API layout
     ├── assets                          contains client accessible assets
     ├── bin                             Utilities
-    ├── config                          Sails configuration files.
+    ├── config                          Configuration files.
     │   ├── globals.js                  Config file for module
     │   └── libroutes.js                Library Routes
+    ├── data                            Contains the local database file
+    │   └── localDiskDb.db              Local database file
     ├── docs                            Documentation
     │   └── genapi-rst                  jsdoc generated rst files
     ├── plugins                         Client-side Plugins
     │   └── JBClient                    Client plugin             
     ├── test                            Test
     ├── views                           View pages
-    ├── Gruntfile.js          
+    ├── Gruntfile.js                    Grunt config
+    ├── jbutil                          JBServer Utility
     └── package.json
 
 
@@ -77,6 +80,32 @@ JBrowse configurations are in ``config/globals.js``
             }
         ]
     }
+
+
+
+Library Routes
+==============
+
+libroutes maps dependancy routes for client-side access.
+These are routes to modules that are required for use by the client-side 
+plugins or other client-side code.
+The framework looks for libroutes.js in jbh- (hook modules), in their respective config directories
+
+For example: for the module jquery,
+The module is installed with 'npm install jquery'
+The mapping the mapping 'jquery': '/jblib/jquery'
+makes the jquery directory accessible as /jblib/jquery from the client side.
+
+libroutes.js
+::
+
+    module.exports = {
+        lib: {
+                'jquery.mb.extruder':       '/jblib/mb.extruder',
+                'jQuery-ui-Slider-Pips':    '/jblib/slider-pips',
+                'jquery-ui-dist':           '/jblib/jquery-ui'
+        }
+    };
 
 
 

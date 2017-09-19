@@ -2,22 +2,24 @@
 Advanced Setup
 **************
 
-JBrowse Install In Separate Directory 
-=====================================
+JBrowse Installed In Separate Directory 
+=======================================
 
 If JBrowse is already installed in another directory, use this command to specify
-the JBrowse directory.
+the JBrowse directory after JBServer is installed.
 
-``todo: ./jbutil ...``
+``todo: ./jbutil --jbpath <path where JBrowse is installed>``
 
-Manual Configuration
-====================
+
+
+Manual Configuration (globals.js)
+=================================
 
 Modify the configuration file as necessary.
 
 To view aggregate configuration: ``./jbutil --config``
 
-The aggregate config file is the merged config of JBServer and it's install jbh- (hook)
+The aggregate config file is the merged config of JBServer and its installed jbh- (hook)
 modules.
 
 Edit config file: ``nano config/globals.js``
@@ -30,7 +32,7 @@ Edit config file: ``nano config/globals.js``
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
         dataSet: [
             {
-                dataPath: "sample_data/json/volvox" // registered datasets.  
+                dataPath: "sample_data/json/volvox" // datasets.  
             }
         ]
     }
@@ -38,8 +40,10 @@ Edit config file: ``nano config/globals.js``
 
 
 
-Install Optional JBServer Hooks
-===============================
+Installing JBServer Hooks
+=========================
+
+
 
 ``npm install jbh-<hook name>`` (i.e. jbh-jblast)
 

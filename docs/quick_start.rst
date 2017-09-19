@@ -1,11 +1,17 @@
 ***********
 Quick Start
 ***********
+
+The quick start instructions demonstrate installing JBServer with JBrowse
+loaded as a an NPM module (since JBServer is generally intended to be a companion of JBrowse.  
+JBrowse may also be installed in a separate directory.
+(Please refer to `Advanced Setup`_.)
+
  
 Pre-Install
 ===========
 
-JBServer requires `redis <https://redis.io/>`_, which is used by the queue framework 
+JBServer requires `redis <https://redis.io/>`_ as a pre-requisite, which is only used by the queue framework 
 (`kue <https://www.npmjs.com/package/kue>`_).
 
 Install and run *redis*
@@ -18,7 +24,7 @@ Install and run *redis*
 Install
 =======
 
-Install the JBServer application.
+Install the JBServer and JBrowse.  jb_setup.js ensures the sample data is loaded.
 
 ::
 
@@ -32,10 +38,11 @@ Install the JBServer application.
 Run
 ===
 
+Launch the server.
 
 ``sails lift``
 
-From a web browser, access the application
+From a web browser, access the application.
 
 ``http://localhost:1337/jbrowse``
 
