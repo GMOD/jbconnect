@@ -1,6 +1,6 @@
-********************
-JBServer Quick Start
-********************
+***********
+Quick Start
+***********
 
 JBServer is an optional analysis server framework for JBrowse (it does not contain JBrowse).
 JBServer is a 
@@ -14,14 +14,15 @@ JBrowse in a single package.
 Pre-Install
 ===========
 
-Install `redis` database, which is used by the queue framework.
+JBServer requires `redis <https://redis.io/>`_.
+
+Install and run `redis <https://redis.io/>`_, which is used by the queue framework.
 (`kue <https://www.npmjs.com/package/kue>`_)
 
-``yum install redis``
+:: 
 
-Starting redis
-
-``redis-server``
+    yum install redis
+    redis-server
 
 
 Install
@@ -34,6 +35,54 @@ Install the JBServer application.
     git clone http://github.com/gmod/jbserver
     cd jbserver
     npm install
+    npm install jbrowse
+    npm install jbrowse or npm install gmod/jbrowse
+    ./jb_setup.js
+
+
+
+
+Run
+===
+
+
+``sails lift``
+
+From a web browser, access the application
+
+``http://localhost:1337/jbrowse``
+
+Test
+====
+
+``npm test``
+
+
+Setup
+=====
+
+Modify the configuration file as necessary.
+
+To view aggregate configuration: ``./jbutil --config``
+
+The aggregate config file is the merged config of JBServer and it's install jbh- (hook)
+modules.
+
+Edit config file: ``nano config/globals.js``
+
+:: 
+
+    jbrowse: {
+        jbrowseRest: "http://localhost:1337",       // path accessible by web browser
+        jbrowsePath: jbPath,                        // or point to jbrowse directory (ie. "/var/www/jbrowse/") 
+        routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
+        dataSet: [
+            {
+                dataPath: "sample_data/json/volvox" // registered datasets.  
+            }
+        ]
+    }
+
 
 
 Install JBrowse (Optional)
@@ -59,46 +108,6 @@ Install optional jbh- hooks
 
 ``npm install jbh-<hook name>`` (i.e. jbh-jblast)
 
-Setup
-=====
-
-Modify the configuration file as necessary.
-
-To view aggregate configuration: ``./jbutil --config``
-
-The aggregate config file is the merged config of JBServer and it's install jbh- (hook)
-modules.
-
-Edit config file: ``nano config/globals.js``
-
-
-Run
-===
-
-``sails lift``
-
-From a web browser, access the application
-
-``http://localhost:1337/jbrowse``
-
-Production Deployment
-=====================
-
-.. todo:: 
-
-production deployment
-
-
-Test
-====
-
-``npm test``
-
-
-Document Generation
-===================
-
-``npm run gendocs``
 
 
 

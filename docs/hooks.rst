@@ -15,7 +15,7 @@ Directory Layout
 This is the standard directory layout of a jbh- module
 ::
 
-    jbh- project
+    jbh- hook project
     ├── api                             Standard Sails modules layout
     │   ├── controllers
     │   ├── hooks
@@ -111,6 +111,7 @@ and services into JBServer.
 ref: marlinspike
 
 ::
+
     jbh- project
     ├── api                             Standard Sails modules layout
         ├── controllers
