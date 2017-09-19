@@ -20,7 +20,8 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   top
+   quick_start
    features
+   advanced_setup
    hooks
    api
