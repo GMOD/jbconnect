@@ -35,7 +35,7 @@ JBrowse in a single package.
 | **Grunt** Customizable asset workflow, LESS, SASS, Stylus                         |
 +-----------------------------------------------------------------------------------+
 
-
+See: features_
 
 Contents
 ========
