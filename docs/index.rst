@@ -35,11 +35,13 @@ JBrowse in a single package.
 | **Grunt** Customizable asset workflow, LESS, SASS, Stylus                         |
 +-----------------------------------------------------------------------------------+
 
-See: features_
+See :ref:`features`
 
-goto: 'Ringo'_
+goto 'Ringo'_
 
-goto: jabba_
+goto jabba_
+
+goto 'Features <features.rst#>'_
 
 Contents
 ========
