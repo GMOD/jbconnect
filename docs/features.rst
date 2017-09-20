@@ -55,12 +55,16 @@ Directory Layout
     └── package.json
 
 
-Queue
-=====
+Job Queue
+=========
 
 JBServer uses *Kue* as the queue framework.  Since Kue requires *redis* database, 
-redis server must be running.
+redis server must be running.  An integrated job panel is available when
+the JBClient plugin is active. (see: :ref:`jbs-jbclient`)
 
+Integrated Job Panel:
+
+.. image:: img/login.jpg
 
 
 jbutil Command
@@ -145,6 +149,9 @@ REST API: ``http://<address>:1337/register``
 REST API: ``http://<address>:1337/login``
 
 .. image:: img/login.jpg
+
+
+.. _jbs-jbclient:
 
 Integrated
 ----------
