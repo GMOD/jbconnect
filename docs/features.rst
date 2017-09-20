@@ -7,7 +7,7 @@ Features
 JBServer is a Sails.js application
 **********************************
 
-JBServer utilizes Sails.js, provideing the following features
+JBServer utilizes Sails.js, provideing the following features:
 
 
 +-------------------------------------------------------------------------------+
@@ -59,11 +59,31 @@ Queue
 =====
 
 JBServer uses *Kue* as the queue framework.  Since Kue requires *redis* database, 
-the redis server must be running.
+redis server must be running.
+
 
 
 jbutil Command
 ==============
+
+``jbutil`` is a setup/configuration utility for JBServer.  jbh-hook can extend
+``jbutil`` command options. (see: :ref:`jbs-hooks-extend`)
+
+This example shows that ``jbh-jblast`` adds a number of commands to ``jbutil``
+
+::
+
+    $ ./jbutil --help
+    Usage: jbutil [OPTION]
+          --config            display merged config
+          --blastdbpath=PATH  (jblast) existing database path
+          --setupworkflows    (jblast) [install|<path>] "install" project wf, or specify .ga file 
+          --setuptools        (jblast) setup jblast tools for galaxy
+          --setupdata         (jblast) setup data and samples
+          --setupindex        (jblast) setup index.html in the jbrowse directory
+          --setuphistory      setup history
+      -h, --help              display this help
+
 
 
 Configuration
