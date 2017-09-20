@@ -1,8 +1,8 @@
-.. _jbh-hooks
+.. _jbh-hooks:
 
-************
-Server Hooks
-************
+**********************
+JBServer (jbh-*) Hooks
+**********************
 
 A 'JBrowse Server Hook' is basically an 
 `installable sails hook <http://sailsjs.com/documentation/concepts/extending-sails/hooks/installable-hooks>`_ 

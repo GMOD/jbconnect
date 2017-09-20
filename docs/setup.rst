@@ -72,6 +72,7 @@ Edit config file: ``nano config/globals.js``
 
 
 
+.. _jbs-hook-setup:
 
 Installing JBServer (jbh-*) Hooks
 =================================
