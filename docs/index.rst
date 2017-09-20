@@ -35,7 +35,7 @@ JBrowse in a single package.
 | **Grunt** Customizable asset workflow, LESS, SASS, Stylus                         |
 +-----------------------------------------------------------------------------------+
 
-See :ref:`features`
+See this :ref:`jbs-features`
 
 goto 'Ringo'_
 
