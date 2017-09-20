@@ -13,6 +13,10 @@ the JBrowse directory after JBServer is installed.
 ``todo: ./jbutil --jbpath <path where JBrowse is installed>``
 
 
+The JBrowse directory can also be configured manually. (See :ref:`jbs-globals-js`)
+ 
+
+
 Configuration Files
 ===================
 
@@ -69,13 +73,29 @@ Edit config file: ``nano config/globals.js``
 
 
 
-Installing JBServer Hooks
-=========================
+Installing JBServer (jbh-*) Hooks
+=================================
+
+A 'JBServer Hook' is basically an *installable sails hook* with specific methods for
+extending JBServer.  JBServer hooks must have the prefix ``jbh-`` prepended to the name.
+For example: jbh-jblast.  When the hook is installed (i.e. ``npm install jbh-jblast``).  JBServer
+will automatically integrate a number of features of the hook directly into JBServer upon ``sails lift``.
+
+The jbh- hook can extend JBServer in the following ways:
+
+* Extend models, controllers, policies and services
+* Integrated client-side JBrowse plugins injection
+* Integrated client-side npm module injection
+* Integrated configuration tool (jbutil)
+* Aggregated configurations
 
 
+Installing a hook:
 
 ``npm install jbh-<hook name>`` (i.e. jbh-jblast)
 
+
+For detailed info on jbh-hooks, see: :ref:`jbs-hooks`
 
 
 

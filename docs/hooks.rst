@@ -1,8 +1,12 @@
+.. _jbh-hooks
+
 ************
 Server Hooks
 ************
 
-A 'JBrowse Server Hook' is basically an installable sails hook with specific methods for
+A 'JBrowse Server Hook' is basically an 
+`installable sails hook <http://sailsjs.com/documentation/concepts/extending-sails/hooks/installable-hooks>`_ 
+with specific methods for
 extending JBServer.  JBServer hooks must have the prefix ``jbh-`` prepended to the name.
 For example: jbh-jblast.  When the hook is installed (i.e. ``npm install jbh-jblast``).  JBServer
 will automatically integrate a number of features of the hook directly into JBServer upon ``sails lift``.
