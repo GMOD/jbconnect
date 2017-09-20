@@ -13,9 +13,36 @@ the JBrowse directory after JBServer is installed.
 ``todo: ./jbutil --jbpath <path where JBrowse is installed>``
 
 
+Configuration Files
+===================
 
-Manual Configuration (globals.js)
-=================================
+A number of configuration files are in the ``./config`` directory.  A few of the
+more important ones (ones that JBSserver touches) are described mentioned in the table below.  
+See `Sails Configuration <http://sailsjs.com/documentation/reference/configuration>`_
+for a better description of all the files.
+
++-------------------------------+----------------------------------------------------------+
+| :ref:`jbs-globals-js`         | global configuration file                                |
++-------------------------------+----------------------------------------------------------+
+| http.js                       | custom middleware and /jbrowse route is setup here.      |
++-------------------------------+----------------------------------------------------------+
+| :ref:`libroutes.js`           | library routes (non-sails)                               |
++-------------------------------+----------------------------------------------------------+
+| passport.js, policies.js      | passport framework and auth policies config              |
++-------------------------------+----------------------------------------------------------+
+| routes.js                     | various route config                                     |
++-------------------------------+----------------------------------------------------------+
+| connections.js                | choice of database - local, mongo, mysql, ...            |
+|                               | (we use local by default.)  The DB file is in the        |
+|                               | ``./data/localDiskDb.db``.                               |
++-------------------------------+----------------------------------------------------------+
+
+
+
+.. _jbs-globals-js
+
+globals.js
+----------
 
 Modify the configuration file as necessary.
 
