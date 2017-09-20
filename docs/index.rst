@@ -7,11 +7,11 @@ JBServer
 JBServer does not contain JBrowse.
 JBServer is a 
 `sails.js <http://sailsjs.com/>`_ application and provides a job execution engine 
-(`kue <https://www.npmjs.com/package/kue>`_).  
-It can be extended with special 
-`installable hooks <http://sailsjs.com/documentation/concepts/extending-sails/hooks/installable-hooks>`_ 
-modules (jbh-*) that can extend both the server end and inject client plugins to 
-JBrowse in a single package.  
+(`kue <https://www.npmjs.com/package/kue>`_).
+  
+JBServer can be extended with  
+*jbh-hook* modules that extend both server and client-ends in a single package.
+(see: :ref:`jbs-hook-install` and :ref:`jbs-hooks`)  
 
 **JBServer provides the following features:**
 
