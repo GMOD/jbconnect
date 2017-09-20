@@ -36,7 +36,11 @@ JBrowse in a single package.
 +-----------------------------------------------------------------------------------+
 
 See: features_
+
+goto: 'Ringo'_
+
 goto: jabba_
+
 Contents
 ========
 
@@ -48,6 +52,10 @@ Contents
    advanced_setup
    hooks
    api
+
+
+Ringo
+=====
 
 .. _jabba:
 
