@@ -35,9 +35,7 @@ JBrowse in a single package.
 | **Grunt** Customizable asset workflow, LESS, SASS, Stylus                         |
 +-----------------------------------------------------------------------------------+
 
-See this :ref:`jbs-features`
 
-goto :ref:`jabba`
 
 Contents
 ========
@@ -50,20 +48,5 @@ Contents
    advanced_setup
    hooks
    api
-
-
-Ringo
-=====
-
-
-
-
-.. _jabba:
-
-This is a test
-
-
-
-
 
 

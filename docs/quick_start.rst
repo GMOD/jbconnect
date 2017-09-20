@@ -5,7 +5,7 @@ Quick Start
 The quick start instructions demonstrate installing JBServer with JBrowse
 loaded as a an NPM module (since JBServer is generally intended to be a companion of JBrowse.  
 JBrowse may also be installed in a separate directory.
-(Please refer to `Advanced Setup`_.)
+(See :ref:`jbs-separate-dir`.)
 
  
 Pre-Install

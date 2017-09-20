@@ -2,6 +2,8 @@
 Advanced Setup
 **************
 
+.. _jbs-separate-dir
+
 JBrowse Installed In Separate Directory 
 =======================================
 
