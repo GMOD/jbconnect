@@ -45,7 +45,7 @@ Contents
 
    quick_start
    features
-   advanced_setup
+   setup
    hooks
    api
 

@@ -1,5 +1,5 @@
 **************
-Advanced Setup
+Setup Options
 **************
 
 .. _jbs-separate-dir:
