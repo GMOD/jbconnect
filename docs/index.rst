@@ -36,7 +36,7 @@ JBrowse in a single package.
 +-----------------------------------------------------------------------------------+
 
 See: features_
-
+goto: jabba_
 Contents
 ========
 
@@ -48,3 +48,7 @@ Contents
    advanced_setup
    hooks
    api
+
+.. _jabba:
+
+This is a test
