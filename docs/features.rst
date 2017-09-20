@@ -147,9 +147,11 @@ It is available as a route.*
 This makes the login panel available in JBrowse.
 
 Login Panel
+
 .. image:: img/login-integrated.jpg
 
 Loguot Panel
+
 .. image:: img/logout-integrated.jpg
 
 
