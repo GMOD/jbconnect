@@ -37,11 +37,7 @@ JBrowse in a single package.
 
 See this :ref:`jbs-features`
 
-goto 'Ringo'_
-
-goto jabba_
-
-goto 'Features <features.rst#>'_
+goto :ref:`jabba`
 
 Contents
 ========
@@ -59,6 +55,15 @@ Contents
 Ringo
 =====
 
+
+
+
 .. _jabba:
 
 This is a test
+
+
+
+
+
+

@@ -2,12 +2,13 @@
 Features
 ********
 
+.. _jbs-features:
+
 JBServer is a Sails.js application
 **********************************
 
 JBServer utilizes Sails.js, provideing the following features
 
-.. _jbs-features:
 
 +-------------------------------------------------------------------------------+
 | **Javascript** (NODE-based)                                                   |
