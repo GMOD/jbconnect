@@ -64,7 +64,7 @@ the JBClient plugin is active. (see: :ref:`jbs-jbclient`)
 
 Integrated Job Panel:
 
-.. image:: img/login.jpg
+.. image:: img/job-panel.jpg
 
 
 jbutil Command
