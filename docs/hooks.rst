@@ -1,4 +1,4 @@
-.. _jbh-hooks:
+.. _jbs-hooks:
 
 **********************
 JBServer (jbh-*) Hooks

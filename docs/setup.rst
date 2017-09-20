@@ -72,10 +72,10 @@ Edit config file: ``nano config/globals.js``
 
 
 
-.. _jbs-hook-setup:
+.. _jbs-hook-install:
 
-Installing JBServer (jbh-*) Hooks
-=================================
+Installing JBServer jbh-hooks
+=============================
 
 A 'JBServer Hook' is basically an *installable sails hook* with specific methods for
 extending JBServer.  JBServer hooks must have the prefix ``jbh-`` prepended to the name.
