@@ -7,6 +7,19 @@
  * Kue uses `redis <https://redis.io/>`_ database.  This model synchronizes the Job database with the redis data
  * through the use of Kue's API.
  *  
+ * Events
+ * 
+ * +----------------------------+
+ * | queue-enqueue              |
+ * | queue-start                |
+ * | queue-failed               |
+ * | queue-failed-attempt       |
+ * | queue-progress             |
+ * | queue-complete             |
+ * | queue-remove               |
+ * | queue-promotion            |
+ * +----------------------------+
+ * 
  * Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
  */
 
@@ -100,23 +113,14 @@ module.exports = {
     },
     /**
      * Sync kue[workflow] with Job model
+     * 
+     * @returns {undefined}
      */
     syncJobs: function() {
         syncJobs();
     },
     /**
      * Send a Job framework event
-     * 
-     * Events:
-     * 
-     * * queue-enqueue
-     * * queue-start
-     * * queue-failed
-     * * queue-failed-attempt
-     * * queue-progress
-     * * queue-complete
-     * * queue-remove
-     * * queue-promotion
      * 
      * @param {type} event
      * @param {type} id

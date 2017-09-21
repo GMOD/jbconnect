@@ -15,6 +15,8 @@ module.exports = {
     /**
      * inject client-side plugins into the clinet plugin directory as routes.
      * handles submodules plugins too.
+     *  
+     * @param (object) params
      * @returns {undefined}
      */
     addPluginRoutes: function(params){
@@ -53,6 +55,8 @@ module.exports = {
     },    
     /**
      * Add library routes 
+     * 
+     * @param (object) params
      */
     addLibRoutes: function(params) {
         var g = sails.config.globals.jbrowse;
@@ -91,10 +95,10 @@ module.exports = {
     /**
      * Add a route
      * 
-     * @param {type} params
-     * @param {type} module
-     * @param {type} route
-     * @param {type} target
+     * @param {object} params
+     * @param {string} module
+     * @param {string} route
+     * @param {string} target
      * @returns {undefined}
      */
     addRoute: function(params,module,route,target) {

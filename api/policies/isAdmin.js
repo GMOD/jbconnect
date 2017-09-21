@@ -1,6 +1,11 @@
 /**
  * @module
- * @description isAdmin policy 
+ * @description
+ * isAdmin policy provides passage if the user contains the property admin: true.
+ *  
+ * @param {Object}   req
+ * @param {Object}   res
+ * @param {Function} next
  */
 module.exports = function isAdmin(req, res, next) {
   //var targetFolderId = req.param('id');
