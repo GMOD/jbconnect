@@ -107,6 +107,19 @@ Job model is an encapsulation of the `Kue <https://automattic.github.io/kue/>`_ 
 Kue uses `redis <https://redis.io/>`_ database.  This model synchronizes the Job database with the redis data
 through the use of Kue's API.
  
+Events
+
++----------------------------+
+| queue-enqueue              |
+| queue-start                |
+| queue-failed               |
+| queue-failed-attempt       |
+| queue-progress             |
+| queue-complete             |
+| queue-remove               |
+| queue-promotion            |
++----------------------------+
+
 Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
 
 
@@ -160,6 +173,7 @@ Sync kue[workflow] with Job model
 .. js:function:: syncJobs()
 
     
+    :return undefined: Sync kue[workflow] with Job model
     
 .. _module-models_Job.processEvent:
 
@@ -169,68 +183,13 @@ Function: ``processEvent``
 
 Send a Job framework event
 
-Events:
-
-* queue-enqueue
-* queue-start
-* queue-failed
-* queue-failed-attempt
-* queue-progress
-* queue-complete
-* queue-remove
-* queue-promotion
-
 .. js:function:: processEvent(event, id, data)
 
     
     :param type event: Send a Job framework event
-    
-    Events:
-    
-    * queue-enqueue
-    * queue-start
-    * queue-failed
-    * queue-failed-attempt
-    * queue-progress
-    * queue-complete
-    * queue-remove
-    * queue-promotion
     :param type id: Send a Job framework event
-    
-    Events:
-    
-    * queue-enqueue
-    * queue-start
-    * queue-failed
-    * queue-failed-attempt
-    * queue-progress
-    * queue-complete
-    * queue-remove
-    * queue-promotion
     :param type data: Send a Job framework event
-    
-    Events:
-    
-    * queue-enqueue
-    * queue-start
-    * queue-failed
-    * queue-failed-attempt
-    * queue-progress
-    * queue-complete
-    * queue-remove
-    * queue-promotion
     :return undefined: Send a Job framework event
-    
-    Events:
-    
-    * queue-enqueue
-    * queue-start
-    * queue-failed
-    * queue-failed-attempt
-    * queue-progress
-    * queue-complete
-    * queue-remove
-    * queue-promotion
     
 .. _module-models_Job.test:
 
