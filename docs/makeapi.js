@@ -51,6 +51,10 @@ function processFile(lines,file) {
     }
     
     console.log("appending --",file);
+
+    // Sphinx horiz line between modules
+    fs.appendFileSync(outfile,'\n.. raw:: html\n\n   <hr style="border-color: black; border-width: 2px;">\n\n');
+    
     for(i in lines) {
         // remove "Children" section
         if (lines[i].indexOf("Children") > -1) {

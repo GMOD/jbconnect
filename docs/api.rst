@@ -2,6 +2,11 @@
 API
 ***
 
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
 Module: ``models/Dataset``
 **************************
 
@@ -53,6 +58,9 @@ Member: ``path``:
 .. _module-models_Dataset.id:
 
 Member: ``id``: 
+
+
+
 
 
 
@@ -273,7 +281,11 @@ Member: ``id``:
 
 
 
-----------
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
 
 Module: ``models/Passport``
 ***************************
@@ -326,6 +338,11 @@ the user, but not the authentication data, to and from the session.
 
 
 
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
 
 Module: ``models/Track``
 ************************
@@ -464,6 +481,11 @@ Member: ``trackData``:
 
 
 
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
 Module: ``models/User``
 ***********************
 
@@ -486,6 +508,11 @@ Member: ``User``:
 
 
 
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
 
 Module: ``policies/bearerAuth``
 *******************************
@@ -516,6 +543,11 @@ Member: ``session``:
 
 
 
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
 Module: ``policies/isAdmin``
 ****************************
 
@@ -542,6 +574,11 @@ Member: ``redirectTo``:
 
 
 
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
 
 Module: ``policies/passport``
 *****************************
@@ -578,6 +615,11 @@ http://passportjs.org/guide/configure/
 
 
 
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
 Module: ``policies/sessionAuth``
 ********************************
 
@@ -597,6 +639,11 @@ Simple policy to allow any authenticated user
 
 
 
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
 
 Module: ``services/jbRouteUtil``
 ********************************
@@ -673,6 +720,11 @@ Member: ``merge``:
 
 
 
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
 
 Module: ``services/passport``
 *****************************
