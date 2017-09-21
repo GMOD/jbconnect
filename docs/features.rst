@@ -79,6 +79,25 @@ This example shows that ``jbh-jblast`` adds a number of commands to ``jbutil``
 
 
 
+.. _jbs-queue-framework:
+
+Queue Framework
+===============
+
+JBServer uses `Kue <https://automattic.github.io/kue/>`_ as the queue framework.  
+Since Kue requires `redis <https://redis.io/>`_ database, 
+redis server must be running.  An integrated job panel is available when
+the JBClient plugin is active. (see: :ref:`jbs-jbclient`)
+
+For diagnostic purposes, a Kue utility can be used to view/manage the Kue database
+content: ``http://localhost:1337/kue``
+
+This route can be disabled with in config/http.js.
+
+
+
+.. _jbs-globals-config:
+
 Configuration
 =============
 
@@ -112,7 +131,8 @@ The module is installed with 'npm install jquery'
 The mapping the mapping 'jquery': '/jblib/jquery'
 makes the jquery directory accessible as /jblib/jquery from the client side.
 
-libroutes.js
+``config/libroutes.js``:
+
 ::
 
     module.exports = {
