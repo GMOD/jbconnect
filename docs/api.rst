@@ -18,7 +18,11 @@ Module: ``models/Dataset``
 Description
 ===========
 
+This is a description
 
++---------------+------------------+
+| dog           | cat              |
++---------------+------------------+
 
 
 .. _module-models_Dataset.initialize:
