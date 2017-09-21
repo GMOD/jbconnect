@@ -58,7 +58,7 @@ Member: ``id``:
 
 .. raw:: html
 
-   <hr>
+   <hr size=10>
 
 Module: ``models/Job``
 **********************
