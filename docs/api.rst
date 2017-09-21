@@ -56,7 +56,9 @@ Member: ``id``:
 
 
 
-.. _models-job: Transition_
+.. raw:: html
+
+   <hr>
 
 Module: ``models/Job``
 **********************
