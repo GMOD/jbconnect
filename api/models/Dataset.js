@@ -1,15 +1,13 @@
 /**
  * @module
  * @description
+ * Dataset is a model that represents the JBrowse dataset.  Generally, this includes
+ * path to the dataset and some of the data contained in trackList.json.
  * 
- * This is a description
- * 
- * +---------------+------------------+
- * | dog           | cat              |
- * +---------------+------------------+
- * 
- * 
- * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
+ * Datasets known to JBServer are defined in config/globals.js
+ * (see: :ref:`jbs-globals-config`)
+ *      
+ * Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
  */
 
 module.exports = {
@@ -24,20 +22,29 @@ module.exports = {
             via: 'id'
         }
     },
+    /**
+     * Initializes datasets as defined in config/globals.js.
+     * (see: :ref:`jbs-globals-config`)
+     * @param {function} cb - callback function 
+     * @returns {undefined}
+     */
     initialize: function(cb) {
         syncDatasets();
+        
+        // todo: need to handle this in callback
         cb();
     }
 };
 
 /**
- * sync globals globals.jbrowse.dataSet with Dataset model database
+ * Sync datasets, defined in globals with database.
  * 
- * @see http://sailsjs.com/documentation/reference/web-sockets/resourceful-pub-sub
+ * todo: need to improve, perhaps use async?
  * 
+ * @param (function) cb - callback function
  * @returns {addTrackJson.indexAnonym$8}
  */
-function syncDatasets() {
+function syncDatasets(cb) {
     sails.log.debug('syncDatasets()');
     var g = sails.config.globals.jbrowse;
     
@@ -54,6 +61,7 @@ function syncDatasets() {
     
     Dataset.find({}, function(err,mItems) {
         if (err) {
+            cb(err);
             return;
         }
         //sails.log('mItems',mItems);
@@ -75,8 +83,9 @@ function syncDatasets() {
             else {    
                 Dataset.create({path:i},function(err, newDataset) {
                     if (err) {
-                        // todo: better error handling
-                        return sails.log(i,'failed to create (it may exists)');
+                        var msg = 'failed to create dataset (it may exists) = path '+i;
+                        cb({result: err, msg: msg});
+                        return sails.log(msg);
                     }
                     //sails.log('dataset create',i);
                     
@@ -99,8 +108,12 @@ function syncDatasets() {
                 //sails.log('deleting dataset',j);
                 Dataset.destroy({id:modelItems[j].id},function(err) {
                     if (err) {
-                        return ('dataset delete failed',err);
+                        var msg = 'dataset delete failed - id='+modelItems[j].id;
+                        var err1 = {result:err,msg:msg};
+                        cb(err1);
+                        return (msg);
                     }
+                    // notify listeners
                     Dataset.publishDestroy(modelItems[j]);
                 });
             }

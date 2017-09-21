@@ -1,8 +1,10 @@
 /**
  * @module
  *
- * @description TODO: You might write a short summary of how this model works and what it represents here.
- * @docs        http://sailsjs.org/documentation/concepts/models-and-orm/models
+ * @description
+ * Track is a model for a list of tracks that are in the ``trackList.json``'s ``[tracks]`` section.
+ * 
+ * Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
  */
 
 var Promise = require("bluebird");
@@ -28,6 +30,10 @@ module.exports = {
         }
 
     },
+    /**
+     * Obsolete
+     * @returns {undefined}
+     */
     startMonitor: function() {
         sails.log.info("Track Monitor Starting");
 
@@ -37,18 +43,31 @@ module.exports = {
         //    thisB.syncTracks();
         //},1000);
     },
+    /**
+     * Sync tracklist.json tracks with Track model (promises version)
+     * 
+     * todo: dataSet should accept string or dataSet object id
+     * 
+     * @param {string} dataSet, if dataset is not defined, all models are committed.
+     * 
+     * @returns {undefined)
+     */
     syncTracks: function(dataSet) {
         syncTracks(dataSet);
     },
+    /*
+     * Save model tracks to trackList.json
+     * 
+     * todo: dataSet should accept string or dataSet object id
+     * 
+     * @param {string} dataSet, if dataset is not defined, all models are committed.
+     * @returns {undefined}
+     */
     saveTracks: function(dataSet) {
         saveTracks(dataSet);
     }
 };
-/**
- * Save model tracks to trackList.json
- * @param {type} dataSet, if dataset is not defined, all models are committed.
- * @returns {undefined}
- */
+
 function saveTracks(dataSet) {
     
     var g = sails.config.globals.jbrowse;
@@ -79,13 +98,7 @@ function saveTracks(dataSet) {
       }
     });
 }
-/**
- * Sync tracklist.json tracks with Track model (promises version)
- * @param {type} req
- * @param {type} res
- * @param {type} next
- * @returns {addTrackJson.indexAnonym$8}
- */
+
 function syncTracks(dataSet) {
     var g = sails.config.globals.jbrowse;
     //var Track = sails.models.track;

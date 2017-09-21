@@ -1,6 +1,10 @@
 /**
  * @module
  * 
+ * @description
+ * 
+ * User is the data model for a user.
+ * 
  */
 var User = {
   // Enforce model schema in the case of schemaless databases

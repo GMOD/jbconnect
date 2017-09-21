@@ -1,8 +1,13 @@
 /**
  * @module
  *
- * @description TODO: You might write a short summary of how this model works and what it represents here.
- * @docs        http://sailsjs.org/documentation/concepts/models-and-orm/models
+ * @description
+ * Job model is an encapsulation of the `Kue <https://automattic.github.io/kue/>`_ job framework.
+ * 
+ * Kue uses `redis <https://redis.io/>`_ database.  This model synchronizes the Job database with the redis data
+ * through the use of Kue's API.
+ *  
+ * Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
  */
 
 //var deepdiff = require('deep-diff');
@@ -19,9 +24,21 @@ module.exports = {
             primaryKey: true
         }
     },
+    
+    /**
+     * Obsolete
+     *  
+     * @returns {undefined}
+     */
     initialize: function() {
         // first time initialize: set error for any active jobs.
     },
+    
+    /**
+     * start the monitor
+     * 
+     * @returns {undefined}
+     */
     start: function() {
         sails.log.info('kue job monitor starting');
         var thisB = this;
@@ -33,6 +50,10 @@ module.exports = {
         //this.syncJobs();
 
     },
+    /**
+     * monitor events from the kue framework and translate to Job events
+     * @returns {undefined}
+     */
     monitor: function() {
         var g = sails.config.globals;
         var thisB = this;
@@ -84,14 +105,18 @@ module.exports = {
         syncJobs();
     },
     /**
-     * queue-enqueue
-     * queue-start
-     * queue-failed
-     * queue-failed-attempt
-     * queue-progress
-     * queue-complete
-     * queue-remove
-     * queue-promotion
+     * Send a Job framework event
+     * 
+     * Events:
+     * 
+     * * queue-enqueue
+     * * queue-start
+     * * queue-failed
+     * * queue-failed-attempt
+     * * queue-progress
+     * * queue-complete
+     * * queue-remove
+     * * queue-promotion
      * 
      * @param {type} event
      * @param {type} id
@@ -125,6 +150,7 @@ module.exports = {
         });
         
     },
+    
     test: function() {
         sails.log("kueJobMon starting test");
         
@@ -157,7 +183,13 @@ module.exports = {
     }
     
 };
-
+/**
+ * Create or update a job in the sails framework based on kue job data
+ * 
+ * @param (object}  kJob - Kue framework job
+ * @param {object}  mJob - Sails framework job
+ * @returns {undefined}
+ */
 function createOrUpdate(kJob, mJob) {
     
     sails.log('createOrUpdate() job',kJob.id);
@@ -196,6 +228,11 @@ function createOrUpdate(kJob, mJob) {
     }
 }
 
+/**
+ * Synchronize Jobs with the Kue framework
+ * 
+ * @returns {undefined}
+ */
 function syncJobs() {
     var g = sails.config.globals;
     request({url:g.jbrowse.jbrowseRest+'/api/jobs/0..100000',json:true}, function (err, res, found) {

@@ -18,11 +18,13 @@ Module: ``models/Dataset``
 Description
 ===========
 
-This is a description
+Dataset is a model that represents the JBrowse dataset.  Generally, this includes
+path to the dataset and some of the data contained in trackList.json.
 
-+---------------+------------------+
-| dog           | cat              |
-+---------------+------------------+
+Datasets known to JBServer are defined in config/globals.js
+(see: :ref:`jbs-globals-config`)
+     
+Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
 
 
 .. _module-models_Dataset.initialize:
@@ -31,11 +33,15 @@ This is a description
 Function: ``initialize``
 ========================
 
+Initializes datasets as defined in config/globals.js.
+(see: :ref:`jbs-globals-config`)
 
-
-.. js:function:: initialize()
+.. js:function:: initialize(cb)
 
     
+    :param function cb: callback function
+    :return undefined: Initializes datasets as defined in config/globals.js.
+    (see: :ref:`jbs-globals-config`)
     
 .. _module-models_Dataset.syncDatasets:
 
@@ -43,12 +49,17 @@ Function: ``initialize``
 Function: ``syncDatasets``
 ==========================
 
-sync globals globals.jbrowse.dataSet with Dataset model database
+Sync datasets, defined in globals with database.
+
+todo: need to improve, perhaps use async?
 
 .. js:function:: syncDatasets()
 
     
-    :return addTrackJson.indexAnonym$8: sync globals globals.jbrowse.dataSet with Dataset model database
+    :param syncDatasets(): cb - callback function
+    :return addTrackJson.indexAnonym$8: Sync datasets, defined in globals with database.
+    
+    todo: need to improve, perhaps use async?
     
 
 .. _module-models_Dataset.attributes:
@@ -58,6 +69,14 @@ Member: ``attributes``:
 .. _module-models_Dataset.path:
 
 Member: ``path``: 
+
+.. _module-models_Dataset.result:
+
+Member: ``result``: 
+
+.. _module-models_Dataset.msg:
+
+Member: ``msg``: 
 
 .. _module-models_Dataset.id:
 
@@ -83,7 +102,12 @@ Module: ``models/Job``
 Description
 ===========
 
-TODO: You might write a short summary of how this model works and what it represents here.
+Job model is an encapsulation of the `Kue <https://automattic.github.io/kue/>`_ job framework.
+
+Kue uses `redis <https://redis.io/>`_ database.  This model synchronizes the Job database with the redis data
+through the use of Kue's API.
+ 
+Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
 
 
 .. _module-models_Job.initialize:
@@ -92,11 +116,12 @@ TODO: You might write a short summary of how this model works and what it repres
 Function: ``initialize``
 ========================
 
-
+Obsolete
 
 .. js:function:: initialize()
 
     
+    :return undefined: Obsolete
     
 .. _module-models_Job.start:
 
@@ -104,11 +129,12 @@ Function: ``initialize``
 Function: ``start``
 ===================
 
-
+start the monitor
 
 .. js:function:: start()
 
     
+    :return undefined: start the monitor
     
 .. _module-models_Job.monitor:
 
@@ -116,11 +142,12 @@ Function: ``start``
 Function: ``monitor``
 =====================
 
-
+monitor events from the kue framework and translate to Job events
 
 .. js:function:: monitor()
 
     
+    :return undefined: monitor events from the kue framework and translate to Job events
     
 .. _module-models_Job.syncJobs:
 
@@ -140,50 +167,70 @@ Sync kue[workflow] with Job model
 Function: ``processEvent``
 ==========================
 
-queue-enqueue
-queue-start
-queue-failed
-queue-failed-attempt
-queue-progress
-queue-complete
-queue-remove
-queue-promotion
+Send a Job framework event
+
+Events:
+
+* queue-enqueue
+* queue-start
+* queue-failed
+* queue-failed-attempt
+* queue-progress
+* queue-complete
+* queue-remove
+* queue-promotion
 
 .. js:function:: processEvent(event, id, data)
 
     
-    :param type event: queue-enqueue
-    queue-start
-    queue-failed
-    queue-failed-attempt
-    queue-progress
-    queue-complete
-    queue-remove
-    queue-promotion
-    :param type id: queue-enqueue
-    queue-start
-    queue-failed
-    queue-failed-attempt
-    queue-progress
-    queue-complete
-    queue-remove
-    queue-promotion
-    :param type data: queue-enqueue
-    queue-start
-    queue-failed
-    queue-failed-attempt
-    queue-progress
-    queue-complete
-    queue-remove
-    queue-promotion
-    :return undefined: queue-enqueue
-    queue-start
-    queue-failed
-    queue-failed-attempt
-    queue-progress
-    queue-complete
-    queue-remove
-    queue-promotion
+    :param type event: Send a Job framework event
+    
+    Events:
+    
+    * queue-enqueue
+    * queue-start
+    * queue-failed
+    * queue-failed-attempt
+    * queue-progress
+    * queue-complete
+    * queue-remove
+    * queue-promotion
+    :param type id: Send a Job framework event
+    
+    Events:
+    
+    * queue-enqueue
+    * queue-start
+    * queue-failed
+    * queue-failed-attempt
+    * queue-progress
+    * queue-complete
+    * queue-remove
+    * queue-promotion
+    :param type data: Send a Job framework event
+    
+    Events:
+    
+    * queue-enqueue
+    * queue-start
+    * queue-failed
+    * queue-failed-attempt
+    * queue-progress
+    * queue-complete
+    * queue-remove
+    * queue-promotion
+    :return undefined: Send a Job framework event
+    
+    Events:
+    
+    * queue-enqueue
+    * queue-start
+    * queue-failed
+    * queue-failed-attempt
+    * queue-progress
+    * queue-complete
+    * queue-remove
+    * queue-promotion
     
 .. _module-models_Job.test:
 
@@ -203,11 +250,14 @@ Function: ``test``
 Function: ``createOrUpdate``
 ============================
 
+Create or update a job in the sails framework based on kue job data
 
-
-.. js:function:: createOrUpdate()
+.. js:function:: createOrUpdate(, mJob)
 
     
+    :param createOrUpdate(, mJob): kJob - Kue framework job
+    :param object mJob: Sails framework job
+    :return undefined: Create or update a job in the sails framework based on kue job data
     
 .. _module-models_Job.syncJobs:
 
@@ -215,11 +265,12 @@ Function: ``createOrUpdate``
 Function: ``syncJobs``
 ======================
 
-
+Synchronize Jobs with the Kue framework
 
 .. js:function:: syncJobs()
 
     
+    :return undefined: Synchronize Jobs with the Kue framework
     
 
 .. _module-models_Job.request:
@@ -359,7 +410,9 @@ Module: ``models/Track``
 Description
 ===========
 
-TODO: You might write a short summary of how this model works and what it represents here.
+Track is a model for a list of tracks that are in the ``trackList.json``'s ``[tracks]`` section.
+
+Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
 
 
 .. _module-models_Track.startMonitor:
@@ -368,11 +421,12 @@ TODO: You might write a short summary of how this model works and what it repres
 Function: ``startMonitor``
 ==========================
 
-
+Obsolete
 
 .. js:function:: startMonitor()
 
     
+    :return undefined: Obsolete
     
 .. _module-models_Track.syncTracks:
 
@@ -380,11 +434,15 @@ Function: ``startMonitor``
 Function: ``syncTracks``
 ========================
 
+Sync tracklist.json tracks with Track model (promises version)
 
+todo: dataSet should accept string or dataSet object id
 
-.. js:function:: syncTracks()
+.. js:function:: syncTracks(dataSet,)
 
     
+    :param string dataSet,: if dataset is not defined, all models are committed.
+    :return syncTracks(dataSet,): {undefined)
     
 .. _module-models_Track.saveTracks:
 
@@ -404,13 +462,11 @@ Function: ``saveTracks``
 Function: ``saveTracks``
 ========================
 
-Save model tracks to trackList.json
 
-.. js:function:: saveTracks(dataSet,)
+
+.. js:function:: saveTracks()
 
     
-    :param type dataSet,: if dataset is not defined, all models are committed.
-    :return undefined: Save model tracks to trackList.json
     
 .. _module-models_Track.syncTracks:
 
@@ -418,15 +474,11 @@ Save model tracks to trackList.json
 Function: ``syncTracks``
 ========================
 
-Sync tracklist.json tracks with Track model (promises version)
 
-.. js:function:: syncTracks(req, res, next)
+
+.. js:function:: syncTracks()
 
     
-    :param type req: Sync tracklist.json tracks with Track model (promises version)
-    :param type res: Sync tracklist.json tracks with Track model (promises version)
-    :param type next: Sync tracklist.json tracks with Track model (promises version)
-    :return addTrackJson.indexAnonym$8: Sync tracklist.json tracks with Track model (promises version)
     
 
 .. _module-models_Track.Promise:
@@ -501,7 +553,7 @@ Module: ``models/User``
 Description
 ===========
 
-
+User is the data model for a user.
 
 
 
