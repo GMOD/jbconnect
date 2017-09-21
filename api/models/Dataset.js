@@ -1,6 +1,14 @@
 /**
  * @module
- *
+ * @description
+ * 
+ * This is a description
+ * 
+ * +---------------+------------------+
+ * | dog           | cat              |
+ * +---------------+------------------+
+ * 
+ * 
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
 
