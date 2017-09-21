@@ -55,17 +55,6 @@ Directory Layout
     └── package.json
 
 
-Job Queue
-=========
-
-JBServer uses *Kue* as the queue framework.  Since Kue requires *redis* database, 
-redis server must be running.  An integrated job panel is available when
-the JBClient plugin is active. (see: :ref:`jbs-jbclient`)
-
-Integrated Job Panel:
-
-.. image:: img/job-panel.jpg
-
 
 jbutil Command
 ==============
@@ -136,27 +125,37 @@ libroutes.js
 
 
 
-Login / Logout
-==============
+Standalone Register / Login / Logout Routes
+===========================================
 
-Stand-alone
------------
+Stand-alone routes allow for basic register/login/logout functionality free
+from the JBrowse interface.  
 
-REST API: ``http://<address>:1337/register``
+Stand-alone interfaces use `bootstrap <http://getbootstrap.com/>`_
+
+Register: ``http://<address>:1337/register``
 
 .. image:: img/register.jpg
 
-REST API: ``http://<address>:1337/login``
+Login: ``http://<address>:1337/login``
 
 .. image:: img/login.jpg
+
+Logout: ``http://<address>:1337/logout``
+
+Get Login State: ``http://<address>:1337/loginstate``
+
 
 
 .. _jbs-jbclient:
 
-Integrated
-----------
+Integrated JBrowse Interfaces
+=============================
 
-To enable integrated login/logout interfaces within the JBrowse app, modify the dataset's 
+JBrowse GUI intetrated interfaces are available when the ``JBClient`` plugin is 
+configured on in the JBrowse client. 
+
+To enable integrated features within the JBrowse app, modify the dataset's 
 ``trackList.json``, adding ``JBClient`` plugin to the configuration.
 
 *Note: the JBClient plugin is not physically in the JBrowse plugin directory.
@@ -171,7 +170,11 @@ It is available as a route.*
     "HideTrackLabels"
   ],
 
-This makes the login panel available in JBrowse.
+
+
+
+Login/Logout Panel
+------------------
 
 Login Panel
 
@@ -180,6 +183,20 @@ Login Panel
 Loguot Panel
 
 .. image:: img/logout-integrated.jpg
+
+
+
+Job Queue Panel
+---------------
+
+JBServer uses *Kue* as the queue framework.  Since Kue requires *redis* database, 
+redis server must be running.  An integrated job panel is available when
+the JBClient plugin is active. (see: :ref:`jbs-jbclient`)
+
+Integrated Job Panel:
+
+.. image:: img/job-panel.jpg
+
 
 
 Test Framework
