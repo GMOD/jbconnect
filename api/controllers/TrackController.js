@@ -1,10 +1,12 @@
-/**
+/*
  * @module
  * @ignore
  * @description
  * Server-side logic for managing jbtracks
 
- * @help        See http://sailsjs.org/#!/documentation/concepts/Controllers
+ * See http://sailsjs.org/#!/documentation/concepts/Controllers
+ * 
+ * ##excludedoc
  */
 
 module.exports = {

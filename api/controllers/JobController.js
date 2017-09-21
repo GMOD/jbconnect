@@ -1,11 +1,14 @@
-/**
+/*
  * @module
  * @ignore
  * @description
  * JobController
  *
  * Server-side logic for managing Job
- * @help        See http://sailsjs.org/#!/documentation/concepts/Controllers
+ * 
+ * See http://sailsjs.org/#!/documentation/concepts/Controllers
+ * 
+ * ##excludedoc
  */
 
 module.exports = {

@@ -1,5 +1,8 @@
-/**
+/*
  * @module
+ * @description
+ * 
+ * ##excludedoc
  * 
  */
 var bcrypt = require('bcryptjs');
