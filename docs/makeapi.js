@@ -22,6 +22,7 @@ fs.appendFileSync(outfile,'***\nAPI\n***\n\n');
 // scan through each file in directory
 fs.readdirSync(dirpath).forEach(file => {
 
+    //console.log("file",file);
     if (ignore.indexOf(file) === -1) {  // if file is not in ignore list
 
         var array = fs.readFileSync(dirpath+file).toString().split("\n");
@@ -56,13 +57,26 @@ function processFile(lines,file) {
     // Sphinx horiz line between modules
     fs.appendFileSync(outfile,'\n.. raw:: html\n\n   <hr style="border-color: black; border-width: 2px;">\n\n');
     
+    var savelo = 0;
+    var savehi = 0;
+    
     for(var i in lines) {
         // remove "Children" section
         if (lines[i].indexOf("Children") > -1) {
-            lines.splice(i,6);
+            lines.splice(i,6);      // remove from position, 6 lines
+            i = i - 6;
         }
-        //console.log(lines[i]);
-        
-        fs.appendFileSync(outfile,lines[i]+'\n');
+        // remove "Member: ``" section
+        if (lines[i].indexOf("Member: ``") > -1) {
+            if (savelo === 0) savelo = i;
+            if (i > savehi) savehi = i;
+        }
     }
+    // splice out members
+    if (savelo)
+       lines.splice(savelo-2,savehi-savelo + 4);    // remove position-2, 4 lines
+    
+    // output
+    for(var i in lines)
+        fs.appendFileSync(outfile,lines[i]+'\n');
 }
