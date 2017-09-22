@@ -10,14 +10,16 @@ var jsdoc = './node_modules/jsdoc/jsdoc.js -t node_modules/jsdoc-sphinx/template
 var makeapi = 'node makeapi.js';
 
 // remove genapi-rst/*.rst files
+console.log("deleting ./docs/genapi-rst/*.rst");
 shelljs.exec('rm -f ./docs/genapi-rst/*.rst',{silent:false});
 
 // run jsdoc
+console.log("running jsdoc");
 shelljs.exec(jsdoc,{silent:false});
 
-// run makapi
+// run makeapi
 process.chdir('./docs');
-//console.log('cwd',process.cwd());
+console.log('running makeapi, cwd',process.cwd());
 shelljs.exec(makeapi,{silent:false});
 
 
