@@ -25,38 +25,6 @@ the basics of Passport.js to work.
 
 
 
-.. _module-controllers_AuthController.AuthController:
-
-Member: ``AuthController``: 
-
-.. _module-controllers_AuthController.providers:
-
-Member: ``providers``: 
-
-.. _module-controllers_AuthController.errors:
-
-Member: ``errors``: 
-
-.. _module-controllers_AuthController.redirectTo:
-
-Member: ``redirectTo``: 
-
-.. _module-controllers_AuthController.errors:
-
-Member: ``errors``: 
-
-.. _module-controllers_AuthController.loginstate:
-
-Member: ``loginstate``: 
-
-.. _module-controllers_AuthController.user:
-
-Member: ``user``: 
-
-.. _module-controllers_AuthController.redirectTo:
-
-Member: ``redirectTo``: 
-
 
 
 
@@ -117,26 +85,6 @@ todo: need to improve, perhaps use async?
     
     :param syncDatasets(): cb - callback function
     
-
-.. _module-models_Dataset.attributes:
-
-Member: ``attributes``: 
-
-.. _module-models_Dataset.path:
-
-Member: ``path``: 
-
-.. _module-models_Dataset.result:
-
-Member: ``result``: 
-
-.. _module-models_Dataset.msg:
-
-Member: ``msg``: 
-
-.. _module-models_Dataset.id:
-
-Member: ``id``: 
 
 
 
@@ -281,66 +229,6 @@ Synchronize Jobs with the Kue framework
     
     
 
-.. _module-models_Job.request:
-
-Member: ``request``: 
-
-.. _module-models_Job.async:
-
-Member: ``async``: 
-
-.. _module-models_Job.attributes:
-
-Member: ``attributes``: 
-
-.. _module-models_Job.count:
-
-Member: ``count``: 
-
-.. _module-models_Job.lastActiveCount:
-
-Member: ``lastActiveCount``: 
-
-.. _module-models_Job.job1:
-
-Member: ``job1``: 
-
-.. _module-models_Job.title:
-
-Member: ``title``: 
-
-.. _module-models_Job.to:
-
-Member: ``to``: 
-
-.. _module-models_Job.template:
-
-Member: ``template``: 
-
-.. _module-models_Job.nextSlide:
-
-Member: ``nextSlide``: 
-
-.. _module-models_Job.id:
-
-Member: ``id``: 
-
-.. _module-models_Job.url:
-
-Member: ``url``: 
-
-.. _module-models_Job.json:
-
-Member: ``json``: 
-
-.. _module-models_Job.found:
-
-Member: ``found``: 
-
-.. _module-models_Job.id:
-
-Member: ``id``: 
-
 
 
 
@@ -387,14 +275,6 @@ Hash a passport password.
     :param Object password: Hash a passport password.
     :param function next: Hash a passport password.
     
-
-.. _module-models_Passport.bcrypt:
-
-Member: ``bcrypt``: 
-
-.. _module-models_Passport.Passport:
-
-Member: ``Passport``: 
 
 
 
@@ -485,26 +365,6 @@ Function: ``syncTracks``
     
     
 
-.. _module-models_Track.Promise:
-
-Member: ``Promise``: 
-
-.. _module-models_Track.fs:
-
-Member: ``fs``: 
-
-.. _module-models_Track.path:
-
-Member: ``path``: 
-
-.. _module-models_Track.deferred:
-
-Member: ``deferred``: 
-
-.. _module-models_Track.deepmerge:
-
-Member: ``deepmerge``: 
-
 .. _module-models_Track.attributes:
 
 Member: ``attributes``: 
@@ -561,10 +421,6 @@ User is the data model for a user.
 
 
 
-.. _module-models_User.User:
-
-Member: ``User``: 
-
 
 
 
@@ -595,10 +451,6 @@ accessed through a session. For example: API request from another client
 
 
 
-.. _module-policies_bearerAuth.session:
-
-Member: ``session``: 
-
 
 
 
@@ -622,14 +474,6 @@ Description
 isAdmin policy provides passage if the user contains the property admin: true.
 
 
-
-.. _module-policies_isAdmin.redirectTo:
-
-Member: ``redirectTo``: 
-
-.. _module-policies_isAdmin.redirectTo:
-
-Member: ``redirectTo``: 
 
 
 
@@ -766,18 +610,6 @@ Add a route
     :param string target: Add a route
     
 
-.. _module-services_jbRouteUtil.fs:
-
-Member: ``fs``: 
-
-.. _module-services_jbRouteUtil.glob:
-
-Member: ``glob``: 
-
-.. _module-services_jbRouteUtil.merge:
-
-Member: ``merge``: 
-
 
 
 
@@ -821,38 +653,6 @@ encrypting passwords and storing them in Passports, allowing you to keep your
 User model free of bloat.
 
 
-
-.. _module-services_passport.provider:
-
-Member: ``provider``: 
-
-.. _module-services_passport.provider:
-
-Member: ``provider``: 
-
-.. _module-services_passport.identifier:
-
-Member: ``identifier``: 
-
-.. _module-services_passport.usernameField:
-
-Member: ``usernameField``: 
-
-.. _module-services_passport.Strategy:
-
-Member: ``Strategy``: 
-
-.. _module-services_passport.Strategy:
-
-Member: ``Strategy``: 
-
-.. _module-services_passport.callback:
-
-Member: ``callback``: 
-
-.. _module-services_passport.Strategy:
-
-Member: ``Strategy``: 
 
 
 
