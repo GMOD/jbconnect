@@ -2,7 +2,7 @@ var path     = require('path')
   , url      = require('url')
   , passport = require('passport');
 
-/*
+/**
  * @module
  * @description
  * Passport Service
