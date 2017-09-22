@@ -22,7 +22,7 @@ fs.appendFileSync(outfile,'***\nAPI\n***\n\n');
 // scan through each file in directory
 fs.readdirSync(dirpath).forEach(file => {
 
-    if (ignore.indexOf(file) == -1) {  // if file is not in ignore list
+    if (ignore.indexOf(file) === -1) {  // if file is not in ignore list
 
         var array = fs.readFileSync(dirpath+file).toString().split("\n");
         
@@ -43,8 +43,9 @@ function processFile(lines,file) {
     lines[1] = replaceall('=','*',lines[1]);
     
     // skip file if "##excludedoc" is found
-    for (i in lines) {
+    for (var i in lines) {
         if (lines[i].indexOf("##excludedoc") > -1) {
+            //console.log(i,lines[i]);
             console.log("..ignoring --",file);
             return;
         }
@@ -55,7 +56,7 @@ function processFile(lines,file) {
     // Sphinx horiz line between modules
     fs.appendFileSync(outfile,'\n.. raw:: html\n\n   <hr style="border-color: black; border-width: 2px;">\n\n');
     
-    for(i in lines) {
+    for(var i in lines) {
         // remove "Children" section
         if (lines[i].indexOf("Children") > -1) {
             lines.splice(i,6);
