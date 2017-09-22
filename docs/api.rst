@@ -7,6 +7,65 @@ API
 
    <hr style="border-color: black; border-width: 2px;">
 
+Module: ``controllers/AuthController``
+**************************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+Authentication Controller
+
+It currently includes the minimum amount of functionality for
+the basics of Passport.js to work.
+
+
+
+.. _module-controllers_AuthController.AuthController:
+
+Member: ``AuthController``: 
+
+.. _module-controllers_AuthController.providers:
+
+Member: ``providers``: 
+
+.. _module-controllers_AuthController.errors:
+
+Member: ``errors``: 
+
+.. _module-controllers_AuthController.redirectTo:
+
+Member: ``redirectTo``: 
+
+.. _module-controllers_AuthController.errors:
+
+Member: ``errors``: 
+
+.. _module-controllers_AuthController.loginstate:
+
+Member: ``loginstate``: 
+
+.. _module-controllers_AuthController.user:
+
+Member: ``user``: 
+
+.. _module-controllers_AuthController.redirectTo:
+
+Member: ``redirectTo``: 
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
 Module: ``models/Dataset``
 **************************
 
@@ -57,9 +116,6 @@ todo: need to improve, perhaps use async?
 
     
     :param syncDatasets(): cb - callback function
-    :return addTrackJson.indexAnonym$8: Sync datasets, defined in globals with database.
-    
-    todo: need to improve, perhaps use async?
     
 
 .. _module-models_Dataset.attributes:
@@ -110,14 +166,14 @@ through the use of Kue's API.
 Events
 
 +----------------------------+
-| queue-enqueue              |
-| queue-start                |
-| queue-failed               |
-| queue-failed-attempt       |
-| queue-progress             |
-| queue-complete             |
-| queue-remove               |
-| queue-promotion            |
+| * queue-enqueue            |
+| * queue-start              |
+| * queue-failed             |
+| * queue-failed-attempt     |
+| * queue-progress           |
+| * queue-complete           |
+| * queue-remove             |
+| * queue-promotion          |
 +----------------------------+
 
 Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
@@ -134,7 +190,6 @@ Obsolete
 .. js:function:: initialize()
 
     
-    :return undefined: Obsolete
     
 .. _module-models_Job.start:
 
@@ -147,7 +202,6 @@ start the monitor
 .. js:function:: start()
 
     
-    :return undefined: start the monitor
     
 .. _module-models_Job.monitor:
 
@@ -160,7 +214,6 @@ monitor events from the kue framework and translate to Job events
 .. js:function:: monitor()
 
     
-    :return undefined: monitor events from the kue framework and translate to Job events
     
 .. _module-models_Job.syncJobs:
 
@@ -173,7 +226,6 @@ Sync kue[workflow] with Job model
 .. js:function:: syncJobs()
 
     
-    :return undefined: Sync kue[workflow] with Job model
     
 .. _module-models_Job.processEvent:
 
@@ -189,7 +241,6 @@ Send a Job framework event
     :param type event: Send a Job framework event
     :param type id: Send a Job framework event
     :param type data: Send a Job framework event
-    :return undefined: Send a Job framework event
     
 .. _module-models_Job.test:
 
@@ -216,7 +267,6 @@ Create or update a job in the sails framework based on kue job data
     
     :param createOrUpdate(, mJob): kJob - Kue framework job
     :param object mJob: Sails framework job
-    :return undefined: Create or update a job in the sails framework based on kue job data
     
 .. _module-models_Job.syncJobs:
 
@@ -229,7 +279,6 @@ Synchronize Jobs with the Kue framework
 .. js:function:: syncJobs()
 
     
-    :return undefined: Synchronize Jobs with the Kue framework
     
 
 .. _module-models_Job.request:
@@ -312,7 +361,16 @@ Module: ``models/Passport``
 Description
 ===========
 
+The Passport model handles associating authenticators with users. An authen-
+ticator can be either local (password) or third-party (provider). A single
+user can have multiple passports, allowing them to connect and use several
+third-party strategies in optional conjunction with a password.
 
+Since an application will only need to authenticate a user once per session,
+it makes sense to encapsulate the data specific to the authentication process
+in a model of its own. This allows us to keep the session itself as light-
+weight as possible as the application only needs to serialize and deserialize
+the user, but not the authentication data, to and from the session.
 
 
 .. _module-models_Passport.hashPassword:
@@ -336,18 +394,7 @@ Member: ``bcrypt``:
 
 .. _module-models_Passport.Passport:
 
-Member: ``Passport``: Passport Model
-
-The Passport model handles associating authenticators with users. An authen-
-ticator can be either local (password) or third-party (provider). A single
-user can have multiple passports, allowing them to connect and use several
-third-party strategies in optional conjunction with a password.
-
-Since an application will only need to authenticate a user once per session,
-it makes sense to encapsulate the data specific to the authentication process
-in a model of its own. This allows us to keep the session itself as light-
-weight as possible as the application only needs to serialize and deserialize
-the user, but not the authentication data, to and from the session.
+Member: ``Passport``: 
 
 
 
@@ -385,7 +432,6 @@ Obsolete
 .. js:function:: startMonitor()
 
     
-    :return undefined: Obsolete
     
 .. _module-models_Track.syncTracks:
 
@@ -401,7 +447,6 @@ todo: dataSet should accept string or dataSet object id
 
     
     :param string dataSet,: if dataset is not defined, all models are committed.
-    :return syncTracks(dataSet,): {undefined)
     
 .. _module-models_Track.saveTracks:
 
@@ -574,7 +619,7 @@ Module: ``policies/isAdmin``
 Description
 ===========
 
-isAdmin policy
+isAdmin policy provides passage if the user contains the property admin: true.
 
 
 
@@ -646,8 +691,10 @@ Module: ``policies/sessionAuth``
 Description
 ===========
 
-Simple policy to allow any authenticated user
-                Assumes that your login action in one of your controllers sets `req.session.authenticated = true;`
+Simple policy to allow any authenticated user.
+Assumes that your login action in one of your controllers sets `req.session.authenticated = true;`
+
+Ref: `Sails Policies Concepts <http://sailsjs.org/#!/documentation/concepts/Policies>`_
 
 
 
@@ -687,8 +734,7 @@ handles submodules plugins too.
 .. js:function:: addPluginRoutes()
 
     
-    :return undefined: inject client-side plugins into the clinet plugin directory as routes.
-    handles submodules plugins too.
+    :param addPluginRoutes(): params
     
 .. _module-services_jbRouteUtil.addLibRoutes:
 
@@ -701,6 +747,7 @@ Add library routes
 .. js:function:: addLibRoutes()
 
     
+    :param addLibRoutes(): params
     
 .. _module-services_jbRouteUtil.addRoute:
 
@@ -713,11 +760,10 @@ Add a route
 .. js:function:: addRoute(params, module, route, target)
 
     
-    :param type params: Add a route
-    :param type module: Add a route
-    :param type route: Add a route
-    :param type target: Add a route
-    :return undefined: Add a route
+    :param object params: Add a route
+    :param string module: Add a route
+    :param string route: Add a route
+    :param string target: Add a route
     
 
 .. _module-services_jbRouteUtil.fs:
