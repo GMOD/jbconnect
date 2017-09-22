@@ -10,14 +10,14 @@
  * Events
  * 
  * +----------------------------+
- * | queue-enqueue              |
- * | queue-start                |
- * | queue-failed               |
- * | queue-failed-attempt       |
- * | queue-progress             |
- * | queue-complete             |
- * | queue-remove               |
- * | queue-promotion            |
+ * | * queue-enqueue            |
+ * | * queue-start              |
+ * | * queue-failed             |
+ * | * queue-failed-attempt     |
+ * | * queue-progress           |
+ * | * queue-complete           |
+ * | * queue-remove             |
+ * | * queue-promotion          |
  * +----------------------------+
  * 
  * Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
@@ -41,7 +41,6 @@ module.exports = {
     /**
      * Obsolete
      *  
-     * @returns {undefined}
      */
     initialize: function() {
         // first time initialize: set error for any active jobs.
@@ -50,7 +49,6 @@ module.exports = {
     /**
      * start the monitor
      * 
-     * @returns {undefined}
      */
     start: function() {
         sails.log.info('kue job monitor starting');
@@ -65,7 +63,6 @@ module.exports = {
     },
     /**
      * monitor events from the kue framework and translate to Job events
-     * @returns {undefined}
      */
     monitor: function() {
         var g = sails.config.globals;
@@ -114,7 +111,6 @@ module.exports = {
     /**
      * Sync kue[workflow] with Job model
      * 
-     * @returns {undefined}
      */
     syncJobs: function() {
         syncJobs();
@@ -125,7 +121,6 @@ module.exports = {
      * @param {type} event
      * @param {type} id
      * @param {type} data
-     * @returns {undefined}
      */
     processEvent: function(event,id,data) {
         var g = sails.config.globals;
@@ -192,7 +187,6 @@ module.exports = {
  * 
  * @param (object}  kJob - Kue framework job
  * @param {object}  mJob - Sails framework job
- * @returns {undefined}
  */
 function createOrUpdate(kJob, mJob) {
     
@@ -235,7 +229,6 @@ function createOrUpdate(kJob, mJob) {
 /**
  * Synchronize Jobs with the Kue framework
  * 
- * @returns {undefined}
  */
 function syncJobs() {
     var g = sails.config.globals;

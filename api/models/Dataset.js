@@ -42,7 +42,6 @@ module.exports = {
  * todo: need to improve, perhaps use async?
  * 
  * @param (function) cb - callback function
- * @returns {addTrackJson.indexAnonym$8}
  */
 function syncDatasets(cb) {
     sails.log.debug('syncDatasets()');

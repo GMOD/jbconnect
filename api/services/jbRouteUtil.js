@@ -5,7 +5,6 @@
  * This module provides functions to inject plugin routes and library routes
  * that are accessible by the client side.
  * 
- * 
  */
 var fs = require('fs');
 var glob = require('glob');
@@ -17,7 +16,6 @@ module.exports = {
      * handles submodules plugins too.
      *  
      * @param (object) params
-     * @returns {undefined}
      */
     addPluginRoutes: function(params){
         // inject plugin routes
@@ -99,7 +97,6 @@ module.exports = {
      * @param {string} module
      * @param {string} route
      * @param {string} target
-     * @returns {undefined}
      */
     addRoute: function(params,module,route,target) {
         var app = params.app;

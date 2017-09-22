@@ -1,14 +1,11 @@
 /*
  * @module
- * @ignore
  * @description
  * Authentication Controller
  *
- * This is merely meant as an example of how your Authentication controller
- * should look. It currently includes the minimum amount of functionality for
+ * It currently includes the minimum amount of functionality for
  * the basics of Passport.js to work.
  * 
- * ##excludedoc
  */
 var AuthController = {
   /**

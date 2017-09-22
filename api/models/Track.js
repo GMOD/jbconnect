@@ -32,7 +32,6 @@ module.exports = {
     },
     /**
      * Obsolete
-     * @returns {undefined}
      */
     startMonitor: function() {
         sails.log.info("Track Monitor Starting");
@@ -50,7 +49,6 @@ module.exports = {
      * 
      * @param {string} dataSet, if dataset is not defined, all models are committed.
      * 
-     * @returns {undefined)
      */
     syncTracks: function(dataSet) {
         syncTracks(dataSet);
@@ -61,7 +59,6 @@ module.exports = {
      * todo: dataSet should accept string or dataSet object id
      * 
      * @param {string} dataSet, if dataset is not defined, all models are committed.
-     * @returns {undefined}
      */
     saveTracks: function(dataSet) {
         saveTracks(dataSet);

@@ -7,6 +7,9 @@
  * 
  * Ref: `Sails Policies Concepts <http://sailsjs.org/#!/documentation/concepts/Policies>`_
  *
+ * @param {Object}   req
+ * @param {Object}   res
+ * @param {Function} next
  */
 module.exports = function(req, res, next) {
 
