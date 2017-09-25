@@ -167,32 +167,6 @@ Get Login State: ``http://<address>:1337/loginstate``
 
 
 
-.. _jbs-jbclient:
-
-Integrated JBrowse Interfaces
-=============================
-
-JBrowse GUI intetrated interfaces are available when the ``JBClient`` plugin is 
-configured on in the JBrowse client. 
-
-To enable integrated features within the JBrowse app, modify the dataset's 
-``trackList.json``, adding ``JBClient`` plugin to the configuration.
-
-*Note: the JBClient plugin is not physically in the JBrowse plugin directory.
-It is available as a route.*
-
-::
-
-  "plugins": [
-    "JBClient",                    <-----
-    "NeatHTMLFeatures",
-    "NeatCanvasFeatures",
-    "HideTrackLabels"
-  ],
-
-
-
-
 Login/Logout Panel
 ------------------
 
