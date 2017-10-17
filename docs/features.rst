@@ -210,6 +210,21 @@ by default nightwatch is setup for phantomjs.
 Selenium requires running an additional selenium server
 Browserstack has not been tested.
 
+``package.json``:
+
+::
+
+  "scripts": {
+    "test": "nyc node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test phantomjs",
+  },
+
+
+The option ``--nightwatch-test`` can be:
+
+* ``phantomjs`` - runs client tests with phantomjs
+* ``selenium`` - runs client tests with selenium
+* ``browserstack`` - runs client test with selenium through remote browserstack account.
+
 
 Documentation Framework
 =======================
