@@ -13,7 +13,7 @@ var client = nightwatch.initClient(nw_conf);
 var browser = client.api();
 console.log('login.test.js','nightwatchTest',nightwatchTest);
 
-describe('JBlast Login', function() {
+describe('JBClient Login', function() {
 /*
     var nightwatchConf = require('../nightwatch.conf.js');
     var nw_conf = Object.assign(
