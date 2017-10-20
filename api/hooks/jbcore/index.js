@@ -43,17 +43,31 @@ module.exports = function (sails) {
         initialize: function(cb) {
             sails.log("Hook: jbcore initialize"); 
 
-            sails.on('lifted', function() {
-                sails.log("sails lifted");
+            sails.on('hook:orm:loaded', function() {
+            //sails.on('lifted', function() {
+                sails.log(">>> jbcore sails lifted");
                 
                 //Dataset.initialize(function() {
                     //Track.startMonitor(); 
                 //});
                 
-                Job.start();
+                
+                Service.init(function() {
+
+                    sails.log("Service.init done");
+                    
+                    Job.start(function() {
+                        sails.log("Job.start done");
+                        return cb();
+                    });
+                    
+                });
+                
+               //return cb();
+                
             });
             
-            return cb();
+            //return cb();
         },
         routes: {
             before: {
