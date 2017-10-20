@@ -50,15 +50,10 @@ module.exports = {
      * start the monitor
      * 
      */
-    start: function() {
-        sails.log.info('kue job monitor starting');
-        var thisB = this;
-        //setTimeout(function() {
-            thisB.monitor();
-            //thisB.test();
-        //},1000);
-        
-        //this.syncJobs();
+    start: function(cb) {
+        sails.log.info('starting kue job monitor');
+        this.monitor();
+        cb();
 
     },
     /**
