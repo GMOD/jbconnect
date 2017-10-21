@@ -18,7 +18,6 @@ module.exports = {
     },
     */
    
-    enumServices: serviceProc.enumServices,
-    execute: serviceProc.execute
+    exec: serviceProc.execute
 };
 
