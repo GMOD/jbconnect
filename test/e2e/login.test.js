@@ -29,18 +29,19 @@ describe('End-2-End Tests ------------------------------------------------------
     //    browser.globals = require('../browserGlobals.js');
 
         this.timeout(99999999);
-
+/*
         before(function() {
             browser.perform(function() {
                 console.log('beforeAll');
             });
         });
-
+*/
         beforeEach(function(done) {
             browser.perform(function() {
                 console.log('beforeEach');
             });
-            client.start(done);
+            done();
+            //client.start(done);
         });
 
         it('Test Login', function (done) {
@@ -52,9 +53,10 @@ describe('End-2-End Tests ------------------------------------------------------
                 .assert.visible('h4.modal-title')
                 .assert.containsText('h4.modal-title', 'JBrowse Login', 'Checking login box title');
 
-            client.start(done);
+            //client.start(done);
+            done();
         });
-
+/*
         afterEach(function() {
             browser.perform(function() {
                 console.log('afterEach');
@@ -67,5 +69,6 @@ describe('End-2-End Tests ------------------------------------------------------
             });
             client.start(done);
         });
+*/
     });
 });
