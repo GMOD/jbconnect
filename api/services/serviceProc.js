@@ -67,9 +67,6 @@ module.exports = {
     addService: function(service,cb) {
         
         var handler = service.handler;
-        //delete service[service.name];
-        
-        sails.log.debug('addService',service);
         
         if (typeof service.name === 'undefined') {
             sails.log('addService - no service name');
@@ -80,11 +77,13 @@ module.exports = {
             return cb('addService - no handler defined');
         }
         
+        sails.log.info('addService',service.name, service.type, service.module);
+        
         Service.updateOrCreate({name:service.name},service).then(function(record) {
             sails.log('service added',service.name);
             _addService(handler,service.name);
             return cb();
-        }).catch(function() {
+        }).catch(function(err) {
             sails.log('error adding service',service.name);
             return cb(err);
         });
