@@ -35,8 +35,10 @@ before(function(done) {
     models: {
       connection: 'localDb',
       migrate: 'drop'
+    },
+    policies: {
+        '*': true
     }
-    
     
   }, function(err) {
     if (err) return done(err);
