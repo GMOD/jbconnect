@@ -22,7 +22,8 @@ module.exports = {
     },
     get_workflows: function(req, res) {
         sails.log("test get_workflows");
-        res.ok({a:3,b:4});
+        var params = req.allParams();
+        res.ok(params);
     },
     set_filter: function(req, res) {
         sails.log("test set_filter");
