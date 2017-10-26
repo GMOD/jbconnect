@@ -58,6 +58,24 @@ module.exports = {
             cb();
         });
         */
+       
+        // add test workflow
+        /*
+        var testWorkflowSvc = require('../../test/data/testWorkflowService');
+
+        // test workflow add service
+        var service = {
+            name:   'test_workflow',
+            type:   'workflow',
+            module: 'test',
+            handler: testWorkflowSvc                    
+        };
+        var p = Service.addService(service,function(result){
+            //console.log("addService result typeof - ",typeof result);
+            //console.log('addService result',result);
+        });
+       
+       */
         // we must do a deferred action in init, so since we commented out the destroy...
         Service.find({},function(err,found) {
            cb(); 
@@ -103,7 +121,7 @@ module.exports = {
         var serviceName = "***";
         
         //sails.log('service.execute',req.route);
-        sails.log('params',req.params,'body',req.body);
+        //sails.log('params',req.params,'body',req.body);
         
         // given the route /service/exec/mycmd, id will be 'mycmd', the command
         var cmdName = req.params['id'];
@@ -118,7 +136,7 @@ module.exports = {
             // attempt to get service name from map
             serviceName = serviceProc.cmdMap[cmdName];
         }
-        sails.log("service %s cmd %s",serviceName,cmdName, serviceProc.cmdMap);
+        sails.log("service %s cmd %s",serviceName,cmdName, req.allParams());
         
         // does service exist or is it registered
         if (typeof this.services[serviceName] === 'undefined') {
