@@ -1,6 +1,6 @@
 /* 
  */
-
+var async = require('async');
 
 module.exports = {
     
@@ -46,73 +46,70 @@ module.exports = {
     
     init: function(cb) {
         sails.log.debug(">>> Service.init()");
+        var cb2 = cb;
         
-        // delete database entries
-        /*
-        Service.destroy({},function (err,theDeleted){
-            if (err) {
-                cb(err);
-            }
-            
-            sails.log.debug('>>> Service records deleted, if there were any.',theDeleted);
-            cb();
-        });
-        */
-       
-        // add test workflow
-        /*
-        var testWorkflowSvc = require('../../test/data/testWorkflowService');
-
-        // test workflow add service
-        var service = {
-            name:   'test_workflow',
-            type:   'workflow',
-            module: 'test',
-            handler: testWorkflowSvc                    
-        };
-        var p = Service.addService(service,function(result){
-            //console.log("addService result typeof - ",typeof result);
-            //console.log('addService result',result);
-        });
-       
-       */
         // we must do a deferred action in init, so since we commented out the destroy...
+
         Service.find({},function(err,found) {
-           cb(); 
+            var g = sails.config.globals.jbrowse;
+            var services = g.jblast.services;
+
+            // load services
+            async.eachSeries(services, function(service,cb1) {
+                var params = {
+                    name:   service.name,
+                    type:   service.type,
+                    module: 'jblast',
+                    handler: eval(service.name)                    
+                };
+                Service.addService(params,cb1);
+                
+            }, function(err) {
+                
+                if (err) {
+                    sails.log("Services init failed:",err);
+                    return cb2();
+                }
+                sails.log("Services init completed:");
+                return cb2();
+            });
         });
     },
     
     addService: function(service,cb) {
         
         var handler = service.handler;
+        var cb2 = cb;
         
         if (typeof service.name === 'undefined') {
             sails.log('addService - no service name');
-            return cb('addService - no service name');
+            return cb2('addService - no service name');
         } 
         if (typeof service.handler === 'undefined') {
             sails.log('addService - no handler defined',service.handler);
-            return cb('addService - no handler defined');
+            return cb2('addService - no handler defined');
         }
         
         sails.log.info('addService',service.name, service.type, service.module);
         
         Service.updateOrCreate({name:service.name},service).then(function(record) {
-            sails.log('service added',service.name);
             _addService(handler,service.name);
-            return cb();
+            sails.log('service added',service.name);
+            return cb2();
         }).catch(function(err) {
-            sails.log('error adding service',service.name);
-            return cb(err);
+            sails.log('error adding service',service.name, err);
+            return cb2(err);
         });
         
         function _addService(svc) {
-            serviceProc.services[service.name] = service.handler;
+            serviceProc.services[service.name] = handler;
 
             for(var cmd in handler.fmap) {
                 if (typeof serviceProc.cmdMap[cmd] === 'undefined')
                     serviceProc.cmdMap[cmd] = service.name;
             }
+            handler.init({},function(data) {
+            });
         }
     },
     
