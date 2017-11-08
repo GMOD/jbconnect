@@ -52,7 +52,7 @@ module.exports = {
 
         Service.find({},function(err,found) {
             var g = sails.config.globals.jbrowse;
-            var services = g.jblast.services;
+            var services = g.services;
 
             // load services
             async.eachSeries(services, function(service,cb1) {
