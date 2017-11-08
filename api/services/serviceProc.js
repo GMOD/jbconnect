@@ -70,7 +70,7 @@ module.exports = {
                     sails.log("Services init failed:",err);
                     return cb2();
                 }
-                sails.log("Services init completed:");
+                sails.log("Services init completed");
                 return cb2();
             });
         });
@@ -94,7 +94,7 @@ module.exports = {
         
         Service.updateOrCreate({name:service.name},service).then(function(record) {
             _addService(handler,service.name);
-            sails.log('service added',service.name);
+            //sails.log('service added',service.name);
             return cb2();
         }).catch(function(err) {
             sails.log('error adding service',service.name, err);
