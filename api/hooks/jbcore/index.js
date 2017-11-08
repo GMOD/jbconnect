@@ -54,7 +54,7 @@ module.exports = function (sails) {
                 
                 Service.init(function() {
 
-                    sails.log("Service.init done");
+                    //sails.log("Service.init done");
                     
                     Job.start(function() {
                         sails.log("Job.start done");
