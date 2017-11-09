@@ -12,6 +12,7 @@
  */
 var fs = require('fs');
 var jbRouteUtil = require('../api/services/jbRouteUtil');
+var appRoot = require('app-root-path');
 
 module.exports.http = {
 
@@ -36,10 +37,11 @@ module.exports.http = {
         
         // main JBrowse application route
         app.use('/'+routePrefix, express.static(jbrowsePath));
+        sails.log("approot",""+appRoot);
         
         // documentation route
-        app.use('/docs',express.static('./docs/html'));
-        app.use('/docs2',express.static('./docs/docs/build/html'));
+        //app.use('/docs',express.static('./docs/html'));
+        //app.use('/docs2',express.static('./docs/docs/build/html'));
         
         jbRouteUtil.addPluginRoutes({app:app,express:express});
         jbRouteUtil.addLibRoutes({app:app,express:express});
