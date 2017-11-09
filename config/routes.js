@@ -33,9 +33,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-    '/': {
-      view: 'homepage'
-    }, 
+    //'/': {
+    //  view: 'homepage'
+    //}, 
     'get /login': 'AuthController.login',
     'get /logout': 'AuthController.logout',
     'get /register': 'AuthController.register',
