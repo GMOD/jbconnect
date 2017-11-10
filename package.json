@@ -8,13 +8,14 @@
     "debug": "node debug app.js",
     "start": "node app.js",
     "postinstall": "node ./bin/postinstall.js",
-    "test": "nyc node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test phantomjs",
+    "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test phantomjs",
+    "xtest": "nyc node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test default",
     "gendocs": "node docs/gendocs_run.js"
   },
   "dependencies": {
+    "app-root-path": "^2.0.1",
     "async": "^2.5.0",
     "bcryptjs": "^2.4.0",
-    "blastjs": "enuggetry/blastjs",
     "bluebird": "^3.4.6",
     "bootstrap": "^3.3.7",
     "compression": "^1.6.2",
@@ -38,6 +39,7 @@
     "grunt-sails-linker": "~0.10.1",
     "grunt-sync": "0.6.2",
     "include-all": "~0.1.6",
+    "jbrowse": "github:gmod/jbrowse",
     "jquery": "^3.2.1",
     "jquery-ui-dist": "^1.12.1",
     "jsdom": "^9.8.3",
@@ -64,17 +66,20 @@
     "validator": "^6.2.1"
   },
   "devDependencies": {
-    "chai": "^4.0.2",
+    "chai": "*",
+    "chai-as-promised": "*",
     "chromedriver": "^2.30.1",
+    "events": "^1.1.1",
     "jsdoc": "^3.5.4",
     "jsdoc-sphinx": "0.0.6",
     "minimist": "^1.2.0",
-    "mocha": "^3.4.2",
-    "nightwatch": "^0.9.16",
+    "mocha": "*",
+    "nightwatch": "*",
     "nyc": "^11.0.3",
     "phantomjs-prebuilt": "^2.1.14",
     "selenium-webdriver": "^3.4.0",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "util": "^0.10.3"
   },
   "main": "app.js",
   "repository": {
