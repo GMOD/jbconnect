@@ -54,25 +54,33 @@ module.exports = {
             var g = sails.config.globals.jbrowse;
             var services = g.services;
 
+            sails.log("services found,services",found,services);
+
+            _init();
+            
             // load services
-            async.eachSeries(services, function(service,cb1) {
-                var params = {
-                    name:   service.name,
-                    type:   service.type,
-                    module: 'jblast',
-                    handler: eval(service.name)                    
-                };
-                Service.addService(params,cb1);
-                
-            }, function(err) {
-                
-                if (err) {
-                    sails.log("Services init failed:",err);
+            function _init() {
+                async.eachSeries(services, function(service,cb1) {
+                    var params = {
+                        name:   service.name,
+                        type:   service.type,
+                        module: 'jblast'
+                    };
+                    var s = params;
+                    params.handler = eval(service.name);
+
+                    Service.addService(params,cb1);
+
+                }, function(err) {
+
+                    if (err) {
+                        sails.log("Services init failed:",err);
+                        return cb2();
+                    }
+                    sails.log("Services init completed");
                     return cb2();
-                }
-                sails.log("Services init completed");
-                return cb2();
-            });
+                });
+            }
         });
     },
     
@@ -92,9 +100,12 @@ module.exports = {
         
         sails.log.info('addService',service.name, service.type, service.module);
         
+        var s = service;
+        delete s.handler;
+        
         Service.updateOrCreate({name:service.name},service).then(function(record) {
             _addService(handler,service.name);
-            //sails.log('service added',service.name);
+            sails.log('service added',service.name);
             return cb2();
         }).catch(function(err) {
             sails.log('error adding service',service.name, err);
