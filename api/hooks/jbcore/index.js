@@ -47,23 +47,18 @@ module.exports = function (sails) {
             //sails.on('lifted', function() {
                 sails.log(">>> jbcore sails lifted");
                 
-                //Dataset.initialize(function() {
-                    //Track.startMonitor(); 
-                //});
-                
-                
-                Service.init(function() {
+                setTimeout(function() {
+                    Service.init(function() {
 
-                    //sails.log("Service.init done");
-                    
-                    Job.start(function() {
-                        sails.log("Job.start done");
-                        return cb();
+                        Job.start(function() {
+                            //sails.log("Job.start done");
+                            //return cb();
+                        });
+
                     });
-                    
-                });
+                },1000);
                 
-               //return cb();
+               return cb();
                 
             });
             
