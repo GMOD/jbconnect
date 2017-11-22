@@ -27,7 +27,10 @@ var g = {
             {
                 dataPath: "sample_data/json/volvox"
             }
-        ]
+        ],
+        services: {
+            'kueTestService': {name: 'kueTestService',  type: 'service'}
+        }
     }
 
   /****************************************************************************
