@@ -44,18 +44,19 @@ module.exports = {
      */
     cmdMap:{},
     
-    init: function(cb) {
+    init: function(cb2) {
         sails.log.debug(">>> Service.init()");
-        var cb2 = cb;
+        //var cb2 = cb;
         
         // we must do a deferred action in init, so since we commented out the destroy...
 
-        Service.find({},function(err,found) {
+        Service.find({},function(err,foundServices) {
             var g = sails.config.globals.jbrowse;
-            var services = g.services;
+            var services = g.services;      // services defined in global.js, including hooks.
 
-            sails.log("services found,services",found,services);
-
+            //sails.log("services found: ");
+            //for(var i in services) sails.log("service",services[i].name);
+            
             _init();
             
             // load services
@@ -71,15 +72,48 @@ module.exports = {
 
                     Service.addService(params,cb1);
 
-                }, function(err) {
+                }, function completedAddingServices(err) {
 
                     if (err) {
                         sails.log("Services init failed:",err);
                         return cb2();
                     }
                     sails.log("Services init completed");
+                    
+                    deleteUndefinedFromDb()                    
+                    
                     return cb2();
                 });
+            }
+            // delete undefined services in db
+            function deleteUndefinedFromDb() {
+                // mark undefined services for deletion
+                var dbServices = {};        // assoc key by service name
+                for(var i in foundServices) foundServices[i].delete = true;         // mark all deleted
+                for(var i in foundServices) dbServices[foundServices[i].name] = foundServices[i]; // convert to assoc array, dbServices
+                for(var i in services) {
+                    if (typeof dbServices[i] !== 'undefined') delete dbServices[i].delete;
+                }
+                async.eachSeries(dbServices, function(service,cb1) {
+
+                    if (service.delete) {
+                        Service.destroy(service.id).then(function(destroyed) {
+                            sails.log("deleteUndefinedFromDb deleted service",service.id);
+                            return cb1();
+                        }).catch(function(err) {
+                            sails.log("deleteUndefinedFromDb deleted service failed",service.id);
+                            return cb1(err); 
+                        });
+                    }
+                }, function completedAddingServices(err) {
+
+                    if (err) {
+                        sails.log("Services init failed:",err);
+                        return;
+                    }
+                    sails.log("Services init completed");
+                });
+                
             }
         });
     },
