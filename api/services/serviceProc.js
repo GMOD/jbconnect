@@ -55,7 +55,7 @@ module.exports = {
             var services = g.services;      // services defined in global.js, including hooks.
 
             //sails.log("services found: ");
-            //for(var i in services) sails.log("service",services[i].name);
+            for(var i in services) sails.log("service",services[i].name);
             
             _init();
             
@@ -123,16 +123,26 @@ module.exports = {
         var handler = service.handler;
         var cb2 = cb;
         
+        sails.log.info('addService',service.name, service.type, service.module);
+        
         if (typeof service.name === 'undefined') {
-            sails.log('addService - no service name');
+            sails.log.error('addService - no service name');
             return cb2('addService - no service name');
         } 
         if (typeof service.handler === 'undefined') {
-            sails.log('addService - no handler defined',service.handler);
+            sails.log.error('addService - no handler defined',service.handler);
             return cb2('addService - no handler defined');
         }
-        
-        sails.log.info('addService',service.name, service.type, service.module);
+        if (service.type === 'workflow') {
+            if (typeof service.handler.beginProcessing === 'undefined') {
+                sails.log.error('addService - handler.beginProcessing not defined',service.handler);
+                return cb2('addService - handler.beginProcessing not defined');
+            }
+            if (typeof service.handler.beginProcessing !== 'function') {
+                sails.log.error('addService - handler.beginProcessing not a function',service.handler);
+                return cb2('addService - handler.beginProcessing not a function');
+            }
+        }
         
         var s = service;
         delete s.handler;
