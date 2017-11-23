@@ -44,6 +44,8 @@ module.exports = {
     _pick: ['id','type','options','active','progress','priority','data','state','max_attempts','promote_at','created_at','updated_at'],
     _state: ['active','complete','delayed','failed','inactive'],    // job states
     _queueName: "workflow",
+    _eventList: [],
+    _eventProc: 0,
     /**
      * Obsolete
      *  
@@ -61,47 +63,18 @@ module.exports = {
         var g = sails.config.globals.jbrowse;
         var thisb = this;
         
-        //sails.log("config",g);
-        
-        //kueTestService.init({},function() {
-        //});
-        
         //this.monitor();
-        this.monitorTest();
+        this._kueEventMonitor();
         
         //thisb._listJobs();
         
         setTimeout(function() {
             //_test();
+            thisb._activeMonitor();
             thisb._syncJobs();
+            thisb._jobRunner();
         },1000);
 
-        // service process loop
-        var gg = sails.config.globals;
-        var queue = gg.kue_queue;
-        
-        
-        setInterval(function() {
-            gg.kue.Job.rangeByState( 'inactive', 0, 1000000, 'asc', function( err, kJobs ) {
-                if (err) {
-                    sails.log("process loop Job.rangeByState failed",err);
-                    return;
-                }
-                //sails.log('kJobs',kJobs);
-                //sails.log("job count",kJobs.length);
-                if (kJobs.length) {
-                    if (kJobs[0].type !== thisb._queueName) return;
-                    
-                    queue.process(thisb._queueName, function(job, done){
-                        sails.log.info("service process starting: %s job %d",job.data.service,job.id);
-                        var service = eval(job.data.service);
-                        job.kDoneFn = done;
-                        service.beginProcessing(job);
-                    });
-                }
-            });
-        },2000);
-        
         
         function _test() {
             sails.log("***** testing *****");
@@ -139,46 +112,173 @@ module.exports = {
         cb();
 
     },
-    monitorTest: function() {
+    _jobRunner: function() {
+        sails.log.info("Job Runner Started");
+        var gg = sails.config.globals;
+        var queue = gg.kue_queue;
+        var thisb = this;
+        
+        setInterval(function() {
+            gg.kue.Job.rangeByState( 'inactive', 0, 1000000, 'asc', function( err, kJobs ) {
+                if (err) {
+                    sails.log("process loop Job.rangeByState failed",err);
+                    return;
+                }
+                //sails.log('kJobs',kJobs);
+                //sails.log("job count",kJobs.length);
+                if (kJobs.length) {
+                    if (kJobs[0].type !== thisb._queueName) return;
+                    
+                    queue.process(thisb._queueName, function(job, done){
+                        sails.log.info("service process starting: %s job %d",job.data.service,job.id);
+                        var service = eval(job.data.service);
+                        job.kDoneFn = done;
+                        service.beginProcessing(job);
+                    });
+                }
+            });
+        },2000);
+    },
+    _kueEventMonitor: function() {
         var g = sails.config.globals;
         var thisB = this;
-        
-        sails.log(">>> Kue Test Monitor");
+        /*  for debugging
+        setInterval(function() {
+            console.log('_eventProc',thisB._eventProc,thisB._eventList.length);
+        },3000);
+        */
+        sails.log.info("Kue Event Monitor started");
         
         g.kue_queue.on('job enqueue', function(id, data){
-          thisB._processEvent('enqueue',id,data);
-          thisB._createJob(id);
+          thisB._pushEvent('enqueue',id,data,'create');
+          thisB._processNextEvent();
         });        
         g.kue_queue.on('job start', function(id, data){
-          thisB._processEvent('start',id,data);
-          thisB._updateJob(id);
+          thisB._pushEvent('start',id,data,'update');
+          thisB._processNextEvent();
         });        
         g.kue_queue.on('job failed', function(id, data){
-          thisB._processEvent('failed',id,data);
-          thisB._updateJob(id);
+          thisB._pushEvent('failed',id,data,'update');
+          thisB._processNextEvent();
         });        
         g.kue_queue.on('job failed attempt', function(id, data){
-          thisB._processEvent('failed-attempt',id,data);
-          thisb._updateJob(id);
+          thisB._pushEvent('failed-attempt',id,data,'update');
+          thisB._processNextEvent();
         });        
         g.kue_queue.on('job progress', function(id, data){
-          thisB._processEvent('progress',id,data);
-          thisB._updateJob(id);
+          thisB._pushEvent('progress',id,data,'update');
+          thisB._processNextEvent();
         });        
         g.kue_queue.on('job complete', function(id, data){
-          thisB._processEvent('complete',id,data);
-          thisB._updateJob(id);
+          thisB._pushEvent('complete',id,data,'update');
+          thisB._processNextEvent();
         });        
         g.kue_queue.on('job remove', function(id, data){
-          thisB._processEvent('remove',id,data);
-          thisB._destoryJob(id);
+          thisB._pushEvent('remove',id,data,'remove');
+          thisB._processNextEvent();
         });        
         g.kue_queue.on('job promotion', function(id, data){
-          thisB._processEvent('promotion',id,data);
-          thisB._updateJob(id);
+          thisB._pushEvent('promotion',id,data,'update');
+          thisB._processNextEvent();
         });        
     },
-    _createJob: function(id) {
+    /*
+     * Monitors how many active jobs there are.
+     * Writes 
+     * @returns {undefined}
+     */
+    _lastActiveCount: 0,
+    
+    _activeMonitor: function() {
+        sails.log.info("Active Job Monitor starting");
+        var g = sails.config.globals;
+        var thisb = this;
+        var queue = g.kue_queue;
+        
+        queue.activeCount(thisb._queueName, function( err, total ) {
+            console.log("active count",total);
+            thisb._lastActiveCount = total;
+            writeActive(total);
+        });
+        
+        setInterval(function() {
+            queue.activeCount(thisb._queueName, function( err, total ) {
+                //console.log("active count",total);
+                if (total !== thisb._lastActiveCount) {
+                    console.log("active job count - new",total);
+                    thisb._lastActiveCount = total;
+                    writeActive(total);
+                }
+            });
+        },2000);
+        
+        function writeActive(val) {
+            JobActive.updateOrCreate({id:1},{active:val}).then(function(record) {
+                //sails.log('active written',record);
+                JobActive.publishUpdate(1,record);
+            }).catch(function(err) {
+                sails.log('error writing active job flag', err);
+            });
+            
+        }
+    },
+    /*
+     * the push event framework ensures that only one event is processed at a time.
+     * @param {type} event
+     * @param {type} id
+     * @param {type} data
+     * @returns {undefined}
+     */
+    _pushEvent:function(event,id,data,evx) {
+        sails.log(">>> kue push event",event,id,data);
+        this._eventList.push({event:event,evx:evx,id:id,data:data});
+    },
+    _processNextEvent: function() {
+        var thisb = this;
+        
+        // don't do anything if we are already processing an event
+        if (thisb._eventProc) return;
+        
+        // exit if there are no events to process
+        if (thisb._eventList.length <= 0) return;
+        
+        thisb._eventProc++;
+        
+        var ev = thisb._eventList.shift();
+        
+        // consolidate update events into a single update event
+        /*
+        if (ev.evx==='update' && thisb._eventList.length) {
+            while (thisb._eventList[0].evx === 'update')
+                this.b_eventList.shift();
+        }
+        */
+        sails.log('>>> process job event',ev.id,ev.event,ev.data);
+        
+        switch(ev.event) {
+            case 'enqueue':
+                thisb._createJob(ev.id,function(err){
+                    thisb._eventProc--;
+                    sails.log(">>> process job event create completed");
+                    thisb._processNextEvent();
+                });
+                break;
+            case 'remove':
+                thisb._destroyJob(ev.id,function(err) {
+                    thisb._eventProc--;
+                    sails.log(">>> process job event destroy completed");
+                    thisb._processNextEvent();
+                });
+                break;
+            default:
+                thisb._updateJob(ev.id,function(err) {
+                    thisb._eventProc--;
+                    sails.log(">>> process job event update completed");
+                    thisb._processNextEvent();
+                });
+        }
+    },
+    _createJob: function(id,cb) {
         var g = sails.config.globals;
         var thisB = this;
         
@@ -187,24 +287,26 @@ module.exports = {
                 sails.log("_createJob Job.get failed",err);
                 return;
             }
-            var job1 = _.pick(kJob,thisB._pick);
+            var job1 = {};  //_.pick(kJob,thisB._pick);
+            job1.id = kJob.id;
             job1.state = kJob.state();
             job1.priority = kJob.priority();
             job1.progress = kJob.progress();
-            //job1.active = job.active();
-            //job1.options = job.options();
+            job1.data = kJob.data;
             
             Job.create(job1).then(function(created) {
                sails.log("sJob created",created.id); 
                Job.publishCreate(created);       // announce create
+               cb()
 
             }).catch(function(err) {
-               sails.log("_createJob sJob create failed",err); 
+               sails.log("_createJob sJob create failed",err);
+               cb(err);
             });
         });
         
     },
-    _updateJob: function(id,data) {
+    _updateJob: function(id,cbx) {
         var g = sails.config.globals;
         var thisB = this;
         
@@ -230,39 +332,53 @@ module.exports = {
         },
         function completedParallel(err, r) {
             
-            var diff = deepdiff(r.sJob,r.kJob);         // get differences between kJob and sJob
-            diff = _.pick(diff,thisB._pick);    // eliminate unwanted
+            if (err) {
+                sails.log.error('_updateJob failed',r,err);
+                return;
+            }
+            
+            //var datadiff = deepdiff(r.sJob.data,r.kJob.data);         // get differences between kJob and sJob
+            //diff = _.pick(diff,thisB._pick);    // eliminate unwanted
 
+            var diff = {};
             diff.state = r.kJob.state();
             diff.priority = r.kJob.priority();
             diff.progress = r.kJob.progress();
+            diff.data = r.kJob.data;
             
-            Job.update({id:r.sJob.id},diff).then(function(updated) {
-               sails.log("_updateJob sJob updated",updated[0].id,updated[0]); 
-               Job.publishUpdate(updated[0].id);       // announce update
+            //if (typeof r.sJob === 'undefined') sails.log.error('value r',r);
+            if (typeof r.sJob.id === 'undefined') {
+                sails.log.error("_updateJob undefined id",r.sJob,diff);
+                return cbx('_updateJob undefined id');
+            }
+            else {
+                Job.update({id:r.sJob.id},diff).then(function(updated) {
+                   sails.log("_updateJob sJob updated",updated[0].id,updated[0]); 
+                   Job.publishUpdate(updated[0].id,updated[0]);       // announce update
+                   return cbx();
 
-            }).catch(function(err) {
-               sails.log("_updateJob sJob update failed",err); 
-            });
+                }).catch(function(err) {
+                   sails.log("_updateJob sJob update failed",err);
+                   return cbx(err);
+                });
+            }
         });
     },
-    _destoryJob: function(id) {
+    _destroyJob: function(id,cb) {
         var g = sails.config.globals;
         var thisB = this;
+        
         Job.destroy(id).then(function(destroyed) {
             sails.log("_destoryJob sJob destroyed",id);
             Job.publishDestroy(id);       // announce destroy
+            return cb();
 
         }).catch(function(err) {
             sails.log("_destoryJob sJob failed to destory",id);
+            return cb(err);
         });
     },
     
-    _processEvent:function(event,id,data) {
-        var g = sails.config.globals;
-        
-        sails.log(">>> kue event",event,id,data);
-    },
     /* 
      * display list of kue jobs ( used for debugging )
      * @returns {undefined}
@@ -325,8 +441,8 @@ module.exports = {
                 r.sJobs.forEach(function(job,i) { sJobs[job.id] = job;});
                 
                 // display for debug
-                for(var i in kJobs) console.log('+kJob',kJobs[i].id,i);
-                for(var i in sJobs) console.log('-sJob',sJobs[i].id,i);
+                //for(var i in kJobs) console.log('+kJob',kJobs[i].id,i);
+                //for(var i in sJobs) console.log('-sJob',sJobs[i].id,i);
                 
                 // mark all sJobs deleted
                 for(var i in sJobs) sJobs[i].delete = true;
@@ -394,6 +510,7 @@ module.exports = {
     /**
      * monitor events from the kue framework and translate to Job events
      */
+    /*
     monitor: function() {
         var g = sails.config.globals;
         var thisB = this;
@@ -438,13 +555,16 @@ module.exports = {
           thisB.processEvent('promotion',id,data);
         });        
     },
+    */
     /**
      * Sync kue[workflow] with Job model
      * 
      */
+    /*
     syncJobs: function() {
         syncJobs();
     },
+    */
     /**
      * Send a Job framework event
      * 
@@ -452,6 +572,7 @@ module.exports = {
      * @param {type} id
      * @param {type} data
      */
+    /*
     processEvent: function(event,id,data) {
         var g = sails.config.globals;
         
@@ -481,7 +602,8 @@ module.exports = {
         });
         
     },
-    
+    */
+    /*
     test: function() {
         sails.log("kueJobMon starting test");
         
@@ -512,7 +634,7 @@ module.exports = {
         },2000);
         
     }
-    
+    */
 };
 /**
  * Create or update a job in the sails framework based on kue job data
@@ -563,6 +685,7 @@ function createOrUpdate2(kJob, mJob) {
  * Synchronize Jobs with the Kue framework
  * 
  */
+/*
 function syncJobs() {
     var g = sails.config.globals;
     request({url:g.jbrowse.jbrowseRest+'/api/jobs/0..100000',json:true}, function (err, res, found) {
@@ -592,3 +715,4 @@ function syncJobs() {
          }
     });
 }
+*/
