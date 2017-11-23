@@ -148,10 +148,14 @@
             console.log("_testEvents()");
 
             // subscribe to all job objects including new
-            io.socket.get('/job', function(resData, jwres) {/*console.log(resData);*/})
+            io.socket.get('/job', function(resData, jwres) {console.log(resData);});
+            io.socket.get('/jobactive', function(resData, jwres) {console.log(resData);});
             
             // trigger on events
             io.socket.on('job', function(event){
+                console.log(event);
+            });    
+            io.socket.on('jobactive', function(event){
                 console.log(event);
             });    
         }
