@@ -44,7 +44,7 @@ module.exports = {
      */
     cmdMap:{},
     
-    init: function(cb2) {
+    init: function(params, cb2) {
         sails.log.debug(">>> Service.init()");
         //var cb2 = cb;
         
