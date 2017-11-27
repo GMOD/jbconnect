@@ -46,19 +46,12 @@ module.exports = {
     _queueName: "workflow",
     _eventList: [],
     _eventProc: 0,
-    /**
-     * Obsolete
-     *  
-     */
-    initialize: function() {
-        // first time initialize: set error for any active jobs.
-    },
     
     /**
      * start the monitor
      * 
      */
-    start: function(cb) {
+    init: function(params,cb) {
         sails.log.info('job start');
         var g = sails.config.globals.jbrowse;
         var thisb = this;
