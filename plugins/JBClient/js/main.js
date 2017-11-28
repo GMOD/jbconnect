@@ -89,7 +89,20 @@ return declare( JBrowsePlugin,
             $('#form-login').attr('action','/auth/local?next='+thisB.browser.makeCurrentViewURL());
             $('#button-logout').attr('href','/logout?next='+thisB.browser.makeCurrentViewURL());
 
+            thisB.setupEventTraps();
         });
+    },
+    setupEventTraps: function() {
+        
+        // trap track events
+        io.socket.get('/track', function(resData, jwres) {
+            console.log("registered for track events");
+            console.log(resData);
+        });
+
+        io.socket.on('track', function(event){
+            console.log('event track',event);
+        });    
     },
     Browser_override_makeCurrentViewURL(x) {
         
