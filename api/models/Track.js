@@ -93,7 +93,7 @@ module.exports = {
           fs.writeFileSync(trackListPath,JSON.stringify(config,null,4));
         }
         catch(err) {
-            sails.log.error("failed",addTrack.label,err);
+            sails.log.error("addTrack failed",addTrack.label,err);
             Track.resumeWatch(dataSet.id);
             return cb(err);
         }
@@ -108,7 +108,7 @@ module.exports = {
 
         Track.create(data)
         .then(function(created) {
-            sails.log.debug("track created:",created.id,created.lkey);
+            sails.log.debug("addTrack track created:",created.id,created.lkey);
             
             Track.publishCreate(created);       // announce
             Track.resumeWatch(dataSet.id);
@@ -116,7 +116,7 @@ module.exports = {
             return cb(null,created);
         })        
         .catch(function(err) {
-            sails.log.error("track create failed",err);
+            sails.log.error("addTrack track create failed",err);
             Track.resumeWatch(dataSet.id);
             return cb(err);
         });
@@ -253,10 +253,12 @@ module.exports = {
 
         Track.find({path:ds})
             .then(function(modelTracks) {
-                sails.log.debug("modelTracks",modelTracks.length);
+                sails.log.debug("syncTracks modelTracks",modelTracks.length);
 
                 for(var i in modelTracks)
                   mTracks[modelTracks[i].lkey] = modelTracks[i];
+
+                //mtracks = mTracks;  // debug
 
                 // read file tracks
                 return fs.readFileAsync(trackListPath);
@@ -264,10 +266,12 @@ module.exports = {
             .then(function(trackListData) {
                 var fileTracks = JSON.parse(trackListData).tracks;
 
-                sails.log.debug('fileTracks',fileTracks.length);
+                sails.log.debug('syncTracks fileTracks',fileTracks.length);
 
                 for(var i in fileTracks)
                   fTracks[fileTracks[i].label] = fileTracks[i];
+
+                //ftracks = fTracks;
 
                 deleteModelItems(mTracks,fTracks);
                 addOrUpdateItemsToModel(mTracks,fTracks);            
@@ -283,20 +287,21 @@ module.exports = {
                     toDel.push(mTracks[k].id);
             }
             if (toDel.length) {
-              sails.log.debug("ids to delete",toDel);
+              sails.log.debug("syncTracks ids to delete",toDel);
               Track.destroy({id: toDel})
                 .then(function(deleted){
-                  sails.log.debug("tracks deleted:",deleted.length);
+                  sails.log.debug("syncTracks tracks deleted:",deleted.length);
                   Track.publishDestroy(deleted);
                 })
                 .catch(function(err) {
-                    sails.log.error("tracks delete failed:",toDel);
+                    sails.log.error("syncTracks tracks delete failed:",toDel);
                 });
             }
         };
         function addOrUpdateItemsToModel(mTracks,fTracks) {
             // add or update file items to model
             for(var k in fTracks) {
+
               if (typeof mTracks[k] === 'undefined') {
                     var dataset = Dataset.resolve(ds);
                     var data = {
@@ -307,14 +312,14 @@ module.exports = {
                     };
 
                     //data = deepmerge(data,fTracks[k]);
-
+                    //sails.log('track',k,data);
                     Track.create(data)
                     .then(function(item) {
-                        sails.log.debug("track created:",item.id,item.lkey);
+                        sails.log.debug("syncTracks track created:",item.id,item.lkey);
                         Track.publishCreate(item);
                     })        
                     .catch(function(err) {
-                        sails.log.error("track create failed",err);
+                        sails.log.error("syncTracks track create failed",err);
                     });
               }
               // update model if they are different
@@ -325,11 +330,11 @@ module.exports = {
 
                       Track.update({path:ds.path, lkey:fTracks[k].label},{trackData:fTracks[k]})
                       .then(function(item) {
-                          sails.log.debug("track updated:",item[0].id,item[0].lkey);
+                          sails.log.debug("syncTracks track updated:",item[0].id,item[0].lkey);
                           Track.publishUpdate(item);
                       })        
                       .catch(function(err) {
-                          sails.log.error("track update failed:",err);
+                          sails.log.error("syncTracks track update failed:",err);
                       });
                   }
               }
