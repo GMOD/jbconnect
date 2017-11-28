@@ -23,11 +23,9 @@ var g = {
         jbrowseRest: "http://localhost:1337",
         jbrowsePath: jbPath,                        // or "/var/www/jbrowse/"
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
-        dataSet: [
-            {
-                dataPath: "sample_data/json/volvox"
-            }
-        ],
+        dataSet: {
+             Volvox: {path: "sample_data/json/volvox"}
+        },
         services: {
             'kueTestService': {name: 'kueTestService',  type: 'service'}
         }
