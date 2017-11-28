@@ -13,6 +13,9 @@
 module.exports = {
 
     attributes: {
+        name: {
+            type: 'string',
+        }, 
         path: {
             type: 'string',
             unique: true
@@ -22,101 +25,140 @@ module.exports = {
             via: 'id'
         }
     },
+    /*
+     * assoc array of datasets {path:"sample_data/json/volvox", id:1}
+     */
+    _dataSets: {},
     /**
      * Initializes datasets as defined in config/globals.js.
      * (see: :ref:`jbs-globals-config`)
      * @param {function} cb - callback function 
      * @returns {undefined}
      */
-    initialize: function(cb) {
-        syncDatasets();
+    init: function(params,cb) {
+        this.syncDatasets(cb);
         
         // todo: need to handle this in callback
-        cb();
+        //cb();
+    },
+    /*
+     * 
+     * @param {string or int} dval - dataset string (ie. "sample_data/json/volvox") or id (int)
+     * @returns {object} - dataset object
+     *      dataset (string - i.e. "sample_data/json/volvox" if input was an id
+     */
+    resolve: function(dval){
+        if (typeof this._dataSets[dval] !== 'undefined')
+            return this._dataSets[dval];
+        sails.log.error('Dataset.resolve not found (we shouldnt get here',dval);
+        return null;
+    },
+    /**
+     * Sync datasets, defined in globals with database.
+     * 
+     * todo: need to improve, perhaps use async?
+     * 
+     * @param (function) cb - callback function
+     */
+    syncDatasets:function(cb) {
+        sails.log.debug('syncDatasets()');
+        var g = sails.config.globals.jbrowse;
+        var thisb = this;
+
+        // this will be an assoc array referenced by dataset id and path
+        //g.datasets = {};
+
+        // these will be associative arrays
+        var modelItems = {};                    // Dataset db items
+        //sails.log('g.dataSet',g.dataSet);
+
+        // convert to assoc array in confItems
+        for(var i in g.dataSet) {
+            thisb._dataSets[g.dataSet[i].path] = g.dataSet[i];
+            thisb._dataSets[g.dataSet[i].path].name = i;
+        }
+
+        Dataset.find({}, function(err,mItems) {
+            if (err) {
+                cb(err);
+                return;
+            }
+            // convert to assoc array in modelItems
+            for( var i in mItems) modelItems[mItems[i].path] = mItems[i];
+
+            async.each(thisb._dataSets,function(item,cb1) {
+                //console.log('item',item,modelItems);
+                if (typeof modelItems[item.path] !== 'undefined') {     
+
+                    thisb._dataSets[item.path].id = modelItems[item.path].id
+                    thisb._dataSets[item.id] = thisb._dataSets[item.path]
+
+                    Track.syncTracks(item.path);
+                    
+                    return cb1();
+                }
+                // dataset is confItems, not in model Items --> add dataset to db
+                else {
+                    var data = {
+                        name: item.name,
+                        path: item.path
+                    }
+                    Dataset.create(data,function(err, newDataset) {
+                        if (err) {
+                            var msg = 'failed to create dataset (it may exists) = path '+i;
+                            return cb1(err);
+                        }
+
+                        data.id = newDataset.id;
+                        
+                        // create two refs
+                        thisb._dataSets[data.id] = data;
+                        thisb._dataSets[data.path] = data;
+
+                        sails.log("Dataset.create",data);
+
+                        Track.syncTracks(data.path);
+
+                        Dataset.publishCreate(newDataset);
+                        
+                        return cb1();
+                    });
+                }
+            },function asyncEachDone(err) {
+                if (err) {
+                    sails.log.error("asyncEachDone failed",err);
+                    return cb(err);
+                }
+                deleteItems();
+                return cb();
+            });
+            
+            // delete datasets if they dont exist in config
+            function deleteItems() {
+                async.each(modelItems,function(item, cb) {
+                    if (typeof thisb._dataSets[item.path] === 'undefined') {
+                        //sails.log('deleting dataset',j);
+
+                        Dataset.destroy(item.id,function(err) {
+                            if (err) {
+                                sails.log.error('Dataset.destroy failed - id=',item.id);
+                                return cb(err);
+                            }
+                            sails.log("Dataset.destroy",item.id);
+                            // notify listeners
+                            Dataset.publishDestroy(item.id);   // announce
+                            return cb();
+                        });
+                    }
+                }, function(err) {
+                    if (err) {
+                        sails.log.error("deleteItems failed");
+                        //return cb(err);
+                    }
+                    //return cb();
+                });
+            }
+        });
     }
 };
 
-/**
- * Sync datasets, defined in globals with database.
- * 
- * todo: need to improve, perhaps use async?
- * 
- * @param (function) cb - callback function
- */
-function syncDatasets(cb) {
-    sails.log.debug('syncDatasets()');
-    var g = sails.config.globals.jbrowse;
-    
-    // this will be an assoc array referenced by dataset id and path
-    g.datasets = {};
-    
-    // these will be associative arrays
-    var confItems = {};             // dataset items in globals.jbrowse.dataSet
-    var modelItems = {};            // Dataset db items
-    //sails.log('g.dataSet',g.dataSet);
-    
-    // convert to assoc array in confItems
-    for(var i in g.dataSet) confItems[g.dataSet[i].dataPath] = true;
-    
-    Dataset.find({}, function(err,mItems) {
-        if (err) {
-            cb(err);
-            return;
-        }
-        //sails.log('mItems',mItems);
-        // convert to assoc array in modelItems
-        for( var i in mItems) modelItems[mItems[i].path] = mItems[i];
-        
-        //for(var x in modelItems) sails.log('modelItem',x,modelItems[x]);
-        
-        // add or insert datasets
-        for (var i in confItems) {
-            if (typeof modelItems[i] !== 'undefined') {
-                
-                // create two references, one id based, one path-based
-                g.datasets[i] = modelItems[i];
-                g.datasets[modelItems[i].id] = modelItems[i];
-                
-                Track.syncTracks(modelItems[i]);
-            }
-            else {    
-                Dataset.create({path:i},function(err, newDataset) {
-                    if (err) {
-                        var msg = 'failed to create dataset (it may exists) = path '+i;
-                        cb({result: err, msg: msg});
-                        return sails.log(msg);
-                    }
-                    //sails.log('dataset create',i);
-                    
-                    // create two refs
-                    g.datasets[i] = newDataset;
-                    g.datasets[newDataset.id] = newDataset;
-                    
-                    Track.syncTracks(newDataset);
-                    
-                    Dataset.publishCreate(newDataset);
-                    
-                });
-            }
-        }
-        // delete datasets if they dont exist in config
-        for (var j in modelItems) {
-            //sails.log('confItem',modelItems[j],confItems[j]);
-            //sails.log('exists confItems',i,typeof confItems[i]);
-            if (typeof confItems[j] === 'undefined') {
-                //sails.log('deleting dataset',j);
-                Dataset.destroy({id:modelItems[j].id},function(err) {
-                    if (err) {
-                        var msg = 'dataset delete failed - id='+modelItems[j].id;
-                        var err1 = {result:err,msg:msg};
-                        cb(err1);
-                        return (msg);
-                    }
-                    // notify listeners
-                    Dataset.publishDestroy(modelItems[j]);
-                });
-            }
-        }
-        
-    });
-}
