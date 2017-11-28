@@ -48,9 +48,14 @@ module.exports = function (sails) {
                 sails.log(">>> jbcore sails lifted");
                 
                 setTimeout(function() {
-                    Service.init(function() {
+                    Service.init({},function() {
 
-                        Job.start(function() {
+                        Dataset.init({},function(){
+                            Track.init({}, function() {
+                                
+                            });
+                        });
+                        Job.init({},function() {
                             //sails.log("Job.start done");
                             //return cb();
                         });
