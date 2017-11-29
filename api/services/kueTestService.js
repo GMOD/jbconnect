@@ -14,7 +14,7 @@ module.exports = {
         kue_test_case1:     'post'
     },
     init: function(params,cb) {
-        sails.log("kueTestService init");
+        //sails.log("kueTestService init");
         return cb();
     },
     kue_create: function(req, res) {

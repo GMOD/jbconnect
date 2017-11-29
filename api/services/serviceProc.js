@@ -55,7 +55,7 @@ module.exports = {
             var services = g.services;      // services defined in global.js, including hooks.
 
             //sails.log("services found: ");
-            for(var i in services) sails.log("service",services[i].name);
+            //for(var i in services) sails.log("service",services[i].name);
             
             _init();
             
@@ -78,7 +78,7 @@ module.exports = {
                         sails.log("Services init failed:",err);
                         return cb2();
                     }
-                    sails.log("Services init completed");
+                    //sails.log("Services init completed");
                     
                     deleteUndefinedFromDb()                    
                     
@@ -111,7 +111,7 @@ module.exports = {
                         sails.log("Services init failed:",err);
                         return;
                     }
-                    sails.log("Services init completed");
+                    //sails.log("Services init completed");
                 });
                 
             }
@@ -149,7 +149,7 @@ module.exports = {
         
         Service.updateOrCreate({name:service.name},service).then(function(record) {
             _addService(handler,service.name);
-            sails.log('service added',service.name);
+            //sails.log('service added',service.name);
             return cb2();
         }).catch(function(err) {
             sails.log('error adding service',service.name, err);

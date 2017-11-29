@@ -243,7 +243,7 @@ module.exports = {
     syncTracks: function(ds) {
         var g = sails.config.globals.jbrowse;
 
-        console.log("Track.sync dataset",ds);
+        //console.log("Track.sync dataset",ds);
 
         // todo: handle trackList.json open error / not found
         var trackListPath = g.jbrowsePath + ds + '/' + 'trackList.json';

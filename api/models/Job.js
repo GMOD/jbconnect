@@ -52,7 +52,7 @@ module.exports = {
      * 
      */
     init: function(params,cb) {
-        sails.log.info('job start');
+        sails.log.info('Job Engine Starting');
         var g = sails.config.globals.jbrowse;
         var thisb = this;
         
