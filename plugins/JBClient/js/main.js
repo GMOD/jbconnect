@@ -100,7 +100,7 @@ return declare( JBrowsePlugin,
 
             // new track event handlers
             io.socket.on('track', function(event){
-                console.log('event track',event);
+                //console.log('event track',event);
                 switch(event.verb) {
                     case 'created':
                         newTrackHandler ('new',event.data.trackData);
@@ -117,6 +117,19 @@ return declare( JBrowsePlugin,
             setTimeout(function() {
                 initQueue();
             },1000);
+            
+            // event handlers for server events
+            function newTrackHandler(eventType,data) {
+
+                console.log("trackhandler "+eventType,data);
+                data.baseUrl = browser.config.baseUrl+browser.config.dataRoot+'/';
+                var notifyStoreConf = dojo.clone (data);
+                var notifyTrackConf = dojo.clone (data);
+                notifyStoreConf.browser = browser;
+                notifyStoreConf.type = notifyStoreConf.storeClass;
+                notifyTrackConf.store = browser.addStoreConfig(undefined, notifyStoreConf);
+                browser.publish ('/jbrowse/v1/v/tracks/' + eventType, [notifyTrackConf]);
+            };
         }
     },
     setupJobPanel: function() {
