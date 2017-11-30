@@ -10,7 +10,8 @@
     "postinstall": "node ./bin/postinstall.js",
     "test": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test phantomjs",
     "xtest": "nyc node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test default",
-    "gendocs": "node docs/gendocs_run.js"
+    "gendocs": "node docs/gendocs_run.js",
+    "phantomjs": "node node_modules/phantomjs-prebuilt/bin/phantomjs"
   },
   "dependencies": {
     "app-root-path": "^2.0.1",
@@ -54,6 +55,7 @@
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "phantomjs-prebuilt": "^2.1.14",
     "rc": "1.1.6",
     "redis": "^2.6.3",
     "redis-server": "0.0.3",
@@ -81,7 +83,6 @@
     "mocha": "*",
     "nightwatch": "*",
     "nyc": "^11.0.3",
-    "phantomjs-prebuilt": "^2.1.14",
     "selenium-webdriver": "^3.4.0",
     "supertest": "^3.0.0",
     "util": "^0.10.3"
