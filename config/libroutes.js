@@ -16,6 +16,7 @@ module.exports = {
             // npm library      route
             'jquery':                   '/jblib/jquery',
             'bootstrap':                '/jblib/bootstrap',
-            'jquery.mb.extruder':       '/jblib/mb.extruder',
+            'jquery-ui-dist':           '/jblib/jquery-ui',
+            'jquery.mb.extruder':       '/jblib/mb.extruder'
     }
 };
