@@ -4,6 +4,10 @@
  */
 
 var fs = require("fs-extra");
+var approot = require("app-root-path");
+
+var phantomjs = require('phantomjs-prebuilt');
+var binPath = phantomjs.path;
 
 module.exports = {
 
@@ -35,7 +39,7 @@ module.exports = {
         });
     },
     /**
-     * This is used to send result data from the phantomjs component
+     * This is used to receive result data from the phantomjs component (not currently used)
      * @param {object} req
      *      jobid           job that is managing this session
      *      end             true if this is the end of the series
@@ -79,7 +83,7 @@ module.exports = {
 
         // create the kue job entry
         var jobdata = {
-            service: "seqSearchService",
+            service: "serverSearchService",
             workflow: workflow,
             name: searchParams.expr+' search',
             searchParams: searchParams, 
@@ -104,11 +108,40 @@ module.exports = {
 
         kJob.data.asset = kJob.id+"_search_"+ new Date().getTime();
         searchParamFile = kJob.data.asset+".json";
-        kJob.data.path = g.jbrowsePath + '/' + kJob.data.dataset.path +'/'+ g.jblast.blastResultPath;
+        kJob.data.path = g.jbrowsePath + kJob.data.dataset.path +'/'+ g.serverSearch.resultPath;
         kJob.data.outfile = kJob.data.asset+".gff";
 
         kJob.update(function() {});
 
+        // make sure result path directory exists
+        var error = false;
+        try {
+            fs.ensureDirSync(kJob.data.path);
+        }
+        catch (e) {
+            var msg = 'failed to create dir: '+kJob.data.path+' '+e;
+            sails.log.error(msg);
+            kJob.kDoneFn(new Error(msg));
+            error = true;
+        }
+        if (error) return;
+        
+        // copy the process script to the jbrowse directory
+        var error = false;
+        var src     = approot + "/bin/" + g.serverSearch.processScript;
+        var dest    = g.jbrowsePath + g.serverSearch.processScript;
+        try {
+            sails.log('copy',src,dest);
+            fs.copySync(src,dest);
+        }
+        catch (e) {
+            var msg = 'failed to copy file to jbrowse path: '+src+' to '+dest+' '+e;
+            sails.log.error(msg);
+            kJob.kDoneFn(new Error(msg));
+            error = true;
+        }
+        if (error) return;
+            
         thisb._createSearchParamFile(kJob);
 
         // delay 5 seconds for nothing, really (just so it sits in the queue for longer)
@@ -152,19 +185,23 @@ module.exports = {
         var thisb = this;
         var g = sails.config.globals.jbrowse;
         
-        var workflowFile = g.searchSeq.workflowScript;              //"ServerSearch.workflow.js";
+        var workflowFile = g.serverSearch.workflowScript;              //"ServerSearch.workflow.js";
         if (typeof kWorkflowJob.data.workflow !== 'undefined')
             workflowFile = kWorkflowJob.data.workflow;
         
         var wf = process.cwd()+'/workflows/'+workflowFile;
-        var outPath = g.jbrowsePath + kWorkflowJob.data.dataset.path + '/' + g.jblast.blastResultPath;
+        var outPath = g.jbrowsePath + kWorkflowJob.data.dataset.path + '/' + g.serverSearch.resultPath;
 
         sails.log('>>> Executing workflow',wf);
+        
+        //todo: verify existance of processScript in the jbrowse 
+        
+        var processScript = g.jbrowseRest+'/'+g.routePrefix+'/'+g.serverSearch.processScript;
         
         // pass to workflow script
         var program = phantomjs.exec(wf,
             g.routePrefix,                                                      // prefix
-            g.searchSeq.processScript,                                          // 'http://localhost:1337/jbrowse/SearchProcess.html',
+            processScript,                                          // 'http://localhost:1337/jbrowse/SearchProcess.html',
             kWorkflowJob.data.path+'/'+kWorkflowJob.data.outfile,               // output file (full path)
             JSON.stringify(kWorkflowJob.data.searchParams),                     // search parameters
             kWorkflowJob.id                                                     // job id
@@ -185,11 +222,11 @@ module.exports = {
         });        
     },
     _postProcess: function(kWorkflowJob) {
-        var blast2json = require("./blastxml2json");
-        var postAction = require("./postAction");
+        //var postAction = require("./postAction");
         
         // insert track into trackList.json
         this.postMoveResultFiles(kWorkflowJob,function(newTrackJson) {
+            console.log("newTrack",newTrackJson)
             postAction.addToTrackList(kWorkflowJob,newTrackJson);
         });
     },
@@ -202,11 +239,21 @@ module.exports = {
     postMoveResultFiles:function(kWorkflowJob,cb) {
 
         var g = sails.config.globals.jbrowse;
-        var newTrackPath = kWorkflowJob.data.path+'/'+g.jblast.insertTrackTemplate; //"inMemTemplate.json"
-
-        var newTrackData = fs.readFileSync(newTrackPath);
-        newTrackJson = JSON.parse(newTrackData);
-
+        var templateFile = approot+'/bin/'+g.serverSearch.trackTemplate;
+        var newTrackJson = {};
+        
+        var error = false;
+        try {
+            var newTrackData = fs.readFileSync(templateFile);
+            newTrackJson = JSON.parse(newTrackData);
+        }
+        catch(err) {
+            var msg = "failed to read template file: "+templateFile+' '+err;
+            sails.log.error(msg);
+            error = err;
+        }
+        if (error) return cb(error);
+        
         //if it's a single definition, coerce to an array
         if (Object.prototype.toString.call(newTrackJson) !== '[object Array]') {
             newTrackJson = [ newTrackJson ];
@@ -229,7 +276,7 @@ module.exports = {
         
         //newTrackJson[0].baseUrl = g.jbrowseRest+'/'+g.routePrefix+'/'+kWorkflowJob.data.dataset+'/';
         
-        newTrackJson[0].urlTemplate = g.jblast.blastResultPath+"/"+kWorkflowJob.data.outfile;  // gff, TODO (should not be blast result path)
+        newTrackJson[0].urlTemplate = g.serverSearch.resultPath+"/"+kWorkflowJob.data.outfile;  // gff, TODO (should not be blast result path)
 
         newTrackJson[0].label = kWorkflowJob.data.asset; 
         newTrackJson[0].key = trackLabel;     
