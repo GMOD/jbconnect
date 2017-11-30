@@ -23,6 +23,15 @@ var g = {
         jbrowseRest: "http://localhost:1337",
         jbrowsePath: jbPath,                        // or "/var/www/jbrowse/"
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
+        
+        serverSearch: {
+            resultPath: "ServerSearch",
+            resultCategory: "Search Results",
+            trackTemplate: "serverSearchTrackTemplate.json",
+            workflowScript: "ServerSearch.workflow.js",
+            processScript:   'ServerSearchProcess.html'
+            //processScript:   'http://localhost:1337/jbrowse/ServerSearchProcess.html'
+        },
         dataSet: {
              Volvox: {path: "sample_data/json/volvox"}
         },
