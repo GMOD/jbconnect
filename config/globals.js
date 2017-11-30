@@ -27,7 +27,8 @@ var g = {
              Volvox: {path: "sample_data/json/volvox"}
         },
         services: {
-            'kueTestService': {name: 'kueTestService',  type: 'service'}
+            'kueTestService': {name: 'kueTestService',  type: 'service'},
+            'serverSearchService': {name: 'serverSearchService',  type: 'service'}
         }
     }
 
