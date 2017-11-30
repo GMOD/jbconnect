@@ -13,7 +13,7 @@ var profile = {
 
     basePath: '../../../src',
     packages: [
-        {name: 'ServerSearchSeq', location: '../plugins/ServerSearchSeq/js' }
+        {name: 'ServerSearch', location: '../plugins/ServerSearch/js' }
     ],
 
     layerOptimize: 'closure',
@@ -21,10 +21,10 @@ var profile = {
     selectorEngine: 'acme',
 
     layers: {
-        'ServerSearchSeq/main': {
+        'ServerSearch/main': {
             include: [
                 'ServerSearchSeq',
-                'RegexSequenceSearch/View/SearchSeqDialog'
+                'ServerSearch/View/SearchSeqDialog'
             ],
             exclude: [ 'JBrowse' ]
         }
