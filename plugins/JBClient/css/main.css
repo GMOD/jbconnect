@@ -8,6 +8,11 @@ and open the template in the editor.
     Author     : Eric
 */
 
+@import url("CSSTableGenerator.css");
+@import url("JobPanel.css");
+@import url("/jblib/mb.extruder/css/mbExtruder.css");
+
+
 /* this hides the original share button */
 div.menuBar > span[widgetid*="dijit_form_Button_0"] {
     display:none;
@@ -96,3 +101,5 @@ div.menuBar > span[widgetid*="dijit_form_Button_0"] {
     top: -1px;
     height: 22px;	
 }
+
+

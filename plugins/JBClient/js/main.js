@@ -5,8 +5,6 @@ define([
         'dojo/dom-construct',
         'dojo/query',
         'JBrowse/Plugin'
-        //'/js/socket.io.js',
-        //'/js/sails.io.js'
     ],
        function(
         declare,
@@ -15,8 +13,6 @@ define([
         domConstruct,
         query,
         JBrowsePlugin
-        //socketIOClient,
-        //sailsIOClient
        ) {
 return declare( JBrowsePlugin,
 {
@@ -32,6 +28,7 @@ return declare( JBrowsePlugin,
             browser.publish ('/jbrowse/jbclient_ready',null);   // testing remove io
         },500);
         
+        // login panel (bootstrap.js)
         $.get("/loginstate",function(data) {
             console.log("loginstate",data);
             var txt = "";
@@ -89,8 +86,66 @@ return declare( JBrowsePlugin,
             $('#form-login').attr('action','/auth/local?next='+thisB.browser.makeCurrentViewURL());
             $('#button-logout').attr('href','/logout?next='+thisB.browser.makeCurrentViewURL());
 
+            thisB.setupJobPanel();
             thisB.setupEventTraps();
+            startQueue();
         });
+        //dojo.subscribe("/jbrowse/jbclient_ready", function(){
+        //    startQueue();
+        //});
+        
+        
+        function startQueue() {
+            console.log("jbclient_ready");
+
+            // new track event handlers
+            io.socket.on('track', function(event){
+                console.log('event track',event);
+                switch(event.verb) {
+                    case 'created':
+                        newTrackHandler ('new',event.data.trackData);
+                        break;
+                    case 'updated':
+                        newTrackHandler ('replace',event.data.trackData);
+                        break;
+                    default: 
+                        console.log('unhandled event');
+                }
+            });    
+
+            // queue events
+            setTimeout(function() {
+                initQueue();
+            },1000);
+        }
+    },
+    setupJobPanel: function() {
+        //$.get("plugins/JBClient/JobPanel.html", function(data){
+            console.log("Loading Job Panel");
+            
+            var data = "";
+            data += '<script type="text/javascript" src="/jblib/mb.extruder/inc/jquery.hoverIntent.min.js"></script>';
+            data += '<script type="text/javascript" src="/jblib/mb.extruder/inc/jquery.mb.flipText.js"></script>';
+            data += '<script type="text/javascript" src="/jblib/mb.extruder/inc/mbExtruder.js"></script>';
+            //<div id="extruderRight" class="{title:'Jobs ', url:'plugins/JBlast/JobPanel.html'}"></div>
+            data += '<div id="extruderRight" class="{title:\'Jobs \', url:\'plugins/JBClient/JobPanel.html\'}"></div>';
+            
+            $('body').append(data);
+
+            $("#extruderRight").buildMbExtruder({
+                position:"right",
+                width:300,
+                extruderOpacity:.8,
+                hidePanelsOnClose:true,
+                accordionPanels:true,
+                onExtOpen:function(){},
+                onExtContentLoad:function(){
+                    jobPanelInit();
+                },
+                onExtClose:function(){}
+            });
+        //});            
+        
     },
     setupEventTraps: function() {
         
@@ -110,3 +165,25 @@ return declare( JBrowsePlugin,
 
 });
 });
+
+function jobPanelInit() {              
+    console.log("jobPanelInit()");
+    
+    // fix position of flap
+    $("#extruderRight div.flap").addClass("flapEx");
+
+    // add gear icon (activity indicator)
+    //$("#extruderRight div.flap").prepend("<img class='cogwheel hidden' src='plugins/JBlast/img/st_active.gif' />");
+    $("#extruderRight div.flap").attr('title','Workflow queue');
+
+    $("#extruderRight .extruder-content").css('height','300px');
+    $("#extruderRight .extruder-content").css('border-bottom-left-radius','5px');
+
+
+
+    //adjust grid height
+    setInterval(function() {
+        var h = $("#extruderRight div.extruder-content").height();
+        $("#j-hist-grid").height(h-3);
+    },1000);
+}
