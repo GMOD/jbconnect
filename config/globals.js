@@ -27,7 +27,7 @@ var g = {
         serverSearch: {
             resultPath: "ServerSearch",
             resultCategory: "Search Results",
-            trackTemplate: "serverSearchTrackTemplate.json",
+            trackTemplate: "ServerSearchTrackTemplate.json",
             workflowScript: "ServerSearch.workflow.js",
             processScript:   'ServerSearchProcess.html'
             //processScript:   'http://localhost:1337/jbrowse/ServerSearchProcess.html'
