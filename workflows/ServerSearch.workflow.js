@@ -15,7 +15,7 @@ var outfile         = system.args[3];
 var searchParams    = system.args[4];
 var jobid           = system.args[5];
 
-console.log("args",prefix,url,outfile,searchParams);
+console.log("args",prefix,url,outfile,searchParams,jobid);
 
 var thePage = url;
 thePage += '?prefix='+prefix;
@@ -34,19 +34,21 @@ var intv = setInterval(function(){
         console.log("Got Data! writing...",outfile);
         fs.write(outfile,gmsg,'w');
         console.log("done writing")
-        phantom.exit();
+        phantom.exit(0);
     }
 },1000);
 
 
 page.open(thePage, function(status) {
-    console.log("Status: " + status);
+    console.log("PhantomJS Page Open Status: " + status);
     if(status === "success") {
         window.setTimeout(function () {
             //page.render('example.png');
-            phantom.exit();
+            phantom.exit(0);
         }, 10000); // Change timeout as required to allow sufficient time 
     }
+    else
+        phantom.exit(1);
 });
 page.onConsoleMessage = function(msg, lineNum, sourceId) {
     
