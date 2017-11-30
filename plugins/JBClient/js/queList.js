@@ -10,7 +10,7 @@ function initQueue() {
         var data = event.data;
         switch(event.verb) {
             case 'created':
-                console.log('event job create',event.data.id,data);
+                //console.log('event job create',event.data.id,data);
                 $('#j-hist-grid #head').after(
                         "<tr id='"+data.id+"'>"
                         +"<td>"+data.id+"</td>"
@@ -20,13 +20,13 @@ function initQueue() {
                         +"</tr>");                
                         break;
             case 'updated':
-                console.log('event update',data.id,data);
+                //console.log('event update',data.id,data);
                 $('#j-hist-grid #'+data.id+" .state").attr('questate',getQueState(data.state));
                 $('#j-hist-grid #'+data.id+" .name").html(data.data.name);
                 break;
             case 'destroyed':
-                console.log('event remove',data.id,data);
-                $("#j-hist-grid tr#"+data.id).remove();
+                //console.log('event remove',event.id);
+                $("#j-hist-grid tr#"+event.id).remove();
                 break;
                 }
     });
