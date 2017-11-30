@@ -3,15 +3,7 @@
  * service to handle  
  */
 
-var path = require('path');
-var resolvePath = require('resolve-path');
 var fs = require("fs-extra");
-var util = require("./utils");
-var shelljs = require('shelljs'); 
-
-var phantomjs = require('phantomjs-prebuilt');
-var binPath = phantomjs.path;
- 
 
 module.exports = {
 
