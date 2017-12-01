@@ -23,11 +23,7 @@
  * Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
  */
 
-//var deepdiff = require('deep-diff');
-//var deepcopy = require('deepcopy');
-var request = require('request');
 var async = require('async');
-var deepdiff = require("deep-object-diff").diff;
 var _ = require('lodash');
 
 module.exports = {
@@ -51,7 +47,7 @@ module.exports = {
      * start the monitor
      * 
      */
-    init: function(params,cb) {
+    Init: function(params,cb) {
         sails.log.info('Job Engine Starting');
         var g = sails.config.globals.jbrowse;
         var thisb = this;
@@ -62,13 +58,23 @@ module.exports = {
         //thisb._listJobs();
         
         setTimeout(function() {
-            //_test();
-            thisb._activeMonitor();
             thisb._syncJobs();
             thisb._jobRunner();
+            JobActive.Init(null,function() {});
+            //_debug1();
         },1000);
-
         
+        // display methods in Job
+        function _debug1() {
+            var fs = require('fs-extra');
+            console.log("debug1 - listing JobActive functions");
+            var li = Object.getOwnPropertyNames(JobActive).filter(function (p) {
+                return typeof JobActive[p] === 'function';
+            });
+            var li2 = "";
+            for(var i in li) li2 += li[i]+'\n';
+            fs.writeFileSync("Job-Methods.log",li2);
+        }
         function _test() {
             sails.log("***** testing *****");
             var queue = sails.config.globals.kue_queue;
@@ -104,6 +110,21 @@ module.exports = {
         
         cb();
 
+    },
+    /**
+     * Get list of tracks based on critera in params  
+     * @param {object} params - search critera (i.e. {id: 1,user:'jimmy'} )
+     * @param {function} cb - callback function(err,array)
+     */
+    Get: function(params,cb) {
+        this.find(params).then(function(foundList) {
+           return cb(null,foundList) 
+        }).catch(function(err){
+           return cb(err);
+        });
+    },
+    Submit: function(param,cb) {
+        
     },
     _jobRunner: function() {
         sails.log.info("Job Runner Started");
@@ -174,46 +195,6 @@ module.exports = {
           thisB._pushEvent('promotion',id,data,'update');
           thisB._processNextEvent();
         });        
-    },
-    /*
-     * Monitors how many active jobs there are.
-     * Writes 
-     * @returns {undefined}
-     */
-    _lastActiveCount: 0,
-    
-    _activeMonitor: function() {
-        sails.log.info("Active Job Monitor starting");
-        var g = sails.config.globals;
-        var thisb = this;
-        var queue = g.kue_queue;
-        
-        queue.activeCount(thisb._queueName, function( err, total ) {
-            console.log("active count",total);
-            thisb._lastActiveCount = total;
-            writeActive(total);
-        });
-        
-        setInterval(function() {
-            queue.activeCount(thisb._queueName, function( err, total ) {
-                //console.log("active count",total);
-                if (total !== thisb._lastActiveCount) {
-                    console.log("active job count - new",total);
-                    thisb._lastActiveCount = total;
-                    writeActive(total);
-                }
-            });
-        },2000);
-        
-        function writeActive(val) {
-            JobActive.updateOrCreate({id:1},{active:val}).then(function(record) {
-                //sails.log('active written',record);
-                JobActive.publishUpdate(1,record);
-            }).catch(function(err) {
-                sails.log('error writing active job flag', err);
-            });
-            
-        }
     },
     /*
      * the push event framework ensures that only one event is processed at a time.
@@ -346,7 +327,7 @@ module.exports = {
             }
             else {
                 Job.update({id:r.sJob.id},diff).then(function(updated) {
-                   sails.log("_updateJob sJob updated",updated[0].id,updated[0]); 
+                   //sails.log("_updateJob sJob updated",updated[0].id,updated[0]); 
                    Job.publishUpdate(updated[0].id,updated[0]);       // announce update
                    return cbx();
 
