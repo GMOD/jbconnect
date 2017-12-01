@@ -132,7 +132,7 @@ module.exports = {
      */
     Submit: function(params,cb) {
         
-        sails.log('Job.Submit',params);
+        //sails.log('Job.Submit',params);
         
         // validate the service
         var err = Service.ValidateJobService(params.service); 
@@ -154,7 +154,7 @@ module.exports = {
         // generate name
         jobdata.name = service.generateName(params);
         //jobdata.searchParams = this._fixParams(jobdata.searchParams);  // necessary?
-        jobdata.dataset = {path:jobdata.dataset};
+        //jobdata.dataset = {path:jobdata.dataset};
 
         // create queue entry
         
