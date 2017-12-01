@@ -1,3 +1,7 @@
+/*
+ * This manages the queue side panel
+ * todo: do a better separation - model/view/controller
+ */
 function initQueue() {
     
     // subscribe to all job objects including new
@@ -37,61 +41,6 @@ function initQueue() {
         else $("div.flapEx").addClass("cogwheel");
     });    
     
-    
-    /*
-     * queue events
-     */
-    /*
-    io.socket.on('queue-active', function (data){
-        console.log('event','queue-active',data);
-        if (data.count===0) $("div.flapEx").removeClass("cogwheel");
-        else $("div.flapEx").addClass("cogwheel");
-    });		
-    io.socket.on('queue-enqueue', function (data){
-        console.log('event','queue-enqueue',data.type,data.id,data);
-        $('#j-hist-grid #head').after(
-                "<tr id='"+data.id+"'>"
-                +"<td>"+data.id+"</td>"
-                +"<td class='state' questate='"+getQueState(data.state)+"'></td>"
-                +"<td class='progress'>"+data.progress+"</td>"
-                +"<td class='name'>"+data.name+"</td>"
-                +"</tr>");                
-    });		
-    io.socket.on('queue-start', function (data){
-        console.log('event','queue-start',data.type,data.id,data);
-        $('#j-hist-grid #'+data.id+" .state").attr('questate',getQueState(data.state));
-        $('#j-hist-grid #'+data.id+" .name").html(data.data.name);
-    });		
-    io.socket.on('queue-failed', function (data){
-        console.log('event','queue-failed',data.type,data.id,data);
-        $('#j-hist-grid #'+data.id+" .state").attr('questate',getQueState(data.state));
-        $('#j-hist-grid #'+data.id+" .name").html(data.data.name);
-    });		
-    io.socket.on('queue-failed-attempt', function (data){
-        console.log('event','queue-failed-attempt',data.type,data.id,data);
-        $('#j-hist-grid #'+data.id+" .state").attr('questate',getQueState(data.state));
-        $('#j-hist-grid #'+data.id+" .name").html(data.data.name);
-    });		
-    io.socket.on('queue-progress', function (data){
-        console.log('event','queue-progress',data.type,data.id,data);
-        $('#j-hist-grid #'+data.id+" .progress").html(data.progress);
-        if (typeof data.data !== 'undefined' && typeof data.data.name !== 'undefined')
-            $('#j-hist-grid #'+data.id+" .name").html(data.data.name);
-    });		
-    io.socket.on('queue-complete', function (data){
-        console.log('event','queue-complete',data.type,data.id,data);
-        $('#j-hist-grid #'+data.id+" .state").attr('questate',getQueState(data.state));
-        $('#j-hist-grid #'+data.id+" .name").html(data.data.name);
-    });		
-    io.socket.on('queue-remove', function (data){
-        console.log('event','queue-remove',data.type,data.id,data);
-        $("#j-hist-grid tr#"+data.id).remove();
-    });
-    /*
-    io.socket.on('queue-promotion', function (data){
-        console.log('event','queue-promotion',data.type,data.id,data);
-    });		
-    */    
     doGetQueue();
 }
 
@@ -100,19 +49,7 @@ function doGetQueue() {
     var typeToWatch = 'workflow';
     
     getJobs(function(data){
-        //jdata = $.parseJSON(data);
         jdata = JSON.parse(data);
-        //console.log('jobs', jdata.length, jdata);
-
-        // filter type: galaxy-job
-        //console.log("jdata len",jdata.length);
-        /*
-        var i = jdata.length;
-        while(i--) {
-            if (jdata[i].type!==typeToWatch)
-                jdata.splice(i, 1);    
-        }
-        */
         console.log("jobs ",jdata.length,jdata);
 
         jdata.sort(function(a,b) {
@@ -140,10 +77,8 @@ function doGetQueue() {
 }
 function getJobs(callback) {
 
-    //console.log("Load History");
     $.ajax({
-        //url: "/api/jobs/0..10000",
-        url: "/job",
+        url: "/job/get",
         dataType: "text",
         success: function (data) {
           callback(data);
@@ -152,35 +87,6 @@ function getJobs(callback) {
     });
 };
 
-// convert state info image or text
-/*
-function getQueState(state,data){
-    switch(state) {
-        case "active":
-            $("img.cogwheel").removeClass("hidden");        // turn on the tab progress cog
-            return "<img style='width:20px' src='img/st_processing.gif' title='"+state+"' alt='"+state+"' />";
-        case "complete":
-            return "<img style='width:20px' src='img/st_green_check.png' title='"+state+"' alt='"+state+"' />";
-        case "failed":
-            var errmsg = "undefined error";
-            if (typeof data !== 'undefined' && typeof data.error !== 'undefined') {
-                errmsg = data.error;
-                //if (errmsg.length > 100)
-                //    errmsg = errmsg.substring(0, 99);
-            }
-            errmsg = state+' - '+errmsg;
-            return "<img style='width:20px' src='img/st_red_x.png' title='"+errmsg+"' alt='"+errmsg+"' />";
-        default:
-            var st = state;
-            if (typeof state === 'undefined') 
-                st = state = typeof state;
-            if (state.length > 3)
-                st = state.substring(0, 3);
-            
-            return "<span style='color:red;font-weight:bold' title='"+state+"' alt='"+state+"'>"+st+"</span>";
-    }
-}
-*/
 function getQueState(state) {
     switch(state) {
         case 'active':
