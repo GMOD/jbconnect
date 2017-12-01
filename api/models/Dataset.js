@@ -35,11 +35,23 @@ module.exports = {
      * @param {function} cb - callback function 
      * @returns {undefined}
      */
-    init: function(params,cb) {
-        this.syncDatasets(cb);
+    Init: function(params,cb) {
+        this.Sync(cb);
         
         // todo: need to handle this in callback
         //cb();
+    },
+    /**
+     * Get list of tracks based on critera in params  
+     * @param {object} params - search critera (i.e. {id: 1,user:'jimmy'} )
+     * @param {function} cb - callback function(err,array)
+     */
+    Get: function(params,cb) {
+        this.find(params).then(function(foundList) {
+           return cb(null,foundList) 
+        }).catch(function(err){
+           return cb(err);
+        });
     },
     /*
      * 
@@ -47,7 +59,7 @@ module.exports = {
      * @returns {object} - dataset object
      *      dataset (string - i.e. "sample_data/json/volvox" if input was an id
      */
-    resolve: function(dval){
+    Resolve: function(dval){
         if (typeof this._dataSets[dval] !== 'undefined')
             return this._dataSets[dval];
         sails.log.error('Dataset.resolve not found (we shouldnt get here',dval);
@@ -60,7 +72,7 @@ module.exports = {
      * 
      * @param (function) cb - callback function
      */
-    syncDatasets:function(cb) {
+    Sync:function(cb) {
         sails.log.debug('syncDatasets()');
         var g = sails.config.globals.jbrowse;
         var thisb = this;
@@ -93,7 +105,7 @@ module.exports = {
                     thisb._dataSets[item.path].id = modelItems[item.path].id
                     thisb._dataSets[item.id] = thisb._dataSets[item.path]
 
-                    Track.syncTracks(item.path);
+                    Track.Sync(item.path);
                     
                     return cb1();
                 }
@@ -117,7 +129,7 @@ module.exports = {
 
                         sails.log("Dataset.create",data);
 
-                        Track.syncTracks(data.path);
+                        Track.Sync(data.path);
 
                         Dataset.publishCreate(newDataset);
                         
