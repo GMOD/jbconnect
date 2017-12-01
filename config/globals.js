@@ -30,13 +30,12 @@ var g = {
             trackTemplate: "ServerSearchTrackTemplate.json",
             workflowScript: "ServerSearch.workflow.js",
             processScript:   'ServerSearchProcess.html'
-            //processScript:   'http://localhost:1337/jbrowse/ServerSearchProcess.html'
         },
         dataSet: {
              Volvox: {path: "sample_data/json/volvox"}
         },
         services: {
-            'kueTestService': {name: 'kueTestService',  type: 'service'},
+            //'kueTestService': {name: 'kueTestService',  type: 'service'},
             'serverSearchService': {name: 'serverSearchService',  type: 'service'}
         }
     }
