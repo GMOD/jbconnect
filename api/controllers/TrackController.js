@@ -10,17 +10,30 @@
  */
 
 module.exports = {
+    get: function(req,res) {
+        var params = req.allParams();
+        sails.log("/track/get",params);
+        if (req.method === 'GET') {
+            Track.Get(params,function(err,records) {
+                if (err) res.serverError(err);
+                if (records.length===0) return res.notFound();
+                return res.ok(records);
+            });
+        } 
+        else 
+            return res.forbidden('requires POST');
+    },
     /**
      * 
      * @param {object} req
      * @param {object} res
      * @returns {unresolved}
      */
-    addTrack: function(req,res) {
+    add: function(req,res) {
         var params = req.allParams();
         var track = params.track;
         if (req.method === 'POST') {
-            Track.addTrack(track,function(err,created) {
+            Track.Add(track,function(err,created) {
                 if (err) return res.serverError({err:err,track:track});
                 return res.ok(created);
             });
@@ -28,11 +41,11 @@ module.exports = {
         else 
             return res.forbidden('requires POST');
     },
-    modifyTrack: function(req,res) {
+    modify: function(req,res) {
         var params = req.allParams();
         var track = params.track;
         if (req.method === 'POST') {
-            Track.modifyTrack(track,function(err,modified) {
+            Track.Modify(track,function(err,modified) {
                 if (err) return res.serverError({err:err,track:track});
                 return res.ok(modified);
             });
@@ -41,11 +54,11 @@ module.exports = {
             return res.forbidden('requires POST');
         
     },
-    removeTrack: function(req,res) {
+    remove: function(req,res) {
         var params = req.allParams();
         var id = params.trackId;
         if (req.method === 'POST') {
-            Track.destroyTrack(id,function(err) {
+            Track.Remove(id,function(err) {
                 if (err) return res.serverError({err:err});
                 return res.ok();
             });
