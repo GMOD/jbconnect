@@ -53,7 +53,7 @@ module.exports = {
         
         function writeActive(val) {
             JobActive.updateOrCreate({id:1},{active:val}).then(function(record) {
-                sails.log('active written',record);
+                //sails.log('active written',record);
                 JobActive.publishUpdate(1,record);
             }).catch(function(err) {
                 sails.log('writeActive() error writing active job flag', err);
