@@ -69,7 +69,7 @@ module.exports = {
         return params.searchParams.expr+' search';
     },
     /*
-     * submit workflow.
+     * submit workflow. (obsolete)
      * 
      * @param {object} params
      *      searchParams - search parameters
@@ -115,7 +115,7 @@ module.exports = {
 
         kJob.data.asset = kJob.id+"_search_"+ new Date().getTime();
         searchParamFile = kJob.data.asset+".json";
-        kJob.data.path = g.jbrowsePath + kJob.data.dataset.path +'/'+ g.serverSearch.resultPath;
+        kJob.data.path = g.jbrowsePath + kJob.data.dataset +'/'+ g.serverSearch.resultPath;
         kJob.data.outfile = kJob.data.asset+".gff";
 
         kJob.update(function() {});
@@ -197,7 +197,7 @@ module.exports = {
             workflowFile = kWorkflowJob.data.workflow;
         
         var wf = process.cwd()+'/workflows/'+workflowFile;
-        var outPath = g.jbrowsePath + kWorkflowJob.data.dataset.path + '/' + g.serverSearch.resultPath;
+        var outPath = g.jbrowsePath + kWorkflowJob.data.dataset + '/' + g.serverSearch.resultPath;
 
         sails.log('>>> Executing workflow',wf);
         

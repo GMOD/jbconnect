@@ -16,7 +16,7 @@ module.exports = {
 
         var track = newTrack[0];
 
-        var dataset = kJob.data.dataset.path;
+        var dataset = kJob.data.dataset;
         var trackname = track.label;
 
         Track.Add(dataset,track,function(err,added) {
