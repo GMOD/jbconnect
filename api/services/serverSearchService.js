@@ -226,7 +226,7 @@ module.exports = {
         
         // insert track into trackList.json
         this.postMoveResultFiles(kWorkflowJob,function(newTrackJson) {
-            console.log("newTrack",newTrackJson)
+            //console.log("newTrack",newTrackJson)
             postAction.addToTrackList(kWorkflowJob,newTrackJson);
         });
     },
@@ -269,7 +269,7 @@ module.exports = {
             }
         });
         
-        var trackLabel = kWorkflowJob.data.searchParams.expr+' results';
+        var trackLabel = kWorkflowJob.id+' '+kWorkflowJob.data.searchParams.expr+' results';
         
         // remove baseUrl
         if (typeof newTrackJson[0].baseUrl !== 'undefined') delete newTrackJson[0].baseUrl;

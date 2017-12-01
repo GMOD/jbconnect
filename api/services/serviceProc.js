@@ -46,6 +46,7 @@ module.exports = {
     
     init: function(params, cb2) {
         sails.log.debug(">>> Service.init()");
+        var thisb = this;
         //var cb2 = cb;
         
         // we must do a deferred action in init, so since we commented out the destroy...
@@ -70,7 +71,7 @@ module.exports = {
                     var s = params;
                     params.handler = eval(service.name);
 
-                    Service.addService(params,cb1);
+                    thisb.addService(params,cb1);
 
                 }, function completedAddingServices(err) {
 

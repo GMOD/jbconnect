@@ -11,7 +11,7 @@ module.exports = {
      * @param {JSON} newTrackJson
      */
     addToTrackList: function(kJob,newTrack) {
-        sails.log("addToTrackList",newTrack);
+        //sails.log("addToTrackList",newTrack);
         var g = sails.config.globals.jbrowse;
 
         var track = newTrack[0];
@@ -19,7 +19,7 @@ module.exports = {
         var dataset = kJob.data.dataset.path;
         var trackname = track.label;
 
-        Track.addTrack(dataset,track,function(err,added) {
+        Track.Add(dataset,track,function(err,added) {
             if (err) {
                 sails.log('failed to add track',trackname);
                 return kJob.kDoneFn(new Error("failed to add track"));
