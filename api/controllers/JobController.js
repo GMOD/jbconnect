@@ -25,6 +25,18 @@ module.exports = {
         else 
             return res.forbidden('requires POST');
     },
+    submit: function(req,res) {
+        var params = req.allParams();
+        sails.log("/job/submit",params);
+        if (req.method === 'POST') {
+            Job.Submit(params,function(err,result) {
+                if (err) res.serverError(err);
+                return res.ok(result);
+            });
+        } 
+        else 
+            return res.forbidden('requires POST');
+    }
 	
 };
 

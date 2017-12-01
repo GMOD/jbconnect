@@ -12,7 +12,7 @@ var binPath = phantomjs.path;
 module.exports = {
 
     fmap: {
-        submit_search:          'post',
+//        submit_search:          'post',
         send_search_result:     'post'
     },
     init: function(params,cb) {
@@ -60,7 +60,14 @@ module.exports = {
         this._postProcess(kJob);
         
     },
-    
+    validateParams: function(params) {
+        if (typeof params.searchParams === 'undefined') return "searchParams not defined";
+        if (typeof params.searchParams.expr === 'undefined') return "search string undefined";
+        return 0;   // success
+    },
+    generateName(params) {
+        return params.searchParams.expr+' search';
+    },
     /*
      * submit workflow.
      * 

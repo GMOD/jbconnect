@@ -19,7 +19,7 @@ define([
 return declare( JBrowsePlugin,
 {
     constructor: function( args ) {
-        console.log("plugin: ServerSearchSeq");
+        console.log("plugin: ServerSearch");
         this._searchTrackCount = 0;
 
         var thisB = this;
@@ -53,10 +53,13 @@ return declare( JBrowsePlugin,
                 confirmBox.show();
 
                 var postData = {
-                    searchParams: searchParams,
-                    dataset: thisB.browser.config.dataRoot
+                    service: "serverSearchService",
+                    dataset: thisB.browser.config.dataRoot,
+                    searchParams: searchParams
                 };
-                $.post( "/service/exec/submit_search", postData, function(data) {
+                var url = "/service/exec/submit_search";
+                url = "/job/submit";
+                $.post(url, postData, function(data) {
                     console.log( 'submit_search result',data );
                     
                     // close confirm box after 2 sec

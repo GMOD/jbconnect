@@ -123,7 +123,51 @@ module.exports = {
            return cb(err);
         });
     },
-    Submit: function(param,cb) {
+    /*
+     * required: 
+     *      service, dataset
+     * @param {object} params
+     * @param {function} cb - function(err,returndata)
+     * @returns {undefined}
+     */
+    Submit: function(params,cb) {
+        
+        sails.log('Job.Submit',params);
+        
+        // validate the service
+        var err = Service.ValidateJobService(params.service); 
+        if (err) {
+            sails.log.error(err);
+            return cb(err);
+        }
+        var service = eval(params.service);
+    
+        // validate service specific parameters
+        err = service.validateParams(params)
+        if (err) {
+            sails.log.error(err);
+            return cb(err);
+        }
+
+        var jobdata = params;
+        
+        // generate name
+        jobdata.name = service.generateName(params);
+        //jobdata.searchParams = this._fixParams(jobdata.searchParams);  // necessary?
+        jobdata.dataset = {path:jobdata.dataset};
+
+        // create queue entry
+        
+        var g = sails.config.globals;
+        var kJob = g.kue_queue.create(this._queueName, jobdata);
+        
+        kJob.save(function(err){
+            if (err) {
+                var msg = "failed to create job entry in queue";
+                return cb({status:'error',msg: "Error create kue workflow",err:err});
+            }
+            cb(0,{status:'success',jobId: kJob.id});
+        });
         
     },
     _jobRunner: function() {

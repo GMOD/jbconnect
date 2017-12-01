@@ -56,7 +56,20 @@ var Service = {
      * @param {type} cb
      * @returns {undefined}
      */
-    Add: serviceProc.addService
+    Add: serviceProc.addService,
+    /*
+     * given service name as a string,
+     * return 0 if it is a valid job service (that uses the job queue)
+     * return non-zero if it is not
+     */
+    ValidateJobService: function(service) {
+        var serviceFunc = eval(service);
+        if (typeof serviceFunc === 'undefined')                 return "undefined service";
+        if (typeof serviceFunc.beginProcessing !== 'function')  return "beginProcessing function does not exist in service";
+        if (typeof serviceFunc.validateParams !== 'function')   return "validateParams function does not exist in service";
+        if (typeof serviceFunc.generateName !== 'function')     return "generateName function does not exist in service";
+        return 0;
+    }
 
 };
 

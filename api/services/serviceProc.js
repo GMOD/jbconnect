@@ -118,7 +118,6 @@ module.exports = {
             }
         });
     },
-    
     addService: function(service,cb) {
         
         var handler = service.handler;
