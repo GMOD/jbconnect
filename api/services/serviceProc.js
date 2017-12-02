@@ -49,8 +49,6 @@ module.exports = {
         var thisb = this;
         //var cb2 = cb;
         
-        // we must do a deferred action in init, so since we commented out the destroy...
-
         Service.find({},function(err,foundServices) {
             var g = sails.config.globals.jbrowse;
             var services = g.services;      // services defined in global.js, including hooks.
@@ -68,6 +66,10 @@ module.exports = {
                         type:   service.type,
                         module: 'jblast'
                     };
+                    
+                    if (typeof service.alias !== 'undefined')
+                        params.alias = service.alias;
+                    
                     var s = params;
                     params.handler = eval(service.name);
 
@@ -158,6 +160,8 @@ module.exports = {
         
         function _addService(svc) {
             serviceProc.services[service.name] = handler;
+            
+            if (typeof service.alias !== 'undefined') serviceProc.services[service.alias] = handler;
 
             for(var cmd in handler.fmap) {
                 if (typeof serviceProc.cmdMap[cmd] === 'undefined')

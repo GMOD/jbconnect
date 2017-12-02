@@ -140,7 +140,11 @@ module.exports = {
             sails.log.error(err);
             return cb(err);
         }
-        var service = eval(params.service);
+        var service = Service.Resolve(params.service);
+        if (!service) {
+            sails.log.err('Submit - invalid service name',params.service);
+            return cb('invalid service');
+        }
     
         // validate service specific parameters
         err = service.validateParams(params)
@@ -170,6 +174,10 @@ module.exports = {
         });
         
     },
+    /*
+     *  This background process looks for queue entries that are ready to process and calls the beginProcessing() of the service.
+     *  This is the thing that starts service processing.
+     */
     _jobRunner: function() {
         sails.log.info("Job Runner Started");
         var gg = sails.config.globals;
@@ -189,9 +197,18 @@ module.exports = {
                     
                     queue.process(thisb._queueName, function(job, done){
                         sails.log.info("service process starting: %s job %d",job.data.service,job.id);
-                        var service = eval(job.data.service);
+                        //var service = eval(job.data.service);
+                        var service = Service.Resolve(job.data.service);
                         job.kDoneFn = done;
-                        service.beginProcessing(job);
+                        if (service) {
+                            service.beginProcessing(job);
+                        }
+                        else {
+                            var msg = "Job runner - Undefined service "+job.data.service;
+                            sails.log.error(msg);
+                            job.kDone(new Error(msg));
+                            
+                        }
                     });
                 }
             });
