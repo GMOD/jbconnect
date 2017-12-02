@@ -61,6 +61,7 @@ module.exports = {
             thisb._syncJobs();
             thisb._jobRunner();
             JobActive.Init(null,function() {});
+            //_debugPushEvents();
             //_debug1();
         },1000);
         
@@ -75,37 +76,17 @@ module.exports = {
             for(var i in li) li2 += li[i]+'\n';
             fs.writeFileSync("Job-Methods.log",li2);
         }
-        function _test() {
-            sails.log("***** testing *****");
-            var queue = sails.config.globals.kue_queue;
-
-            var job = queue.create(
-                'email', {
-                    title: 'welcome email for tj',
-                    to: 'tj@learnboost.com',
-                    template: 'welcome-email'
-                }
-            ).save( function(err){
-                if ( err ) {
-                    sails.log('job create error',err);
-                    return;
-                } 
-                console.log( "job id created",job.id );
-
-                return;
-                setTimeout(function() {
-                    console.log('2nd stage');  // we must add this line or _testdelete() is never called.  why?
-                    _testdelete(job); 
-                },2000);
-            });
-            
-        }
         function _testdelete(job) {
             sails.log('deleteing job',job.id)
             job.remove(function(err){
               if (err) throw err;
               console.log('removed completed job #%d', job.id);
             });            
+        }
+        function _debugPushEvents() {
+            setInterval(function() {
+                console.log('_eventProc',thisb._eventProc,thisb._eventList.length);
+            }, 3000);
         }
         
         cb();
@@ -217,11 +198,6 @@ module.exports = {
     _kueEventMonitor: function() {
         var g = sails.config.globals;
         var thisB = this;
-        /*  for debugging
-        setInterval(function() {
-            console.log('_eventProc',thisB._eventProc,thisB._eventList.length);
-        },3000);
-        */
         sails.log.info("Kue Event Monitor started");
         
         g.kue_queue.on('job enqueue', function(id, data){
