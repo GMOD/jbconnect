@@ -35,8 +35,20 @@ var g = {
              Volvox: {path: "sample_data/json/volvox"}
         },
         services: {
-            //'kueTestService': {name: 'kueTestService',  type: 'service'},
             'serverSearchService': {name: 'serverSearchService',  type: 'service'}
+        },
+        libRoutes: {
+            // npm library              route
+            'jquery':       {module: 'jquery',          vroute:'/jblib/jquery'},
+            'bootstrap':    {module: 'bootstrap',       vroute:'/jblib/bootstrap'},
+            'jqueryui':     {module: 'jquery-ui-dist',  vroute:'/jblib/jquery-ui'},
+            'mbextruder':   {module: 'jquery.mb.extruder', vroute:'/jblib/mb.extruder'}
+        },
+        webIncludes: {
+            "jquery":       {lib: "/jblib/jquery/dist/jquery.min.js" },
+            "jqueryui":     {lib: "/jblib/jquery-ui/jquery-ui.min.js" },
+            "bootstrap":    {lib: "/jblib/bootstrap/dist/js/bootstrap.min.js"},
+            "sailsiojs":    {lib: "/js/dependencies/sails.io.js"}
         }
     }
 
@@ -92,7 +104,7 @@ var g = {
 	// models: true
 };
 
-g.libroutes = require("./libroutes");
+//g.libroutes = require("./libroutes");
 var localconf = require("../config");
 
 g.jbrowse = merge(g.jbrowse,localconf.jbrowse);

@@ -33,7 +33,7 @@ module.exports = {
             var target = cwd+'/plugins/'+items[i];
 
             if (fs.lstatSync(target).isDirectory())
-                this.addRoute(params,'this module',pluginRoute,target);
+                this.addPluginRoute(params,'this module',pluginRoute,target);
         }
 
         // setup sub-module plugins
@@ -47,7 +47,7 @@ module.exports = {
                 var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
                 var target = cwd+'/'+submodules[j]+'/plugins/'+items[i];
                 if (fs.lstatSync(target).isDirectory())
-                    this.addRoute(params,moduleName,pluginRoute,target);
+                    this.addPluginRoute(params,moduleName,pluginRoute,target);
             }
         }
     },    
@@ -61,35 +61,17 @@ module.exports = {
         var libRoutes = sails.config.globals.libroutes;
         var sh = require('shelljs');
         var cwd = sh.pwd();
-
-        // look for config/libroute.js files in submodules
-        var routefile = glob.sync('node_modules/jbh-*/config/libroutes.js');
-        for(var k in routefile) {
-            sails.log.debug('>>> routefile',routefile[k]);
-            var moduleRoutes = require(cwd+'/'+routefile[k]);
-            libRoutes.lib = merge(libRoutes.lib,moduleRoutes.lib);
-        }
-        //sails.log.debug('>>> libRoutes',libRoutes);
-
-        for(var i in libRoutes.lib) {
-            // look for submodule
-            var submodules = glob.sync('node_modules/'+i);
-            for(var j in submodules) {
-                var tmp = submodules[j].split('/');                
-                var moduleName = tmp[tmp.length-1];
-                //sails.log.debug(">>> libroute",i,libRoutes.lib[i],cwd+'/'+submodules[j]);
-                
-                var pluginRoute = libRoutes.lib[i];
-                var target = cwd+'/'+submodules[j];
-                if (fs.lstatSync(target).isDirectory()) {
-                    //sails.log.info("adding libroute route %s %s",pluginRoute,target);
-                    this.addRoute(params,moduleName,pluginRoute,target);
-                }
-                break;
+        
+        for(var i in g.libRoutes) {
+            var moduleName = i;
+            var pluginRoute = g.libRoutes[i].vroute;
+            var target = cwd+'/node_modules/'+g.libRoutes[i].module;
+            if (fs.lstatSync(target).isDirectory()) {
+                this.addRoute(params,moduleName,pluginRoute,target);
             }
         }
-
     },
+    
     /**
      * Add a route
      * 
@@ -101,7 +83,13 @@ module.exports = {
     addRoute: function(params,module,route,target) {
         var app = params.app;
         var express = params.express;
-        sails.log.info("adding route (%s) %s %s",module,route,target);
+        sails.log.info("adding libroute (%s) %s %s",module,route,target);
+        app.use(route, express.static(target));
+    },
+    addPluginRoute: function(params,module,route,target) {
+        var app = params.app;
+        var express = params.express;
+        sails.log.info("adding plugin route (%s) %s %s",module,route,target);
         app.use(route, express.static(target));
     }
 };
