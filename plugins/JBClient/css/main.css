@@ -7,10 +7,8 @@ and open the template in the editor.
     Created on : Dec 20, 2016, 11:59:34 PM
     Author     : Eric
 */
-
 @import url("CSSTableGenerator.css");
 @import url("JobPanel.css");
-@import url("/jblib/mb.extruder/css/mbExtruder.css");
 
 
 /* this hides the original share button */
@@ -19,6 +17,7 @@ div.menuBar > span[widgetid*="dijit_form_Button_0"] {
 }
 
 .jb-share {
+    display:none;
     position: absolute;
     top:-3px;
     right:2px;
@@ -33,7 +32,8 @@ div.menuBar > span[widgetid*="dijit_form_Button_0"] {
 .jb-loginbox {
    position:absolute;
    top:-2px;
-   right:30px;
+   xright:30px;
+   right:5px;
 }
 
 .jb-dropdown {

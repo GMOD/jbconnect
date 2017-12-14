@@ -137,10 +137,6 @@ return declare( JBrowsePlugin,
             console.log("Loading Job Panel");
             
             var data = "";
-            data += '<script type="text/javascript" src="/jblib/mb.extruder/inc/jquery.hoverIntent.min.js"></script>';
-            data += '<script type="text/javascript" src="/jblib/mb.extruder/inc/jquery.mb.flipText.js"></script>';
-            data += '<script type="text/javascript" src="/jblib/mb.extruder/inc/mbExtruder.js"></script>';
-            //<div id="extruderRight" class="{title:'Jobs ', url:'plugins/JBlast/JobPanel.html'}"></div>
             data += '<div id="extruderRight" class="{title:\'Jobs \', url:\'plugins/JBClient/JobPanel.html\'}"></div>';
             
             $('body').append(data);
