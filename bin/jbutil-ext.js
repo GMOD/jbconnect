@@ -56,13 +56,19 @@ module.exports = {
  */
 function exec_setupindex(params) {
     var g = params.config;
+
+    var content = global.buildHtml();
     
-    var srcpath = path.normalize(approot+"/setup");
+    var srcpath = path.normalize(approot+"/bin");
     console.log("processing --setupindex");
     console.log(srcpath+'/index.html',g.jbrowsePath+'index.html');
-    var bakfile = safeCopy(srcpath+'/index.html',g.jbrowsePath+'/index.html');
+    
+    //var bakfile = safeCopy(srcpath+'/index.html',g.jbrowsePath+'/index.html');
+    var bakfile = safeWriteFile(content,g.jbrowsePath+'/index.html');
     if (bakfile)
         console.log('a backup of jbrowse/index.html was made in', bakfile);
+    else
+        console.log('index.html content unchanged.');
 }
 /**
  * copy src to targ, but if targ exists, it will backup the target by appending a number
@@ -92,4 +98,34 @@ function safeCopy(src,origTarg) {
 
     if (origTarg===newTarg) return null;
     return newTarg;
+}
+function safeWriteFile(content,origTarg) {
+    
+    var newTarg = origTarg;
+    var index = 0;
+    var backup = false;
+
+    // if new content is same as old content, abandon write
+    var origContent = fs.readFileSync(origTarg,'utf-8');
+    if (origContent === content) {
+        return 0;   // content is the same, skip
+    }
+
+    while(fs.pathExistsSync(newTarg)) {
+        backup = true;
+        
+        // create new target name (inc)
+        index++;
+        newTarg = path.dirname(origTarg) + path.basename(origTarg, '.html') + index + '.html';
+        //console.log("trying new",newTarg);
+    }
+    // make backup of origTarg
+    if (backup)
+        fs.copySync(origTarg,newTarg);
+
+    // copy ssource to origTarg
+    fs.writeFileSync(origTarg,content);
+
+    if (origTarg===newTarg) return null;
+    return newTarg;     // return the backed up filename
 }
