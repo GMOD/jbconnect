@@ -45,10 +45,18 @@ var g = {
             'mbextruder':   {module: 'jquery.mb.extruder', vroute:'/jblib/mb.extruder'}
         },
         webIncludes: {
-            "jquery":       {lib: "/jblib/jquery/dist/jquery.min.js" },
-            "jqueryui":     {lib: "/jblib/jquery-ui/jquery-ui.min.js" },
-            "bootstrap":    {lib: "/jblib/bootstrap/dist/js/bootstrap.min.js"},
-            "sailsiojs":    {lib: "/js/dependencies/sails.io.js"}
+            "css-bootstrap":         {lib: "/jblib/bootstrap/dist/css/bootstrap.min.css"},
+            "css-mbextruder":        {lib: "/jblib/mb.extruder/css/mbExtruder.css"},
+            "css-jqueryui":          {lib: "/jblib/jquery-ui/jquery-ui.min.css"},
+            "css-jqueryuistructure": {lib: "/jblib/jquery-ui/jquery-ui.structure.min.css"},
+            "css-jqueryuitheme":     {lib: "/jblib/jquery-ui/jquery-ui.theme.min.css"},
+            "js-sailsio":            {lib: "/js/dependencies/sails.io.js"},
+            "js-jquery":             {lib: "/jblib/jquery/dist/jquery.min.js" },
+            "js-jqueryui":           {lib: "/jblib/jquery-ui/jquery-ui.min.js" },
+            "js-bootstrap":          {lib: "/jblib/bootstrap/dist/js/bootstrap.min.js"},
+            "js-mbextruderHover":    {lib: "/jblib/mb.extruder/inc/jquery.hoverIntent.min.js"},
+            "js-mbextruderFlip":     {lib: "/jblib/mb.extruder/inc/jquery.mb.flipText.js"},
+            "js-mbextruder":         {lib: "/jblib/mb.extruder/inc/mbExtruder.js"}
         }
     }
 
