@@ -3,9 +3,9 @@
  * @description
  * publish globals in a well known location
  */
-var fs = require("fs");
+var fs = require("fs-extra");
 
-var kueJobMon = require('./kueJobMon');
+//var kueJobMon = require('./kueJobMon');
 
 
 /* 
