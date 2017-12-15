@@ -1,28 +1,25 @@
 #!/usr/bin/env node
 
-//var argv = require('yargs').argv;
-var glob = require('glob');
 var sh = require('shelljs');
-var fs = require('fs-extra');
-var merge = require('deepmerge');
 var getopt = require('node-getopt');
-var approot = require('app-root-path');
+var jblib = require('./bin/jblib');
 
-var cwd = sh.pwd();
+
 var subCount = 0;
 
 initFunctions();
 
-var mergedConfig = global.getMergedConfig();
+var mergedConfig = jblib.getMergedConfig();
 
 // local options
 var options = [
-    ['','config', 'display merged config']
+    ['','config', '(JBServer) display merged config']
     //['','testsetupindex','testsetupinex']
 ];
 
 // add jbh-* hook options
-global.doExtScripts(function(ext) {
+jblib.doExtScripts(function(ext,path) {
+    console.log('ext options',ext.getOptions(),path);
     options = options.concat(ext.getOptions());
 });
 
@@ -41,7 +38,7 @@ var helpTxt =
     "[[OPTIONS]]\n" +
     "\n";
 
-global.doExtScripts(function(ext) {
+jblib.doExtScripts(function(ext) {
     helpTxt += ext.getHelpText();
 });
 
@@ -58,7 +55,7 @@ if (!process.argv.slice(2).length) {
  * process commands
  ************************************************/
 
-global.doExtScripts(function(ext,path) {
+jblib.doExtScripts(function(ext,path) {
     //console.log("mergedConfig",mergedConfig);
     ext.process(opt,path,mergedConfig);
 });
@@ -83,81 +80,6 @@ function proc_Config() {
  * Utility functions
  ************************************************/
 function initFunctions() {
-    /**
-     * Traverse jbutils-ext.js of submodules (jbh-*)
-     * @param {type} cb
-     * @returns {undefined}
-     */
-    global.doExtScripts = function(cb) {
-        var extScripts = glob.sync('node_modules/jbh-*');
-        extScripts.push('');
-        //console.log('extScripts',extScripts);
-        for(var i in extScripts) {
-            //console.log('script found - ',extScripts[i]);
-            var path = cwd+'/'+extScripts[i];
-            var extScript = './'+extScripts[i]+'/bin/jbutil-ext.js';
-            if (fs.existsSync(extScript)) { 
-              var ext = require(extScript);
-              cb(ext,path);
-            }
-        }
-    }
-
-    /**
-     * Returned merged jbrowse config.  
-     * Merged from jbh-* config/globals.js, local config/globals.js, & config.js
-     */
-    global.getMergedConfig = function() {
-        var merged = {};
-
-        var scripts = glob.sync('node_modules/jbh-*');
-
-        for(var i in scripts) {
-            //console.log('script found - ',scripts[i]);
-            var path = cwd+'/'+scripts[i];
-            var extScript = './'+scripts[i]+'/config/globals.js';
-            if (fs.existsSync(extScript)) { 
-              // do something 
-              var extConfig = require(extScript).globals;
-              //console.log('extConfig',extConfig);
-              merged = merge(extConfig,merged);
-            }
-        }
-
-        var config = require('./config/globals.js').globals;
-        //console.log('config',config);
-        merged = merge(config,merged);
-
-        return merged.jbrowse;
-    }
-
-    global.buildHtml = function() {
-        var conf = global.getMergedConfig();
-        var indexFile = approot+'/bin/index_template.html';
-
-        var content = fs.readFileSync(indexFile,'utf-8');
-
-        //console.log("conf",conf);
-        var str = "";
-
-        for(var i in conf.webIncludes) {
-            //console.log(i);
-            if (conf.webIncludes[i].lib.indexOf('.js') !== -1) {
-                str += '<script type="text/javascript" src="'+conf.webIncludes[i].lib+'"></script>\n';
-            }
-            if (conf.webIncludes[i].lib.indexOf('.css') !== -1) {
-                str += '<link type="text/css" rel="stylesheet" href="'+conf.webIncludes[i].lib+'" />\n';
-            }
-        }
-        //console.log(str);
-
-        var lookFor = '<!-- JBServer Modules -->';
-        content = content.replace(lookFor,str);
-
-        //console.log(content);
-
-        return content;
-    }
 }
 
     
