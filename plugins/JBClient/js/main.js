@@ -19,6 +19,7 @@ return declare( JBrowsePlugin,
     constructor: function( args ) {
         var thisB = this;
         var browser = this.browser;
+        browser.loginState = false;
         console.log("plugin: JBClient");
         
         
@@ -31,6 +32,7 @@ return declare( JBrowsePlugin,
         // login panel (bootstrap.js)
         $.get("/loginstate",function(data) {
             console.log("loginstate",data);
+            browser.loginState = data.loginstate;
             var txt = "";
             if (data.loginstate !== true) {
                 txt += '<div class="dropdown">';
