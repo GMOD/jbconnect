@@ -134,8 +134,8 @@ module.exports = {
             console.log('Adding plugins to dataset', dataSet);
 
             var trackListPath = g.jbrowsePath + dataSet + '/trackList.json';
-            var sampleTrackFile = g.jbrowsePath + dataSet;
-            sampleTrackFile += '/'+g.jblast.blastResultPath+'/sampleTrack.json';
+            //var sampleTrackFile = g.jbrowsePath + dataSet;
+            //sampleTrackFile += '/'+g.jblast.blastResultPath+'/sampleTrack.json';
             //var dataSet = g.dataSet.dataPath;
 
             // read sampleTrack.json file
