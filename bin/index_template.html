@@ -104,6 +104,21 @@
                        config.stores = JSON.parse( queryParams.addStores );
                    }
 
+                   config.initExtra = function(browser) {
+                        browser.fatalError_orig = browser.fatalError;
+                        browser.fatalError = function(error) {
+                            $.get("/loginstate",function(data) {
+                                
+                                //console.log("initExtra loginstate",data.loginstate);
+                                browser.loginState = data.loginstate;
+                                
+                                if (data.loginstate === true) window.location = "?data=sample_data/json/volvox";
+                                else window.location = "/login";
+                                //browser.fatalError_orig(error);
+                            });
+                        };
+                   };
+
                    // create a JBrowse global variable holding the JBrowse instance
                    JBrowse = new Browser( config );
         });
