@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-var jblib = require('./jblib');
+var jblib = require('../api/services/jbutillib');
 
 module.exports = {
     getOptions: function() {
         return [
-            ['' , 'setupindex'       , '(JBServer) setup index.html in the jbrowse directory']
+            //['' , 'setupindex'       , '(JBServer) setup index.html and plugins']
         ];        
     },
     getHelpText: function() {
@@ -25,7 +25,8 @@ module.exports = {
         
         var tool = opt.options['setupindex'];
         if (typeof tool !== 'undefined') {
-            jblib.exec_setupindex(this);
+            jblib.exec_setupindex(this.config);
+            jblib.exec_setupPlugins(this.config);
         }
         
     },

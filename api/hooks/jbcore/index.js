@@ -62,8 +62,13 @@ module.exports = function (sails) {
 
                     });
                 },1000);
-                
-               return cb();
+
+                // Inject css/js into the active JBrowse index.html
+                var config = sails.config.globals.jbrowse;
+                //console.log("config",config);
+                jbutillib.exec_setupindex(config);
+                jbutillib.exec_setupPlugins(config);                
+                return cb();
                 
             });
             
