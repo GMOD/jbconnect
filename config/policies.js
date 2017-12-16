@@ -50,7 +50,7 @@ module.exports.policies = {
         'get': true
     },
     'UserController' : {
-        '*': ['passport','sessionAuth']
+        '*': ['passport','sessionAuth','isAdmin']
     }    
     
   /***************************************************************************
