@@ -2,7 +2,7 @@
 
 var sh = require('shelljs');
 var getopt = require('node-getopt');
-var jblib = require('./bin/jblib');
+var jblib = require('./api/services/jbutillib');
 
 
 var subCount = 0;
@@ -19,7 +19,7 @@ var options = [
 
 // add jbh-* hook options
 jblib.doExtScripts(function(ext,path) {
-    console.log('ext options',ext.getOptions(),path);
+    //console.log('ext options',ext.getOptions(),path);
     options = options.concat(ext.getOptions());
 });
 
