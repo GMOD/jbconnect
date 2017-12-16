@@ -96,12 +96,6 @@ module.exports = function (sails) {
                     }
                     res.send(hlist);
                     //return next();
-                },
-                'get /test/setg': function (req, res, next) {
-                    sails.hooks['jbcore'].setGlobalSection({a:1,b:2},'jblast',function(val) {
-                        if (val==0) res.send({result:'success'});
-                        else        res.send({result:'fail'});
-                    });
                 }
             }
         },

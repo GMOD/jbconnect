@@ -88,7 +88,6 @@ module.exports = {
      * @param {string} dataset - dataset string (i.e. "sample_data/json/volvox"
      * @returns {object} track db element
      */
-    
     Add: function(dataset,addTrack,cb) {
         var thisb = this;
         var g = sails.config.globals.jbrowse;
@@ -134,8 +133,11 @@ module.exports = {
         });
         
     },
-    /**
+    /*
      * 
+     * @param {string} dataset - (eg: "sample_data/json/volvlx")
+     * @param {string} dataset - dataset string (i.e. "sample_data/json/volvox"
+     * @returns {object} track db element
      */
     Modify: function(dataset,updateTrack,cb) {
         var thisb = this;
@@ -158,7 +160,7 @@ module.exports = {
             return cb(err);
         }
 
-        Track.update({lkey:updateTrack.label,path:dataSet.path})
+        Track.update({lkey:updateTrack.label,path:dataSet.path},{trackData:updateTrack})
         .then(function(updated) {
             sails.log.debug("modifyTrack track update:",updated[0].id,updated[0].lkey);
             
@@ -175,6 +177,9 @@ module.exports = {
     },
     /**
      * 
+     * @param {string} dataset - (eg: "sample_data/json/volvlx")
+     * @param {ing} dataset - dataset string (i.e. "sample_data/json/volvox"
+     * @param (function) cb - callback function(err,
      */
     Remove: function(dataset,id,cb) {
         var thisb = this;
@@ -278,7 +283,7 @@ module.exports = {
               Track.destroy({id: toDel})
                 .then(function(deleted){
                   sails.log.debug("syncTracks tracks deleted:",deleted.length);
-                  Track.publishDestroy(deleted);
+                  Track.publishDestroy(toDel);
                 })
                 .catch(function(err) {
                     sails.log.error("syncTracks tracks delete failed:",toDel);
