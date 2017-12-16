@@ -1,9 +1,8 @@
 var shelljs = require('shelljs');
+var approot = require('app-root-path'); 
 
-// run blast_getBlast.js
-//shelljs.exec('node blast_getBlast.js');
+var cmd = './jb_setup.js';
+shelljs.exec(cmd);
 
-//console.log("Download and install blast database: node blast_getBlast.js");
-//console.log("install existing blast database: node blast_setPath.js <path of existing db>");
 
 
