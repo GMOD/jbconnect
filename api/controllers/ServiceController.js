@@ -5,7 +5,7 @@
  * todo: document 
  */
 
-var jblastProc = require('../services/workflowProc');
+//var jblastProc = require('../services/workflowProc');
 
 module.exports = {
     
