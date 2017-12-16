@@ -24,12 +24,14 @@ return declare( JBrowsePlugin,
 
         var thisB = this;
         this.browser.afterMilestone('initView', function() {
-            this.browser.addGlobalMenuItem( 'file', new dijitMenuItem(
-                    {
-                        label: 'Queue sequence search',
-                        iconClass: 'dijitIconSearch',
-                        onClick: lang.hitch(this, 'createSearchTrack')
-                    }));
+            if (thisB.browser.loginState) {
+                this.browser.addGlobalMenuItem( 'file', new dijitMenuItem(
+                        {
+                            label: 'Queue sequence search',
+                            iconClass: 'dijitIconSearch',
+                            onClick: lang.hitch(this, 'createSearchTrack')
+                        }));
+             }
         }, this );
 
     },
