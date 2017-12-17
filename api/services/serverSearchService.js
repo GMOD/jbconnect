@@ -148,9 +148,22 @@ module.exports = {
             error = true;
         }
         if (error) return;
-            
-        thisb._createSearchParamFile(kJob);
 
+        
+        //thisb._createSearchParamFile(kJob);
+        var error = false;
+        try {
+            if (!fs.existsSync(kJob.data.path)){
+                fs.mkdirSync(kJob.data.path);
+            }  
+        }
+        catch (err) {
+            var msg = 'Failed to access/create dataset path: '+kJob.data.path;
+            sails.log.error(msg,err);
+            error = true;
+        }
+        if (error)    return kJob.kDoneFn(new Error(msg));  // error
+        
         // delay 5 seconds for nothing, really (just so it sits in the queue for longer)
         setTimeout(function() {
             thisb._runWorkflow(kJob);
@@ -168,6 +181,7 @@ module.exports = {
         _s.test = false;
         return _s;
     },
+    /*
     _createSearchParamFile: function(job) {
         // if direcgtory doesn't exist, create it
         var filePath = job.data.path+'/'+job.data.searchParamFile;
@@ -187,6 +201,7 @@ module.exports = {
             error = true;
         }
     },
+    */
     _runWorkflow: function(kWorkflowJob) {
 
         var thisb = this;
