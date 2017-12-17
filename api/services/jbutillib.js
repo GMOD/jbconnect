@@ -12,6 +12,7 @@ var merge = require('deepmerge');
 var config = require(approot+'/config/globals.js').globals;
 
 module.exports = {
+    dbName: 'localDiskDb.db',
     /**
      * Traverse jbutils-ext.js of submodules (jbh-*)
      * @param {type} cb
@@ -279,6 +280,30 @@ module.exports = {
         }
         if (origTarg===newTarg) return null;
         return newTarg;     // return the backed up filename
+    },
+    install_database: function(overwrite) {
+        var dbSrc = approot+'/bin/'+this.dbName;
+        var dbTarg = approot+'/data/'+this.dbName;
+
+        try {
+            if (overwrite === 1) {
+                console.log("Setting up default database...");
+                fs.copySync(dbSrc,dbTarg);
+            }
+            else {
+                if (!fs.existsSync(dbTarg)) {
+                    console.log("Setting up default database...");
+                    fs.copySync(dbSrc,dbTarg);
+                }
+                else {
+                    console.log("Database already exists: "+dbTarg);
+                }
+            }
+        }
+        catch (err) {
+            console.log("Failed setting up default database",dbTarg, err);
+        }
+        
     }
     
 };

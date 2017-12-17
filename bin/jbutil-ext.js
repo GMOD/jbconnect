@@ -6,6 +6,7 @@ module.exports = {
     getOptions: function() {
         return [
             //['' , 'setupindex'       , '(JBServer) setup index.html and plugins']
+            ['' , 'dbreset'       , '(JBServer) reset the database to default']
         ];        
     },
     getHelpText: function() {
@@ -27,6 +28,28 @@ module.exports = {
         if (typeof tool !== 'undefined') {
             jblib.exec_setupindex(this.config);
             jblib.exec_setupPlugins(this.config);
+        }
+        
+        var tool = opt.options['dbreset'];
+        if (typeof tool !== 'undefined') {
+            process.stdin.resume();
+            process.stdin.setEncoding('utf8');
+            var util = require('util');
+            console.log('JBServer database will be reset to default.  Type "YES" to confirm.');
+
+            process.stdin.on('data', function (text) {
+              if (text === 'YES\n') {
+                  console.log('changing...');
+                  jblib.install_database(1);
+              }
+              else {
+                  console.log('nothing done.');
+              }
+              done();
+            });
+            function done() {
+              process.exit();
+            }            
         }
         
     },
