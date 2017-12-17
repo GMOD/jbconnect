@@ -39,7 +39,6 @@ module.exports = {
 
             process.stdin.on('data', function (text) {
               if (text === 'YES\n') {
-                  console.log('changing...');
                   jblib.install_database(1);
               }
               else {
