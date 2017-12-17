@@ -287,7 +287,7 @@ module.exports = {
 
         try {
             if (overwrite === 1) {
-                console.log("Setting up default database...");
+                console.log("Setting up default JBServer database...");
                 fs.copySync(dbSrc,dbTarg);
             }
             else {
