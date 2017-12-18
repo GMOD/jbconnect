@@ -71,8 +71,8 @@ function(
     var refseq = { start: 0, end: 50001, length: 50001,name: 'ctgA',seqChunkSize:20000 };
 
     //search region
-    var region = { start: 1, end: 3000, refseq: 'ctgA' };
-    var region = { start: 1, end: 50000, refseq: 'ctgA' };
+    //var region = { start: 1, end: 3000, refseq: 'ctgA' };
+    var region = { start: 1, end: 50001, refseq: 'ctgA' };
 
     //todo: automatically determin length
 
@@ -109,35 +109,30 @@ function(
         exp.exportRegion({ ref: region.refseq, start: region.start, end: region.end }, callback);
     };
 	
-	getSequence({
-		urlTemplate: prefix+'sample_data/json/volvox/seq/{refseq_dirpath}/{refseq}-',
-		label: 'DNA',
-		browser: browser
-	}, region, function(seq) {
-		//document.getElementById('sequence').innerHTML = seq;
-		//console.log('sequence:',seq);
-	});
-	
-	if (1) {
-		getSearchGFF({
-                        searchParams: searchParams,
-/*			searchParams: {
-				caseIgnore: true,
-				expr: "AAA",
-				fwdStrand:true,
-				maxLen:100,
-				regex:false,
-				revStrand:true,
-				translate:false
-			},*/
-			label: 'SearchGenes',
-			browser: browser
-		}, region, function(features) {
-			document.getElementById('searchgff').innerHTML = features;
-                        console.log('>>>>>BEGIN');      // trigger ServerSearch.workflow.js to begin capture/save
-			console.log(features);
-		});
-	}
+    getSequence({
+        urlTemplate: prefix+'sample_data/json/volvox/seq/{refseq_dirpath}/{refseq}-',
+        label: 'DNA',
+        browser: browser
+    }, region, function(seq) {
+        //document.getElementById('sequence').innerHTML = seq;
+        //console.log('sequence:',seq);
+    });
+
+    if (true) {
+
+        searchParams = fixSearchParams(searchParams);
+        
+        //console.log("searchParams",searchParams);
+        getSearchGFF({
+            searchParams: searchParams,
+            label: 'SearchGenes',
+            browser: browser
+        }, region, function(features) {
+            document.getElementById('searchgff').innerHTML = features;
+            console.log('>>>>>BEGIN');      // trigger ServerSearch.workflow.js to begin capture/save
+            console.log(features);
+        });
+    }
 
 });
 
@@ -154,6 +149,17 @@ function getUrlParams() {
     paramMap [decodeURIComponent(component[0])] = decodeURIComponent(component[1]);
   }
   return paramMap;
+}
+
+function fixSearchParams(searchParams) {
+    searchParams.maxLen = parseInt(searchParams.maxLen);
+    searchParams.caseIgnore = eval(searchParams.caseIgnore);
+    searchParams.fwdStrand = eval(searchParams.fwdStrand);
+    searchParams.revStrand = eval(searchParams.revStrand);
+    searchParams.regex = eval(searchParams.regex);
+    searchParams.translate = eval(searchParams.translate);
+
+    return searchParams;
 }
 
 </script>
