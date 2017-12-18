@@ -21,6 +21,11 @@ pre {
  * Derived from https://gist.github.com/enuggetry/f9fa7895ba807c2363db115f3a2bb791
  * by: @enuggetry
  */
+var params = getUrlParams();
+var prefix = "";
+if (typeof params['prefix'] !== 'undefined')
+    prefix = params['prefix']+'/';
+
 
 require([
     'JBrowse/Browser',
@@ -33,7 +38,9 @@ require([
     'JBrowse/View/Export/FASTA',
 	
     'JBrowse/Store/SeqFeature/GFF3',
-    'plugins/RegexSequenceSearch/js/Store/SeqFeature/RegexSearch'
+    'plugins/RegexSequenceSearch/js/Store/SeqFeature/RegexSearch',
+    'dojo/json',
+    'dojo/text!/'+prefix+'/sample_data/json/volvox/seq/refSeqs.json'
 
 ],
 function(
@@ -47,32 +54,33 @@ function(
     FastaMixin,
 
     GFF3,
-    RegexSeqSearch
+    RegexSeqSearch,
+    JSON,
+    refSeqsFile
 ) {
     console.log("Start processing...");
 
-    var params = getUrlParams();
-    
-    var prefix = "";
-    if (typeof params['prefix'] !== 'undefined')
-        prefix = params['prefix']+'/';
+    console.log('refSeqsFile',JSON.parse( refSeqsFile ));
+    var refSeqs = JSON.parse( refSeqsFile );
 
     var searchParams = JSON.parse(params['searchParams']);
     var jobid = params['jobid'];
 
-    console.log('html params',searchParams);
+    //console.log('html params',searchParams);
         
         
     // Initialize jbrowse instance in unittestmode so that it doesn't actually draw the browser to screen
     var browser = new Browser({unitTestMode: true});
     //JBrowse = browser;
 
-    // hack the refseq
-    var refseq = { start: 0, end: 50001, length: 50001,name: 'ctgA',seqChunkSize:20000 };
+    // reference sequence config from refSeqs.json file
+    // var refseq = { start: 0, end: 50001, length: 50001,name: 'ctgA',seqChunkSize:20000 };
+    // Todo: currently only works with the first scaffold.
+    var refseq = refSeqs[0];
 
     //search region
-    //var region = { start: 1, end: 3000, refseq: 'ctgA' };
-    var region = { start: 1, end: 50001, refseq: 'ctgA' };
+    //var region = { start: 1, end: 50001, refseq: 'ctgA' };
+    var region = { start: refseq.start, end: refseq.end, refseq: refseq.name };
 
     //todo: automatically determin length
 
