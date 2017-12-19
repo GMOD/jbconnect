@@ -43,4 +43,6 @@ From a web browser, access the application.
 
 ``http://localhost:1337/jbrowse``
 
+The default username/password: juser/password
+
 
