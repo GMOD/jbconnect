@@ -51,12 +51,16 @@ module.exports = {
         for(var i in scripts) {
             //console.log('script found - ',scripts[i]);
             var path = cwd+'/'+scripts[i];
-            var extScript = '../'+scripts[i]+'/config/globals.js';
+            var extScript = scripts[i]+'/config/globals.js';
+            //console.log("extScript",extScript);
             if (fs.existsSync(extScript)) { 
               // do something 
               var extConfig = require(extScript).globals;
               //console.log('extConfig',extConfig);
               merged = merge(extConfig,merged);
+            }
+            else {
+                console.log("failed to open",extScript);
             }
         }
 
