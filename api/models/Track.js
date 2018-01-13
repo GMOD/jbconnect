@@ -319,14 +319,17 @@ module.exports = {
                   var toOmit = ['id','createdAt','updatedAt','dataSet','dataset','dataSetPath','ikey'];
                   //sails.log('omit',mTracks[k].trackData);
                   if (JSON.stringify(mTracks[k].trackData) !== JSON.stringify(fTracks[k])) {
-
-                      Track.update({path:ds.path, lkey:fTracks[k].label},{trackData:fTracks[k]})
+                      Track.update({path:ds, lkey:fTracks[k].label},{trackData:fTracks[k]})
                       .then(function(item) {
-                          sails.log.debug("syncTracks track updated:",item[0].id,item[0].lkey);
-                          Track.publishUpdate(item);
+                          if (item.length) {
+                            Track.publishUpdate(item[0].id,item[0]);
+                          }
+                          else {
+                              sails.log.error("syncTracks addOrUpdateItemsToModel failed to find", ds, fTracks[k].label);
+                          }
                       })        
                       .catch(function(err) {
-                          sails.log.error("syncTracks track update failed:",err);
+                          sails.log.error("syncTracks  addOrUpdateItemsToModel track update failed:",err);
                       });
                   }
               }
