@@ -6,7 +6,8 @@ module.exports = {
     getOptions: function() {
         return [
             //['' , 'setupindex'       , '(JBServer) setup index.html and plugins']
-            ['' , 'dbreset'       , '(JBServer) reset the database to default']
+            ['' , 'dbreset'     , '(JBServer) reset the database to default'],
+            ['' , 'password',   , '(JBServer) change password of user']
         ];        
     },
     getHelpText: function() {
@@ -50,7 +51,10 @@ module.exports = {
               process.exit();
             }            
         }
-        
+        var tool = opt.options['password'];
+        if (typeof tool !== 'undefined') {
+            console.log('opt',opt);
+        }
     },
     init: function(config) {
         //console.log("config",config);
