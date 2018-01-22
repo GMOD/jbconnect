@@ -1,4 +1,5 @@
 /**
+ * @description
  * Policy Mappings
  * (sails.config.policies)
  *
@@ -31,8 +32,25 @@ module.exports.policies = {
     'auth': {
        '*': ['passport']
     },
+    'DatasetController' : {
+        '*': ['passport','isAdmin'],
+        'get': true
+    },
+    'JobActiveController' : true,
+    'JobController' : {
+        '*': ['passport','isAdmin'],
+        'get': true
+    },
+    'ServiceController' : {
+        '*': ['passport','isAdmin'],
+        'get': true
+    },
+    'TrackController' : {
+        '*': ['passport','isAdmin'],
+        'get': true
+    },
     'UserController' : {
-        '*': ['passport','bearerAuth']
+        '*': ['passport','sessionAuth','isAdmin']
     }    
     
   /***************************************************************************

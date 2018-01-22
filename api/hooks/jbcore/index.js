@@ -1,9 +1,11 @@
-/* 
+/**
+ * @module hooks/jbcore
+ * @description
  * publish globals in a well known location
  */
-var fs = require("fs");
+var fs = require("fs-extra");
 
-var kueJobMon = require('./kueJobMon');
+//var kueJobMon = require('./kueJobMon');
 
 
 /* 
@@ -41,17 +43,36 @@ module.exports = function (sails) {
         initialize: function(cb) {
             sails.log("Hook: jbcore initialize"); 
 
-            sails.on('lifted', function() {
-                sails.log("sails lifted");
+            sails.on('hook:orm:loaded', function() {
+            //sails.on('lifted', function() {
+                sails.log(">>> jbcore sails lifted");
                 
-                Dataset.initialize(function() {
-                    //Track.startMonitor(); 
-                });
+                setTimeout(function() {
+                    Service.Init({},function() {
+
+                        Dataset.Init({},function(){
+                            Track.Init({}, function() {
+                                
+                            });
+                        });
+                        Job.Init({},function() {
+                            //sails.log("Job.start done");
+                            //return cb();
+                        });
+
+                    });
+                },1000);
+
+                // Inject css/js into the active JBrowse index.html
+                var config = sails.config.globals.jbrowse;
+                //console.log("config",config);
+                jbutillib.exec_setupindex(config);
+                jbutillib.exec_setupPlugins(config);                
+                return cb();
                 
-                Job.start();
             });
             
-            return cb();
+            //return cb();
         },
         routes: {
             before: {
@@ -75,12 +96,6 @@ module.exports = function (sails) {
                     }
                     res.send(hlist);
                     //return next();
-                },
-                'get /test/setg': function (req, res, next) {
-                    sails.hooks['jbcore'].setGlobalSection({a:1,b:2},'jblast',function(val) {
-                        if (val==0) res.send({result:'success'});
-                        else        res.send({result:'fail'});
-                    });
                 }
             }
         },
@@ -116,98 +131,3 @@ module.exports = function (sails) {
     }
 };
 
-/**
- * Stores globals found in config/globals.js into the global JbGlobal model
- * @returns {undefined}
- */
-/*
-function storeGlobals () {
-    
-    var gStr = JSON.stringify(sails.config.globals.jbrowse,null,4);
-
-    JbGlobal.findOne({'id':1}).exec(function (err, record) {
-        if (err){
-            console.log(err);
-            return;
-        }
-        if (!record) {  // does not exist, create
-            JbGlobal.create({'id':1,'jbrowse':sails.config.globals.jbrowse})
-            .exec(function afterwards(err, updated){
-                if (err) {
-                  console.log(err);
-                  return;
-                }
-            });
-            console.log("JbGlobal created");
-        }
-        else {      // exists update
-            JbGlobal.update({'id':1},{'id':1,'jbrowse':sails.config.globals.jbrowse})
-            .exec(function afterwards(err, updated){
-                if (err) {
-                  console.log(err);
-                  return;
-                }
-                sails.log.info("JbGlobal model updated from globals.js");
-            });
-        }
-    });
-    
-}
-*/
-/**
- * Store section data in globals 
- * @param {type} sectionData
- * @param {type} sectionName
- * @returns 0 if successful; 1 if failed
- */
-/*
-function storeInSection (data,name,cb) {
-
-    JbGlobal.findOne({'id':1}).exec(function (err, record) {
-        if (err){
-            console.log(err);
-            throw err;
-            if (typeof cb === 'function') cb(1);
-        }
-        else if (!record) {  // does not exist, create
-            var err = 'error: global record doesn\'t exist';
-            console.log(err);
-            throw err;
-            if (typeof cb === 'function') cb(1);
-        }
-        else {      // exists update
-            
-            //console.log('found',record,data,name);
-            
-            var g = record.jbrowse;
-            
-            // merge existing jblast section with new section data
-            if (typeof g[name] === 'undefined') g[name] = {};
-            for (var i in data) g[name][i] = data[i];
- 
-            //console.log('modified record',record);
-            
-            // update global model
-            JbGlobal.update({'id':1},record)
-            .exec(function afterwards(err, updated){
-                if (err) {
-                  console.log(err);
-                  throw err;
-                  if (typeof cb === 'function') cb(1);
-                  return;
-                }
-                if (updated) {
-                  //console.log("updated record",record);
-                  console.log("globals updated");
-                  if (typeof cb === 'function') cb(0);
-                  return;
-                }
-                if (typeof cb === 'function') cb(1);
-                return;
-            });
-        }
-    });
-    return 0; // success
-
-}
-*/

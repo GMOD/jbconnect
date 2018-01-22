@@ -1,4 +1,6 @@
 /**
+ * @module
+ * @description
  * Passport Middleware
  *
  * Policy for Sails that initializes Passport.js and as well as its built-in

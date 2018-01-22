@@ -1,0 +1,120 @@
+{
+  "data": {
+    "passport": [
+      {
+        "protocol": "local",
+        "password": "$2a$10$cS4zqPUCVNOC66gajboJluq0EHdZ7Qe5LvwJ6aZ8QVOW2Ui39kQW2",
+        "user": 2,
+        "accessToken": "rrHJk2zkcO9ngGVyh7KU+WgwFQIfu2rjKS4dgCgMA4STZt06FBPhJBKQnNZOEJGX",
+        "createdAt": "2017-11-29T21:00:56.841Z",
+        "updatedAt": "2017-11-29T21:00:56.841Z",
+        "id": 2
+      }
+    ],
+    "user": [
+      {
+        "username": "juser",
+        "email": "juser@jbrowse.org",
+        "admin": true,
+        "createdAt": "2017-11-29T21:00:56.726Z",
+        "updatedAt": "2017-11-29T21:00:56.726Z",
+        "id": 2
+      }
+    ],
+    "jobactive": [
+      {
+        "active": 1,
+        "createdAt": "2017-11-23T00:53:41.864Z",
+        "updatedAt": "2017-12-17T00:24:10.637Z",
+        "id": 1
+      }
+    ]
+  },
+  "schema": {
+    "passport": {
+      "protocol": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      },
+      "accessToken": {
+        "type": "string"
+      },
+      "provider": {
+        "type": "string"
+      },
+      "identifier": {
+        "type": "string"
+      },
+      "tokens": {
+        "type": "json"
+      },
+      "user": {
+        "type": "integer",
+        "model": "user",
+        "foreignKey": true,
+        "alias": "user"
+      },
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    },
+    "user": {
+      "username": {
+        "type": "string",
+        "unique": true
+      },
+      "email": {
+        "type": "string",
+        "unique": true
+      },
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    },
+    "jobactive": {
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    }
+  },
+  "counters": {
+    "passport": {
+      "id": 2
+    },
+    "user": {
+      "id": 2
+    },
+    "jobactive": {
+      "id": 1
+    }
+  }
+}

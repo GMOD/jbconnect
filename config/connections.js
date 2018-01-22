@@ -1,4 +1,6 @@
 /**
+ * @ignore
+ * @description
  * Connections
  * (sails.config.connections)
  *
@@ -29,7 +31,8 @@ module.exports.connections = {
   *                                                                          *
   ***************************************************************************/
   localDiskDb: {
-    adapter: 'sails-disk'
+    adapter: 'sails-disk',
+    filePath: 'data/'
   },
 
   /***************************************************************************

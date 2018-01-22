@@ -1,4 +1,4 @@
-/**
+/*
  * Session Configuration
  * (sails.config.session)
  *

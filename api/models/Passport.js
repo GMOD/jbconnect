@@ -1,25 +1,7 @@
-var bcrypt = require('bcryptjs');
-
 /**
- * Hash a passport password.
- *
- * @param {Object}   password
- * @param {Function} next
- */
-function hashPassword (passport, next) {
-  if (passport.password) {
-    bcrypt.hash(passport.password, 10, function (err, hash) {
-      passport.password = hash;
-      next(err, passport);
-    });
-  } else {
-    next(null, passport);
-  }
-}
-
-/**
- * Passport Model
- *
+ * @module
+ * @description
+ * 
  * The Passport model handles associating authenticators with users. An authen-
  * ticator can be either local (password) or third-party (provider). A single
  * user can have multiple passports, allowing them to connect and use several
@@ -30,7 +12,11 @@ function hashPassword (passport, next) {
  * in a model of its own. This allows us to keep the session itself as light-
  * weight as possible as the application only needs to serialize and deserialize
  * the user, but not the authentication data, to and from the session.
+ * 
  */
+var bcrypt = require('bcryptjs');
+
+
 var Passport = {
   attributes: {
     // Required field: Protocol
@@ -107,5 +93,23 @@ var Passport = {
     hashPassword(passport, next);
   }
 };
+
+/**
+ * Hash a passport password.
+ *
+ * @param {Object}   password
+ * @param {Function} next
+ */
+function hashPassword (passport, next) {
+  if (passport.password) {
+    bcrypt.hash(passport.password, 10, function (err, hash) {
+      passport.password = hash;
+      next(err, passport);
+    });
+  } else {
+    next(null, passport);
+  }
+}
+
 
 module.exports = Passport;

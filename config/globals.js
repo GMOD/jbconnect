@@ -1,4 +1,6 @@
 /**
+ * @global
+ * @description
  * Global Variable Configuration
  * (sails.config.globals)
  *
@@ -13,17 +15,49 @@
 
 var merge = require('deepmerge');
 
+var jbPath = process.cwd() + "/node_modules/jbrowse/";
+
 var g = {
     
     jbrowse: {
         jbrowseRest: "http://localhost:1337",
-        jbrowsePath: "/var/www/html/jbrowse/",
+        jbrowsePath: jbPath,                        // or "/var/www/jbrowse/"
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
-        dataSet: [
-            {
-                dataPath: "sample_data/json/volvox"
-            }
-        ]
+        
+        serverSearch: {
+            resultPath: "ServerSearch",
+            resultCategory: "Search Results",
+            trackTemplate: "ServerSearchTrackTemplate.json",
+            workflowScript: "ServerSearch.workflow.js",
+            processScript:   'ServerSearchProcess.html'
+        },
+        dataSet: {
+             Volvox: {path: "sample_data/json/volvox"}
+        },
+        services: {
+            'serverSearchService': {name: 'serverSearchService',  type: 'service'}
+        },
+        libRoutes: {
+            // npm library              route
+            'jquery':       {module: 'jquery',          vroute:'/jblib/jquery'},
+            'bootstrap':    {module: 'bootstrap',       vroute:'/jblib/bootstrap'},
+            'jqueryui':     {module: 'jquery-ui-dist',  vroute:'/jblib/jquery-ui'},
+            'mbextruder':   {module: 'jquery.mb.extruder', vroute:'/jblib/mb.extruder'}
+        },
+        webIncludes: {
+            "css-bootstrap":         {lib: "/jblib/bootstrap/dist/css/bootstrap.min.css"},
+            "css-mbextruder":        {lib: "/jblib/mb.extruder/css/mbExtruder.css"},
+            "css-jqueryui":          {lib: "/jblib/jquery-ui/jquery-ui.min.css"},
+            "css-jqueryuistructure": {lib: "/jblib/jquery-ui/jquery-ui.structure.min.css"},
+            "css-jqueryuitheme":     {lib: "/jblib/jquery-ui/jquery-ui.theme.min.css"},
+            "js-sailsio":            {lib: "/js/dependencies/sails.io.js"},
+            "js-jquery":             {lib: "/jblib/jquery/dist/jquery.min.js" },
+            "js-jqueryui":           {lib: "/jblib/jquery-ui/jquery-ui.min.js" },
+            "js-bootstrap":          {lib: "/jblib/bootstrap/dist/js/bootstrap.min.js"},
+            "js-mbextruderHover":    {lib: "/jblib/mb.extruder/inc/jquery.hoverIntent.min.js"},
+            "js-mbextruderFlip":     {lib: "/jblib/mb.extruder/inc/jquery.mb.flipText.js"},
+            "js-mbextruder":         {lib: "/jblib/mb.extruder/inc/mbExtruder.js"}
+        }
     }
 
   /****************************************************************************
@@ -78,7 +112,7 @@ var g = {
 	// models: true
 };
 
-g.libroutes = require("./libroutes");
+//g.libroutes = require("./libroutes");
 var localconf = require("../config");
 
 g.jbrowse = merge(g.jbrowse,localconf.jbrowse);

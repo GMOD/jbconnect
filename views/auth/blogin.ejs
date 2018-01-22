@@ -138,5 +138,28 @@
     <script src="/jblib/jquery/dist/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/jblib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+        setTimeout(function() {
+            _testEvents();    
+
+        },2000);
+
+        function _testEvents() {
+            console.log("_testEvents()");
+
+            // subscribe to all job objects including new
+            io.socket.get('/job', function(resData, jwres) {console.log(resData);});
+            io.socket.get('/jobactive', function(resData, jwres) {console.log(resData);});
+            
+            // trigger on events
+            io.socket.on('job', function(event){
+                console.log(event);
+            });    
+            io.socket.on('jobactive', function(event){
+                console.log(event);
+            });    
+        }
+        
+    </script>        
   </body>
 </html>

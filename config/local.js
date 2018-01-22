@@ -1,4 +1,4 @@
-/**
+/*
  * Local environment settings
  *
  * Use this file to specify configuration settings for use while developing

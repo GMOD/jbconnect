@@ -1,4 +1,6 @@
 /**
+ * @global
+ * @description
  * HTTP Server Settings
  * (sails.config.http)
  *
@@ -10,12 +12,17 @@
  */
 var fs = require('fs');
 var jbRouteUtil = require('../api/services/jbRouteUtil');
+var appRoot = require('app-root-path');
 
 module.exports.http = {
 
-    // custom middleware (body-parser) for jbrowse for handling CORS
-    // reference: http://sailsjs.org/documentation/concepts/middleware
-    
+    /**
+     * custom middleware (body-parser) for jbrowse for handling CORS
+     * reference: http://sailsjs.org/documentation/concepts/middleware
+     * 
+     * @param {type} app
+     * @returns {undefined}
+     */
     customMiddleware: function (app) {
         console.log("config of Middleware config/http.js for jbrowse");
         
@@ -28,7 +35,13 @@ module.exports.http = {
         
         //sails.log('>>> globals',g);
         
+        // main JBrowse application route
         app.use('/'+routePrefix, express.static(jbrowsePath));
+        sails.log("approot",""+appRoot);
+        
+        // documentation route
+        //app.use('/docs',express.static('./docs/html'));
+        //app.use('/docs2',express.static('./docs/docs/build/html'));
         
         jbRouteUtil.addPluginRoutes({app:app,express:express});
         jbRouteUtil.addLibRoutes({app:app,express:express});
