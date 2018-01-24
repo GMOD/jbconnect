@@ -1,6 +1,8 @@
 sudo: false
 language: node-js
 before_install:
+services:
+  - redis-server
 install:
   - npm install
 before_script:
