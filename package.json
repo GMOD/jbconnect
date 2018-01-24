@@ -13,6 +13,7 @@
     "gendocs": "node docs/gendocs_run.js",
     "phantomjs": "node node_modules/phantomjs-prebuilt/bin/phantomjs"
   },
+  "engines" : { "node" : ">=6.8.0" },
   "dependencies": {
     "app-root-path": "^2.0.1",
     "async": "^2.5.0",
@@ -90,8 +91,18 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/root/server.git"
+    "url": "git://github.com/GMOD/jbserver.git"
   },
   "author": "enuggetry",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GMOD/jbserver/issues"
+  },
+  "homepage": "https://github.com/GMOD/jbserver#readme",
+  "bin": {
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  }
 }
