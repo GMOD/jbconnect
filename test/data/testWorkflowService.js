@@ -16,6 +16,10 @@ module.exports = {
     init: function(params,cb) {
         
     },
+
+    beginProcessing() {
+    },
+
     workflow_submit: function(req, res) {
         sails.log("test workflow_submit");
         res.ok({a:1,b:2});
