@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/GMOD/jbserver.svg?branch=master)](https://travis-ci.org/GMOD/jbserver)
+
 # JBrowse Server (Preliminary) 
 
 JBrowse Server is a server platform for JBrowse; however, it does not include the client GUI.
