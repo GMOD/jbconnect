@@ -287,9 +287,10 @@ module.exports = {
     },
     install_database: function(overwrite) {
         var dbSrc = approot+'/bin/'+this.dbName;
-        var dbTarg = approot+'/data/'+this.dbName;
+        var dbTarg = approot+'/data/';  //+this.dbName;
 
         try {
+            fs.ensureDirSync(dbTarg);
             if (overwrite === 1) {
                 console.log("Setting up default JBServer database...");
                 fs.copySync(dbSrc,dbTarg);
