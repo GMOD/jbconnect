@@ -13,7 +13,9 @@
     "gendocs": "node docs/gendocs_run.js",
     "phantomjs": "node node_modules/phantomjs-prebuilt/bin/phantomjs"
   },
-  "engines" : { "node" : ">=6.8.0" },
+  "engines": {
+    "node": ">=6.8.0"
+  },
   "dependencies": {
     "app-root-path": "^2.0.1",
     "async": "^2.5.0",
@@ -74,6 +76,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chromedriver": "^2.30.1",
+    "deasync": "^0.1.12",
     "events": "^1.1.1",
     "grunt-bump": "^0.8.0",
     "grunt-contrib-jshint": "^1.1.0",
@@ -99,8 +102,7 @@
     "url": "https://github.com/GMOD/jbserver/issues"
   },
   "homepage": "https://github.com/GMOD/jbserver#readme",
-  "bin": {
-  },
+  "bin": {},
   "directories": {
     "doc": "docs",
     "test": "test"
