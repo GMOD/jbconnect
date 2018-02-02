@@ -34,6 +34,42 @@ the basics of Passport.js to work.
 
    <hr style="border-color: black; border-width: 2px;">
 
+Module: ``controllers/ServiceController``
+*****************************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+todo: document
+
+
+.. _module-controllers_ServiceController.get:
+
+
+Function: ``get``
+=================
+
+
+
+.. js:function:: get()
+
+    
+    
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
 Module: ``models/Dataset``
 **************************
 
@@ -54,36 +90,83 @@ Datasets known to JBServer are defined in config/globals.js
 Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
 
 
-.. _module-models_Dataset.initialize:
+.. _module-models_Dataset.Init:
 
 
-Function: ``initialize``
-========================
+Function: ``Init``
+==================
 
 Initializes datasets as defined in config/globals.js.
 (see: :ref:`jbs-globals-config`)
 
-.. js:function:: initialize(cb)
+.. js:function:: Init(cb)
 
     
     :param function cb: callback function
     :return undefined: Initializes datasets as defined in config/globals.js.
     (see: :ref:`jbs-globals-config`)
     
-.. _module-models_Dataset.syncDatasets:
+.. _module-models_Dataset.Get:
 
 
-Function: ``syncDatasets``
-==========================
+Function: ``Get``
+=================
+
+Get list of tracks based on critera in params
+
+.. js:function:: Get(params, cb)
+
+    
+    :param object params: search critera (i.e. {id: 1,user:'jimmy'} )
+    :param function cb: callback function(err,array)
+    
+.. _module-models_Dataset.Resolve:
+
+
+Function: ``Resolve``
+=====================
+
+Given either a dataset string (ie. "sample_data/json/volvox" or the database id of a dataset,
+it returns a dataset object in the form:
+
+::
+    
+    {
+        path: "sample_data/json/volvox",
+        id: 3
+    }
+
+Grid table:
+
++------------+------------+-----------+ 
+| Header 1   | Header 2   | Header 3  | 
++============+============+===========+ 
+| body row 1 | column 2   | column 3  | 
++------------+------------+-----------+ 
+| body row 2 | Cells may span columns.| 
++------------+------------+-----------+
+
+.. js:function:: Resolve(dval)
+
+    
+    :param val dval: dataset string (ie. "sample_data/json/volvox") or id (int)
+    :return object: - dataset object
+         dataset (string - i.e. "sample_data/json/volvox" if input was an id
+    
+.. _module-models_Dataset.Sync:
+
+
+Function: ``Sync``
+==================
 
 Sync datasets, defined in globals with database.
 
 todo: need to improve, perhaps use async?
 
-.. js:function:: syncDatasets()
+.. js:function:: Sync()
 
     
-    :param syncDatasets(): cb - callback function
+    :param Sync(): cb - callback function
     
 
 
@@ -127,104 +210,201 @@ Events
 Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
 
 
-.. _module-models_Job.initialize:
+.. _module-models_Job.Init:
 
 
-Function: ``initialize``
-========================
-
-Obsolete
-
-.. js:function:: initialize()
-
-    
-    
-.. _module-models_Job.start:
-
-
-Function: ``start``
-===================
+Function: ``Init``
+==================
 
 start the monitor
 
-.. js:function:: start()
+.. js:function:: Init()
 
     
     
-.. _module-models_Job.monitor:
+.. _module-models_Job.Get:
 
 
-Function: ``monitor``
-=====================
+Function: ``Get``
+=================
 
-monitor events from the kue framework and translate to Job events
+Get list of tracks based on critera in params
 
-.. js:function:: monitor()
+.. js:function:: Get(params, cb)
+
+    
+    :param object params: search critera (i.e. {id: 1,user:'jimmy'} )
+    :param function cb: callback function(err,array)
+    
+.. _module-models_Job.Submit:
+
+
+Function: ``Submit``
+====================
+
+
+
+.. js:function:: Submit()
 
     
     
-.. _module-models_Job.syncJobs:
+.. _module-models_Job._jobRunner:
 
 
-Function: ``syncJobs``
-======================
+Function: ``_jobRunner``
+========================
 
-Sync kue[workflow] with Job model
 
-.. js:function:: syncJobs()
+
+.. js:function:: _jobRunner()
+
+    
+    
+.. _module-models_Job._kueEventMonitor:
+
+
+Function: ``_kueEventMonitor``
+==============================
+
+
+
+.. js:function:: _kueEventMonitor()
 
     
     
-.. _module-models_Job.processEvent:
+.. _module-models_Job._pushEvent:
 
 
-Function: ``processEvent``
-==========================
+Function: ``_pushEvent``
+========================
 
-Send a Job framework event
 
-.. js:function:: processEvent(event, id, data)
+
+.. js:function:: _pushEvent()
 
     
-    :param type event: Send a Job framework event
-    :param type id: Send a Job framework event
-    :param type data: Send a Job framework event
     
-.. _module-models_Job.test:
+.. _module-models_Job._processNextEvent:
 
 
-Function: ``test``
+Function: ``_processNextEvent``
+===============================
+
+
+
+.. js:function:: _processNextEvent()
+
+    
+    
+.. _module-models_Job._createJob:
+
+
+Function: ``_createJob``
+========================
+
+
+
+.. js:function:: _createJob()
+
+    
+    
+.. _module-models_Job._updateJob:
+
+
+Function: ``_updateJob``
+========================
+
+
+
+.. js:function:: _updateJob()
+
+    
+    
+.. _module-models_Job.kJob:
+
+
+Function: ``kJob``
 ==================
 
 
 
-.. js:function:: test()
+.. js:function:: kJob()
 
     
     
-.. _module-models_Job.createOrUpdate:
+.. _module-models_Job.sJob:
 
 
-Function: ``createOrUpdate``
-============================
+Function: ``sJob``
+==================
 
-Create or update a job in the sails framework based on kue job data
 
-.. js:function:: createOrUpdate(, mJob)
+
+.. js:function:: sJob()
 
     
-    :param createOrUpdate(, mJob): kJob - Kue framework job
-    :param object mJob: Sails framework job
     
-.. _module-models_Job.syncJobs:
+.. _module-models_Job._destroyJob:
 
 
-Function: ``syncJobs``
-======================
+Function: ``_destroyJob``
+=========================
 
-Synchronize Jobs with the Kue framework
 
-.. js:function:: syncJobs()
+
+.. js:function:: _destroyJob()
+
+    
+    
+.. _module-models_Job._listJobs:
+
+
+Function: ``_listJobs``
+=======================
+
+
+
+.. js:function:: _listJobs()
+
+    
+    
+.. _module-models_Job._syncJobs:
+
+
+Function: ``_syncJobs``
+=======================
+
+Synchronize all kue jobs (kJobs) and sails db jobs (sJobs)
+Called upon initialization of the Job model
+
+if the kJob exists but sJob does not, then create the sJob from kJob.
+If the sJob exists but not kJob, then delete the sJob
+
+.. js:function:: _syncJobs()
+
+    
+    
+.. _module-models_Job.kJobs:
+
+
+Function: ``kJobs``
+===================
+
+
+
+.. js:function:: kJobs()
+
+    
+    
+.. _module-models_Job.sJobs:
+
+
+Function: ``sJobs``
+===================
+
+
+
+.. js:function:: sJobs()
 
     
     
@@ -301,101 +481,159 @@ Track is a model for a list of tracks that are in the ``trackList.json``'s ``[tr
 Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
 
 
-.. _module-models_Track.startMonitor:
+.. _module-models_Track.Init:
 
 
-Function: ``startMonitor``
-==========================
+Function: ``Init``
+==================
 
-Obsolete
 
-.. js:function:: startMonitor()
+
+.. js:function:: Init()
 
     
     
-.. _module-models_Track.syncTracks:
+.. _module-models_Track.StartWatch:
 
 
-Function: ``syncTracks``
+Function: ``StartWatch``
 ========================
+
+
+
+.. js:function:: StartWatch()
+
+    
+    
+.. _module-models_Track.PauseWatch:
+
+
+Function: ``PauseWatch``
+========================
+
+
+
+.. js:function:: PauseWatch()
+
+    
+    
+.. _module-models_Track.ResumeWatch:
+
+
+Function: ``ResumeWatch``
+=========================
+
+
+
+.. js:function:: ResumeWatch()
+
+    
+    
+.. _module-models_Track.Get:
+
+
+Function: ``Get``
+=================
+
+Get list of tracks based on critera in params
+
+.. js:function:: Get(params, cb)
+
+    
+    :param object params: search critera (i.e. {id: 1,user:'jimmy'} )
+    :param function cb: callback function(err,array)
+    
+.. _module-models_Track.Add:
+
+
+Function: ``Add``
+=================
+
+
+
+.. js:function:: Add()
+
+    
+    
+.. _module-models_Track.Modify:
+
+
+Function: ``Modify``
+====================
+
+
+
+.. js:function:: Modify()
+
+    
+    
+.. _module-models_Track.Remove:
+
+
+Function: ``Remove``
+====================
+
+
+
+.. js:function:: Remove(dataset, dataset)
+
+    
+    :param string dataset: (eg: "sample_data/json/volvlx")
+    :param ing dataset: dataset string (i.e. "sample_data/json/volvox"
+    :param Remove(dataset, dataset): cb - callback function(err,
+    
+.. _module-models_Track.Sync:
+
+
+Function: ``Sync``
+==================
 
 Sync tracklist.json tracks with Track model (promises version)
 
 todo: dataSet should accept string or dataSet object id
 
-.. js:function:: syncTracks(dataSet,)
+.. js:function:: Sync(ds,)
 
     
-    :param string dataSet,: if dataset is not defined, all models are committed.
+    :param string ds,: if dataset is not defined, all models are committed.
     
-.. _module-models_Track.saveTracks:
+.. _module-models_Track.Save:
 
 
-Function: ``saveTracks``
-========================
-
-
-
-.. js:function:: saveTracks()
-
-    
-    
-.. _module-models_Track.saveTracks:
-
-
-Function: ``saveTracks``
-========================
+Function: ``Save``
+==================
 
 
 
-.. js:function:: saveTracks()
+.. js:function:: Save()
 
     
     
-.. _module-models_Track.syncTracks:
+.. _module-models_Track._modifyTrack:
 
 
-Function: ``syncTracks``
-========================
+Function: ``_modifyTrack``
+==========================
 
+Given tracks array, find and update the item with the given updateTrack.
+updateTrack must contain label.
 
-
-.. js:function:: syncTracks()
+.. js:function:: _modifyTrack()
 
     
     
+.. _module-models_Track._removeTrack:
 
-.. _module-models_Track.attributes:
 
-Member: ``attributes``: 
+Function: ``_removeTrack``
+==========================
 
-.. _module-models_Track.dataSetPath:
+Given tracks array, remove the item with the given key (which is track label)
 
-Member: ``dataSetPath``: 
+.. js:function:: _removeTrack()
 
-.. _module-models_Track.dataSetPath:
-
-Member: ``dataSetPath``: 
-
-.. _module-models_Track.id:
-
-Member: ``id``: 
-
-.. _module-models_Track.data:
-
-Member: ``data``: 
-
-.. _module-models_Track.dataSetPath:
-
-Member: ``dataSetPath``: 
-
-.. _module-models_Track.lkey:
-
-Member: ``lkey``: 
-
-.. _module-models_Track.trackData:
-
-Member: ``trackData``: 
+    
+    
 
 
 
@@ -473,7 +711,31 @@ Description
 
 isAdmin policy provides passage if the user contains the property admin: true.
 
+req.session looks something like this:
+req.session Session {
+     cookie: { path: '/',
+         _expires: null,
+         originalMaxAge: null,
+         httpOnly: true 
+     },
+     passport: { user: 2 },
+     authenticated: true, (true if logged in, 
+     user: { username: 'juser', email: 'juser@jbrowse.org' } 
+}
 
+
+.. _module-policies_isAdmin.nonAdminAction:
+
+
+Function: ``nonAdminAction``
+============================
+
+
+
+.. js:function:: nonAdminAction()
+
+    
+    
 
 
 
@@ -608,6 +870,18 @@ Add a route
     :param string module: Add a route
     :param string route: Add a route
     :param string target: Add a route
+    
+.. _module-services_jbRouteUtil.addPluginRoute:
+
+
+Function: ``addPluginRoute``
+============================
+
+
+
+.. js:function:: addPluginRoute()
+
+    
     
 
 
