@@ -150,7 +150,10 @@ Grid table:
 
     
     :param val dval: dataset string (ie. "sample_data/json/volvox") or id (int)
+    
          
+    Code Example
+                   
     ::
         
         {
@@ -159,6 +162,8 @@ Grid table:
         }
     :return object: - dataset object
          dataset (string - i.e. "sample_data/json/volvox" if input was an id
+         
+    Grid Example:
          
     +------------+------------+-----------+ 
     | Header 1   | Header 2   | Header 3  | 
