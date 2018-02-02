@@ -150,8 +150,21 @@ Grid table:
 
     
     :param val dval: dataset string (ie. "sample_data/json/volvox") or id (int)
+         
+    ::
+        
+        {
+            path: "sample_data/json/volvox",
+            id: 3
+        }
     :return object: - dataset object
          dataset (string - i.e. "sample_data/json/volvox" if input was an id
+         
+    +------------+------------+-----------+ 
+    | Header 1   | Header 2   | Header 3  | 
+    +============+============+===========+ 
+    | body row 1 | column 2   | column 3  | 
+    +------------+------------+-----------+
     
 .. _module-models_Dataset.Sync:
 
