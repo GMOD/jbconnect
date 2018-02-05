@@ -1,6 +1,5 @@
 /*
  * @module
- * @ignore
  * @description
  * JobController
  *
@@ -8,10 +7,14 @@
  * 
  * See http://sailsjs.org/#!/documentation/concepts/Controllers
  * 
- * ##excludedoc
  */
 
 module.exports = {
+    /**
+     * Read or search job list.
+     * @param {object} req
+     * @param {object} res
+     */
     get: function(req,res) {
         var params = req.allParams();
         sails.log("/job/get",params);
@@ -25,6 +28,11 @@ module.exports = {
         else 
             return res.forbidden('requires POST');
     },
+    /**
+     * Submit a job.
+     * @param {object} req
+     * @param {object} res
+     */
     submit: function(req,res) {
         var params = req.allParams();
         sails.log("/job/submit",params);

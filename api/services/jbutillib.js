@@ -15,8 +15,7 @@ module.exports = {
     dbName: 'localDiskDb.db',
     /**
      * Traverse jbutils-ext.js of submodules (jbh-*)
-     * @param {type} cb
-     * @returns {undefined}
+     * @param {function} cb
      */
     doExtScripts: function(cb) {
         var cwd = sh.pwd();

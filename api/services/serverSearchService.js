@@ -38,7 +38,7 @@ module.exports = {
             res.ok(result);
         });
     },
-    /**
+    /*
      * This is used to receive result data from the phantomjs component (not currently used)
      * @param {object} req
      *      jobid           job that is managing this session
@@ -107,6 +107,11 @@ module.exports = {
             cb({status:'success',jobId: kJob.id,asset:kJob.data.asset},null);
         });
     },
+    /**
+     * Job service job start.
+     * called when an appropriate jobs is found and exeuted by service.
+     * @param {object} kJob
+     */
     beginProcessing(kJob) {
         var g = sails.config.globals.jbrowse;
         var thisb = this;
@@ -169,6 +174,11 @@ module.exports = {
             thisb._runWorkflow(kJob);
         },5000);
     },
+    /*
+     * Fix up regex search parameters.
+     * @param {Object} s - search parameters.
+     * @returns {nm$_serverSearchService.module.exports._fixParams._s}
+     */
     _fixParams(s) {
         var _s={};
         _s.expr          = s.expr;
@@ -182,26 +192,9 @@ module.exports = {
         return _s;
     },
     /*
-    _createSearchParamFile: function(job) {
-        // if direcgtory doesn't exist, create it
-        var filePath = job.data.path+'/'+job.data.searchParamFile;
-        
-        if (!fs.existsSync(job.data.path)){
-            fs.mkdirSync(job.data.path);
-        }  
-        var error = false;
-        try {
-            ws = fs.createWriteStream(filePath);
-            ws.write(JSON.stringify(job.data.searchParams,null,4));
-            ws.end();
-        }
-        catch (e) {
-            sails.log.error(e,filePath);
-            job.kDoneFn(new Error('failed to create search param file'));
-            error = true;
-        }
-    },
-    */
+     * run the ServerScript.workflow.js
+     * @param (object} kWorkflowJob
+     */
     _runWorkflow: function(kWorkflowJob) {
 
         var thisb = this;
@@ -253,10 +246,10 @@ module.exports = {
         });
     },
     /**
-     * this generates track template
+     * this generates the track definition from the track template
      * 
-     * @param {type} kWorkflowJob
-     * @param {type} cb
+     * @param {object} kWorkflowJob
+     * @param {object} cb - callback function
      */
     postMoveResultFiles:function(kWorkflowJob,cb) {
 

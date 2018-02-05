@@ -53,11 +53,49 @@ module.exports = {
            return cb(err);
         });
     },
-    /*
+    /**
+     * Given either a dataset string (ie. "sample_data/json/volvox" or the database id of a dataset,
+     * it returns a dataset object in the form:
      * 
-     * @param {string or int} dval - dataset string (ie. "sample_data/json/volvox") or id (int)
+     * ::
+     *     
+     *     {
+     *         path: "sample_data/json/volvox",
+     *         id: 3
+     *     }
+     *
+     * Grid table:
+     *
+     * +------------+------------+-----------+ 
+     * | Header 1   | Header 2   | Header 3  | 
+     * +============+============+===========+ 
+     * | body row 1 | column 2   | column 3  | 
+     * +------------+------------+-----------+ 
+     * | body row 2 | Cells may span columns.| 
+     * +------------+------------+-----------+ 
+     * 
+     * @param {val} dval - dataset string (ie. "sample_data/json/volvox") or id (int)
+     * 
+     *      
+     * Code Example
+     *                
+     * ::
+     *     
+     *     {
+     *         path: "sample_data/json/volvox",
+     *         id: 3
+     *     }
+     *     
      * @returns {object} - dataset object
      *      dataset (string - i.e. "sample_data/json/volvox" if input was an id
+     *      
+     * Grid Example:
+     *      
+     * +------------+------------+-----------+ 
+     * | Header 1   | Header 2   | Header 3  | 
+     * +============+============+===========+ 
+     * | body row 1 | column 2   | column 3  | 
+     * +------------+------------+-----------+ 
      */
     Resolve: function(dval){
         if (typeof this._dataSets[dval] !== 'undefined')

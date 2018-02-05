@@ -1,17 +1,15 @@
 /*
  * @module
- * @ignore
  * @description
- * DatasetController
- *
- * Server-side logic for managing Dataset
- * 
- * See http://sailsjs.org/#!/documentation/concepts/Controllers
- * 
- * ##excludedoc
  */
 
 module.exports = {
+    /**
+     * Read or search datasets
+     * 
+     * @param {object} req
+     * @param {object} res
+     */
     get: function(req,res) {
         var params = req.allParams();
         sails.log("/dataset/get",params);

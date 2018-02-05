@@ -1,6 +1,5 @@
 /**
  * @module
- *
  * @description
  * Track is a model for a list of tracks that are in the ``trackList.json``'s ``[tracks]`` section.
  * 

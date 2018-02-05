@@ -1,6 +1,5 @@
 /**
  * @module
- * 
  * @description
  * 
  * User is the data model for a user.

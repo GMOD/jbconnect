@@ -1,15 +1,21 @@
 /*
  * @module
- * @ignore
  * @description
- * Server-side logic for managing jbtracks
+ * Server-side logic for managing jbrowse tracks
 
  * See http://sailsjs.org/#!/documentation/concepts/Controllers
  * 
- * ##excludedoc
  */
 
 module.exports = {
+    /**
+     * Read or search track list.
+     * 
+     * REST: `/track/get`
+     * 
+     * @param {object} req
+     * @param {object} res
+     */
     get: function(req,res) {
         var params = req.allParams();
         sails.log("/track/get",params);
@@ -27,7 +33,6 @@ module.exports = {
      * 
      * @param {object} req
      * @param {object} res
-     * @returns {unresolved}
      */
     add: function(req,res) {
         var params = req.allParams();
@@ -41,6 +46,12 @@ module.exports = {
         else 
             return res.forbidden('requires POST');
     },
+    /**
+     * 
+     * @param {type} req
+     * @param {type} res
+     * @returns {unresolved}
+     */
     modify: function(req,res) {
         var params = req.allParams();
         var track = params.track;
@@ -54,6 +65,12 @@ module.exports = {
             return res.forbidden('requires POST');
         
     },
+    /**
+     * 
+     * @param {type} req
+     * @param {type} res
+     * @returns {unresolved}
+     */
     remove: function(req,res) {
         var params = req.allParams();
         var id = params.trackId;

@@ -1,11 +1,17 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*
+ * @module
+ * @description
+ * JobActive is a single record model that contains a count of the active jobs
+ * in the job queue.
  */
 
 
 module.exports = {
+    /**
+     * 
+     * @param {object} req
+     * @param {object} res
+     */
     get: function(req,res) {
         var params = req.allParams();
         sails.log("/jobactive/get",params);

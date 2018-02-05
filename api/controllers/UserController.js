@@ -1,6 +1,5 @@
 /*
  * @module
- * @ignore
  * @description
  * UserController
  *
@@ -8,10 +7,16 @@
  * 
  * See http://sailsjs.org/#!/documentation/concepts/Controllers
  * 
- * ##excludedoc
  */
 
 module.exports = {
+    /**
+     * Read or search users
+     * REST `/user/get`
+     * 
+     * @param {object} req
+     * @param {object} res
+     */
     get: function(req,res) {
         var params = req.allParams();
         sails.log("/user/get",params);

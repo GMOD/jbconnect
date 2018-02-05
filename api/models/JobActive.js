@@ -1,9 +1,23 @@
-/* 
+/**
+ * @module
+ * @description
+ * JobActive holds a count of the number of active jobs.
+ * It only contains one record that gets updated when the number of active jobs changes.
+ * A timer thread monitors the job queue for active jobs and updates the JobActive record
+ * with any changes to the number of active jobs.
+ * Subscribers to the record (clients) will get notification.
+ * JBClient plugin uses this to determine if a job is active and changes the activity icon
+ * of the job queue panel.
  */
 
 
 module.exports = {
-    
+
+    /**
+     * initialize starts the job active monitor
+     * @param {object} params - value is ignored
+     * @param {type} cb - callback `function cb(err)`    
+     */
     Init: function(params,cb) {
         this._activeMonitor();
         cb();
@@ -23,10 +37,8 @@ module.exports = {
     /*
      * Monitors how many active jobs there are.
      * Writes 
-     * @returns {undefined}
      */
     _lastActiveCount: 0,
-    
     _activeMonitor: function() {
         sails.log.info("Active Job Monitor starting");
         var g = sails.config.globals;

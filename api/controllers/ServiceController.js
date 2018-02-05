@@ -1,6 +1,5 @@
 /**
  * @module
- * @ignore
  * @description
  * todo: document 
  */
@@ -15,7 +14,14 @@ module.exports = {
       rest: true
     },
     */
-   
+    /**
+     * Read or search service list 
+     * 
+     * REST `/service/get`
+     * 
+     * @param {object} req
+     * @param {object} res
+     */
     get: function(req,res) {
         var params = req.allParams();
         sails.log("/service/get",params);
@@ -29,6 +35,14 @@ module.exports = {
         else 
             return res.forbidden('requires POST');
     },
+    /**
+     * RESTful execution of a function of an jservice.
+     * 
+     * REST `/service/exec/...`
+     * 
+     * @param {type} req
+     * @param {type} res
+     */
     exec: serviceProc.execute
 };
 

@@ -6,9 +6,11 @@
  * 
  * Kue uses `redis <https://redis.io/>`_ database.  This model synchronizes the Job database with the redis data
  * through the use of Kue's API.
- *  
- * Events
  * 
+ * Kue event messages are stuffed into a FIFO `_eventList` and dequeued with `_processNextEvent` to ensure order.
+ *  
+ *    
+ * Kue Events
  * +----------------------------+
  * | * queue-enqueue            |
  * | * queue-start              |
@@ -45,7 +47,6 @@ module.exports = {
     
     /**
      * start the monitor
-     * 
      */
     Init: function(params,cb) {
         sails.log.info('Job Engine Starting');
@@ -105,6 +106,7 @@ module.exports = {
         });
     },
     /*
+     * Submit a job to the job queue
      * required: 
      *      service, dataset
      * @param {object} params
@@ -195,6 +197,9 @@ module.exports = {
             });
         },2000);
     },
+    /*
+     * subscribe to kue events and translates them to sails events
+     */
     _kueEventMonitor: function() {
         var g = sails.config.globals;
         var thisB = this;

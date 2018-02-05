@@ -1,8 +1,19 @@
 /* 
  * @module
  * @description 
- * A Workflow Manager is the entity that manages a workflow engine which can be either
- * *Galaxy* or the JBServer standalone workflow engine.
+ * 
+ * The service module implements the job service frameowrk which are installable 
+ * modules that can host web services and be a job execution processing for a particular
+ * type of job.
+ * 
+ * Installable services are generally named <servicename>Service.js and reside in the
+ * api/services directory.  For example: a job service built into this project is 
+ * serverSearchService.js
+ * 
+ * `api/services/serviceProc.js` is the bettr part of the implementation of service
+ * 
+ * Job services are defined in `config/globals.js` in the jbrowse/services section.
+ * 
  */
 
 var Service = {
