@@ -2,14 +2,15 @@
 JBServer
 ********
 
-**JBServer - an optional analysis server framework for JBrowse**
+**JBConnect - a tightly integrated analysis framework for JBrowse**
 
-JBServer does not contain JBrowse.
-JBServer is a 
+JBrowse does not require JBConnect to operate.
+
+JBConnect is a 
 `sails.js <http://sailsjs.com/>`_ application and provides a job execution engine 
 (`kue <https://www.npmjs.com/package/kue>`_).
   
-JBServer can be extended with  
+JBConnect can be extended with  
 *jbh-hook* modules that extend both server and client-ends in a single package.
 (see: :ref:`jbs-hook-install` and :ref:`jbs-hooks`)  
 

@@ -4,10 +4,10 @@ Features
 
 .. _jbs-features:
 
-JBServer is a Sails.js application
-**********************************
+JBConnect is a Sails.js application
+***********************************
 
-JBServer utilizes Sails.js, provideing the following features:
+JBConnect utilizes Sails.js, provideing the following features:
 
 
 +-------------------------------------------------------------------------------+
@@ -35,7 +35,7 @@ Directory Layout
 
 ::
 
-    JBServer project
+    JBConnect project
     ├── api                             Standard sails API layout
     ├── assets                          contains client accessible assets
     ├── bin                             Utilities
@@ -59,7 +59,7 @@ Directory Layout
 jbutil Command
 ==============
 
-``jbutil`` is a setup/configuration utility for JBServer.  jbh-hook can extend
+``jbutil`` is a setup/configuration utility for JBConnect.  jbh-hook can extend
 ``jbutil`` command options. (see: :ref:`jbs-hooks-extend`)
 
 This example shows that ``jbh-jblast`` adds a number of commands to ``jbutil``
@@ -84,7 +84,8 @@ This example shows that ``jbh-jblast`` adds a number of commands to ``jbutil``
 Queue Framework
 ===============
 
-JBServer uses `Kue <https://automattic.github.io/kue/>`_ as the queue framework.  
+JBConnect uses `Kue <https://automattic.github.io/kue/>`_ as the basis for the queue framework.
+However, Kue is encapsulated in the Job model/controller.  
 Since Kue requires `redis <https://redis.io/>`_ database, 
 redis server must be running.  An integrated job panel is available when
 the JBClient plugin is active. (see: :ref:`jbs-jbclient`)
@@ -117,12 +118,24 @@ JBrowse configurations are in ``config/globals.js``
     }
 
 
+Client-Side Plugins
+===================
+
+Client-side plugins are defined in the `plugins` directory.  Plugins will automatically
+be accessible by the client side.  However, they need to be configured in the `plugins:`
+section of the particular dataset in JBrowse `trackList.json`.
+
+Plugin routes are virtual routes
+With respect to the client side, they appear in the client-side's plugin directory
+only when the server is lifted.
+
+
 
 Library Routes
 ==============
 
 libroutes maps dependancy routes for client-side access.
-These are routes to modules that are required for use by the client-side 
+These provide access to modules that are required for use by the client-side 
 plugins or other client-side code.
 The framework looks for libroutes.js in jbh- (hook modules), in their respective config directories
 
@@ -130,6 +143,10 @@ For example: for the module jquery,
 The module is installed with 'npm install jquery'
 The mapping the mapping 'jquery': '/jblib/jquery'
 makes the jquery directory accessible as /jblib/jquery from the client side.
+
+Library Routes are virtual routes, in that they only exist when the server is lifted.
+They are virtually mapped to their respective locations in the node_modules directory.
+
 
 ``config/libroutes.js``:
 
@@ -165,7 +182,9 @@ Logout: ``http://<address>:1337/logout``
 
 Get Login State: ``http://<address>:1337/loginstate``
 
+The routes are defined in `config/routes.js`.
 
+ 
 
 Login/Logout Panel
 ------------------
@@ -183,7 +202,7 @@ Loguot Panel
 Job Queue Panel
 ---------------
 
-JBServer uses *Kue* as the queue framework.  Since Kue requires *redis* database, 
+JBConnect uses *Kue* as the queue framework.  Since Kue requires *redis* database, 
 redis server must be running.  An integrated job panel is available when
 the JBClient plugin is active. (see: :ref:`jbs-jbclient`)
 
@@ -192,6 +211,10 @@ Integrated Job Panel:
 .. image:: img/job-panel.jpg
 
 
+Jservice Framework
+==================
+
+todo
 
 Test Framework
 ==============
@@ -208,7 +231,6 @@ To execute
 
 by default nightwatch is setup for phantomjs.
 Selenium requires running an additional selenium server
-Browserstack has not been tested.
 
 ``package.json``:
 

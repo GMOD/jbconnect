@@ -7,14 +7,8 @@ Setup Options
 JBrowse Installed In Separate Directory 
 =======================================
 
-If JBrowse is already installed in another directory, use this command to specify
-the JBrowse directory after JBServer is installed.
-
-``todo: ./jbutil --jbpath <path where JBrowse is installed>``
-
-
 The JBrowse directory can also be configured manually. (See :ref:`jbs-globals-js`)
- 
+
 
 
 Configuration Files
@@ -23,14 +17,12 @@ Configuration Files
 A number of configuration files are in the ``./config`` directory.  A few of the
 more important ones (ones that JBSserver touches) are described mentioned in the table below.  
 See `Sails Configuration <http://sailsjs.com/documentation/reference/configuration>`_
-for a better description of all the files.
+for a better description of the configuration framework.
 
 +-------------------------------+----------------------------------------------------------+
 | :ref:`jbs-globals-js`         | global configuration file                                |
 +-------------------------------+----------------------------------------------------------+
 | http.js                       | custom middleware and /jbrowse route is setup here.      |
-+-------------------------------+----------------------------------------------------------+
-| :ref:`libroutes.js`           | library routes (non-sails)                               |
 +-------------------------------+----------------------------------------------------------+
 | passport.js, policies.js      | passport framework and auth policies config              |
 +-------------------------------+----------------------------------------------------------+
@@ -40,7 +32,6 @@ for a better description of all the files.
 |                               | (we use local by default.)  The DB file is in the        |
 |                               | ``./data/localDiskDb.db``.                               |
 +-------------------------------+----------------------------------------------------------+
-
 
 
 .. _jbs-globals-js
@@ -124,3 +115,32 @@ It is available as a route.*
   ],
 
 
+Jservice Configuration
+======================
+
+Jservices are a special type of service that are used to extend RESTful api service
+and serve processing for job operations.
+
+
+Configuration is defined in config/globals under the jbrowse section under service.
+
+A definition:    <indexname>: {name: <servicename>, type:<type>, alias:<alias> }
+
+where:
+ * indexname - is the reference name service (generally the same as servicename)
+ * servicename - is the name of the service reference the service code in api/services.
+ * type - is the type of service.  either "workflow" or "service"
+ * alias - (optional) if specified, the service can also be referenced by the alias name.
+
+jservice type:
+ * workflow - service can serve job execution
+ * service - service only serves RESTful interfaces
+
+::
+
+    // list of services that will get registered.
+    services: {
+        'basicWorkflowService':     {name: 'basicWorkflowService',  type: 'workflow', alias: "jblast"},
+        'filterService':            {name: 'filterService',         type: 'service'},
+        'entrezService':            {name: 'entrezService',         type: 'service'}
+    },

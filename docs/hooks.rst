@@ -11,6 +11,13 @@ extending JBServer.  jbh-hooks must have the prefix ``jbh-`` prepended to the na
 For example: jbh-jblast.  When the hook is installed (i.e. ``npm install jbh-jblast``).  JBServer
 will automatically integrate a number of features of the hook directly into JBServer upon ``sails lift``.
 
+jbh-* Integration
+* Models, Controller, Policies, Services (via marlinspikes)
+* jbutil command extensions
+* client-side plugin exposure, and client module dependencies
+* routes via jservice framework or via controllers
+* job jservice framework
+
 These features are described below.
 
 Directory Layout
@@ -24,8 +31,7 @@ This is the standard directory layout of a jbh- module
     │   ├── controllers
     │   ├── hooks
     │   │    └── Myhook
-    │   │         ├── index.js          The main hook
-    │   │         └── mapRoutes.js      Hook specific routes
+    │   │         └── index.js          The main hook
     │   ├── models
     │   ├── policies
     │   └── services
@@ -35,7 +41,7 @@ This is the standard directory layout of a jbh- module
     │   ├── globals.js                  Config file for module
     │   └── libroutes.js                Library Routes
     ├── plugins                         Client-side Plugins
-    │   ├── PluginA             
+    │   └── PluginA             
     ├── Gruntfile.js          
     └── package.json
 
@@ -58,6 +64,14 @@ This file contains config options that are specific to the hook module.
 These config options are merged with other jbh- hooks and the JBServer globals.js.
 
 From JBServer, use ``./jbutil --config`` to see the aggregated config. 
+
+
+Configuration (config.js)
+=========================
+
+This config file resides in the root of the app and can override config/globals.js
+and any config/globals.js from hooks that may be installed.
+
 
 
 Library Routes (libroutes)
@@ -96,6 +110,7 @@ client side as routes in the JBrowse plugin directories upon ``sails lift``.
 
 .. _jbs-hooks-extend
 
+
 Extending jbutil
 ================
 
@@ -104,7 +119,6 @@ options into jbutil (the JBServer utility).
 
 * it extends new command line options
 * it extends the help (i.e. ``./jbutil --help``)
-
 
 
 Sails Module Layout
@@ -132,12 +146,7 @@ The Main Hook
 
 index.js should not be modified.
 
-
-Hook Specific Routes
-====================
-
-mapRoutes.js provides a means of defining routes of the hook, in a single file.
-However, it is not required, as routes can be define in any module.
+This core fragment starts the initialization of JBConnect.
 
 
 config Directory
@@ -146,3 +155,8 @@ config Directory
 This directory contain config files for the hook.  If the name matches it's counterpart
 file in JBServer's config directory, the configurations similar files will be
 merged.
+
+JService Framework
+==================
+
+todo
