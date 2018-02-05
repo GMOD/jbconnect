@@ -54,12 +54,22 @@ todo: document
 Function: ``get``
 =================
 
+Read or search service list 
 
+REST `/service/get`
 
-.. js:function:: get()
+.. js:function:: get(req, res)
 
     
+    :param object req: Read or search service list 
     
+    REST `/service/get`
+    :param object res: Read or search service list 
+    
+    REST `/service/get`
+    
+
+REST `/service/exec/...`
 
 
 
@@ -211,9 +221,11 @@ Job model is an encapsulation of the `Kue <https://automattic.github.io/kue/>`_ 
 
 Kue uses `redis <https://redis.io/>`_ database.  This model synchronizes the Job database with the redis data
 through the use of Kue's API.
- 
-Events
 
+Kue event messages are stuffed into a FIFO `_eventList` and dequeued with `_processNextEvent` to ensure order.
+ 
+   
+Kue Events
 +----------------------------+
 | * queue-enqueue            |
 | * queue-start              |
@@ -423,6 +435,76 @@ Function: ``sJobs``
 
 
 .. js:function:: sJobs()
+
+    
+    
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
+Module: ``models/JobActive``
+****************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+JobActive holds a count of the number of active jobs.
+It only contains one record that gets updated when the number of active jobs changes.
+A timer thread monitors the job queue for active jobs and updates the JobActive record
+with any changes to the number of active jobs.
+Subscribers to the record (clients) will get notification.
+JBClient plugin uses this to determine if a job is active and changes the activity icon
+of the job queue panel.
+
+
+.. _module-models_JobActive.Init:
+
+
+Function: ``Init``
+==================
+
+initialize starts the job active monitor
+
+.. js:function:: Init(params, cb)
+
+    
+    :param object params: value is ignored
+    :param type cb: callback `function cb(err)`
+    
+.. _module-models_JobActive.Get:
+
+
+Function: ``Get``
+=================
+
+Get list of tracks based on critera in params
+
+.. js:function:: Get(params, cb)
+
+    
+    :param object params: search critera (i.e. {id: 1,user:'jimmy'} )
+    :param function cb: callback function(err,array)
+    
+.. _module-models_JobActive._activeMonitor:
+
+
+Function: ``_activeMonitor``
+============================
+
+
+
+.. js:function:: _activeMonitor()
 
     
     
