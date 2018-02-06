@@ -34,6 +34,146 @@ the basics of Passport.js to work.
 
    <hr style="border-color: black; border-width: 2px;">
 
+Module: ``controllers/DatasetController``
+*****************************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+REST Interfaces for Dataset
+
+
+.. _module-controllers_DatasetController.get:
+
+
+Function: ``get``
+=================
+
+Read or search datasets
+
+`GET /dataset/get`
+
+.. js:function:: get(req, res)
+
+    
+    :param object req: Read or search datasets
+    
+    `GET /dataset/get`
+    :param object res: Read or search datasets
+    
+    `GET /dataset/get`
+    
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
+Module: ``controllers/JobActiveController``
+*******************************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+REST interfaces for JobActive
+
+
+.. _module-controllers_JobActiveController.get:
+
+
+Function: ``get``
+=================
+
+Read job active record
+
+`GET /jobactive/get`
+
+.. js:function:: get(req, res)
+
+    
+    :param object req: Read job active record
+    
+    `GET /jobactive/get`
+    :param object res: Read job active record
+    
+    `GET /jobactive/get`
+    
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
+Module: ``controllers/JobController``
+*************************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+REST interfaces for JobController
+
+
+.. _module-controllers_JobController.get:
+
+
+Function: ``get``
+=================
+
+Read or search job list.
+
+.. js:function:: get(req, res)
+
+    
+    :param object req: Read or search job list.
+    :param object res: Read or search job list.
+    
+.. _module-controllers_JobController.submit:
+
+
+Function: ``submit``
+====================
+
+Submit a job.
+
+.. js:function:: submit(req, res)
+
+    
+    :param object req: Submit a job.
+    :param object res: Submit a job.
+    
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
 Module: ``controllers/ServiceController``
 *****************************************
 
@@ -45,7 +185,7 @@ Module: ``controllers/ServiceController``
 Description
 ===========
 
-todo: document
+REST interaces for Service Controller
 
 
 .. _module-controllers_ServiceController.get:
@@ -54,22 +194,172 @@ todo: document
 Function: ``get``
 =================
 
-Read or search service list 
+Enumerate job services (jservices)
 
-REST `/service/get`
+`GET /service/get`
 
 .. js:function:: get(req, res)
 
     
-    :param object req: Read or search service list 
+    :param object req: Enumerate job services (jservices)
     
-    REST `/service/get`
-    :param object res: Read or search service list 
+    `GET /service/get`
+    :param object res: Enumerate job services (jservices)
     
-    REST `/service/get`
+    `GET /service/get`
     
 
 REST `/service/exec/...`
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
+Module: ``controllers/TrackController``
+***************************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+REST interaces for TrackController
+
+
+.. _module-controllers_TrackController.get:
+
+
+Function: ``get``
+=================
+
+enumerate tracks or search track list.
+
+Get all tracks
+`GET /track/get`
+
+Get filtered tracks by dataset:
+
+`GET /track/get?id=1` where id is the dataset id
+
+`GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
+
+.. js:function:: get(req, res)
+
+    
+    :param object req: enumerate tracks or search track list.
+    
+    Get all tracks
+    `GET /track/get`
+    
+    Get filtered tracks by dataset:
+    
+    `GET /track/get?id=1` where id is the dataset id
+    
+    `GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
+    :param object res: enumerate tracks or search track list.
+    
+    Get all tracks
+    `GET /track/get`
+    
+    Get filtered tracks by dataset:
+    
+    `GET /track/get?id=1` where id is the dataset id
+    
+    `GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
+    
+.. _module-controllers_TrackController.add:
+
+
+Function: ``add``
+=================
+
+
+
+.. js:function:: add(req, res)
+
+    
+    :param object req: 
+    :param object res: 
+    
+.. _module-controllers_TrackController.modify:
+
+
+Function: ``modify``
+====================
+
+
+
+.. js:function:: modify(req, res)
+
+    
+    :param type req: 
+    :param type res: 
+    :return unresolved: 
+    
+.. _module-controllers_TrackController.remove:
+
+
+Function: ``remove``
+====================
+
+
+
+.. js:function:: remove(req, res)
+
+    
+    :param type req: 
+    :param type res: 
+    :return unresolved: 
+    
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
+Module: ``controllers/UserController``
+**************************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+REST interfaces for UserController
+
+
+.. _module-controllers_UserController.get:
+
+
+Function: ``get``
+=================
+
+Enumerate or search users
+`GET /user/get`
+
+.. js:function:: get(req, res)
+
+    
+    :param object req: Enumerate or search users
+    `GET /user/get`
+    :param object res: Enumerate or search users
+    `GET /user/get`
+    
 
 
 
@@ -565,6 +855,40 @@ Hash a passport password.
 
    <hr style="border-color: black; border-width: 2px;">
 
+Module: ``models/Service``
+**************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+The service module implements the job service frameowrk which are installable 
+modules that can host web services and be a job execution processing for a particular
+type of job.
+
+Installable services are generally named <servicename>Service.js and reside in the
+api/services directory.  For example: a job service built into this project is 
+serverSearchService.js
+
+`api/services/serviceProc.js` is the bettr part of the implementation of service
+
+Job services are defined in `config/globals.js` in the jbrowse/services section.
+
+
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
 Module: ``models/Track``
 ************************
 
@@ -993,6 +1317,133 @@ Function: ``addPluginRoute``
 
    <hr style="border-color: black; border-width: 2px;">
 
+Module: ``services/jbutillib``
+******************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+Support library for jbutil command
+
+
+.. _module-services_jbutillib.doExtScripts:
+
+
+Function: ``doExtScripts``
+==========================
+
+Traverse jbutils-ext.js of submodules (jbh-*)
+
+.. js:function:: doExtScripts(cb)
+
+    
+    :param function cb: Traverse jbutils-ext.js of submodules (jbh-*)
+    
+.. _module-services_jbutillib.getMergedConfig:
+
+
+Function: ``getMergedConfig``
+=============================
+
+Returned merged jbrowse config.  
+Merged from jbh-* config/globals.js, local config/globals.js, & config.js
+
+.. js:function:: getMergedConfig()
+
+    
+    
+.. _module-services_jbutillib.buildHtml:
+
+
+Function: ``buildHtml``
+=======================
+
+
+
+.. js:function:: buildHtml()
+
+    
+    
+.. _module-services_jbutillib.exec_setupindex:
+
+
+Function: ``exec_setupindex``
+=============================
+
+
+
+.. js:function:: exec_setupindex(params)
+
+    
+    :param type params: 
+    :return undefined: 
+    
+.. _module-services_jbutillib.exec_setupPlugins:
+
+
+Function: ``exec_setupPlugins``
+===============================
+
+setup sample track
+
+.. js:function:: exec_setupPlugins()
+
+    
+    
+.. _module-services_jbutillib.safeCopy:
+
+
+Function: ``safeCopy``
+======================
+
+copy src to targ, but if targ exists, it will backup the target by appending a number
+
+.. js:function:: safeCopy(src, targ)
+
+    
+    :param string src: source
+    :param string targ: target
+    :return string: final target filename,
+    
+.. _module-services_jbutillib.safeWriteFile:
+
+
+Function: ``safeWriteFile``
+===========================
+
+
+
+.. js:function:: safeWriteFile()
+
+    
+    
+.. _module-services_jbutillib.install_database:
+
+
+Function: ``install_database``
+==============================
+
+
+
+.. js:function:: install_database()
+
+    
+    
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
 Module: ``services/passport``
 *****************************
 
@@ -1027,6 +1478,239 @@ encrypting passwords and storing them in Passports, allowing you to keep your
 User model free of bloat.
 
 
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
+Module: ``services/serverSearchService``
+****************************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+Job service implementing the server-side regex search service.
+
+
+.. _module-services_serverSearchService.init:
+
+
+Function: ``init``
+==================
+
+
+
+.. js:function:: init()
+
+    
+    
+.. _module-services_serverSearchService.submit_search:
+
+
+Function: ``submit_search``
+===========================
+
+
+
+.. js:function:: submit_search(req, res)
+
+    
+    :param object req: ::
+    
+         searchParams - search parameters
+              expr": "tgac"          - search sequence or regex string
+              "regex": false/true    - 
+              "caseIgnore": false/true
+              "translate": false/true,
+              "fwdStrand": false/true,
+              "revStrand": false/true,
+              "maxLen": 100,     
+         dataset - the dataset path i.e. "sample_data/json/volvox"
+    :param object res: 
+    
+.. _module-services_serverSearchService.send_search_result:
+
+
+Function: ``send_search_result``
+================================
+
+
+
+.. js:function:: send_search_result()
+
+    
+    
+.. _module-services_serverSearchService.validateParams:
+
+
+Function: ``validateParams``
+============================
+
+
+
+.. js:function:: validateParams()
+
+    
+    
+.. _module-services_serverSearchService.generateName:
+
+
+Function: ``generateName``
+==========================
+
+
+
+.. js:function:: generateName()
+
+    
+    
+.. _module-services_serverSearchService._searchSubmit:
+
+
+Function: ``_searchSubmit``
+===========================
+
+
+
+.. js:function:: _searchSubmit()
+
+    
+    
+.. _module-services_serverSearchService.beginProcessing:
+
+
+Function: ``beginProcessing``
+=============================
+
+Job service job start.
+called when an appropriate jobs is found and exeuted by service.
+
+.. js:function:: beginProcessing(kJob)
+
+    
+    :param object kJob: Job service job start.
+    called when an appropriate jobs is found and exeuted by service.
+    
+.. _module-services_serverSearchService._fixParams:
+
+
+Function: ``_fixParams``
+========================
+
+
+
+.. js:function:: _fixParams()
+
+    
+    
+.. _module-services_serverSearchService._runWorkflow:
+
+
+Function: ``_runWorkflow``
+==========================
+
+
+
+.. js:function:: _runWorkflow()
+
+    
+    
+.. _module-services_serverSearchService._postProcess:
+
+
+Function: ``_postProcess``
+==========================
+
+
+
+.. js:function:: _postProcess()
+
+    
+    
+.. _module-services_serverSearchService.postMoveResultFiles:
+
+
+Function: ``postMoveResultFiles``
+=================================
+
+this generates the track definition from the track template
+
+.. js:function:: postMoveResultFiles(kWorkflowJob, cb)
+
+    
+    :param object kWorkflowJob: this generates the track definition from the track template
+    :param object cb: callback function
+    
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
+Module: ``services/serviceProc``
+********************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+Support functions for Service model.
+
+
+.. _module-services_serviceProc.init:
+
+
+Function: ``init``
+==================
+
+
+
+.. js:function:: init()
+
+    
+    
+.. _module-services_serviceProc.addService:
+
+
+Function: ``addService``
+========================
+
+
+
+.. js:function:: addService()
+
+    
+    
+.. _module-services_serviceProc.execute:
+
+
+Function: ``execute``
+=====================
+
+
+
+.. js:function:: execute()
+
+    
+    
 
 
 
