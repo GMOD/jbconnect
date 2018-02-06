@@ -1,7 +1,8 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @module
+ * @description 
+ * Support library for jbutil command
+ *  
  */
 var fs = require('fs-extra');
 var path = require('path');

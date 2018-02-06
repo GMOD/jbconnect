@@ -1,6 +1,7 @@
-/*
- * seqSearchService
- * service to handle  
+/**
+ * @module
+ * @description 
+ * Job service implementing the server-side regex search service.
  */
 
 var fs = require("fs-extra");
@@ -12,7 +13,6 @@ var binPath = phantomjs.path;
 module.exports = {
 
     fmap: {
-//        submit_search:          'post',
         send_search_result:     'post'
     },
     init: function(params,cb) {
@@ -21,6 +21,9 @@ module.exports = {
     /**
      * 
      * @param {object} req
+     * 
+     * ::
+     * 
      *      searchParams - search parameters
      *           expr": "tgac"          - search sequence or regex string
      *           "regex": false/true    - 
@@ -30,6 +33,7 @@ module.exports = {
      *           "revStrand": false/true,
      *           "maxLen": 100,     
      *      dataset - the dataset path i.e. "sample_data/json/volvox" 
+     *      
      * @param {object} res
      */
     submit_search: function(req, res) {

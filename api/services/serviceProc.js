@@ -1,4 +1,7 @@
-/* 
+/**
+ * @module
+ * @description 
+ * Support functions for Service model.
  */
 var async = require('async');
 

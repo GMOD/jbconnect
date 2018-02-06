@@ -1,4 +1,4 @@
-/*
+/**
  * @module
  * @description
  * JobActive is a single record model that contains a count of the active jobs

@@ -1,4 +1,4 @@
-/*
+/**
  * @module
  * @description
  * Server-side logic for managing jbrowse tracks
