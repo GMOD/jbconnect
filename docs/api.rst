@@ -243,13 +243,13 @@ Function: ``get``
 enumerate tracks or search track list.
 
 Get all tracks
-`GET /track/get`
+:bash:`GET /track/get`
 
 Get filtered tracks by dataset:
 
-`GET /track/get?id=1` where id is the dataset id
+:bash:`GET /track/get?id=1` where id is the dataset id
 
-`GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
+:bash:`GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
 
 .. js:function:: get(req, res)
 
@@ -257,23 +257,23 @@ Get filtered tracks by dataset:
     :param object req: enumerate tracks or search track list.
     
     Get all tracks
-    `GET /track/get`
+    :bash:`GET /track/get`
     
     Get filtered tracks by dataset:
     
-    `GET /track/get?id=1` where id is the dataset id
+    :bash:`GET /track/get?id=1` where id is the dataset id
     
-    `GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
+    :bash:`GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
     :param object res: enumerate tracks or search track list.
     
     Get all tracks
-    `GET /track/get`
+    :bash:`GET /track/get`
     
     Get filtered tracks by dataset:
     
-    `GET /track/get?id=1` where id is the dataset id
+    :bash:`GET /track/get?id=1` where id is the dataset id
     
-    `GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
+    :bash:`GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
     
 .. _module-controllers_TrackController.add:
 
