@@ -8,6 +8,15 @@
  * Subscribers to the record (clients) will get notification.
  * JBClient plugin uses this to determine if a job is active and changes the activity icon
  * of the job queue panel.
+ * 
+ * JobActive object example:
+ * ::
+ *   {
+ *     "active": 0,
+ *     "createdAt": "2017-11-23T00:53:41.864Z",
+ *     "updatedAt": "2018-02-07T07:59:32.471Z",
+ *     "id": 1
+ *   } 
  */
 
 
@@ -15,8 +24,10 @@ module.exports = {
 
     /**
      * initialize starts the job active monitor
+     * 
      * @param {object} params - value is ignored
-     * @param {type} cb - callback `function cb(err)`    
+     * @param {type} cb - callback ``function cb(err)`` 
+     *    
      */
     Init: function(params,cb) {
         this._activeMonitor();
@@ -24,8 +35,10 @@ module.exports = {
     },
     /**
      * Get list of tracks based on critera in params  
-     * @param {object} params - search critera (i.e. {id: 1,user:'jimmy'} )
-     * @param {function} cb - callback function(err,array)
+     * 
+     * @param {object} params - search critera (i.e. ``{id: 1,user:'jimmy'}`` )
+     * @param {function} cb - callback ``function(err,array)``
+     * 
      */
     Get: function(params,cb) {
         this.find(params).then(function(foundList) {
@@ -36,7 +49,6 @@ module.exports = {
     },
     /*
      * Monitors how many active jobs there are.
-     * Writes 
      */
     _lastActiveCount: 0,
     _activeMonitor: function() {

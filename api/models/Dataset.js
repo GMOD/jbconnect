@@ -6,6 +6,16 @@
  * 
  * Datasets known to JBServer are defined in config/globals.js
  * (see: :ref:`jbs-globals-config`)
+ * 
+ * Dataset object:
+ * ::
+ *   {
+ *     "name": "Volvox",
+ *     "path": "sample_data/json/volvox",
+ *     "createdAt": "2018-02-01T05:38:26.320Z",
+ *     "updatedAt": "2018-02-01T05:38:26.320Z",
+ *     "id": 1
+ *   }
  *      
  * Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
  */
@@ -42,9 +52,10 @@ module.exports = {
         //cb();
     },
     /**
-     * Get list of tracks based on critera in params  
-     * @param {object} params - search critera (i.e. {id: 1,user:'jimmy'} )
-     * @param {function} cb - callback function(err,array)
+     * Get list of tracks based on critera in params
+     *   
+     * @param {object} params - search critera (i.e. ``{id: 1,user:'jimmy'}`` )
+     * @param {function} cb - callback ``function(err,array)``
      */
     Get: function(params,cb) {
         this.find(params).then(function(foundList) {
@@ -64,23 +75,12 @@ module.exports = {
      *         id: 3
      *     }
      *
-     * Grid table:
-     *
-     * +------------+------------+-----------+ 
-     * | Header 1   | Header 2   | Header 3  | 
-     * +============+============+===========+ 
-     * | body row 1 | column 2   | column 3  | 
-     * +------------+------------+-----------+ 
-     * | body row 2 | Cells may span columns.| 
-     * +------------+------------+-----------+ 
      * 
      * @param {val} dval - dataset string (ie. "sample_data/json/volvox") or id (int)
      * 
      *      
      * Code Example
-     *                
      * ::
-     *     
      *     {
      *         path: "sample_data/json/volvox",
      *         id: 3
@@ -89,13 +89,6 @@ module.exports = {
      * @returns {object} - dataset object
      *      dataset (string - i.e. "sample_data/json/volvox" if input was an id
      *      
-     * Grid Example:
-     *      
-     * +------------+------------+-----------+ 
-     * | Header 1   | Header 2   | Header 3  | 
-     * +============+============+===========+ 
-     * | body row 1 | column 2   | column 3  | 
-     * +------------+------------+-----------+ 
      */
     Resolve: function(dval){
         if (typeof this._dataSets[dval] !== 'undefined')

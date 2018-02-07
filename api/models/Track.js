@@ -4,6 +4,28 @@
  * Track is a model for a list of tracks that are in the ``trackList.json``'s ``[tracks]`` section.
  * 
  * Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
+ * 
+ * Track object example:
+ * ::
+ *   {
+ *     "dataset": 1,
+ *     "path": "sample_data/json/volvox",
+ *     "lkey": "DNA",
+ *     "trackData": {
+ *       "seqType": "dna",
+ *       "key": "Reference sequence",
+ *       "storeClass": "JBrowse/Store/Sequence/StaticChunked",
+ *       "chunkSize": 20000,
+ *       "urlTemplate": "seq/{refseq_dirpath}/{refseq}-",
+ *       "label": "DNA",
+ *       "type": "SequenceTrack",
+ *       "category": "Reference sequence"
+ *     },
+ *     "createdAt": "2018-02-01T05:38:26.339Z",
+ *     "updatedAt": "2018-02-01T05:38:26.339Z",
+ *     "id": 1
+ *   } 
+ * 
  */
 
 var Promise = require("bluebird");
@@ -31,6 +53,11 @@ module.exports = {
         }
 
     },
+    /**
+     * 
+     * @param {type} params - parameters
+     * @param {type} cb - callback function
+     */
     Init: function(params,cb) {
         //Track.startWatch();
         return cb();
@@ -50,7 +77,7 @@ module.exports = {
      * This is used by internal operations that change trackList.json
      * When the internal operation is complete, resumeWatch should be called.
      * 
-     * @param {type} dataset
+     * @param {string} dataset
      * @returns {undefined}
      */
     
@@ -61,7 +88,7 @@ module.exports = {
     /*
      * Resume watching trackList.json
      * 
-     * @param {type} dataset
+     * @param {string} dataset
      * @returns {undefined}
      */
     
@@ -70,9 +97,11 @@ module.exports = {
     },
     
     /**
-     * Get list of tracks based on critera in params  
-     * @param {object} params - search critera (i.e. {id: 1,user:'jimmy'} )
-     * @param {function} cb - callback function(err,array)
+     * Get list of tracks based on critera in params
+     *   
+     * @param {object} params - search critera
+     * @param {function} cb - callback ``function(err,array)``
+     * 
      */
     Get: function(params,cb) {
         this.find(params).then(function(foundList) {

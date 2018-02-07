@@ -14,6 +14,17 @@
  * 
  * Job services are defined in `config/globals.js` in the jbrowse/services section.
  * 
+ * Example job service object:
+ * ::
+ *   {
+ *     "name": "serverSearchService",
+ *     "type": "service",
+ *     "module": "search",
+ *     "createdAt": "2018-02-01T05:38:26.289Z",
+ *     "updatedAt": "2018-02-07T07:59:31.430Z",
+ *     "id": 1
+ *   }
+ * 
  */
 
 var Service = {
@@ -44,9 +55,11 @@ var Service = {
     Init: serviceProc.init,
     
     /**
-     * Get list of tracks based on critera in params  
-     * @param {object} params - search critera (i.e. {id: 1,user:'jimmy'} )
-     * @param {function} cb - callback function(err,array)
+     * Get list of tracks based on critera in params
+     *   
+     * @param {object} params - search critera (i.e. ``{id: 1,user:'jimmy'}`` )
+     * @param {function} cb - callback ``function(err,array)``
+     * 
      */
     Get: function(params,cb) {
         this.find(params).then(function(foundList) {
@@ -56,8 +69,10 @@ var Service = {
         });
     },
     /**
+     * add service
      * 
-     * @param {type} service
+     * @param {object} service
+     * ::
      *  {
      *      name: - unique service name
      *      type: - service ('service' or 'workflow')
@@ -65,14 +80,20 @@ var Service = {
      *      alias: optional
      *      handler: - a function pointer to the service handler
      *  }
-     * @param {type} cb
-     * @returns {undefined}
+     *  
+     * @param {object} cb - callback function
+     * 
      */
     Add: serviceProc.addService,
-    /*
-     * given service name as a string,
-     * return 0 if it is a valid job service (that uses the job queue)
-     * return non-zero if it is not
+    /**
+     * generic job service validation
+     * 
+     * @param {string} serviceStr - service name
+     * @returns {value}
+     * 
+     * * return 0 if it is a valid job service (that uses the job queue)
+     * * return non-zero if it is not
+     * 
      */
     ValidateJobService: function(serviceStr) {
         var serviceFunc = this.Resolve(serviceStr);
@@ -85,7 +106,12 @@ var Service = {
     },
     /*
      * Given the service name, return the service object.
-     * return 0 if not defined
+     * 
+     * @param {string} serviceName - service name
+     * @returns {value}
+     * 
+     * * 0, if not defined
+     * 
      */
     Resolve: function(serviceName) {
         var svc = serviceProc.services[serviceName];

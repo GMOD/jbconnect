@@ -4,6 +4,18 @@
  * 
  * User is the data model for a user.
  * 
+ * Example User object:
+ * ::
+ *     {
+ *       "username": "juser",
+ *       "email": "juser@jbrowse.org",
+ *       "admin": true,
+ *       "createdAt": "2017-11-29T21:00:56.726Z",
+ *       "updatedAt": "2017-11-29T21:00:56.726Z",
+ *       "id": 2
+ *     }
+ * 
+ * 
  */
 var User = {
     // Enforce model schema in the case of schemaless databases
@@ -16,9 +28,11 @@ var User = {
       passports : { collection: 'Passport', via: 'user' }
     },
     /**
-     * Get list of tracks based on critera in params  
-     * @param {object} params - search critera (i.e. {id: 1,user:'jimmy'} )
-     * @param {function} cb - callback function(err,array)
+     * Get list of tracks based on critera in params 
+     *  
+     * @param {object} params - search critera
+     * @param {function} cb - callback ``function(err,array)``
+     * 
      */
     Get: function(params,cb) {
         this.find(params).then(function(foundList) {
@@ -30,14 +44,13 @@ var User = {
     /*
      * Set password for a given user
      * 
-     * sails> User.SetPassword('juser','password',console.log);
-     * undefined
-     * null 'Password for juser changed.'
-
+     * Example
+     * ``User.SetPassword('juser','password',console.log);``
+     * 
      * @param {string} user - username
      * @param {string} pass - new password
      * @param {function} cb - callback function
-     * @returns {undefined}
+     * 
      */
     SetPassword: function(user,pass,cb) {
     
@@ -66,13 +79,12 @@ var User = {
      * Set the admin flag for a user 
      * 
      * Example:
-     * sails> User.SetAdmin('juser',true,console.log);
-     * undefined
-     * null 'Set admin flag for juser to true'
+     * ``User.SetAdmin('juser',true,console.log);``
      * 
      * @param {string} user - username
      * @param {boolean} adminflag - true for false
      * @param {function} cb - callback function
+     * 
      */
     SetAdmin: function(user,adminflag,cb) {
 

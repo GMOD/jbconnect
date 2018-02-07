@@ -76,8 +76,8 @@ var Passport = {
   /**
    * Callback to be run before creating a Passport.
    *
-   * @param {Object}   passport The soon-to-be-created Passport
-   * @param {Function} next
+   * @param {Object}   passport - The soon-to-be-created Passport
+   * @param {Function} next - next policy
    */
   beforeCreate: function (passport, next) {
     hashPassword(passport, next);
@@ -87,7 +87,7 @@ var Passport = {
    * Callback to be run before updating a Passport.
    *
    * @param {Object}   passport Values to be updated
-   * @param {Function} next
+   * @param {Function} next - next policy
    */
   beforeUpdate: function (passport, next) {
     hashPassword(passport, next);
@@ -97,8 +97,8 @@ var Passport = {
 /**
  * Hash a passport password.
  *
- * @param {Object}   password
- * @param {Function} next
+ * @param {Object}   password - password
+ * @param {Function} next - next policy
  */
 function hashPassword (passport, next) {
   if (passport.password) {
