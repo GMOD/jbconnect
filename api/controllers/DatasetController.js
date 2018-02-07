@@ -1,14 +1,29 @@
 /**
  * @module
  * @description
+ * REST Interfaces for Dataset model
+ * 
+ * Datasets are configure in ``config/globals.js`` or ``config.js`` file.
+ * 
+ * See Dataset Model
+ * 
+ * **Subscribe to Dataset events:**
+ * ::
+ *   io.socket.get('/dataset', function(resData, jwres) {console.log(resData);});
+ *   io.socket.on('dataset', function(event){
+ *      consol.log(event);
+ *   }
+ * 
  */
 
 module.exports = {
     /**
-     * Read or search datasets
+     * Enumerate or search datasets
      * 
-     * @param {object} req
-     * @param {object} res
+     * ``GET /dataset/get``
+     * 
+     * @param {object} req - request data
+     * @param {object} res - response data
      */
     get: function(req,res) {
         var params = req.allParams();

@@ -1,36 +1,41 @@
 /**
- * @module
+ * @namespace AuthController
  * @description
- * Authentication Controller
- *
- * It currently includes the minimum amount of functionality for
- * the basics of Passport.js to work.
+ * Authentication Controller.
  * 
+ * See also Passport model.
  */
 var AuthController = {
   /**
    * Render the login page
    *
    * The login form itself is just a simple HTML form:
-   *
-      <form role="form" action="/auth/local" method="post">
-        <input type="text" name="identifier" placeholder="Username or Email">
-        <input type="password" name="password" placeholder="Password">
-        <button type="submit">Sign in</button>
-      </form>
+   * ::
+   *   <form role="form" action="/auth/local" method="post">
+   *     <input type="text" name="identifier" placeholder="Username or Email">
+   *     <input type="password" name="password" placeholder="Password">
+   *     <button type="submit">Sign in</button>
+   *   </form>
    *
    * You could optionally add CSRF-protection as outlined in the documentation:
    * http://sailsjs.org/#!documentation/config.csrf
    *
    * A simple example of automatically listing all available providers in a
    * Handlebars template would look like this:
+   * ::
+   *   {{#each providers}}
+   *     <a href="/auth/{{slug}}" role="button">{{name}}</a>
+   *   {{/each}}
    *
-      {{#each providers}}
-        <a href="/auth/{{slug}}" role="button">{{name}}</a>
-      {{/each}}
+   * The ``next`` parameter can specify the target URL upon successful login.
    *
-   * @param {Object} req
-   * @param {Object} res
+   * Example: ``GET http://localhost:1337/login?next=http://localhost:1337/jbrowse?data=sample_data/json/volvox``
+   *
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * 
+   * @memberof AuthController
+   * @method login
    */
   login: function (req, res) {
     sails.log.debug("/login");
@@ -67,8 +72,11 @@ var AuthController = {
    * For more information on logging out users in Passport.js, check out:
    * http://passportjs.org/guide/logout/
    *
-   * @param {Object} req
-   * @param {Object} res
+   * Example: ``GET http://localhost:1337/logout``
+   *
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * 
    */
   logout: function (req, res) {
     sails.log.debug("/logout");
@@ -95,16 +103,19 @@ var AuthController = {
    * Render the registration page
    *
    * Just like the login form, the registration form is just simple HTML:
+   * ::
+   *   <form role="form" action="/auth/local/register" method="post">
+   *     <input type="text" name="username" placeholder="Username">
+   *     <input type="text" name="email" placeholder="Email">
+   *     <input type="password" name="password" placeholder="Password">
+   *     <button type="submit">Sign up</button>
+   *   </form>
    *
-      <form role="form" action="/auth/local/register" method="post">
-        <input type="text" name="username" placeholder="Username">
-        <input type="text" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <button type="submit">Sign up</button>
-      </form>
+   * ``GET /register``
    *
-   * @param {Object} req
-   * @param {Object} res
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * 
    */
   register: function (req, res) {
     sails.log.debug("/register");
@@ -112,7 +123,25 @@ var AuthController = {
       errors: req.flash('error')
     });
   },
-
+  /**
+   * get login state
+   * 
+   * ``GET http://localhost:1337/loginstate``
+   * 
+   * Example Result:
+   * ::
+   *    {
+   *        "loginstate": true,
+   *        "user": {
+   *            "username": "juser",
+   *            "email": "juser@jbrowse.org"
+   *        }
+   *    }
+   * 
+   * @param {object} req - request
+   * @param {object} res - response
+   * 
+   */
   loginstate: function (req, res) {
     sails.log.info("/loginstate");
     
@@ -125,8 +154,9 @@ var AuthController = {
   /**
    * Create a third-party authentication endpoint
    *
-   * @param {Object} req
-   * @param {Object} res
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * 
    */
   provider: function (req, res) {
     passport.endpoint(req, res);
@@ -145,8 +175,9 @@ var AuthController = {
    * For more information on logging in users in Passport.js, check out:
    * http://passportjs.org/guide/login/
    *
-   * @param {Object} req
-   * @param {Object} res
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * 
    */
   callback: function (req, res) {
     //  sails.log.debug("authController callback()");
@@ -213,8 +244,11 @@ var AuthController = {
   /**
    * Disconnect a passport from a user
    *
-   * @param {Object} req
-   * @param {Object} res
+   * ``GET /logout``
+   *
+   * @param {Object} req - request
+   * @param {Object} res - response
+   * 
    */
   disconnect: function (req, res) {
       sails.log.debug("authController disconnect()");

@@ -1,20 +1,33 @@
 /**
  * @module
  * @description
- * Server-side logic for managing jbrowse tracks
-
- * See http://sailsjs.org/#!/documentation/concepts/Controllers
+ * REST interfaces for TrackController
+ * 
+ * **Subscribe to Track events:**
+ * ::
+ *   io.socket.get('/track', function(resData, jwres) {console.log(resData);});
+ *   io.socket.on('track', function(event){
+ *      consol.log(event);
+ *   }
  * 
  */
 
 module.exports = {
     /**
-     * Read or search track list.
+     * enumerate tracks or search track list.
      * 
-     * REST: `/track/get`
+     * Get all tracks
+     * :bash:`GET /track/get`
      * 
-     * @param {object} req
-     * @param {object} res
+     * Get filtered tracks by dataset:
+     * 
+     * :bash:`GET /track/get?id=1` where id is the dataset id
+     * 
+     * :bash:`GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
+     * 
+     * @param {object} req - request
+     * @param {object} res - response
+     * 
      */
     get: function(req,res) {
         var params = req.allParams();
@@ -30,9 +43,11 @@ module.exports = {
             return res.forbidden('requires POST');
     },
     /**
+     * add a new track
      * 
-     * @param {object} req
-     * @param {object} res
+     * @param {object} req - request
+     * @param {object} res - response
+     * 
      */
     add: function(req,res) {
         var params = req.allParams();
@@ -47,10 +62,11 @@ module.exports = {
             return res.forbidden('requires POST');
     },
     /**
+     * modify an existing track
      * 
-     * @param {type} req
-     * @param {type} res
-     * @returns {unresolved}
+     * @param {object} req - request
+     * @param {object} res - response
+     * 
      */
     modify: function(req,res) {
         var params = req.allParams();
@@ -66,10 +82,11 @@ module.exports = {
         
     },
     /**
+     * remove an existing track
      * 
-     * @param {type} req
-     * @param {type} res
-     * @returns {unresolved}
+     * @param {object} req - request
+     * @param {object} res - response
+     * 
      */
     remove: function(req,res) {
         var params = req.allParams();

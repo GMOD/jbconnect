@@ -1,18 +1,22 @@
 /**
  * @module
  * @description
- * UserController
- *
- * Server-side logic for managing users
+ * REST interfaces for UserController
  * 
- * See http://sailsjs.org/#!/documentation/concepts/Controllers
+ * **Subscribe to User events:**
+ * ::
+ *   io.socket.get('/user', function(resData, jwres) {console.log(resData);});
+ *   io.socket.on('user', function(event){
+ *      consol.log(event);
+ *   }
  * 
  */
 
 module.exports = {
     /**
-     * Read or search users
-     * REST `/user/get`
+     * Enumerate or search users
+     * 
+     * ``GET /user/get``
      * 
      * @param {object} req
      * @param {object} res

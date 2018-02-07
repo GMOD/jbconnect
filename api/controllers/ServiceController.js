@@ -1,7 +1,17 @@
 /**
  * @module
  * @description
- * todo: document 
+ * REST interfaces for Service model.
+ * 
+ * See Service model
+ * 
+ * **Subscribe to Service events:**
+ * ::
+ *   io.socket.get('/service', function(resData, jwres) {console.log(resData);});
+ *   io.socket.on('service', function(event){
+ *      consol.log(event);
+ *   }
+ * 
  */
 
 module.exports = {
@@ -14,13 +24,15 @@ module.exports = {
       rest: true
     },
     */
+   
     /**
-     * Read or search service list 
+     * Enumerate job services (jservices)
      * 
-     * REST `/service/get`
+     * ``GET /service/get``
      * 
-     * @param {object} req
-     * @param {object} res
+     * @param {object} req - request
+     * @param {object} res - response
+     * 
      */
     get: function(req,res) {
         var params = req.allParams();
@@ -36,12 +48,26 @@ module.exports = {
             return res.forbidden('requires POST');
     },
     /**
-     * RESTful execution of a function of an jservice.
+     * RESTful execution of a job service function.
      * 
-     * REST `/service/exec/...`
+     * ``GET or POST /service/exec/``
      * 
-     * @param {type} req
-     * @param {type} res
+     * This example calls set_filter, a JBlast operation: 
+     * ::
+     *   var postData = {
+     *         filterParams: data,
+     *         asset: "jblast_sample",
+     *         dataset: "sample_data/json/volvox"
+     *   }
+     *   $.post( "/service/exec/set_filter", postData , function( data) {
+     *       console.log( data );
+     *   }, "json");
+     * 
+     * The returned data depends on the service function that is called.
+     * 
+     * @param {type} req - request
+     * @param {type} res - response
+     * 
      */
     exec: serviceProc.execute
 };
