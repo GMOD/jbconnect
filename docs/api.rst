@@ -157,8 +157,8 @@ Create a third-party authentication endpoint
 .. js:function:: provider(req, res)
 
     
-    :param Object req: Create a third-party authentication endpoint
-    :param Object res: Create a third-party authentication endpoint
+    :param Object req: request
+    :param Object res: response
     
 .. _AuthController.callback:
 
@@ -181,28 +181,8 @@ http://passportjs.org/guide/login/
 .. js:function:: callback(req, res)
 
     
-    :param Object req: Create a authentication callback endpoint
-    
-    This endpoint handles everything related to creating and verifying Pass-
-    ports and users, both locally and from third-aprty providers.
-    
-    Passport exposes a login() function on req (also aliased as logIn()) that
-    can be used to establish a login session. When the login operation
-    completes, user will be assigned to req.user.
-    
-    For more information on logging in users in Passport.js, check out:
-    http://passportjs.org/guide/login/
-    :param Object res: Create a authentication callback endpoint
-    
-    This endpoint handles everything related to creating and verifying Pass-
-    ports and users, both locally and from third-aprty providers.
-    
-    Passport exposes a login() function on req (also aliased as logIn()) that
-    can be used to establish a login session. When the login operation
-    completes, user will be assigned to req.user.
-    
-    For more information on logging in users in Passport.js, check out:
-    http://passportjs.org/guide/login/
+    :param Object req: request
+    :param Object res: response
     
 .. _AuthController.disconnect:
 
@@ -217,12 +197,8 @@ Disconnect a passport from a user
 .. js:function:: disconnect(req, res)
 
     
-    :param Object req: Disconnect a passport from a user
-    
-    ``GET /logout``
-    :param Object res: Disconnect a passport from a user
-    
-    ``GET /logout``
+    :param Object req: request
+    :param Object res: response
     
 
 
@@ -707,6 +683,16 @@ path to the dataset and some of the data contained in trackList.json.
 
 Datasets known to JBServer are defined in config/globals.js
 (see: :ref:`jbs-globals-config`)
+
+Dataset object:
+::
+  {
+    "name": "Volvox",
+    "path": "sample_data/json/volvox",
+    "createdAt": "2018-02-01T05:38:26.320Z",
+    "updatedAt": "2018-02-01T05:38:26.320Z",
+    "id": 1
+  }
      
 Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
 
@@ -738,8 +724,8 @@ Get list of tracks based on critera in params
 .. js:function:: Get(params, cb)
 
     
-    :param object params: search critera (i.e. {id: 1,user:'jimmy'} )
-    :param function cb: callback function(err,array)
+    :param object params: search critera (i.e. ``{id: 1,user:'jimmy'}`` )
+    :param function cb: callback ``function(err,array)``
     
 .. _module-models_Dataset.Resolve:
 
@@ -757,16 +743,6 @@ it returns a dataset object in the form:
         id: 3
     }
 
-Grid table:
-
-+------------+------------+-----------+ 
-| Header 1   | Header 2   | Header 3  | 
-+============+============+===========+ 
-| body row 1 | column 2   | column 3  | 
-+------------+------------+-----------+ 
-| body row 2 | Cells may span columns.| 
-+------------+------------+-----------+
-
 .. js:function:: Resolve(dval)
 
     
@@ -774,23 +750,13 @@ Grid table:
     
          
     Code Example
-                   
     ::
-        
         {
             path: "sample_data/json/volvox",
             id: 3
         }
     :return object: - dataset object
          dataset (string - i.e. "sample_data/json/volvox" if input was an id
-         
-    Grid Example:
-         
-    +------------+------------+-----------+ 
-    | Header 1   | Header 2   | Header 3  | 
-    +============+============+===========+ 
-    | body row 1 | column 2   | column 3  | 
-    +------------+------------+-----------+
     
 .. _module-models_Dataset.Sync:
 
@@ -834,19 +800,75 @@ Kue uses `redis <https://redis.io/>`_ database.  This model synchronizes the Job
 through the use of Kue's API.
 
 Kue event messages are stuffed into a FIFO `_eventList` and dequeued with `_processNextEvent` to ensure order.
- 
-   
-Kue Events
-+----------------------------+
-| * queue-enqueue            |
-| * queue-start              |
-| * queue-failed             |
-| * queue-failed-attempt     |
-| * queue-progress           |
-| * queue-complete           |
-| * queue-remove             |
-| * queue-promotion          |
-+----------------------------+
+      * **Example Job object:**
+::
+  {
+      "id": 113,
+      "type": "workflow",
+      "progress": "100",
+      "priority": 0,
+      "data": {
+        "service": "serverSearchService",
+        "dataset": "sample_data/json/volvox",
+        "searchParams": {
+          "expr": "ttt",
+          "regex": "false",
+          "caseIgnore": "true",
+          "translate": "false",
+          "fwdStrand": "true",
+          "revStrand": "true",
+          "maxLen": "100"
+        },
+        "name": "ttt search",
+        "asset": "113_search_1513478281528",
+        "path": "/var/www/html/4jbserver/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
+        "outfile": "113_search_1513478281528.gff",
+        "track": {
+          "maxFeatureScreenDensity": 16,
+          "style": {
+            "showLabels": false
+          },
+          "displayMode": "normal",
+          "storeClass": "JBrowse/Store/SeqFeature/GFF3",
+          "type": "JBrowse/View/Track/HTMLFeatures",
+          "metadata": {
+            "description": "Search result job: 113"
+          },
+          "category": "Search Results",
+          "key": "113 ttt results",
+          "label": "113_search_1513478281528",
+          "urlTemplate": "ServerSearch/113_search_1513478281528.gff",
+          "sequenceSearch": true
+        }
+      },
+      "state": "complete",
+      "promote_at": "1513478280038",
+      "created_at": "1513478280038",
+      "updated_at": "1513478292634",
+      "createdAt": "2018-02-01T05:38:27.371Z",
+      "updatedAt": "2018-02-01T05:38:27.371Z"
+    }
+      
+**Event Mappings:**
++----------------------------+----------------+
+| Kue Events                 | Job Events     |
++============================+================+
+| * queue-enqueue            | create         |
++----------------------------+----------------+
+| * queue-start              | update         |
++----------------------------+----------------+
+| * queue-failed             | update         |
++----------------------------+----------------+
+| * queue-failed-attempt     | update         |
++----------------------------+----------------+
+| * queue-progress           | update         |
++----------------------------+----------------+
+| * queue-complete           | update         |
++----------------------------+----------------+
+| * queue-remove             | remove         |
++----------------------------+----------------+
+| * queue-promotion          | unused         |               
++----------------------------+----------------+
 
 Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
 
@@ -874,7 +896,7 @@ Get list of tracks based on critera in params
 .. js:function:: Get(params, cb)
 
     
-    :param object params: search critera (i.e. {id: 1,user:'jimmy'} )
+    :param object params: search critera (i.e. ``{id: 1,user:'jimmy'}`` )
     :param function cb: callback function(err,array)
     
 .. _module-models_Job.Submit:
@@ -1078,6 +1100,15 @@ Subscribers to the record (clients) will get notification.
 JBClient plugin uses this to determine if a job is active and changes the activity icon
 of the job queue panel.
 
+JobActive object example:
+::
+  {
+    "active": 0,
+    "createdAt": "2017-11-23T00:53:41.864Z",
+    "updatedAt": "2018-02-07T07:59:32.471Z",
+    "id": 1
+  }
+
 
 .. _module-models_JobActive.Init:
 
@@ -1091,7 +1122,7 @@ initialize starts the job active monitor
 
     
     :param object params: value is ignored
-    :param type cb: callback `function cb(err)`
+    :param type cb: callback ``function cb(err)``
     
 .. _module-models_JobActive.Get:
 
@@ -1104,8 +1135,8 @@ Get list of tracks based on critera in params
 .. js:function:: Get(params, cb)
 
     
-    :param object params: search critera (i.e. {id: 1,user:'jimmy'} )
-    :param function cb: callback function(err,array)
+    :param object params: search critera (i.e. ``{id: 1,user:'jimmy'}`` )
+    :param function cb: callback ``function(err,array)``
     
 .. _module-models_JobActive._activeMonitor:
 
@@ -1163,8 +1194,8 @@ Hash a passport password.
 .. js:function:: hashPassword(password, next)
 
     
-    :param Object password: Hash a passport password.
-    :param function next: Hash a passport password.
+    :param Object password: password
+    :param function next: next policy
     
 
 
@@ -1199,6 +1230,17 @@ serverSearchService.js
 
 Job services are defined in `config/globals.js` in the jbrowse/services section.
 
+Example job service object:
+::
+  {
+    "name": "serverSearchService",
+    "type": "service",
+    "module": "search",
+    "createdAt": "2018-02-01T05:38:26.289Z",
+    "updatedAt": "2018-02-07T07:59:31.430Z",
+    "id": 1
+  }
+
 
 
 
@@ -1225,6 +1267,27 @@ Track is a model for a list of tracks that are in the ``trackList.json``'s ``[tr
 
 Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
 
+Track object example:
+::
+  {
+    "dataset": 1,
+    "path": "sample_data/json/volvox",
+    "lkey": "DNA",
+    "trackData": {
+      "seqType": "dna",
+      "key": "Reference sequence",
+      "storeClass": "JBrowse/Store/Sequence/StaticChunked",
+      "chunkSize": 20000,
+      "urlTemplate": "seq/{refseq_dirpath}/{refseq}-",
+      "label": "DNA",
+      "type": "SequenceTrack",
+      "category": "Reference sequence"
+    },
+    "createdAt": "2018-02-01T05:38:26.339Z",
+    "updatedAt": "2018-02-01T05:38:26.339Z",
+    "id": 1
+  }
+
 
 .. _module-models_Track.Init:
 
@@ -1234,9 +1297,11 @@ Function: ``Init``
 
 
 
-.. js:function:: Init()
+.. js:function:: Init(params, cb)
 
     
+    :param type params: parameters
+    :param type cb: callback function
     
 .. _module-models_Track.StartWatch:
 
@@ -1285,8 +1350,8 @@ Get list of tracks based on critera in params
 .. js:function:: Get(params, cb)
 
     
-    :param object params: search critera (i.e. {id: 1,user:'jimmy'} )
-    :param function cb: callback function(err,array)
+    :param object params: search critera
+    :param function cb: callback ``function(err,array)``
     
 .. _module-models_Track.Add:
 
@@ -1401,6 +1466,17 @@ Description
 ===========
 
 User is the data model for a user.
+
+Example User object:
+::
+    {
+      "username": "juser",
+      "email": "juser@jbrowse.org",
+      "admin": true,
+      "createdAt": "2017-11-29T21:00:56.726Z",
+      "updatedAt": "2017-11-29T21:00:56.726Z",
+      "id": 2
+    }
 
 
 
@@ -1585,7 +1661,8 @@ handles submodules plugins too.
 .. js:function:: addPluginRoutes()
 
     
-    :param addPluginRoutes(): params
+    :param addPluginRoutes(): inject client-side plugins into the clinet plugin directory as routes.
+    handles submodules plugins too.
     
 .. _module-services_jbRouteUtil.addLibRoutes:
 
@@ -1598,7 +1675,7 @@ Add library routes
 .. js:function:: addLibRoutes()
 
     
-    :param addLibRoutes(): params
+    :param addLibRoutes(): Add library routes
     
 .. _module-services_jbRouteUtil.addRoute:
 
@@ -1611,10 +1688,14 @@ Add a route
 .. js:function:: addRoute(params, module, route, target)
 
     
-    :param object params: Add a route
-    :param string module: Add a route
-    :param string route: Add a route
-    :param string target: Add a route
+    :param object params: parameters
+    
+    where params is:
+    ::
+       {app:[app reference],express:[express reference]}
+    :param string module: the module name (ie. ``"jquery"``)
+    :param string route: the route (ie. ``"/jblib/jquery"``)
+    :param string target: the target (ie ``"/var/www/html/3jbserver/node_modules/jquery"``)
     
 .. _module-services_jbRouteUtil.addPluginRoute:
 
@@ -1622,11 +1703,19 @@ Add a route
 Function: ``addPluginRoute``
 ============================
 
+Add a plugin route
 
-
-.. js:function:: addPluginRoute()
+.. js:function:: addPluginRoute(params, module, route, target)
 
     
+    :param object params: parameters
+    
+    where params is:
+    ::
+       {app:[app reference],express:[express reference]}
+    :param string module: the module name (ie. ``"jblast"``)
+    :param string route: the route (ie. ``"/jbrowse/plugins/JBlast"``)
+    :param string target: the target (ie ``"/var/www/html/3jbserver/node_modules/jbh-jblast/plugins/JBlast"``)
     
 
 
@@ -1658,12 +1747,12 @@ Support library for jbutil command
 Function: ``doExtScripts``
 ==========================
 
-Traverse jbutils-ext.js of submodules (jbh-*)
+Traverse ``jbutils-ext.js`` of submodules (jbh-*)
 
 .. js:function:: doExtScripts(cb)
 
     
-    :param function cb: Traverse jbutils-ext.js of submodules (jbh-*)
+    :param function cb: callback
     
 .. _module-services_jbutillib.getMergedConfig:
 
@@ -1672,7 +1761,7 @@ Function: ``getMergedConfig``
 =============================
 
 Returned merged jbrowse config.  
-Merged from jbh-* config/globals.js, local config/globals.js, & config.js
+Merged from ``jbh-*`` ``config/globals.js``, local ``config/globals.js``, & ``config.js``
 
 .. js:function:: getMergedConfig()
 
@@ -1684,11 +1773,14 @@ Merged from jbh-* config/globals.js, local config/globals.js, & config.js
 Function: ``buildHtml``
 =======================
 
-
+Builds an index.html based on ``/bin/index_tesmplate.html``.  It will
+inject web includes .js and .css references.  These are defined in the config file,
+jbrowse.webIncludes section.
 
 .. js:function:: buildHtml()
 
     
+    :return string: content of the html file.
     
 .. _module-services_jbutillib.exec_setupindex:
 
@@ -1696,13 +1788,19 @@ Function: ``buildHtml``
 Function: ``exec_setupindex``
 =============================
 
+Writes the index.html file.
 
+A backup of the original index.html will be made.
 
 .. js:function:: exec_setupindex(params)
 
     
-    :param type params: 
-    :return undefined: 
+    :param type params: Writes the index.html file.
+    
+    A backup of the original index.html will be made.
+    :return undefined: Writes the index.html file.
+    
+    A backup of the original index.html will be made.
     
 .. _module-services_jbutillib.exec_setupPlugins:
 
@@ -1710,11 +1808,12 @@ Function: ``exec_setupindex``
 Function: ``exec_setupPlugins``
 ===============================
 
-setup sample track
+add plugins to ``trackList.json``.
 
-.. js:function:: exec_setupPlugins()
+.. js:function:: exec_setupPlugins(config)
 
     
+    :param object config: reference the configuration.
     
 .. _module-services_jbutillib.safeCopy:
 
@@ -1809,6 +1908,44 @@ User model free of bloat.
 
    <hr style="border-color: black; border-width: 2px;">
 
+Module: ``services/postAction``
+*******************************
+
+
+.. contents:: Local Navigation
+   :local:
+
+   
+Description
+===========
+
+Used by hooks to add a track and announce to subscribers.
+
+
+.. _module-services_postAction.addToTrackList:
+
+
+Function: ``addToTrackList``
+============================
+
+Add track to track list and notify.
+
+.. js:function:: addToTrackList(kJob, newTrackJson)
+
+    
+    :param object kJob: kue job reference
+    :param JSON newTrackJson: new track JSON
+    
+
+
+
+
+
+
+.. raw:: html
+
+   <hr style="border-color: black; border-width: 2px;">
+
 Module: ``services/serverSearchService``
 ****************************************
 
@@ -1835,53 +1972,19 @@ Function: ``init``
 
     
     
-.. _module-services_serverSearchService.submit_search:
-
-
-Function: ``submit_search``
-===========================
-
-
-
-.. js:function:: submit_search(req, res)
-
-    
-    :param object req: ::
-    
-         searchParams - search parameters
-              expr": "tgac"          - search sequence or regex string
-              "regex": false/true    - 
-              "caseIgnore": false/true
-              "translate": false/true,
-              "fwdStrand": false/true,
-              "revStrand": false/true,
-              "maxLen": 100,     
-         dataset - the dataset path i.e. "sample_data/json/volvox"
-    :param object res: 
-    
-.. _module-services_serverSearchService.send_search_result:
-
-
-Function: ``send_search_result``
-================================
-
-
-
-.. js:function:: send_search_result()
-
-    
-    
 .. _module-services_serverSearchService.validateParams:
 
 
 Function: ``validateParams``
 ============================
 
+Job service validation
 
-
-.. js:function:: validateParams()
+.. js:function:: validateParams(params)
 
     
+    :param type params: parameters
+    :return Number: - 0 if successful
     
 .. _module-services_serverSearchService.generateName:
 
@@ -1889,23 +1992,13 @@ Function: ``validateParams``
 Function: ``generateName``
 ==========================
 
+returns job service name
 
-
-.. js:function:: generateName()
-
-    
-    
-.. _module-services_serverSearchService._searchSubmit:
-
-
-Function: ``_searchSubmit``
-===========================
-
-
-
-.. js:function:: _searchSubmit()
+.. js:function:: generateName(params)
 
     
+    :param type params: parameters
+    :return string: -
     
 .. _module-services_serverSearchService.beginProcessing:
 
@@ -1914,12 +2007,14 @@ Function: ``beginProcessing``
 =============================
 
 Job service job start.
+
 called when an appropriate jobs is found and exeuted by service.
 
 .. js:function:: beginProcessing(kJob)
 
     
     :param object kJob: Job service job start.
+    
     called when an appropriate jobs is found and exeuted by service.
     
 .. _module-services_serverSearchService._fixParams:
@@ -1969,7 +2064,7 @@ this generates the track definition from the track template
 .. js:function:: postMoveResultFiles(kWorkflowJob, cb)
 
     
-    :param object kWorkflowJob: this generates the track definition from the track template
+    :param object kWorkflowJob: kue job reference
     :param object cb: callback function
     
 
@@ -2002,11 +2097,13 @@ Support functions for Service model.
 Function: ``init``
 ==================
 
+initialize the job service framework
 
-
-.. js:function:: init()
+.. js:function:: init(params, cb2)
 
     
+    :param type params: parameters
+    :param type cb2: callback
     
 .. _module-services_serviceProc.addService:
 
@@ -2014,11 +2111,13 @@ Function: ``init``
 Function: ``addService``
 ========================
 
+add a service
 
-
-.. js:function:: addService()
+.. js:function:: addService(service, cb)
 
     
+    :param object service: service
+    :param function cb: callback
     
 .. _module-services_serviceProc.execute:
 
