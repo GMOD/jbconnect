@@ -7,8 +7,8 @@ API
 
    <hr style="border-color: black; border-width: 2px;">
 
-Namespace: ``AuthController``
-*****************************
+Module: ``controllers/AuthController``
+**************************************
 
 
 .. contents:: Local Navigation
@@ -18,198 +18,11 @@ Namespace: ``AuthController``
 Description
 ===========
 
-Authentication Controller
+Authentication Controller.
+
+See also Passport model.
 
 
-.. _AuthController.login:
-
-
-Function: ``login``
-===================
-
-Render the login page
-
-The login form itself is just a simple HTML form:
-::
-  <form role="form" action="/auth/local" method="post">
-    <input type="text" name="identifier" placeholder="Username or Email">
-    <input type="password" name="password" placeholder="Password">
-    <button type="submit">Sign in</button>
-  </form>
-
-You could optionally add CSRF-protection as outlined in the documentation:
-http://sailsjs.org/#!documentation/config.csrf
-
-A simple example of automatically listing all available providers in a
-Handlebars template would look like this:
-::
-  {{#each providers}}
-    <a href="/auth/{{slug}}" role="button">{{name}}</a>
-  {{/each}}
-
-The ``next`` parameter can specify the target URL upon successful login.
-
-Example: ``GET http://localhost:1337/login?next=http://localhost:1337/jbrowse?data=sample_data/json/volvox``
-
-.. js:function:: login(req, res)
-
-    
-    :param Object req: request
-    :param Object res: response
-    
-.. _AuthController.logout:
-
-
-Function: ``logout``
-====================
-
-Log out a user and return them to the homepage
-
-Passport exposes a logout() function on req (also aliased as logOut()) that
-can be called from any route handler which needs to terminate a login
-session. Invoking logout() will remove the req.user property and clear the
-login session (if any).
-
-For more information on logging out users in Passport.js, check out:
-http://passportjs.org/guide/logout/
-
-Example: ``GET http://localhost:1337/logout``
-
-.. js:function:: logout(req, res)
-
-    
-    :param Object req: request
-    :param Object res: response
-    
-.. _AuthController.register:
-
-
-Function: ``register``
-======================
-
-Render the registration page
-
-Just like the login form, the registration form is just simple HTML:
-::
-  <form role="form" action="/auth/local/register" method="post">
-    <input type="text" name="username" placeholder="Username">
-    <input type="text" name="email" placeholder="Email">
-    <input type="password" name="password" placeholder="Password">
-    <button type="submit">Sign up</button>
-  </form>
-
-``GET /register``
-
-.. js:function:: register(req, res)
-
-    
-    :param Object req: request
-    :param Object res: response
-    
-.. _AuthController.loginstate:
-
-
-Function: ``loginstate``
-========================
-
-get login state
-
-``GET http://localhost:1337/loginstate``
-
-Example Result:
-::
-   {
-       "loginstate": true,
-       "user": {
-           "username": "juser",
-           "email": "juser@jbrowse.org"
-       }
-   }
-
-.. js:function:: loginstate(req, res)
-
-    
-    :param object req: request
-    :param object res: response
-    
-.. _AuthController.provider:
-
-
-Function: ``provider``
-======================
-
-Create a third-party authentication endpoint
-
-.. js:function:: provider(req, res)
-
-    
-    :param Object req: Create a third-party authentication endpoint
-    :param Object res: Create a third-party authentication endpoint
-    
-.. _AuthController.callback:
-
-
-Function: ``callback``
-======================
-
-Create a authentication callback endpoint
-
-This endpoint handles everything related to creating and verifying Pass-
-ports and users, both locally and from third-aprty providers.
-
-Passport exposes a login() function on req (also aliased as logIn()) that
-can be used to establish a login session. When the login operation
-completes, user will be assigned to req.user.
-
-For more information on logging in users in Passport.js, check out:
-http://passportjs.org/guide/login/
-
-.. js:function:: callback(req, res)
-
-    
-    :param Object req: Create a authentication callback endpoint
-    
-    This endpoint handles everything related to creating and verifying Pass-
-    ports and users, both locally and from third-aprty providers.
-    
-    Passport exposes a login() function on req (also aliased as logIn()) that
-    can be used to establish a login session. When the login operation
-    completes, user will be assigned to req.user.
-    
-    For more information on logging in users in Passport.js, check out:
-    http://passportjs.org/guide/login/
-    :param Object res: Create a authentication callback endpoint
-    
-    This endpoint handles everything related to creating and verifying Pass-
-    ports and users, both locally and from third-aprty providers.
-    
-    Passport exposes a login() function on req (also aliased as logIn()) that
-    can be used to establish a login session. When the login operation
-    completes, user will be assigned to req.user.
-    
-    For more information on logging in users in Passport.js, check out:
-    http://passportjs.org/guide/login/
-    
-.. _AuthController.disconnect:
-
-
-Function: ``disconnect``
-========================
-
-Disconnect a passport from a user
-
-``GET /logout``
-
-.. js:function:: disconnect(req, res)
-
-    
-    :param Object req: Disconnect a passport from a user
-    
-    ``GET /logout``
-    :param Object res: Disconnect a passport from a user
-    
-    ``GET /logout``
-    
 
 
 
@@ -231,7 +44,18 @@ Module: ``controllers/DatasetController``
 Description
 ===========
 
-REST Interfaces for Dataset
+REST Interfaces for Dataset model
+
+Datasets are configure in ``config/globals.js`` or ``config.js`` file.
+
+See Dataset Model
+
+**Subscribe to Dataset events:**
+::
+  io.socket.get('/dataset', function(resData, jwres) {console.log(resData);});
+  io.socket.on('dataset', function(event){
+     consol.log(event);
+  }
 
 
 .. _module-controllers_DatasetController.get:
@@ -240,19 +64,15 @@ REST Interfaces for Dataset
 Function: ``get``
 =================
 
-Read or search datasets
+Enumerate or search datasets
 
 `GET /dataset/get`
 
 .. js:function:: get(req, res)
 
     
-    :param object req: Read or search datasets
-    
-    `GET /dataset/get`
-    :param object res: Read or search datasets
-    
-    `GET /dataset/get`
+    :param object req: request data
+    :param object res: response data
     
 
 
@@ -275,7 +95,16 @@ Module: ``controllers/JobActiveController``
 Description
 ===========
 
-REST interfaces for JobActive
+REST interfaces for JobActive model.
+
+See: JobActive model.
+
+**Subscribe to JobActive events:**
+::
+  io.socket.get('/jobactive', function(resData, jwres) {console.log(resData);});
+  io.socket.on('jobactive', function(event){
+     consol.log(event);
+  }
 
 
 .. _module-controllers_JobActiveController.get:
@@ -291,12 +120,8 @@ Read job active record
 .. js:function:: get(req, res)
 
     
-    :param object req: Read job active record
-    
-    `GET /jobactive/get`
-    :param object res: Read job active record
-    
-    `GET /jobactive/get`
+    :param object req: request
+    :param object res: response
     
 
 
@@ -319,7 +144,16 @@ Module: ``controllers/JobController``
 Description
 ===========
 
-REST interfaces for JobController
+REST interfaces for Job model
+
+See Job model.
+
+**Subscribe to Job events:**
+::
+  io.socket.get('/job', function(resData, jwres) {console.log(resData);});
+  io.socket.on('job', function(event){
+     consol.log(event);
+  }
 
 
 .. _module-controllers_JobController.get:
@@ -328,13 +162,76 @@ REST interfaces for JobController
 Function: ``get``
 =================
 
-Read or search job list.
+Enumerate or search job list.
+
+``GET /job/get``
+
+Example usage (jQuery): 
+:: 
+  $.ajax({
+      url: "/job/get",
+      dataType: "text",
+      success: function (data) {
+         console.log(data)
+      }
+  });
+
+The returned ``data`` is a JSON array of *job* objects.
+
+**Example Job object:**
+::
+  {
+      "id": 113,
+      "type": "workflow",
+      "progress": "100",
+      "priority": 0,
+      "data": {
+        "service": "serverSearchService",
+        "dataset": "sample_data/json/volvox",
+        "searchParams": {
+          "expr": "ttt",
+          "regex": "false",
+          "caseIgnore": "true",
+          "translate": "false",
+          "fwdStrand": "true",
+          "revStrand": "true",
+          "maxLen": "100"
+        },
+        "name": "ttt search",
+        "asset": "113_search_1513478281528",
+        "path": "/var/www/html/4jbserver/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
+        "outfile": "113_search_1513478281528.gff",
+        "track": {
+          "maxFeatureScreenDensity": 16,
+          "style": {
+            "showLabels": false
+          },
+          "displayMode": "normal",
+          "storeClass": "JBrowse/Store/SeqFeature/GFF3",
+          "type": "JBrowse/View/Track/HTMLFeatures",
+          "metadata": {
+            "description": "Search result job: 113"
+          },
+          "category": "Search Results",
+          "key": "113 ttt results",
+          "label": "113_search_1513478281528",
+          "urlTemplate": "ServerSearch/113_search_1513478281528.gff",
+          "sequenceSearch": true
+        }
+      },
+      "state": "complete",
+      "promote_at": "1513478280038",
+      "created_at": "1513478280038",
+      "updated_at": "1513478292634",
+      "createdAt": "2018-02-01T05:38:27.371Z",
+      "updatedAt": "2018-02-01T05:38:27.371Z"
+    }
 
 .. js:function:: get(req, res)
 
     
-    :param object req: Read or search job list.
-    :param object res: Read or search job list.
+    :param object req: request
+    :param object res: response
     
 .. _module-controllers_JobController.submit:
 
@@ -344,11 +241,25 @@ Function: ``submit``
 
 Submit a job.
 
+**Example - submit sequence search:**
+::
+  var postData = {
+      service: "serverSearchService",
+      dataset: "sample_data/json/volvox,
+      searchParams: searchParams
+  };
+  $.post("/job/submit, postData, function(retdata) {
+     console.log(retdata)
+  },'json');
+
+Returned data from job submit: ``{ status: "success", jobId: 152 }``, where
+``jobId`` is the id of the created job in the job queue.
+
 .. js:function:: submit(req, res)
 
     
-    :param object req: Submit a job.
-    :param object res: Submit a job.
+    :param object req: request
+    :param object res: response
     
 
 
@@ -371,7 +282,16 @@ Module: ``controllers/ServiceController``
 Description
 ===========
 
-REST interaces for Service Controller
+REST interaces for Service model.
+
+See Service model
+
+**Subscribe to Service events:**
+::
+  io.socket.get('/service', function(resData, jwres) {console.log(resData);});
+  io.socket.on('service', function(event){
+     consol.log(event);
+  }
 
 
 .. _module-controllers_ServiceController.get:
@@ -382,20 +302,29 @@ Function: ``get``
 
 Enumerate job services (jservices)
 
-`GET /service/get`
+``GET /service/get``
 
 .. js:function:: get(req, res)
 
     
-    :param object req: Enumerate job services (jservices)
-    
-    `GET /service/get`
-    :param object res: Enumerate job services (jservices)
-    
-    `GET /service/get`
+    :param object req: request
+    :param object res: response
     
 
-REST `/service/exec/...`
+``GET or POST /service/exec/``
+
+This example calls set_filter, a JBlast operation: 
+::
+  var postData = {
+        filterParams: data,
+        asset: "jblast_sample",
+        dataset: "sample_data/json/volvox"
+  }
+  $.post( "/service/exec/set_filter", postData , function( data) {
+      console.log( data );
+  }, "json");
+
+The returned data depends on the service function that is called.
 
 
 
@@ -419,6 +348,13 @@ Description
 
 REST interaces for TrackController
 
+**Subscribe to Track events:**
+::
+  io.socket.get('/track', function(resData, jwres) {console.log(resData);});
+  io.socket.on('track', function(event){
+     consol.log(event);
+  }
+
 
 .. _module-controllers_TrackController.get:
 
@@ -440,26 +376,8 @@ Get filtered tracks by dataset:
 .. js:function:: get(req, res)
 
     
-    :param object req: enumerate tracks or search track list.
-    
-    Get all tracks
-    :bash:`GET /track/get`
-    
-    Get filtered tracks by dataset:
-    
-    :bash:`GET /track/get?id=1` where id is the dataset id
-    
-    :bash:`GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
-    :param object res: enumerate tracks or search track list.
-    
-    Get all tracks
-    :bash:`GET /track/get`
-    
-    Get filtered tracks by dataset:
-    
-    :bash:`GET /track/get?id=1` where id is the dataset id
-    
-    :bash:`GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
+    :param object req: request
+    :param object res: response
     
 .. _module-controllers_TrackController.add:
 
@@ -467,13 +385,13 @@ Get filtered tracks by dataset:
 Function: ``add``
 =================
 
-
+add a new track
 
 .. js:function:: add(req, res)
 
     
-    :param object req: 
-    :param object res: 
+    :param object req: request
+    :param object res: response
     
 .. _module-controllers_TrackController.modify:
 
@@ -481,14 +399,13 @@ Function: ``add``
 Function: ``modify``
 ====================
 
-
+modify an existing track
 
 .. js:function:: modify(req, res)
 
     
-    :param type req: 
-    :param type res: 
-    :return unresolved: 
+    :param object req: request
+    :param object res: response
     
 .. _module-controllers_TrackController.remove:
 
@@ -496,15 +413,22 @@ Function: ``modify``
 Function: ``remove``
 ====================
 
-
+remove an existing track
 
 .. js:function:: remove(req, res)
 
     
-    :param type req: 
-    :param type res: 
-    :return unresolved: 
+    :param object req: request
+    :param object res: response
     
+
+.. _module-controllers_TrackController.track:
+
+Member: ``track``: 
+
+.. _module-controllers_TrackController.err:
+
+Member: ``err``: 
 
 
 
@@ -528,6 +452,13 @@ Description
 
 REST interfaces for UserController
 
+**Subscribe to User events:**
+::
+  io.socket.get('/user', function(resData, jwres) {console.log(resData);});
+  io.socket.on('user', function(event){
+     consol.log(event);
+  }
+
 
 .. _module-controllers_UserController.get:
 
@@ -536,15 +467,18 @@ Function: ``get``
 =================
 
 Enumerate or search users
-`GET /user/get`
+
+``GET /user/get``
 
 .. js:function:: get(req, res)
 
     
     :param object req: Enumerate or search users
-    `GET /user/get`
+    
+    ``GET /user/get``
     :param object res: Enumerate or search users
-    `GET /user/get`
+    
+    ``GET /user/get``
     
 
 
