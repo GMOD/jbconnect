@@ -1,14 +1,17 @@
 /** 
-    Created on : Nov 29, 2017, 7:27:05 PM
-    Author     : Eric
+ * @module
+ * @description
+ * 
+ * Used by hooks to add a track and announce to subscribers.
 */
 
 module.exports = {
     /**
      * Add track to track list and notify.
      * 
-     * @param {object} kWorkflowJob
-     * @param {JSON} newTrackJson
+     * @param {object} kJob - kue job reference
+     * @param {JSON} newTrackJson - new track JSON
+     * 
      */
     addToTrackList: function(kJob,newTrack) {
         //sails.log("addToTrackList",newTrack);

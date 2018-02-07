@@ -19,11 +19,7 @@ module.exports = {
         return cb();
     },
     /**
-     * 
-     * @param {object} req
-     * 
      * ::
-     * 
      *      searchParams - search parameters
      *           expr": "tgac"          - search sequence or regex string
      *           "regex": false/true    - 
@@ -33,15 +29,20 @@ module.exports = {
      *           "revStrand": false/true,
      *           "maxLen": 100,     
      *      dataset - the dataset path i.e. "sample_data/json/volvox" 
+     * 
+     * @param {object} req - request
+     * 
      *      
      * @param {object} res
      */
+    /* obsolete
     submit_search: function(req, res) {
         var params = req.allParams();
         this._searchSubmit(params,function(result) {
             res.ok(result);
         });
     },
+    */
     /*
      * This is used to receive result data from the phantomjs component (not currently used)
      * @param {object} req
@@ -51,6 +52,7 @@ module.exports = {
      *      data            data returned.
      * @param {object} res
      */
+    /* obsolete
     send_search_result: function(req, res) {
         
         // (not functional yet.)
@@ -64,11 +66,25 @@ module.exports = {
         this._postProcess(kJob);
         
     },
+    */
+    /**
+     * Job service validation
+     * 
+     * @param {type} params - parameters
+     * @returns {Number} - 0 if successful
+     * 
+     */
     validateParams: function(params) {
         if (typeof params.searchParams === 'undefined') return "searchParams not defined";
         if (typeof params.searchParams.expr === 'undefined') return "search string undefined";
         return 0;   // success
     },
+    /**
+     * returns job service name
+     * 
+     * @param {type} params - parameters
+     * @returns {string} -  
+     */
     generateName(params) {
         return params.searchParams.expr+' search';
     },
@@ -80,6 +96,7 @@ module.exports = {
      *      dataset - the dataset path i.e. "sample_data/json/volvox" 
      * @param {function} cb
      */
+    /*
     _searchSubmit: function(params,cb) {
         var thisb = this;
         var g = sails.config.globals.jbrowse;
@@ -111,9 +128,12 @@ module.exports = {
             cb({status:'success',jobId: kJob.id,asset:kJob.data.asset},null);
         });
     },
+    */
     /**
      * Job service job start.
+     * 
      * called when an appropriate jobs is found and exeuted by service.
+     * 
      * @param {object} kJob
      */
     beginProcessing(kJob) {
@@ -180,8 +200,9 @@ module.exports = {
     },
     /*
      * Fix up regex search parameters.
+     * 
      * @param {Object} s - search parameters.
-     * @returns {nm$_serverSearchService.module.exports._fixParams._s}
+     * @returns {object}
      */
     _fixParams(s) {
         var _s={};
@@ -197,7 +218,9 @@ module.exports = {
     },
     /*
      * run the ServerScript.workflow.js
-     * @param (object} kWorkflowJob
+     * 
+     * @param (object} kWorkflowJob - kue job reference
+     * 
      */
     _runWorkflow: function(kWorkflowJob) {
 
@@ -252,8 +275,9 @@ module.exports = {
     /**
      * this generates the track definition from the track template
      * 
-     * @param {object} kWorkflowJob
+     * @param {object} kWorkflowJob - kue job reference
      * @param {object} cb - callback function
+     * 
      */
     postMoveResultFiles:function(kWorkflowJob,cb) {
 

@@ -15,8 +15,10 @@ var config = require(approot+'/config/globals.js').globals;
 module.exports = {
     dbName: 'localDiskDb.db',
     /**
-     * Traverse jbutils-ext.js of submodules (jbh-*)
-     * @param {function} cb
+     * Traverse ``jbutils-ext.js`` of submodules (jbh-*)
+     * 
+     * @param {function} cb - callback
+     * 
      */
     doExtScripts: function(cb) {
         var cwd = sh.pwd();
@@ -38,7 +40,7 @@ module.exports = {
 
     /**
      * Returned merged jbrowse config.  
-     * Merged from jbh-* config/globals.js, local config/globals.js, & config.js
+     * Merged from ``jbh-*`` ``config/globals.js``, local ``config/globals.js``, & ``config.js``
      */
     getMergedConfig: function() {
         var cwd = sh.pwd();
@@ -70,6 +72,14 @@ module.exports = {
         return merged.jbrowse;
     },
 
+    /**
+     * Builds an index.html based on ``/bin/index_tesmplate.html``.  It will
+     * inject web includes .js and .css references.  These are defined in the config file,
+     * jbrowse.webIncludes section.
+     * 
+     * @returns {string} content of the html file.
+     * 
+     */
     buildHtml: function() {
         var conf = this.getMergedConfig();
         var indexFile = approot+'/bin/index_template.html';
@@ -103,6 +113,9 @@ module.exports = {
         return content;
     },
     /**
+     * Writes the index.html file.
+     * 
+     * A backup of the original index.html will be made.
      * 
      * @param {type} params 
      * @returns {undefined}
@@ -125,7 +138,10 @@ module.exports = {
         //    console.log('index.html content unchanged.');
     },
     /**
-     * setup sample track
+     * add plugins to ``trackList.json``.
+     * 
+     * @param {object} config - reference the configuration.
+     * 
      */
     exec_setupPlugins: function(config) {
         console.log("Adding plugins to trackList.json...");
@@ -139,29 +155,7 @@ module.exports = {
             console.log('Adding plugins to dataset', dataSet);
 
             var trackListPath = g.jbrowsePath + dataSet + '/trackList.json';
-            //var sampleTrackFile = g.jbrowsePath + dataSet;
-            //sampleTrackFile += '/'+g.jblast.blastResultPath+'/sampleTrack.json';
-            //var dataSet = g.dataSet.dataPath;
 
-            // read sampleTrack.json file
-            /*
-            var error = 0;
-            try {
-              var sampleTrackData = fs.readFileSync (sampleTrackFile,'utf8');
-            }
-            catch(err){
-                console.log("failed read",trackListPath,err);
-                error = 1;
-            }
-            if (error) return;
-            */
-            // insert blastResultPath
-            /*
-            //console.log("typeof sampleTrackData",typeof sampleTrackData,sampleTrackData);
-            sampleTrackData = sampleTrackData.replace("[[blastResultPath]]",g.jblast.blastResultPath);
-            sampleTrackData = sampleTrackData.replace("[[blastResultPath]]",g.jblast.blastResultPath);
-            var sampleTrack = JSON.parse(sampleTrackData);
-            */
             // read trackList.json
             var error = 0;
             try {
@@ -180,21 +174,7 @@ module.exports = {
             if (conf.plugins.indexOf('ServerSearch') === -1) conf.plugins.push("ServerSearch");
 
 
-            // check if sample track exists in trackList.json (by checking for the label)
-            /*
-            var hasLabel = 0;
-            for(var i in config.tracks) {
-                if (config.tracks[i].label===sampleTrack.label) hasLabel=1;
-            }
-
-            if (hasLabel) {
-                console.log('Sample track already exists');
-                return;
-            }
-            // add the sample track
-            conf.tracks.push(sampleTrack);
-            */
-            // write trackList.json
+           // write trackList.json
             try {
               fs.writeFileSync(trackListPath,JSON.stringify(conf,null,4));
             }

@@ -47,6 +47,13 @@ module.exports = {
      */
     cmdMap:{},
     
+    /**
+     * initialize the job service framework
+     * 
+     * @param {type} params - parameters
+     * @param {type} cb2 - callback
+     * 
+     */
     init: function(params, cb2) {
         sails.log.debug(">>> Service.init()");
         var thisb = this;
@@ -123,6 +130,13 @@ module.exports = {
             }
         });
     },
+    /**
+     * add a service
+     * 
+     * @param {object} service - service
+     * @param {function} cb - callback
+     * 
+     */
     addService: function(service,cb) {
         
         var handler = service.handler;
