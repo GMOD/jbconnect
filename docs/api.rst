@@ -7,8 +7,8 @@ API
 
    <hr style="border-color: black; border-width: 2px;">
 
-Module: ``controllers/AuthController``
-**************************************
+Namespace: ``AuthController``
+*****************************
 
 
 .. contents:: Local Navigation
@@ -23,6 +23,207 @@ Authentication Controller.
 See also Passport model.
 
 
+.. _AuthController.login:
+
+
+Function: ``login``
+===================
+
+Render the login page
+
+The login form itself is just a simple HTML form:
+::
+  <form role="form" action="/auth/local" method="post">
+    <input type="text" name="identifier" placeholder="Username or Email">
+    <input type="password" name="password" placeholder="Password">
+    <button type="submit">Sign in</button>
+  </form>
+
+You could optionally add CSRF-protection as outlined in the documentation:
+http://sailsjs.org/#!documentation/config.csrf
+
+A simple example of automatically listing all available providers in a
+Handlebars template would look like this:
+::
+  {{#each providers}}
+    <a href="/auth/{{slug}}" role="button">{{name}}</a>
+  {{/each}}
+
+The ``next`` parameter can specify the target URL upon successful login.
+
+Example: ``GET http://localhost:1337/login?next=http://localhost:1337/jbrowse?data=sample_data/json/volvox``
+
+.. js:function:: login(req, res)
+
+    
+    :param Object req: request
+    :param Object res: response
+    
+.. _AuthController.login:
+
+
+Function: ``login``
+===================
+
+
+
+.. js:function:: login()
+
+    
+    
+.. _AuthController.logout:
+
+
+Function: ``logout``
+====================
+
+Log out a user and return them to the homepage
+
+Passport exposes a logout() function on req (also aliased as logOut()) that
+can be called from any route handler which needs to terminate a login
+session. Invoking logout() will remove the req.user property and clear the
+login session (if any).
+
+For more information on logging out users in Passport.js, check out:
+http://passportjs.org/guide/logout/
+
+Example: ``GET http://localhost:1337/logout``
+
+.. js:function:: logout(req, res)
+
+    
+    :param Object req: request
+    :param Object res: response
+    
+.. _AuthController.register:
+
+
+Function: ``register``
+======================
+
+Render the registration page
+
+Just like the login form, the registration form is just simple HTML:
+::
+  <form role="form" action="/auth/local/register" method="post">
+    <input type="text" name="username" placeholder="Username">
+    <input type="text" name="email" placeholder="Email">
+    <input type="password" name="password" placeholder="Password">
+    <button type="submit">Sign up</button>
+  </form>
+
+``GET /register``
+
+.. js:function:: register(req, res)
+
+    
+    :param Object req: request
+    :param Object res: response
+    
+.. _AuthController.loginstate:
+
+
+Function: ``loginstate``
+========================
+
+get login state
+
+``GET http://localhost:1337/loginstate``
+
+Example Result:
+::
+   {
+       "loginstate": true,
+       "user": {
+           "username": "juser",
+           "email": "juser@jbrowse.org"
+       }
+   }
+
+.. js:function:: loginstate(req, res)
+
+    
+    :param object req: request
+    :param object res: response
+    
+.. _AuthController.provider:
+
+
+Function: ``provider``
+======================
+
+Create a third-party authentication endpoint
+
+.. js:function:: provider(req, res)
+
+    
+    :param Object req: Create a third-party authentication endpoint
+    :param Object res: Create a third-party authentication endpoint
+    
+.. _AuthController.callback:
+
+
+Function: ``callback``
+======================
+
+Create a authentication callback endpoint
+
+This endpoint handles everything related to creating and verifying Pass-
+ports and users, both locally and from third-aprty providers.
+
+Passport exposes a login() function on req (also aliased as logIn()) that
+can be used to establish a login session. When the login operation
+completes, user will be assigned to req.user.
+
+For more information on logging in users in Passport.js, check out:
+http://passportjs.org/guide/login/
+
+.. js:function:: callback(req, res)
+
+    
+    :param Object req: Create a authentication callback endpoint
+    
+    This endpoint handles everything related to creating and verifying Pass-
+    ports and users, both locally and from third-aprty providers.
+    
+    Passport exposes a login() function on req (also aliased as logIn()) that
+    can be used to establish a login session. When the login operation
+    completes, user will be assigned to req.user.
+    
+    For more information on logging in users in Passport.js, check out:
+    http://passportjs.org/guide/login/
+    :param Object res: Create a authentication callback endpoint
+    
+    This endpoint handles everything related to creating and verifying Pass-
+    ports and users, both locally and from third-aprty providers.
+    
+    Passport exposes a login() function on req (also aliased as logIn()) that
+    can be used to establish a login session. When the login operation
+    completes, user will be assigned to req.user.
+    
+    For more information on logging in users in Passport.js, check out:
+    http://passportjs.org/guide/login/
+    
+.. _AuthController.disconnect:
+
+
+Function: ``disconnect``
+========================
+
+Disconnect a passport from a user
+
+``GET /logout``
+
+.. js:function:: disconnect(req, res)
+
+    
+    :param Object req: Disconnect a passport from a user
+    
+    ``GET /logout``
+    :param Object res: Disconnect a passport from a user
+    
+    ``GET /logout``
+    
 
 
 
@@ -66,7 +267,7 @@ Function: ``get``
 
 Enumerate or search datasets
 
-`GET /dataset/get`
+``GET /dataset/get``
 
 .. js:function:: get(req, res)
 
@@ -115,7 +316,7 @@ Function: ``get``
 
 Read job active record
 
-`GET /jobactive/get`
+``GET /jobactive/get``
 
 .. js:function:: get(req, res)
 
@@ -282,7 +483,7 @@ Module: ``controllers/ServiceController``
 Description
 ===========
 
-REST interaces for Service model.
+REST interfaces for Service model.
 
 See Service model
 
@@ -346,7 +547,7 @@ Module: ``controllers/TrackController``
 Description
 ===========
 
-REST interaces for TrackController
+REST interfaces for TrackController
 
 **Subscribe to Track events:**
 ::
