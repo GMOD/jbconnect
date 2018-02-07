@@ -20,9 +20,6 @@ Description
 
 Authentication Controller
 
-It currently includes the minimum amount of functionality for
-the basics of Passport.js to work.
-
 
 
 
