@@ -6,6 +6,8 @@
  * 
  * Job service implementing the server-side regex search service.
  * 
+ * ``plugins/ServerSearch`` is the client counterpart to to this job service.
+ * 
  * Setting up a job:
  * ::
  *        var searchParams = { 

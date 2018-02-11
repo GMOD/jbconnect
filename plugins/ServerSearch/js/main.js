@@ -1,3 +1,8 @@
+/**
+ * @description 
+ * This is the client component of ``api/services/serverSearchService``.
+ *    
+ */
 define([
            'dojo/_base/declare',
            'dojo/_base/lang',
