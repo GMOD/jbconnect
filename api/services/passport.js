@@ -59,10 +59,11 @@ passport.protocols = require('./protocols');
  * http://passportjs.org/guide/authenticate/
  * http://passportjs.org/guide/authorize/
  *
- * @param {Object}   req
- * @param {Object}   query
- * @param {Object}   profile
- * @param {Function} next
+ * @param {Object}   req - request
+ * @param {Object}   query - query
+ * @param {Object}   profile - profile
+ * @param {Function} next - next
+ * 
  */
 passport.connect = function (req, query, profile, next) {
   var user = {}
@@ -187,8 +188,9 @@ passport.connect = function (req, query, profile, next) {
  * For more information on authentication in Passport.js, check out:
  * http://passportjs.org/guide/authenticate/
  *
- * @param  {Object} req
- * @param  {Object} res
+ * @param  {Object} req - request
+ * @param  {Object} res - response
+ * 
  */
 passport.endpoint = function (req, res) {
   var strategies = sails.config.passport
@@ -218,9 +220,9 @@ passport.endpoint = function (req, res) {
  * For more information on authentication in Passport.js, check out:
  * http://passportjs.org/guide/authenticate/
  *
- * @param {Object}   req
- * @param {Object}   res
- * @param {Function} next
+ * @param {Object}   req - request
+ * @param {Object}   res - response
+ * @param {Function} next - next
  */
 passport.callback = function (req, res, next) {
   var provider = req.param('provider', 'local')
@@ -342,8 +344,9 @@ passport.loadStrategies = function () {
 /**
  * Disconnect a passport from a user
  *
- * @param  {Object} req
- * @param  {Object} res
+ * @param  {Object} req - request
+ * @param  {Object} res - response
+ * 
  */
 passport.disconnect = function (req, res, next) {
   var user     = req.user

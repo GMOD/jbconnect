@@ -113,11 +113,9 @@ module.exports = {
         return content;
     },
     /**
-     * Writes the index.html file.
+     * Writes the index.html file. A backup of the original index.html will be made.
      * 
-     * A backup of the original index.html will be made.
-     * 
-     * @param {type} params 
+     * @param {object} config 
      * @returns {undefined}
      */
     exec_setupindex: function(config) {
@@ -186,9 +184,11 @@ module.exports = {
     
     /**
      * copy src to targ, but if targ exists, it will backup the target by appending a number
-     * @param {string} src source
-     * @param {string} targ target
-     * @returns {string} final target filename, 
+     * 
+     * @param {string} src - source
+     * @param {string} targ - target
+     * @returns {string} final target filename
+     *  
      */
     safeCopy: function(src,origTarg) {
 
@@ -223,6 +223,15 @@ module.exports = {
         if (origTarg===newTarg) return null;
         return newTarg;
     },
+    /**
+     * if content is the same as target, do nothing.
+     * if content is different than  target, write new content to target file.
+     * 
+     * @param {type} content - content to write
+     * @param {type} origTarg - target file
+     * @returns {string} backuped up filename
+     * 
+     */
     safeWriteFile: function(content,origTarg) {
 
         var newTarg = origTarg;
@@ -265,6 +274,12 @@ module.exports = {
         if (origTarg===newTarg) return null;
         return newTarg;     // return the backed up filename
     },
+    /**
+     * Install the sails database from ``./bin``.
+     * 
+     * @param {int} overwrite - 0, do not overwrite db.  1, overwrite db.
+     * 
+     */
     install_database: function(overwrite) {
         var dbSrc = approot+'/bin/'+this.dbName;
         var dbTarg = approot+'/data/';//+this.dbName;

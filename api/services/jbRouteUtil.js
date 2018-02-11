@@ -15,7 +15,8 @@ module.exports = {
      * inject client-side plugins into the clinet plugin directory as routes.
      * handles submodules plugins too.
      *  
-     * @param (object) params
+     * @param {object} params - eg. ``{app: <app-object>,express: <express-object>}``
+     *    
      */
     addPluginRoutes: function(params){
         // inject plugin routes
@@ -54,7 +55,8 @@ module.exports = {
     /**
      * Add library routes 
      * 
-     * @param (object) params
+     * @param {object} params - eg. ``{app: <app-object>,express: <express-object>}``
+     *    
      */
     addLibRoutes: function(params) {
         var g = sails.config.globals.jbrowse;
@@ -75,10 +77,10 @@ module.exports = {
     /**
      * Add a route
      * 
-     * @param {object} params
-     * @param {string} module
-     * @param {string} route
-     * @param {string} target
+     * @param {object} params - eg. ``{app: <app-object>,express: <express-object>}``
+     * @param {string} module - the module name (ie. ``"jquery"``)
+     * @param {string} route - the route (ie. ``"/jblib/jquery"``)
+     * @param {string} target - the target (ie ``"/var/www/html/3jbserver/node_modules/jquery"``)
      */
     addRoute: function(params,module,route,target) {
         var app = params.app;
@@ -86,6 +88,15 @@ module.exports = {
         sails.log.info("adding libroute (%s) %s %s",module,route,target);
         app.use(route, express.static(target));
     },
+    /**
+     * Add a plugin route
+     * 
+     * @param {object} params - eg. ``{app: <app-object>,express: <express-object>}``
+     * @param {string} module - the module name (ie. ``"jblast"``)
+     * @param {string} route - the route (ie. ``"/jbrowse/plugins/JBlast"``)
+     * @param {string} target - the target (ie ``"/var/www/html/3jbserver/node_modules/jbh-jblast/plugins/JBlast"``)
+     * 
+     */
     addPluginRoute: function(params,module,route,target) {
         var app = params.app;
         var express = params.express;

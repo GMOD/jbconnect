@@ -1,7 +1,102 @@
 /**
  * @module
  * @description 
+ * 
+ * .. _jbs-job-search-service:
+ * 
  * Job service implementing the server-side regex search service.
+ * 
+ * Setting up a job:
+ * ::
+ *        var searchParams = { 
+ *            expr: 'GATGAT',
+ *            regex: 'false',
+ *            caseIgnore: 'true',
+ *            translate: 'false',
+ *            fwdStrand: 'true',
+ *            revStrand: 'true',
+ *            maxLen: '100' 
+ *        }        
+ *        var postData = {
+ *            service: "serverSearchService",
+ *            dataset: "sample_data/json/volvox",
+ *            searchParams: searchParams
+ *        };
+ *        url = "/job/submit";
+ *        $.post(url, postData, function(data) {
+ *            console.log("result",data);
+ *        },'json')
+ *        .fail(function(err) {
+ *            console.log("error",err);
+ *        });
+ * 
+ * Note: the search parameters are the same as that of 
+ * 
+ * Configuration (config/globals.js):
+ * ::
+ *   jbrowse: {
+ *       serverSearch: {
+ *           resultPath: "ServerSearch",
+ *           resultCategory: "Search Results",
+ *           trackTemplate: "ServerSearchTrackTemplate.json",
+ *           workflowScript: "ServerSearch.workflow.js",
+ *           processScript:   'ServerSearchProcess.html'
+ *       },
+ *       services: {
+ *           'serverSearchService': {name: 'serverSearchService',  type: 'service'}
+ *       }
+ *   }
+ * 
+ * Job queue entry:
+ * ::      
+ *    {
+ *       "id": 113,
+ *       "type": "workflow",
+ *       "progress": "100",
+ *       "priority": 0,
+ *       "data": {
+ *         "service": "serverSearchService",
+ *         "dataset": "sample_data/json/volvox",
+ *         "searchParams": {
+ *           "expr": "atagt",
+ *           "regex": "false",
+ *           "caseIgnore": "true",
+ *           "translate": "false",
+ *           "fwdStrand": "true",
+ *           "revStrand": "true",
+ *           "maxLen": "100"
+ *         },
+ *         "name": "atagt search",
+ *         "asset": "113_search_1513478281528",
+ *         "path": "/var/www/html/4jbserver/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
+ *         "outfile": "113_search_1513478281528.gff",
+ *         "track": {
+ *           "maxFeatureScreenDensity": 16,
+ *           "style": {
+ *             "showLabels": false
+ *           },
+ *           "displayMode": "normal",
+ *           "storeClass": "JBrowse/Store/SeqFeature/GFF3",
+ *           "type": "JBrowse/View/Track/HTMLFeatures",
+ *           "metadata": {
+ *             "description": "Search result job: 113"
+ *           },
+ *           "category": "Search Results",
+ *           "key": "113 atagt results",
+ *           "label": "113_search_1513478281528",
+ *           "urlTemplate": "ServerSearch/113_search_1513478281528.gff",
+ *           "sequenceSearch": true
+ *         }
+ *       },
+ *       "state": "complete",
+ *       "promote_at": "1513478280038",
+ *       "created_at": "1513478280038",
+ *       "updated_at": "1513478292634",
+ *       "createdAt": "2018-02-01T05:38:27.371Z",
+ *       "updatedAt": "2018-02-01T05:38:27.371Z"
+ *     }
+ * 
+ * 
  */
 
 var fs = require("fs-extra");
@@ -18,55 +113,6 @@ module.exports = {
     init: function(params,cb) {
         return cb();
     },
-    /**
-     * ::
-     *      searchParams - search parameters
-     *           expr": "tgac"          - search sequence or regex string
-     *           "regex": false/true    - 
-     *           "caseIgnore": false/true
-     *           "translate": false/true,
-     *           "fwdStrand": false/true,
-     *           "revStrand": false/true,
-     *           "maxLen": 100,     
-     *      dataset - the dataset path i.e. "sample_data/json/volvox" 
-     * 
-     * @param {object} req - request
-     * 
-     *      
-     * @param {object} res
-     */
-    /* obsolete
-    submit_search: function(req, res) {
-        var params = req.allParams();
-        this._searchSubmit(params,function(result) {
-            res.ok(result);
-        });
-    },
-    */
-    /*
-     * This is used to receive result data from the phantomjs component (not currently used)
-     * @param {object} req
-     *      jobid           job that is managing this session
-     *      end             true if this is the end of the series
-     *      ...             other fields
-     *      data            data returned.
-     * @param {object} res
-     */
-    /* obsolete
-    send_search_result: function(req, res) {
-        
-        // (not functional yet.)
-        
-        var params = req.allParams();
-        
-        // lookup job kJob = ...
-        
-        // setup kJob.kDonefn
-        
-        this._postProcess(kJob);
-        
-    },
-    */
     /**
      * Job service validation
      * 
@@ -88,47 +134,6 @@ module.exports = {
     generateName(params) {
         return params.searchParams.expr+' search';
     },
-    /*
-     * submit workflow. (obsolete)
-     * 
-     * @param {object} params
-     *      searchParams - search parameters
-     *      dataset - the dataset path i.e. "sample_data/json/volvox" 
-     * @param {function} cb
-     */
-    /*
-    _searchSubmit: function(params,cb) {
-        var thisb = this;
-        var g = sails.config.globals.jbrowse;
-        var gg = sails.config.globals;
-        
-        var searchParams = params.searchParams;
-        var dataset = params.dataset;
-        var workflow = params.workflow;
-
-        searchParams = this._fixParams(searchParams);  // necessary?
-        //console.log("searchParams fixed:",searchParams);
-
-        // create the kue job entry
-        var jobdata = {
-            service: "serverSearchService",
-            workflow: workflow,
-            name: searchParams.expr+' search',
-            searchParams: searchParams, 
-            dataset: {
-                path: dataset
-            }
-        };
-        var kJob = gg.kue_queue.create('workflow', jobdata);
-        
-        kJob.save(function(err){
-            if (err) {
-                return cb(null,{status:'error',msg: "error create kue workflow",err:err});
-            }
-            cb({status:'success',jobId: kJob.id,asset:kJob.data.asset},null);
-        });
-    },
-    */
     /**
      * Job service job start.
      * 
