@@ -152,13 +152,15 @@ included and reference an existing job service.
 ::
     var postData = {
           service: "jblast",
-          dataset: thisB.config.dataRoot,
-          region: regionB,
-          workflow: selWorkflow
+          dataset: "sample_data/json/volvox",
+          region: ">ctgA ctgA:44705..47713 (- strand) class=remark length=3009\nacatccaatggcgaacataa...gcgagttt",
+          workflow: "NCBI.blast.workflow.js"
       };
     $.post( "/job/submit", postData , function( result ) {
         console.log( result );
     }, "json");
+
+
 
 
 ``service`` can either be the service module name (ie. "basicWorkflowService")
