@@ -24,6 +24,11 @@ var g = {
         jbrowsePath: jbPath,                        // or "/var/www/jbrowse/"
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
         
+        dataSet: {
+             Volvox: {path: "sample_data/json/volvox"}
+        },
+        
+        // search service settings
         serverSearch: {
             resultPath: "ServerSearch",
             resultCategory: "Search Results",
@@ -31,19 +36,27 @@ var g = {
             workflowScript: "ServerSearch.workflow.js",
             processScript:   'ServerSearchProcess.html'
         },
-        dataSet: {
-             Volvox: {path: "sample_data/json/volvox"}
-        },
+        // search job service registration
         services: {
             'serverSearchService': {name: 'serverSearchService',  type: 'service'}
         },
+        
+        /*
+         * Virtual Routes
+         * These routes reference node_modules that are used by the client and
+         * accessed by virtual route.
+         */
         libRoutes: {
-            // npm library              route
+            // name         node_modules dir            virtual route
             'jquery':       {module: 'jquery',          vroute:'/jblib/jquery'},
             'bootstrap':    {module: 'bootstrap',       vroute:'/jblib/bootstrap'},
             'jqueryui':     {module: 'jquery-ui-dist',  vroute:'/jblib/jquery-ui'},
             'mbextruder':   {module: 'jquery.mb.extruder', vroute:'/jblib/mb.extruder'}
         },
+        /*
+         * Web Includes
+         * These includes are injected into JBrowse ``index.html`` upon ``sails lift``.
+         */
         webIncludes: {
             "css-bootstrap":         {lib: "/jblib/bootstrap/dist/css/bootstrap.min.css"},
             "css-mbextruder":        {lib: "/jblib/mb.extruder/css/mbExtruder.css"},
