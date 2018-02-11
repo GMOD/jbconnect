@@ -22,11 +22,16 @@ for a better description of the configuration framework.
 +-------------------------------+----------------------------------------------------------+
 | :ref:`jbs-globals-js`         | global configuration file                                |
 +-------------------------------+----------------------------------------------------------+
-| http.js                       | custom middleware and /jbrowse route is setup here.      |
+| config.js                     | In the JBServer, is aggregated with globals.js from this |
+|                               | project and other installed hook projects. It provides a |
+|                               | means to override the values in from any of the          |
+|                               | globals.js settings.                                     |
++-------------------------------+----------------------------------------------------------+
+| http.js                       | Custom middleware and /jbrowse route is setup here.      |
 +-------------------------------+----------------------------------------------------------+
 | passport.js, policies.js      | passport framework and auth policies config              |
 +-------------------------------+----------------------------------------------------------+
-| routes.js                     | various route config                                     |
+| routes.js                     | various route configurations                             |
 +-------------------------------+----------------------------------------------------------+
 | connections.js                | choice of database - local, mongo, mysql, ...            |
 |                               | (we use local by default.)  The DB file is in the        |
@@ -39,9 +44,10 @@ for a better description of the configuration framework.
 globals.js
 ----------
 
-Modify the configuration file as necessary.
-
 To view aggregate configuration: ``./jbutil --config``
+
+The aggregate config is the merged globals.js combined with the globals.js of
+server hook modules and config.js in the application root.
 
 The aggregate config file is the merged config of JBServer and its installed jbh- (hook)
 modules.
@@ -51,16 +57,59 @@ Edit config file: ``nano config/globals.js``
 :: 
 
     jbrowse: {
-        jbrowseRest: "http://localhost:1337",       // path accessible by web browser
-        jbrowsePath: jbPath,                        // or point to jbrowse directory (ie. "/var/www/jbrowse/") 
+        jbrowseRest: "http://localhost:1337",
+        jbrowsePath: jbPath,                        // or "/var/www/jbrowse/"
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
-        dataSet: [
-            {
-                dataPath: "sample_data/json/volvox" // datasets.  
-            }
-        ]
+        
+        dataSet: {
+             Volvox: {path: "sample_data/json/volvox"}
+        },
+        
+        // search service settings
+        serverSearch: {
+            resultPath: "ServerSearch",
+            resultCategory: "Search Results",
+            trackTemplate: "ServerSearchTrackTemplate.json",
+            workflowScript: "ServerSearch.workflow.js",
+            processScript:   'ServerSearchProcess.html'
+        },
+        // search job service registration
+        services: {
+            'serverSearchService': {name: 'serverSearchService',  type: 'service'}
+        },
+        
+        /*
+         * Virtual Routes
+         * These routes reference node_modules that are used by the client and
+         * accessed by virtual route.
+         */
+        libRoutes: {
+            // name         node_modules dir            virtual route
+            'jquery':       {module: 'jquery',          vroute:'/jblib/jquery'},
+            'bootstrap':    {module: 'bootstrap',       vroute:'/jblib/bootstrap'},
+            'jqueryui':     {module: 'jquery-ui-dist',  vroute:'/jblib/jquery-ui'},
+            'mbextruder':   {module: 'jquery.mb.extruder', vroute:'/jblib/mb.extruder'}
+        },
+        /*
+         * Web Includes
+         * These includes are injected into JBrowse ``index.html`` upon ``sails lift``.
+         */
+        webIncludes: {
+            // key                    virtual route
+            "css-bootstrap":         {lib: "/jblib/bootstrap/dist/css/bootstrap.min.css"},
+            "css-mbextruder":        {lib: "/jblib/mb.extruder/css/mbExtruder.css"},
+            "css-jqueryui":          {lib: "/jblib/jquery-ui/jquery-ui.min.css"},
+            "css-jqueryuistructure": {lib: "/jblib/jquery-ui/jquery-ui.structure.min.css"},
+            "css-jqueryuitheme":     {lib: "/jblib/jquery-ui/jquery-ui.theme.min.css"},
+            "js-sailsio":            {lib: "/js/dependencies/sails.io.js"},
+            "js-jquery":             {lib: "/jblib/jquery/dist/jquery.min.js" },
+            "js-jqueryui":           {lib: "/jblib/jquery-ui/jquery-ui.min.js" },
+            "js-bootstrap":          {lib: "/jblib/bootstrap/dist/js/bootstrap.min.js"},
+            "js-mbextruderHover":    {lib: "/jblib/mb.extruder/inc/jquery.hoverIntent.min.js"},
+            "js-mbextruderFlip":     {lib: "/jblib/mb.extruder/inc/jquery.mb.flipText.js"},
+            "js-mbextruder":         {lib: "/jblib/mb.extruder/inc/mbExtruder.js"}
+        }
     }
-
 
 
 .. _jbs-hook-install:
@@ -78,6 +127,7 @@ The jbh- hook can extend JBServer in the following ways:
 * Extend models, controllers, policies and services
 * Integrated client-side JBrowse plugins injection
 * Integrated client-side npm module injection
+* Integrated job services (see: jbs-jobservice_)
 * Integrated configuration tool (jbutil)
 * Aggregated configurations
 
@@ -115,10 +165,10 @@ It is available as a route.*
   ],
 
 
-Jservice Configuration
-======================
+Job Service Configuration
+=========================
 
-Jservices are a special type of service that are used to extend RESTful api service
+Job services (*jservice*) are a special type of service that are used to extend RESTful API service
 and serve processing for job operations.
 
 
@@ -137,10 +187,39 @@ jservice type:
  * service - service only serves RESTful interfaces
 
 ::
-
     // list of services that will get registered.
     services: {
         'basicWorkflowService':     {name: 'basicWorkflowService',  type: 'workflow', alias: "jblast"},
         'filterService':            {name: 'filterService',         type: 'service'},
         'entrezService':            {name: 'entrezService',         type: 'service'}
     },
+
+
+.. _jbs-jbutilextending:
+
+Extending jbutil
+================
+
+``jbutil`` can be extended by a installable hook through the ``bin/jbutil-ext.js``.
+
+``jbutil-ext.js`` must imeplement these function:
+::
+    module.exports = {
+        // this return the options that the module support.  In this example,
+        // we add -t or --test and --thing options to jbutil.
+        getOptions: function() {
+            return [
+                ['t' , 'test=ARG', '(jbh-myhook) this is a test option'],
+                ['' , 'thing',   , '(jbh-myhook) this is another test option']
+            ];        
+        },
+        // Extends the help display
+        // In this example, we describe how to use --test with a parameter value "abc"
+        getHelpText: function() {
+            return "\nExample: ./jbutil --test abc\n";
+        },
+        process: function(opt,path,config) {
+        }
+
+See npm module `node-getopt <https://www.npmjs.com/package/node-getopt>`_ for more info. 
+
