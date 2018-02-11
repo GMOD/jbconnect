@@ -77,7 +77,7 @@ This example shows that ``jbh-jblast`` adds a number of commands to ``jbutil``
           --setuphistory      setup history
       -h, --help              display this help
 
-
+See: jbs-jbutilextending_
 
 .. _jbs-queue-framework:
 
