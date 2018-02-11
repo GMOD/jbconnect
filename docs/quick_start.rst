@@ -46,3 +46,6 @@ From a web browser, access the application.
 The default username/password: juser/password
 
 
+Client Side Demo
+================
+
