@@ -1658,11 +1658,10 @@ Function: ``addPluginRoutes``
 inject client-side plugins into the clinet plugin directory as routes.
 handles submodules plugins too.
 
-.. js:function:: addPluginRoutes()
+.. js:function:: addPluginRoutes(params)
 
     
-    :param addPluginRoutes(): inject client-side plugins into the clinet plugin directory as routes.
-    handles submodules plugins too.
+    :param object params: eg. ``{app: <app-object>,express: <express-object>}``
     
 .. _module-services_jbRouteUtil.addLibRoutes:
 
@@ -1672,10 +1671,10 @@ Function: ``addLibRoutes``
 
 Add library routes
 
-.. js:function:: addLibRoutes()
+.. js:function:: addLibRoutes(params)
 
     
-    :param addLibRoutes(): Add library routes
+    :param object params: eg. ``{app: <app-object>,express: <express-object>}``
     
 .. _module-services_jbRouteUtil.addRoute:
 
@@ -1688,11 +1687,7 @@ Add a route
 .. js:function:: addRoute(params, module, route, target)
 
     
-    :param object params: parameters
-    
-    where params is:
-    ::
-       {app:[app reference],express:[express reference]}
+    :param object params: eg. ``{app: <app-object>,express: <express-object>}``
     :param string module: the module name (ie. ``"jquery"``)
     :param string route: the route (ie. ``"/jblib/jquery"``)
     :param string target: the target (ie ``"/var/www/html/3jbserver/node_modules/jquery"``)
@@ -1708,11 +1703,7 @@ Add a plugin route
 .. js:function:: addPluginRoute(params, module, route, target)
 
     
-    :param object params: parameters
-    
-    where params is:
-    ::
-       {app:[app reference],express:[express reference]}
+    :param object params: eg. ``{app: <app-object>,express: <express-object>}``
     :param string module: the module name (ie. ``"jblast"``)
     :param string route: the route (ie. ``"/jbrowse/plugins/JBlast"``)
     :param string target: the target (ie ``"/var/www/html/3jbserver/node_modules/jbh-jblast/plugins/JBlast"``)
@@ -1788,19 +1779,13 @@ jbrowse.webIncludes section.
 Function: ``exec_setupindex``
 =============================
 
-Writes the index.html file.
+Writes the index.html file. A backup of the original index.html will be made.
 
-A backup of the original index.html will be made.
-
-.. js:function:: exec_setupindex(params)
+.. js:function:: exec_setupindex(config)
 
     
-    :param type params: Writes the index.html file.
-    
-    A backup of the original index.html will be made.
-    :return undefined: Writes the index.html file.
-    
-    A backup of the original index.html will be made.
+    :param object config: Writes the index.html file. A backup of the original index.html will be made.
+    :return undefined: Writes the index.html file. A backup of the original index.html will be made.
     
 .. _module-services_jbutillib.exec_setupPlugins:
 
@@ -1828,7 +1813,7 @@ copy src to targ, but if targ exists, it will backup the target by appending a n
     
     :param string src: source
     :param string targ: target
-    :return string: final target filename,
+    :return string: final target filename
     
 .. _module-services_jbutillib.safeWriteFile:
 
@@ -1836,11 +1821,15 @@ copy src to targ, but if targ exists, it will backup the target by appending a n
 Function: ``safeWriteFile``
 ===========================
 
+if content is the same as target, do nothing.
+if content is different than  target, write new content to target file.
 
-
-.. js:function:: safeWriteFile()
+.. js:function:: safeWriteFile(content, origTarg)
 
     
+    :param type content: content to write
+    :param type origTarg: target file
+    :return string: backuped up filename
     
 .. _module-services_jbutillib.install_database:
 
@@ -1848,11 +1837,12 @@ Function: ``safeWriteFile``
 Function: ``install_database``
 ==============================
 
+Install the sails database from ``./bin``.
 
-
-.. js:function:: install_database()
+.. js:function:: install_database(overwrite)
 
     
+    :param int overwrite: 0, do not overwrite db.  1, overwrite db.
     
 
 
@@ -1957,7 +1947,101 @@ Module: ``services/serverSearchService``
 Description
 ===========
 
+.. _jbs-job-search-service:
+
 Job service implementing the server-side regex search service.
+
+``plugins/ServerSearch`` is the client counterpart to to this job service.
+
+Setting up a job:
+::
+       var searchParams = { 
+           expr: 'GATGAT',
+           regex: 'false',
+           caseIgnore: 'true',
+           translate: 'false',
+           fwdStrand: 'true',
+           revStrand: 'true',
+           maxLen: '100' 
+       }        
+       var postData = {
+           service: "serverSearchService",
+           dataset: "sample_data/json/volvox",
+           searchParams: searchParams
+       };
+       url = "/job/submit";
+       $.post(url, postData, function(data) {
+           console.log("result",data);
+       },'json')
+       .fail(function(err) {
+           console.log("error",err);
+       });
+
+Note: the search parameters are the same as that of 
+
+Configuration (config/globals.js):
+::
+  jbrowse: {
+      serverSearch: {
+          resultPath: "ServerSearch",
+          resultCategory: "Search Results",
+          trackTemplate: "ServerSearchTrackTemplate.json",
+          workflowScript: "ServerSearch.workflow.js",
+          processScript:   'ServerSearchProcess.html'
+      },
+      services: {
+          'serverSearchService': {name: 'serverSearchService',  type: 'service'}
+      }
+  }
+
+Job queue entry:
+::      
+   {
+      "id": 113,
+      "type": "workflow",
+      "progress": "100",
+      "priority": 0,
+      "data": {
+        "service": "serverSearchService",
+        "dataset": "sample_data/json/volvox",
+        "searchParams": {
+          "expr": "atagt",
+          "regex": "false",
+          "caseIgnore": "true",
+          "translate": "false",
+          "fwdStrand": "true",
+          "revStrand": "true",
+          "maxLen": "100"
+        },
+        "name": "atagt search",
+        "asset": "113_search_1513478281528",
+        "path": "/var/www/html/4jbserver/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
+        "outfile": "113_search_1513478281528.gff",
+        "track": {
+          "maxFeatureScreenDensity": 16,
+          "style": {
+            "showLabels": false
+          },
+          "displayMode": "normal",
+          "storeClass": "JBrowse/Store/SeqFeature/GFF3",
+          "type": "JBrowse/View/Track/HTMLFeatures",
+          "metadata": {
+            "description": "Search result job: 113"
+          },
+          "category": "Search Results",
+          "key": "113 atagt results",
+          "label": "113_search_1513478281528",
+          "urlTemplate": "ServerSearch/113_search_1513478281528.gff",
+          "sequenceSearch": true
+        }
+      },
+      "state": "complete",
+      "promote_at": "1513478280038",
+      "created_at": "1513478280038",
+      "updated_at": "1513478292634",
+      "createdAt": "2018-02-01T05:38:27.371Z",
+      "updatedAt": "2018-02-01T05:38:27.371Z"
+    }
 
 
 .. _module-services_serverSearchService.init:
