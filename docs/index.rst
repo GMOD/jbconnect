@@ -2,7 +2,7 @@
 JBServer
 ********
 
-.. image:: img/jb-jbs-diagram.jpg
+.. image:: img/jb-jbs-diagram.png
 
 
 **JBServer provides the following features:**

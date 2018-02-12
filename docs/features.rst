@@ -176,7 +176,7 @@ Standalone Register / Login / Logout Routes
 Stand-alone routes allow for basic register/login/logout functionality free
 from the JBrowse interface.  
 
-.. image:: img/login-register.jpg
+.. image:: img/login-register.png
 
 
 Logout: ``http://<address>:1337/logout``
