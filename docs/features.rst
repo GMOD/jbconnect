@@ -4,17 +4,12 @@ Features
 
 .. _jbs-features:
 
-JBConnect is a server/analysis framework for JBrowse and has the following features:
+JBServer is a server/analysis framework for JBrowse and has the following features:
 
 +------------------------------------------------------------------------------------+
 | `Sails JS <http://sailsjs.org>`_ - `NodeJS <http://nodejs.org>`_/Expressed-based   |
 +------------------------------------------------------------------------------------+
 | Tightly integrated with JBrowse                                                    |
-+------------------------------------------------------------------------------------+
-| Flexible Authentication – (`Passport.js <http://passportjs.org>`_) supporting      |
-| strategie, like OAuth2, OpenID, etc.                                               |
-+------------------------------------------------------------------------------------+
-| User management services                                                           |
 +------------------------------------------------------------------------------------+
 | Track & Dataset Management with JBrowse integration                                |
 |                                                                                    |
@@ -22,6 +17,11 @@ JBConnect is a server/analysis framework for JBrowse and has the following featu
 | * Track API (CRUD)                                                                 |
 | * Auth and Secure Tracks/Datasets/Assets                                           |
 | * Track/Asset SubPub events with `Socket.io <http://socket.io>`_                   |
++------------------------------------------------------------------------------------+
+| Flexible Authentication – (`Passport.js <http://passportjs.org>`_) supporting      |
+| strategies, like OAuth2, OpenID, etc.                                              |
++------------------------------------------------------------------------------------+
+| User management services                                                           |
 +------------------------------------------------------------------------------------+
 | Policy Engine f0r managing access to Tracks, Datasets, Services, Assets            |
 +------------------------------------------------------------------------------------+
