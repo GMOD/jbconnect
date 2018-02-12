@@ -172,7 +172,7 @@ Job services (*jservice*) are a special type of service that are used to extend 
 and serve processing for job operations.
 
 
-Configuration is defined in config/globals under the jbrowse section under service.
+Configuration is defined in ``config/globals.js`` under the jbrowse section under service.
 
 A definition:    <indexname>: {name: <servicename>, type:<type>, alias:<alias> }
 
@@ -183,9 +183,10 @@ where:
  * alias - (optional) if specified, the service can also be referenced by the alias name.
 
 jservice type:
- * workflow - service can serve job execution
+ * workflow - service can serve job execution and RESTful interfaces
  * service - service only serves RESTful interfaces
 
+Job service config in ``config/globals.js``:
 ::
     // list of services that will get registered.
     services: {
@@ -200,25 +201,43 @@ jservice type:
 Extending jbutil
 ================
 
-``jbutil`` can be extended by a installable hook through the ``bin/jbutil-ext.js``.
+``jbutil`` is a command line utility that is used to configure JBServer in various
+ways. ``jbutil`` can be extended by a installable hook through ``bin/jbutil-ext.js``.
 
 ``jbutil-ext.js`` must imeplement these function:
 ::
     module.exports = {
         // this return the options that the module support.  In this example,
         // we add -t or --test and --thing options to jbutil.
+
         getOptions: function() {
             return [
                 ['t' , 'test=ARG', '(jbh-myhook) this is a test option'],
                 ['' , 'thing',   , '(jbh-myhook) this is another test option']
             ];        
         },
+
         // Extends the help display
         // In this example, we describe how to use --test with a parameter value "abc"
+
         getHelpText: function() {
             return "\nExample: ./jbutil --test abc\n";
         },
+        
+        // process options
+        // where opt - the option list.
+        //       path - path of the module that will process the option (i.e. "./node_modules/jbh-jblast"
+        //       config - the aggregate globals.js config.
+        
         process: function(opt,path,config) {
+            var tool = opt.options['setupindex'];
+            if (typeof tool !== 'undefined') {
+                jblib.exec_setupindex(this.config);
+                jblib.exec_setupPlugins(this.config);
+            }
+
+            var tool = opt.options['dbreset'];
+            if (typeof tool !== 'undefined') {
         }
 
 See npm module `node-getopt <https://www.npmjs.com/package/node-getopt>`_ for more info. 

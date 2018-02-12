@@ -2,39 +2,42 @@
 JBServer
 ********
 
-**JBConnect - a tightly integrated analysis framework for JBrowse**
+.. image:: img/jb-jbs-diagram.jpg
 
-JBrowse does not require JBConnect to operate.
-
-JBConnect is a 
-`sails.js <http://sailsjs.com/>`_ application and provides a job execution engine 
-(`kue <https://www.npmjs.com/package/kue>`_).
-  
-JBConnect can be extended with  
-*jbh-hook* modules that extend both server and client-ends in a single package.
-(see: :ref:`jbs-hook-install` and :ref:`jbs-hooks`)  
 
 **JBServer provides the following features:**
 
-+-----------------------------------------------------------------------------------+
-| Job queue execution engine (kue)                                                  |
-+-----------------------------------------------------------------------------------+
-| Tight Integration with JBrowse client                                             |
-+-----------------------------------------------------------------------------------+
-| RESTful APIs (**Blueprints**)                                                     |
-+-----------------------------------------------------------------------------------+
-| Database ORM, Any Database, MySql, PostgreSQL Mongo, Redis, local (**Waterline**) |
-+-----------------------------------------------------------------------------------+
-| Express-based Compatible routes & Middleware                                      |
-+-----------------------------------------------------------------------------------+
-| Socket.io - sub/pub, WebSockets, Auto Integrate Models                            |
-+-----------------------------------------------------------------------------------+
-| Passport.js - role-based security, access control, OAuth                          |
-+-----------------------------------------------------------------------------------+
-| Extensible plugin framework based on Sails.js Installable Hooks                   |
-+-----------------------------------------------------------------------------------+
-| **Grunt** Customizable asset workflow, LESS, SASS, Stylus                         |
-+-----------------------------------------------------------------------------------+
++------------------------------------------------------------------------------------+
+| `Sails JS <http://sailsjs.org>`_ - `NodeJS <http://nodejs.org>`_/Expressed-based   |
++------------------------------------------------------------------------------------+
+| Tightly integrated with JBrowse.                                                   |
+| *Note: JBrowse does not require JBServer to operate.*                              |
++------------------------------------------------------------------------------------+
+| Flexible Authentication – (`Passport.js <http://passportjs.org>`_) supporting      |
+| strategie, like OAuth2, OpenID, etc.                                               |
++------------------------------------------------------------------------------------+
+| User management services                                                           |
++------------------------------------------------------------------------------------+
+| Track & Dataset Management with JBrowse integration                                |
+| * RESTful track data access                                                        |
+| * Track API (CRUD)                                                                 |
+| * Auth and Secure Tracks/Datasets/Assets                                           |
+| * Track/Asset SubPub events with `Socket.io <http://socket.io>`_                   |
++------------------------------------------------------------------------------------+
+| Policy Engine f0r managing access to Tracks, Datasets, Services, Assets            |
++------------------------------------------------------------------------------------+
+| Extensible server-side analysis with workflow abstraction and job queue            |
++------------------------------------------------------------------------------------+
+| `Waterline ORM <http://waterlinejs.org/>`_ (MongoDB, MySQL, Postgres, Redis, etc.) |
+| with integrated                                                                    |
+|`Blueprint <https://sailsjs.com/documentation/concepts/blueprints>`_ object models  |
++------------------------------------------------------------------------------------+
+| npm installable hook model supporting both client-side (JBrowse plugins)           |
+| and server-side extensions in a single package.                                    |
+| (see: :ref:`jbs-hook-install` and :ref:`jbs-hooks`)                                |
++------------------------------------------------------------------------------------+
+| Grunt – task management (minification, watches, etc.)                              |
++------------------------------------------------------------------------------------+
 
 
 
