@@ -57,6 +57,7 @@ Client Side Demo
 The server can be tested with the Sequence Search plugin feature that is automatically installed.
 
 To run:
+
 .. image:: img/server-search.png
 
 1. Select *Queue sequence search* from the Track menu.  This is functionally equivelant
