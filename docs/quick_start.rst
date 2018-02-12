@@ -45,7 +45,7 @@ From a web browser, access the application.
 
 You will arrive at the following screen
 
-.. image:: img/login.jpg
+.. image:: img/login.png
 
 
 The default username/password: juser/password
@@ -57,7 +57,7 @@ Client Side Demo
 The server can be tested with the Sequence Search plugin feature that is automatically installed.
 
 To run:
-.. image:: img/server-search.jpg
+.. image:: img/server-search.png
 
 1. Select *Queue sequence search* from the Track menu.  This is functionally equivelant
    to add *Add sequence search track*, which is the client-side regexSearch plugin.
