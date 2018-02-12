@@ -195,6 +195,15 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'PROJECT_NAMEdoc'
 
+# cause table cells to wrap
+html_static_path = ['_static']
+
+html_context = {
+    'css_files': [
+        '_static/theme_overrides.css',  # override wide tables in RTD theme
+        ],
+     }
+
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
