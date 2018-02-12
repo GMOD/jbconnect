@@ -197,11 +197,14 @@ htmlhelp_basename = 'PROJECT_NAMEdoc'
 
 # cause table cells to wrap
 
-html_context = {
-    'css_files': [
-        '_static/theme_overrides.css',  # override wide tables in RTD theme
-        ],
-     }
+def setup(app):
+   app.add_stylesheet("theme_overrides.css")
+
+#html_context = {
+#    'css_files': [
+#        '_static/theme_overrides.css',  # override wide tables in RTD theme
+#        ],
+#     }
 
 # -- Options for LaTeX output ---------------------------------------------
 
