@@ -196,7 +196,7 @@ html_static_path = ['_static']
 htmlhelp_basename = 'PROJECT_NAMEdoc'
 
 # cause table cells to wrap
-html_static_path = ['_static']
+#html_static_path = ['_static']
 
 html_context = {
     'css_files': [
