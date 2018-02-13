@@ -17,13 +17,13 @@ module.exports = {
      * enumerate tracks or search track list.
      * 
      * Get all tracks
-     * :bash:`GET /track/get`
+     * ``GET /track/get``
      * 
      * Get filtered tracks by dataset:
      * 
-     * :bash:`GET /track/get?id=1` where id is the dataset id
+     * ``GET /track/get?id=1`` where id is the dataset id
      * 
-     * :bash:`GET /track/get?pat=sample_data/json/volvox` where path is the dataset path
+     * ``GET /track/get?pat=sample_data/json/volvox`` where path is the dataset path
      * 
      * @param {object} req - request
      * @param {object} res - response
@@ -45,6 +45,31 @@ module.exports = {
     /**
      * add a new track
      * 
+     * ``POST /track/add``
+     * 
+     * Calling example:
+     * ::
+     *   let newTrack = {
+     *       "autocomplete": "all",
+     *       "track": "EST",
+     *       "style": {
+     *           "className": "est"
+     *       },
+     *       "key": "HTMLFeatures - ESTs",
+     *       "feature": [
+     *           "EST_match:est"
+     *       ],
+     *       "storeClass": "JBrowse/Store/SeqFeature/NCList",
+     *       "urlTemplate": "tracks/EST/{refseq}/trackData.json",
+     *       "compress": 0,
+     *       "label": "EST",
+     *       "type": "FeatureTrack",
+     *       "category": "Miscellaneous"
+     *   };
+     *   $.post( "/track/add", newTrack, function( data ) {
+     *     console.log( "result", data );
+     *   }, "json");
+     *   
      * @param {object} req - request
      * @param {object} res - response
      * 
@@ -64,6 +89,31 @@ module.exports = {
     /**
      * modify an existing track
      * 
+     * POST ``/track/modify``
+     * 
+     * Calling example:
+     * ::
+     *   let modifyTrack = {
+     *       "autocomplete": "all",
+     *       "track": "EST",
+     *       "style": {
+     *           "className": "est"
+     *       },
+     *       "key": "HTMLFeatures - ESTs",
+     *       "feature": [
+     *           "EST_match:est"
+     *       ],
+     *       "storeClass": "JBrowse/Store/SeqFeature/NCList",
+     *       "urlTemplate": "tracks/EST/{refseq}/trackData.json",
+     *       "compress": 0,
+     *       "label": "EST",
+     *       "type": "FeatureTrack",
+     *       "category": "Miscellaneous"
+     *   };
+     *   $.post( "/track/modify", modifyTrack, function( data ) {
+     *     console.log( "result", data );
+     *   }, "json");
+     *   
      * @param {object} req - request
      * @param {object} res - response
      * 
@@ -83,6 +133,14 @@ module.exports = {
     },
     /**
      * remove an existing track
+     * 
+     * ``POST /track/remove``
+     * 
+     * Calling example:
+     * ::
+     *   $.post( "/track/remove", { trackId: 23 }, function( data ) {
+     *     console.log( "result", data );
+     *   }, "json");
      * 
      * @param {object} req - request
      * @param {object} res - response
