@@ -186,7 +186,7 @@ module.exports = {
      * copy src to targ, but if targ exists, it will backup the target by appending a number
      * 
      * @param {string} src - source
-     * @param {string} targ - target
+     * @param {string} origTarg - target
      * @returns {string} final target filename
      *  
      */
