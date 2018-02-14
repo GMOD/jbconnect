@@ -72,7 +72,7 @@ function proc_setupindex() {
 // --config - list config
 function proc_Config() {
 
-    console.log('Merged jbrowse configs from config/globals.js & config.js:');
+    console.log('Merged jbrowse configs from config/globals.js:');
     console.log( mergedConfig );
 }
 

@@ -223,7 +223,7 @@ Description
 
 REST Interfaces for Dataset model
 
-Datasets are configure in ``config/globals.js`` or ``config.js`` file.
+Datasets are configure in ``config/globals.js`` file.
 
 See Dataset Model
 

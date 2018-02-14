@@ -22,11 +22,6 @@ for a better description of the configuration framework.
 +-------------------------------+----------------------------------------------------------+
 | :ref:`jbs-globals-js`         | global configuration file                                |
 +-------------------------------+----------------------------------------------------------+
-| config.js                     | In the JBServer, is aggregated with globals.js from this |
-|                               | project and other installed hook projects. It provides a |
-|                               | means to override the values in from any of the          |
-|                               | globals.js settings.                                     |
-+-------------------------------+----------------------------------------------------------+
 | http.js                       | Custom middleware and /jbrowse route is setup here.      |
 +-------------------------------+----------------------------------------------------------+
 | passport.js, policies.js      | passport framework and auth policies config              |
@@ -47,7 +42,7 @@ globals.js
 To view aggregate configuration: ``./jbutil --config``
 
 The aggregate config is the merged globals.js combined with the globals.js of
-server hook modules and config.js in the application root.
+server hook modules.
 
 The aggregate config file is the merged config of JBServer and its installed jbh- (hook)
 modules.

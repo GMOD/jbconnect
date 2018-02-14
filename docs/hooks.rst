@@ -66,14 +66,6 @@ These config options are merged with other jbh- hooks and the JBServer globals.j
 From JBServer, use ``./jbutil --config`` to see the aggregated config. 
 
 
-Configuration (config.js)
-=========================
-
-This config file resides in the root of the app and can override config/globals.js
-and any config/globals.js from hooks that may be installed.
-
-
-
 Library Routes (libroutes)
 ==========================
 
