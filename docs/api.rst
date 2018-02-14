@@ -1802,7 +1802,7 @@ Function: ``getMergedConfig``
 =============================
 
 Returned merged jbrowse config.  
-Merged from ``jbh-*`` ``config/globals.js``, local ``config/globals.js``, & ``config.js``
+Merged from ``jbh-*`` ``config/globals.js``, local ``config/globals.js``
 
 .. js:function:: getMergedConfig()
 
@@ -1858,11 +1858,11 @@ Function: ``safeCopy``
 
 copy src to targ, but if targ exists, it will backup the target by appending a number
 
-.. js:function:: safeCopy(src, targ)
+.. js:function:: safeCopy(src, origTarg)
 
     
     :param string src: source
-    :param string targ: target
+    :param string origTarg: target
     :return string: final target filename
     
 .. _module-services_jbutillib.safeWriteFile:
