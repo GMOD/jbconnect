@@ -40,7 +40,7 @@ module.exports = {
 
     /**
      * Returned merged jbrowse config.  
-     * Merged from ``jbh-*`` ``config/globals.js``, local ``config/globals.js``, & ``config.js``
+     * Merged from ``jbh-*`` ``config/globals.js``, local ``config/globals.js``
      */
     getMergedConfig: function() {
         var cwd = sh.pwd();
@@ -67,7 +67,8 @@ module.exports = {
         }
 
         //console.log('config',config);
-        merged = merge(config,merged);
+        //merged = merge(config,merged);
+        merged = merge(merged,config);
 
         return merged.jbrowse;
     },
