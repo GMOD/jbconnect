@@ -66,11 +66,16 @@ module.exports = {
             }
         }
 
-        //console.log('config',config);
-        //merged = merge(config,merged);
-        merged = merge(merged,config);
+        let aggregate = merge(merged,config);
+        
+        // make sure webIncludes for JBServer come before webIncludes of hooks
+        if (typeof merged.jbrowse.webIncludes !== 'undefined') { 
+            aggregate.jbrowse.webIncludes = config.jbrowse.webIncludes;
+            aggregate.jbrowse.webIncludes = merge(aggregate.jbrowse.webIncludes,merged.jbrowse.webIncludes);
+        }
+        
 
-        return merged.jbrowse;
+        return aggregate.jbrowse;
     },
 
     /**
