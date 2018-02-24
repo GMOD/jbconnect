@@ -61,9 +61,9 @@ module.exports = {
         /*
          * get values for --gpath, apikey and gurl; grab from saved globals if necessary
          */
-        this.gurl = config.galaxy.galaxyUrl;
-        this.gpath = config.galaxy.galaxyPath;
-        this.apikey = config.galaxy.galaxyAPIKey;
+        //this.gurl = config.galaxy.galaxyUrl;
+        //this.gpath = config.galaxy.galaxyPath;
+        //this.apikey = config.galaxy.galaxyAPIKey;
         return 1; // successful init
     }
     
