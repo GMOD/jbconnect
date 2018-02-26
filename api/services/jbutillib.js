@@ -42,7 +42,7 @@ module.exports = {
      * Returned merged jbrowse config.  
      * Merged from ``jbh-*`` ``config/globals.js``, local ``config/globals.js``
      */
-    getMergedConfig: function() {
+    getMergedConfig() {
         var cwd = sh.pwd();
 
         var merged = {};
@@ -68,16 +68,25 @@ module.exports = {
 
         let aggregate = merge(merged,config);
         
+        aggregate = this.mergeConfigJs(aggregate);
+        
         // make sure webIncludes for JBServer come before webIncludes of hooks
         if (typeof merged.jbrowse !== 'undefined' && typeof merged.jbrowse.webIncludes !== 'undefined') { 
             aggregate.jbrowse.webIncludes = config.jbrowse.webIncludes;
             aggregate.jbrowse.webIncludes = merge(aggregate.jbrowse.webIncludes,merged.jbrowse.webIncludes);
         }
         
-
         return aggregate.jbrowse;
     },
-
+    mergeConfigJs(config) {
+        // merge approot/config.js
+        let config_js = approot+"/config.js";
+        if (fs.existsSync(config_js)) {
+            let conf = require(config_js);
+            config = merge(config,conf);
+        }
+        return config;
+    },
     /**
      * Builds an index.html based on ``/bin/index_tesmplate.html``.  It will
      * inject web includes .js and .css references.  These are defined in the config file,

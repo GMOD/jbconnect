@@ -125,10 +125,9 @@ var g = {
 	// models: true
 };
 
-//g.libroutes = require("./libroutes");
-//var localconf = require("../config");
+let jbutil = require("../api/services/jbutillib");
+g = jbutil.mergeConfigJs(g);
 
-//g.jbrowse = merge(g.jbrowse,localconf.jbrowse);
 
 module.exports.globals = g;
 
