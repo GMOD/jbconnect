@@ -14,8 +14,9 @@
  */
 
 var merge = require('deepmerge');
-
-var jbPath = process.cwd() + "/node_modules/jbrowse/";
+var approot = require('app-root-path');
+var jbPath = approot + "/node_modules/jbrowse/";
+var util = require(approot+"/api/services/utilFn");
 
 var g = {
     
@@ -125,8 +126,7 @@ var g = {
 	// models: true
 };
 
-let jbutil = require("../api/services/jbutillib");
-g = jbutil.mergeConfigJs(g);
+g = util.mergeConfigJs(g);
 
 
 module.exports.globals = g;
