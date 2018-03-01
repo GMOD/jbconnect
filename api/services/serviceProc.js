@@ -71,6 +71,10 @@ module.exports = {
             // load services
             function _init() {
                 async.eachSeries(services, function(service,cb1) {
+                    
+                    if (typeof(service.disable)!=='undefined' && service.disable===true)
+                        return cb1();
+                    
                     var params = {
                         name:   service.name,
                         type:   service.type,
@@ -163,6 +167,7 @@ module.exports = {
             }
         }
         
+        // s is the copy we send to the Service db.
         var s = service;
         delete s.handler;
         
