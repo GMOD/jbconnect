@@ -85,8 +85,13 @@ module.exports = {
                         params.alias = service.alias;
                     
                     var s = params;
-                    params.handler = eval(service.name);
-
+                   
+                    try {
+                        params.handler = eval(service.name);
+                    } catch(err) {
+                        sails.log.warn('Service',service.name,'not found');
+                        return cb1();
+                    }
                     thisb.addService(params,cb1);
 
                 }, function completedAddingServices(err) {
