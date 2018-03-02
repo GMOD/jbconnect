@@ -211,7 +211,7 @@ the JBClient plugin is active. (see: :ref:`jbs-jbclient`)
 
 Integrated Job Panel:
 
-.. image:: img/job-panel.jpg
+.. image:: img/job-panel.png
 
 
 Test Framework
