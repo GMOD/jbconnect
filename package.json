@@ -44,7 +44,6 @@
     "grunt-sails-linker": "~0.10.1",
     "grunt-sync": "0.6.2",
     "include-all": "~0.1.6",
-    "jbrowse": "github:gmod/jbrowse",
     "jquery": "^3.2.1",
     "jquery-ui-dist": "^1.12.1",
     "jquery.mb.extruder": "^2.6.0",
