@@ -31,6 +31,8 @@ Install the JBServer and JBrowse.  jb_setup.js ensures the sample data is loaded
     git clone http://github.com/gmod/jbserver
     cd jbserver
     npm install
+    npm install @gmod/jbrowse
+    ./jb_setup.js
 
 Run
 ===
