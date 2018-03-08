@@ -47,7 +47,17 @@
         .box > .icon:hover > .info > h3.title, .box > .icon:hover > .info > p, .box > .icon:hover > .info > .more > a { color: #222; }
         .box > .icon > .info > .more a { font-family: "Roboto",sans-serif !important; font-size: 12px; color: #222; line-height: 12px; text-transform: uppercase; text-decoration: none; }
         .box > .icon:hover > .info > .more > a { color: #fff; padding: 6px 8px; background-color: #63B76C; }
-        .box .space { height: 30px; }        
+        .box .space { height: 30px; } 
+
+        div.jb-col {
+            width:100%;
+        }
+        div.jb-col > button.jb-btn {
+            display: inline-block;
+            margin-top: 0px;
+            width: 40%;
+        }
+        
     </style>
   </head>
   <body style="background-color:lightgray">
@@ -87,8 +97,9 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <button type="submit" value="Register" name="submit" class="btn btn-success btn-block">Register</button>
+                                    <div class="col-md-6 jb-col">
+                                        <button type="submit" value="Register" name="submit" class="btn btn-success btn-block jb-btn">Register</button>
+                                        <button type="button" name="login" onclick="location='/login'" class="btn btn-success btn-block jb-btn">Login</button>
                                     </div>
                                     <div class="col-md-6">
                                         <a href=""></a>
