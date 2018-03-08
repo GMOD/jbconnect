@@ -13,9 +13,9 @@ if (!fs.existsSync(configjs)) {
 }
 
 // run jbrowse jb_setup.js to setup sample data
-console.log("Installing JBrowse sample data...");
-var cmd = './jb_setup.js';
-shelljs.exec(cmd);
+//console.log("Installing JBrowse sample data...");
+//var cmd = './jb_setup.js';
+//shelljs.exec(cmd);
 
 
 
