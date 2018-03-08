@@ -121,6 +121,7 @@ passport.connect = function (req, query, profile, next) {
               else {
                 req.flash('error', 'Error.Passport.User.Exists');
               }
+              console.log(">>>> validate error",err);
             }
 
             return next(err);

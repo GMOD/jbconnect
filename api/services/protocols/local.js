@@ -54,9 +54,9 @@ exports.register = function (req, res, next) {
       sails.log("local.js, User.create error",err);
       if (err.code === 'E_VALIDATION') {
         if (err.invalidAttributes.email) {
-          req.flash('error', 'Error.Passport.Email.Exists');
+          req.flash('error', 'Error: email exists');
         } else {
-          req.flash('error', 'Error.Passport.User.Exists');
+          req.flash('error', 'Error: username exists');
         }
       }
 
@@ -73,9 +73,12 @@ exports.register = function (req, res, next) {
     , accessToken : token
     }, function (err, passport) {
       if (err) {
-        sails.log("local.js Passport.create error",err);
+        sails.log.error("local.js Passport.create error",err);
         if (err.code === 'E_VALIDATION') {
-          req.flash('error', 'Error.Passport.Password.Invalid');
+          //console.dir(err);
+          //req.flash('error', 'Error.Passport.Password.Invalid');
+          req.flash('error', 'Invalid password (min 8 characters)');
+          //req.flash('error',err.details);
         }
 
         return user.destroy(function (destroyErr) {
