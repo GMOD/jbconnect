@@ -24,7 +24,10 @@ var User = {
     attributes: {
       username  : { type: 'string', unique: true },
       email     : { type: 'email',  unique: true },
-      admin     : { type: 'boolean', defaultsTo: false},
+      // the admin flag is set upon create to the default value
+      // only admins can do certain write operations.
+      // use to change: ./jbutil --setadmin [username] [true|false]
+      admin     : { type: 'boolean', defaultsTo: true},
       passports : { collection: 'Passport', via: 'user' }
     },
     /**
