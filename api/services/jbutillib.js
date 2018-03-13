@@ -71,7 +71,7 @@ module.exports = {
         
         aggregate = util.mergeConfigJs(aggregate);
         
-        // make sure webIncludes for JBServer come before webIncludes of hooks
+        // make sure webIncludes for JBConnect come before webIncludes of hooks
         if (typeof merged.jbrowse !== 'undefined' && typeof merged.jbrowse.webIncludes !== 'undefined') { 
             aggregate.jbrowse.webIncludes = config.jbrowse.webIncludes;
             aggregate.jbrowse.webIncludes = merge(aggregate.jbrowse.webIncludes,merged.jbrowse.webIncludes);
@@ -112,7 +112,7 @@ module.exports = {
         }
         //console.log(str);
 
-        var lookFor = '<!-- JBServer Modules -->';
+        var lookFor = '<!-- JBConnect Modules -->';
         content = content.replace(lookFor,str);
 
         //console.log(content);
@@ -295,7 +295,7 @@ module.exports = {
         try {
             fs.ensureDirSync(dbTargDir);
             if (overwrite === 1) {
-                console.log("Setting up default JBServer database...");
+                console.log("Setting up default JBConnect database...");
                 sh.cp(dbSrc,dbTarg+this.dbName);
             }
             else {

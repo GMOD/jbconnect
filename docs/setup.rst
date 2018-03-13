@@ -44,7 +44,7 @@ To view aggregate configuration: ``./jbutil --config``
 The aggregate config is the merged globals.js combined with the globals.js of
 server hook modules.
 
-The aggregate config file is the merged config of JBServer and its installed jbh- (hook)
+The aggregate config file is the merged config of JBConnect and its installed jbh- (hook)
 modules.
 
 Edit config file: ``nano config/globals.js``
@@ -109,15 +109,15 @@ Edit config file: ``nano config/globals.js``
 
 .. _jbs-hook-install:
 
-Installing JBServer jbh-hooks
+Installing JBConnect jbh-hooks
 =============================
 
-A 'JBServer Hook' is basically an *installable sails hook* with specific methods for
-extending JBServer.  JBServer hooks must have the prefix ``jbh-`` prepended to the name.
-For example: jbh-jblast.  When the hook is installed (i.e. ``npm install jbh-jblast``).  JBServer
-will automatically integrate a number of features of the hook directly into JBServer upon ``sails lift``.
+A 'JBConnect Hook' is basically an *installable sails hook* with specific methods for
+extending JBConnect.  JBConnect hooks must have the prefix ``jbh-`` prepended to the name.
+For example: jbh-jblast.  When the hook is installed (i.e. ``npm install jbh-jblast``).  JBConnect
+will automatically integrate a number of features of the hook directly into JBConnect upon ``sails lift``.
 
-The jbh- hook can extend JBServer in the following ways:
+The jbh- hook can extend JBConnect in the following ways:
 
 * Extend models, controllers, policies and services
 * Integrated client-side JBrowse plugins injection
@@ -196,7 +196,7 @@ Job service config in ``config/globals.js``:
 Extending jbutil
 ================
 
-``jbutil`` is a command line utility that is used to configure JBServer in various
+``jbutil`` is a command line utility that is used to configure JBConnect in various
 ways. ``jbutil`` can be extended by a installable hook through ``bin/jbutil-ext.js``.
 
 ``jbutil-ext.js`` must imeplement these function:

@@ -5,10 +5,10 @@ var jblib = require('../api/services/jbutillib');
 module.exports = {
     getOptions: function() {
         return [
-            //['' , 'setupindex'       , '(JBServer) setup index.html and plugins']
-            ['' , 'dbreset'        , '(JBServer) reset the database to default'],
-            ['' , 'setpassword',   , '(JBServer) change password of user'],
-            ['' , 'setadmin',      , '(JBServer) set admin flag']
+            //['' , 'setupindex'       , '(JBConnect) setup index.html and plugins']
+            ['' , 'dbreset'        , '(JBConnect) reset the database to default'],
+            ['' , 'setpassword',   , '(JBConnect) change password of user'],
+            ['' , 'setadmin',      , '(JBConnect) set admin flag']
         ];        
     },
     getHelpText: function() {
@@ -39,7 +39,7 @@ module.exports = {
             process.stdin.resume();
             process.stdin.setEncoding('utf8');
             var util = require('util');
-            console.log('JBServer database will be reset to default.  Type "YES" to confirm.');
+            console.log('JBConnect database will be reset to default.  Type "YES" to confirm.');
 
             process.stdin.on('data', function (text) {
               if (text === 'YES\n') {

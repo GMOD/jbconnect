@@ -80,7 +80,7 @@ module.exports = {
      * @param {object} params - eg. ``{app: <app-object>,express: <express-object>}``
      * @param {string} module - the module name (ie. ``"jquery"``)
      * @param {string} route - the route (ie. ``"/jblib/jquery"``)
-     * @param {string} target - the target (ie ``"/var/www/html/3jbserver/node_modules/jquery"``)
+     * @param {string} target - the target (ie ``"/var/www/html/jbconnect/node_modules/jquery"``)
      */
     addRoute: function(params,module,route,target) {
         var app = params.app;
@@ -94,7 +94,7 @@ module.exports = {
      * @param {object} params - eg. ``{app: <app-object>,express: <express-object>}``
      * @param {string} module - the module name (ie. ``"jblast"``)
      * @param {string} route - the route (ie. ``"/jbrowse/plugins/JBlast"``)
-     * @param {string} target - the target (ie ``"/var/www/html/3jbserver/node_modules/jbh-jblast/plugins/JBlast"``)
+     * @param {string} target - the target (ie ``"/var/www/html/jbconnect/node_modules/jbh-jblast/plugins/JBlast"``)
      * 
      */
     addPluginRoute: function(params,module,route,target) {

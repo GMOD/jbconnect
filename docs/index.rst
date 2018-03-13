@@ -1,11 +1,11 @@
 ********
-JBServer
+JBConnect
 ********
 
 .. image:: img/jb-jbs-diagram.png
 
 
-**JBServer provides the following features:**
+**JBConnect provides the following features:**
 
 +------------------------------------------------------------------------------------+
 | `Sails JS <http://sailsjs.org>`_ - `NodeJS <http://nodejs.org>`_/Expressed-based   |

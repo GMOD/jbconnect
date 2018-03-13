@@ -4,7 +4,7 @@ Features
 
 .. _jbs-features:
 
-JBServer is a server/analysis framework for JBrowse and has the following features:
+JBConnect is a server/analysis framework for JBrowse and has the following features:
 
 +------------------------------------------------------------------------------------+
 | `Sails JS <http://sailsjs.org>`_ - `NodeJS <http://nodejs.org>`_/Expressed-based   |
@@ -60,7 +60,7 @@ Directory Layout
     ├── test                            Test
     ├── views                           View pages
     ├── Gruntfile.js                    Grunt config
-    ├── jbutil                          JBServer Utility
+    ├── jbutil                          JBConnect Utility
     └── package.json
 
 
@@ -260,4 +260,4 @@ Generate docs:
 ``npm run gendocs``
 
 This will generate ``docs/api.rst``.  This must be committed and pushed for it
-to appear in ``jbserver.readthedocs.io``.
+to appear in ``jbconnect.readthedocs.io``.

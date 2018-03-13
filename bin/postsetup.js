@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-console.log("jbserver setup");
+console.log("jbconnect setup");
 
 //var fs = require("fs");
 var g = require("../config/globals.js").globals;

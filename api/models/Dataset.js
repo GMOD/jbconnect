@@ -4,7 +4,7 @@
  * Dataset is a model that represents the JBrowse dataset.  Generally, this includes
  * path to the dataset and some of the data contained in trackList.json.
  * 
- * Datasets known to JBServer are defined in config/globals.js
+ * Datasets known to JBConnect are defined in config/globals.js
  * (see: :ref:`jbs-globals-config`)
  * 
  * Dataset object:

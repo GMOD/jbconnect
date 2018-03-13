@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/GMOD/jbserver.svg?branch=master)](https://travis-ci.org/GMOD/jbserver)
+[![Build Status](https://travis-ci.org/GMOD/jbconnect.svg?branch=master)](https://travis-ci.org/GMOD/jbconnect)
 
 # JBConnect
 

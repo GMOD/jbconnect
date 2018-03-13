@@ -1,7 +1,7 @@
 {
-  "name": "jbserver",
+  "name": "jbconnect",
   "version": "0.0.101",
-  "description": "JBrowse Server (preliminary)",
+  "description": "JBrowse Server Component (preliminary)",
   "keywords": [],
   "scripts": {
     "setup": "node ./bin/postsetup.js",
@@ -93,14 +93,14 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/GMOD/jbserver.git"
+    "url": "git://github.com/GMOD/jbconnect.git"
   },
   "author": "enuggetry",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GMOD/jbserver/issues"
+    "url": "https://github.com/GMOD/jbconnect/issues"
   },
-  "homepage": "https://github.com/GMOD/jbserver#readme",
+  "homepage": "https://github.com/GMOD/jbconnect#readme",
   "bin": {},
   "directories": {
     "doc": "docs",

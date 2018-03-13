@@ -13,7 +13,7 @@ It is generally named something
 A job service code reside in the ``api/services`` directory. 
 
 
-JBServer has a pre-packaged job service: jbs-job-search-service_
+JBConnect has a pre-packaged job service: jbs-job-search-service_
 
 
 Function Map Section

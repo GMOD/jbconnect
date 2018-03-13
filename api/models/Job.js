@@ -29,7 +29,7 @@
  *         },
  *         "name": "ttt search",
  *         "asset": "113_search_1513478281528",
- *         "path": "/var/www/html/4jbserver/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
+ *         "path": "/var/www/html/jbconnect/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
  *         "outfile": "113_search_1513478281528.gff",
  *         "track": {
  *           "maxFeatureScreenDensity": 16,
