@@ -6,12 +6,15 @@ module.exports = {
     getOptions: function() {
         return [
             //['' , 'setupindex'       , '(JBServer) setup index.html and plugins']
-            ['' , 'dbreset'     , '(JBServer) reset the database to default'],
-            ['' , 'password',   , '(JBServer) change password of user']
+            ['' , 'dbreset'        , '(JBServer) reset the database to default'],
+            ['' , 'setpassword',   , '(JBServer) change password of user'],
+            ['' , 'setadmin',      , '(JBServer) set admin flag']
         ];        
     },
     getHelpText: function() {
-        return "";
+        return "\n"+
+            "./jbutil --setpassword <username> <true|false>\n"+
+            "./jbutil --setadmin <username> <true|false\n";
         
     },
     process: function(opt,path,config) {
