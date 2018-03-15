@@ -55,7 +55,7 @@ return declare( JBrowsePlugin,
                 txt +=      '<button class="btn btn-secondary dropdown-toggle jb-dropdown jb-user-icon" type="button" id="dropdownMenuButton" data-toggle="dropdown" >';
                 txt +=      data.user.username;
                 txt +=      '</button>';
-                txt +=      '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
+                txt +=      '<ul class="dropdown-menu jb-logged-in-menu" aria-labelledby="dropdownMenuButton">';
                 //txt +=        '<li><a id="button-manage" class="dropdown-item jb-menuitem" href="#">Manage</a></li>';
                 txt +=        '<li><a id="button-logout" class="dropdown-item jb-menuitem" href="/logout?next=/jbrowse">Logout</a></li>';
                 txt +=      '</ul>';

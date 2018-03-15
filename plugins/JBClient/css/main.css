@@ -44,6 +44,12 @@ div.menuBar > span[widgetid*="dijit_form_Button_0"] {
     background-repeat: no-repeat;
     background-position: 2px;
 }
+
+ul.jb-logged-in-menu {
+    left: unset;
+    right: 0px;
+}
+
 .jb-menuitem {
     padding-left: 10px;
 }
