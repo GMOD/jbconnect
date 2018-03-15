@@ -151,13 +151,13 @@
     <script src="/jblib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
         var url = new URL(window.location.href);
-        var c = url.searchParams.get("close");
+        var c = url.searchParams.get("next");
         //console.log("close",c);
         if (c===null)
             $('.close').remove();
         else {
             $('button.close').attr('onclick',"location.href='"+c+"'");
-            $('button#register').attr('onclick',"location.href='/register?close="+c+"'");
+            $('button#register').attr('onclick',"location.href='/register?next="+c+"'");
         }
     </script>
   </body>
