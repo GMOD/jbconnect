@@ -202,13 +202,20 @@ var AuthController = {
 
       switch (action) {
         case 'register':
+          sails.log.info("*** Register failure ***");
           res.redirect('/register');
           break;
         case 'disconnect':
           res.redirect('back');
           break;
         default:
-          res.redirect('/login');
+          let params = req.allParams();
+          //console.log(params);
+          sails.log.info("*** Login failure ***");
+          let redirectTo = '/login';
+          if (params.next)
+              redirectTo += '?next='+params.next;
+          res.redirect(redirectTo);
       }
     }
 
