@@ -104,7 +104,7 @@ module.exports = {
      * @param (function) cb - callback function
      */
     Sync:function(cb) {
-        sails.log.debug('syncDatasets()');
+        //sails.log.debug('syncDatasets()');
         var g = sails.config.globals.jbrowse;
         var thisb = this;
 

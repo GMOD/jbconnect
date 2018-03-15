@@ -55,7 +55,7 @@ module.exports = {
      * 
      */
     init: function(params, cb2) {
-        sails.log.debug(">>> Service.init()");
+        //sails.log.debug(">>> Service.init()");
         var thisb = this;
         //var cb2 = cb;
         
