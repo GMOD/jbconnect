@@ -45,7 +45,7 @@ return declare( JBrowsePlugin,
                 txt +=       '<input class="form-control" type="password" name="password" placeholder="Password">';
                 txt +=     '</div>';
                 txt +=     '<button class="btn btn-secondary jb-form-button" type="submit">Login</button>';
-                txt +=     '<button class="btn btn-secondary jb-form-button" type="button" onclick="window.location=\'/register\'">Register</button>';
+                txt +=     '<button class="btn btn-secondary jb-form-button" type="button" onclick="window.location=\'/register?close='+window.location.href+'\'">Register</button>';
                 txt +=   '</form>';
                 txt += '</div></div>';
                 txt += '</div>';
@@ -56,7 +56,7 @@ return declare( JBrowsePlugin,
                 txt +=      data.user.username;
                 txt +=      '</button>';
                 txt +=      '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-                txt +=        '<li><a id="button-manage" class="dropdown-item jb-menuitem" href="#">Manage</a></li>';
+                //txt +=        '<li><a id="button-manage" class="dropdown-item jb-menuitem" href="#">Manage</a></li>';
                 txt +=        '<li><a id="button-logout" class="dropdown-item jb-menuitem" href="/logout?next=/jbrowse">Logout</a></li>';
                 txt +=      '</ul>';
                 txt +=    '</div>';

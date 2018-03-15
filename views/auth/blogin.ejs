@@ -64,6 +64,7 @@
     <div id="login-overlay" class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">JBrowse Login</h4>
             </div>
             <div class="modal-body">
@@ -93,7 +94,7 @@
                                 <div class="row">
                                     <div class="col-md-6 jb-col">
                                         <button type="submit" value="login" name="submit" class="btn btn-success btn-block jb-btn">Submit</button>
-                                        <button type="button" name="register" onclick="location='/register'" class="btn btn-success btn-block jb-btn">Register</button>
+                                        <button type="button" id="register" onclick="location='/register'" class="btn btn-success btn-block jb-btn">Register</button>
                                     </div>
                                     <div class="col-md-6">
                                         <a href=""></a>
@@ -149,27 +150,15 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/jblib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
-        setTimeout(function() {
-            _testEvents();    
-
-        },2000);
-
-        function _testEvents() {
-            console.log("_testEvents()");
-
-            // subscribe to all job objects including new
-            io.socket.get('/job', function(resData, jwres) {console.log(resData);});
-            io.socket.get('/jobactive', function(resData, jwres) {console.log(resData);});
-            
-            // trigger on events
-            io.socket.on('job', function(event){
-                console.log(event);
-            });    
-            io.socket.on('jobactive', function(event){
-                console.log(event);
-            });    
+        var url = new URL(window.location.href);
+        var c = url.searchParams.get("close");
+        //console.log("close",c);
+        if (c===null)
+            $('.close').remove();
+        else {
+            $('button.close').attr('onclick',"location.href='"+c+"'");
+            $('button#register').attr('onclick',"location.href='/register?close="+c+"'");
         }
-        
-    </script>        
+    </script>
   </body>
 </html>

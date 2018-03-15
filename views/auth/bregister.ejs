@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>JBrowse Login</title>
+    <title>JBrowse Register</title>
 
     <!-- Bootstrap -->
     <link href="/jblib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -65,6 +65,7 @@
     <div id="login-overlay" class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">JBrowse Register New User</h4>
             </div>
             <div class="modal-body">
@@ -99,7 +100,7 @@
                                 <div class="row">
                                     <div class="col-md-6 jb-col">
                                         <button type="submit" value="Register" name="submit" class="btn btn-success btn-block jb-btn">Register</button>
-                                        <button type="button" name="login" onclick="location='/login'" class="btn btn-success btn-block jb-btn">Login</button>
+                                        <button type="button" id="login" onclick="location='/login'" class="btn btn-success btn-block jb-btn">Login</button>
                                     </div>
                                     <div class="col-md-6">
                                         <a href=""></a>
@@ -155,5 +156,16 @@
     <script src="/jblib/jquery/dist/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/jblib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+        var url = new URL(window.location.href);
+        var c = url.searchParams.get("close");
+        //console.log("close",c);
+        if (c===null)
+            $('.close').remove();
+        else {
+            $('button.close').attr('onclick',"location.href='"+c+"'");
+            $('button#login').attr('onclick',"location.href='/login?close="+c+"'");
+        }
+    </script>
   </body>
 </html>
