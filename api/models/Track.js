@@ -273,7 +273,7 @@ module.exports = {
 
         Track.find({path:ds})
             .then(function(modelTracks) {
-                sails.log.debug("syncTracks modelTracks",modelTracks.length);
+                //sails.log.debug("syncTracks modelTracks",modelTracks.length);
 
                 for(var i in modelTracks)
                   mTracks[modelTracks[i].lkey] = modelTracks[i];
@@ -286,7 +286,7 @@ module.exports = {
             .then(function(trackListData) {
                 var fileTracks = JSON.parse(trackListData).tracks;
 
-                sails.log.debug('syncTracks fileTracks',fileTracks.length);
+                //sails.log.debug('syncTracks fileTracks',fileTracks.length);
 
                 for(var i in fileTracks)
                   fTracks[fileTracks[i].label] = fileTracks[i];
@@ -311,7 +311,9 @@ module.exports = {
               Track.destroy({id: toDel})
                 .then(function(deleted){
                   sails.log.debug("syncTracks tracks deleted:",deleted.length);
-                  Track.publishDestroy(toDel);
+                  toDel.forEach(function(id) {
+                      Track.publishDestroy(id);
+                  });
                 })
                 .catch(function(err) {
                     sails.log.error("syncTracks tracks delete failed:",toDel);
