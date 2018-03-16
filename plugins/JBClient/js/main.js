@@ -31,7 +31,7 @@ return declare( JBrowsePlugin,
         
         // login panel (bootstrap.js)
         $.get("/loginstate",function(data) {
-            console.log("loginstate",data);
+            //console.log("loginstate",data);
             browser.loginState = data.loginstate;
             var txt = "";
             if (data.loginstate !== true) {
@@ -98,7 +98,7 @@ return declare( JBrowsePlugin,
         
         
         function startQueue() {
-            console.log("jbclient_ready");
+            //console.log("jbclient_ready");
 
             // new track event handlers
             io.socket.on('track', function(event){
@@ -131,7 +131,7 @@ return declare( JBrowsePlugin,
     },
     setupJobPanel: function() {
         //$.get("plugins/JBClient/JobPanel.html", function(data){
-            console.log("Loading Job Panel");
+            //console.log("Loading Job Panel");
             
             var data = "";
             data += '<div id="extruderRight" class="{title:\'Jobs \', url:\'plugins/JBClient/JobPanel.html\'}"></div>';
@@ -157,12 +157,12 @@ return declare( JBrowsePlugin,
         
         // trap track events
         io.socket.get('/track', function(resData, jwres) {
-            console.log("registered for track events");
-            console.log(resData);
+            //console.log("registered for track events");
+            //console.log(resData);
         });
 
         io.socket.on('track', function(event){
-            console.log('event track',event);
+            //console.log('event track',event);
         });    
     },
     Browser_override_makeCurrentViewURL(x) {
