@@ -50,7 +50,7 @@ function doGetQueue() {
     
     getJobs(function(data){
         jdata = JSON.parse(data);
-        console.log("jobs ",jdata.length,jdata);
+        //console.log("jobs ",jdata.length,jdata);
 
         jdata.sort(function(a,b) {
             if (a.id > b.id) return -1;
@@ -60,7 +60,7 @@ function doGetQueue() {
 
         for (var x in jdata) {
             // filter out non galaxy-job type
-            //if (jdata[x].type === typeToWatch) {
+            if (typeof jdata[x] === 'object' && jdata[x].data) {  // not sure why this check is needed...but it fixes the problem.
                 
                 $("#j-hist-grid table").append(
                     "<tr id='"+jdata[x].id+"'>"
@@ -70,7 +70,7 @@ function doGetQueue() {
                     //+"<td>"+jdata[x].progress+"</td>"
                     +"<td>"+jdata[x].data.name+"</td>"
                     +"</tr>");
-            //}
+            }
         }
 
     });
