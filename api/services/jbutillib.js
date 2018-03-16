@@ -16,7 +16,7 @@ var util = require('./utilFn');
 module.exports = {
     dbName: 'localDiskDb.db',
     /**
-     * Traverse ``jbutils-ext.js`` of submodules (jbh-*)
+     * Traverse ``jbutils-ext.js`` of submodules (jbconnect-hook-*)
      * 
      * @param {function} cb - callback
      * 
@@ -24,7 +24,7 @@ module.exports = {
     doExtScripts: function(cb) {
         var cwd = sh.pwd();
 
-        var extScripts = glob.sync(approot+'/node_modules/jbh-*');
+        var extScripts = glob.sync(approot+'/node_modules/jbconnect-hook-*');
         extScripts.push(approot);
         //console.log("extScripts",extScripts)
         for(var i in extScripts) {
@@ -41,14 +41,14 @@ module.exports = {
 
     /**
      * Returned merged jbrowse config.  
-     * Merged from ``jbh-*`` ``config/globals.js``, local ``config/globals.js``
+     * Merged from ``jbconnect-hook-*`` ``config/globals.js``, local ``config/globals.js``
      */
     getMergedConfig() {
         var cwd = sh.pwd();
 
         var merged = {};
 
-        var scripts = glob.sync(approot+'/node_modules/jbh-*');
+        var scripts = glob.sync(approot+'/node_modules/jbconnect-hook-*');
         //console.log('scripts',scripts);
 
         for(var i in scripts) {

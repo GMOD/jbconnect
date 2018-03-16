@@ -17,7 +17,7 @@ var options = [
     //['','testsetupindex','testsetupinex']
 ];
 
-// add jbh-* hook options
+// add jbconnect-hook-* hook options
 jblib.doExtScripts(function(ext,path) {
     //console.log('ext options',ext.getOptions(),path);
     options = options.concat(ext.getOptions());

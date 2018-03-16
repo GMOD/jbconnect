@@ -38,7 +38,7 @@ module.exports = {
         }
 
         // setup sub-module plugins
-        var submodules = glob.sync('node_modules/jbh-*');
+        var submodules = glob.sync('node_modules/jbconnect-hook-*');
         for(var j in submodules) {
             var tmp = submodules[j].split('/');                
             var moduleName = tmp[tmp.length-1];
@@ -94,7 +94,7 @@ module.exports = {
      * @param {object} params - eg. ``{app: <app-object>,express: <express-object>}``
      * @param {string} module - the module name (ie. ``"jblast"``)
      * @param {string} route - the route (ie. ``"/jbrowse/plugins/JBlast"``)
-     * @param {string} target - the target (ie ``"/var/www/html/jbconnect/node_modules/jbh-jblast/plugins/JBlast"``)
+     * @param {string} target - the target (ie ``"/var/www/html/jbconnect/node_modules/jbconnect-hook-jblast/plugins/JBlast"``)
      * 
      */
     addPluginRoute: function(params,module,route,target) {

@@ -10,7 +10,7 @@
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.globals.html
  * 
- * Note: globals defined in jbconnect take precedent over jbh-* module globals.js definitions. 
+ * Note: globals defined in jbconnect take precedent over jbconnect-hook-* module globals.js definitions. 
  */
 
 var merge = require('deepmerge');
