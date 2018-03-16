@@ -115,11 +115,6 @@ return declare( JBrowsePlugin,
                 }
             });    
 
-            // queue events
-            setTimeout(function() {
-                initQueue();
-            },1000);
-            
             // event handlers for server events
             function newTrackHandler(eventType,data) {
 
