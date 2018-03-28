@@ -43,48 +43,18 @@ var g = {
         },
         
         /*
-         * Virtual Routes
-         * These routes reference node_modules that are used by the client and
-         * accessed by virtual route.
-         */
-        /*
-        libRoutes: {
-            // name         node_modules dir            virtual route
-            'jquery':       {module: 'jquery',          vroute:'/jblib/jquery'},
-            'bootstrap':    {module: 'bootstrap',       vroute:'/jblib/bootstrap'},
-            'jqueryui':     {module: 'jquery-ui-dist',  vroute:'/jblib/jquery-ui'},
-            'mbextruder':   {module: 'jquery.mb.extruder', vroute:'/jblib/mb.extruder'}
-        },
-        */
-        /*
          * Web Includes
-         * These includes are injected into JBrowse ``index.html`` upon ``sails lift``.
+         * These includes are injected into JBrowse upon sails lift (see tasks/pipeline.js).
          */
-        /*
-        webIncludes: {
-            "css-bootstrap":         {lib: "/jblib/bootstrap/dist/css/bootstrap.min.css"},
-            "css-mbextruder":        {lib: "/jblib/mb.extruder/css/mbExtruder.css"},
-            "css-jqueryui":          {lib: "/jblib/jquery-ui/jquery-ui.min.css"},
-            "css-jqueryuistructure": {lib: "/jblib/jquery-ui/jquery-ui.structure.min.css"},
-            "css-jqueryuitheme":     {lib: "/jblib/jquery-ui/jquery-ui.theme.min.css"},
-            "js-sailsio":            {lib: "/js/dependencies/sails.io.js"},
-            "js-jquery":             {lib: "/jblib/jquery/dist/jquery.min.js" },
-            "js-jqueryui":           {lib: "/jblib/jquery-ui/jquery-ui.min.js" },
-            "js-bootstrap":          {lib: "/jblib/bootstrap/dist/js/bootstrap.min.js"},
-            "js-mbextruderHover":    {lib: "/jblib/mb.extruder/inc/jquery.hoverIntent.min.js"},
-            "js-mbextruderFlip":     {lib: "/jblib/mb.extruder/inc/jquery.mb.flipText.js"},
-            "js-mbextruder":         {lib: "/jblib/mb.extruder/inc/mbExtruder.js"}
-        },
-        */
         webIncludes: {
             "css-bootstrap":         {lib: "/jblib/bootstrap.min.css"},
             "css-mbextruder":        {lib: "/jblib/mbExtruder.css"},
             "css-jqueryui":          {lib: "/jblib/jquery-ui.min.css"},
             "css-jqueryuistructure": {lib: "/jblib/jquery-ui.structure.min.css"},
             "css-jqueryuitheme":     {lib: "/jblib/jquery-ui.theme.min.css"},
-            //"js-sailsio":            {lib: "/js/dependencies/sails.io.js"},
+//            "js-sailsio":            {lib: "/js/dependencies/sails.io.js"},
             "js-jquery":             {lib: "/jblib/jquery.min.js" },
-            "js-jqueryui":           {lib: "/jblib/jquery-ui/jquery-ui.min.js" },
+            "js-jqueryui":           {lib: "/jblib/jquery-ui.min.js" },
             "js-bootstrap":          {lib: "/jblib/bootstrap.min.js"},
             "js-mbextruderHover":    {lib: "/jblib/jquery.hoverIntent.min.js"},
             "js-mbextruderFlip":     {lib: "/jblib/jquery.mb.flipText.js"},
