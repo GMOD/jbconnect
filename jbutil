@@ -63,12 +63,13 @@ jblib.doExtScripts(function(ext,path) {
 //console.log("opt",opt);
 if (typeof opt.options['config'] !== 'undefined') proc_Config();  
 
-if (typeof opt.options['testsetupindex'] !== 'undefined') proc_setupindex();  
+//if (typeof opt.options['testsetupindex'] !== 'undefined') proc_setupindex();  
 
+/*
 function proc_setupindex() {
     buildHtml();
 }
-
+*/
 // --config - list config
 function proc_Config() {
 

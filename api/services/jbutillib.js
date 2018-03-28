@@ -80,6 +80,20 @@ module.exports = {
         return aggregate.jbrowse;
     },
     /**
+     * @returns {Array} the aggregated client dependencies from webIncludes.
+     */
+    getClientDependencies(filter) {
+        let config = this.getMergedConfig();
+
+        let deps = [];
+        let wIncludes = config.webIncludes;
+        for(let i in wIncludes) {
+            if (wIncludes[i].lib.toLowerCase().indexOf(filter) >=0)
+                deps.push(wIncludes[i].lib);
+        }
+        return deps;        
+    },
+    /**
      * Builds an index.html based on ``/bin/index_tesmplate.html``.  It will
      * inject web includes .js and .css references.  These are defined in the config file,
      * jbrowse.webIncludes section.
@@ -87,6 +101,7 @@ module.exports = {
      * @returns {string} content of the html file.
      * 
      */
+    /*
     buildHtml: function() {
         var conf = this.getMergedConfig();
         var indexFile = approot+'/bin/index_template.html';
@@ -119,12 +134,14 @@ module.exports = {
 
         return content;
     },
+    */
     /**
      * Writes the index.html file. A backup of the original index.html will be made.
      * 
      * @param {object} config 
      * @returns {undefined}
      */
+    /*
     exec_setupindex: function(config) {
         var g = config;
         //console.log("config",g);
@@ -142,6 +159,8 @@ module.exports = {
         //else
         //    console.log('index.html content unchanged.');
     },
+    */
+    
     /**
      * add plugins to ``trackList.json``.
      * 

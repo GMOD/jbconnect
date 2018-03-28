@@ -44,7 +44,7 @@ module.exports.http = {
         //app.use('/docs2',express.static('./docs/docs/build/html'));
         
         jbRouteUtil.addPluginRoutes({app:app,express:express});
-        jbRouteUtil.addLibRoutes({app:app,express:express});
+        //jbRouteUtil.addLibRoutes({app:app,express:express});
 
         // setup kue and kue-ui
 
