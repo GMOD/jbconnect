@@ -80,6 +80,7 @@ module.exports = {
         return aggregate.jbrowse;
     },
     /**
+     * @param {string} filter - (ie. ".css" or ".js")
      * @returns {Array} the aggregated client dependencies from webIncludes.
      */
     getClientDependencies(filter) {
@@ -331,7 +332,84 @@ module.exports = {
             console.log("Failed setting up default database",dbTarg, err);
         }
         
+    },
+    injectPlugins(params){
+        // inject plugin routes
+        var g = sails.config.globals.jbrowse;
+
+        var sh = require('shelljs');
+        var cwd = sh.pwd();
+        let pluginDir = g.jbrowsePath+'plugins';
+
+        // check if jbrowse dir exists
+        if (!fs.existsSync(g.jbrowsePath)) {
+            console.log("JBrowse directory does not exist:",g.jbrowsePath);
+            process.exit(1);
+        }
+
+        // setup local plugins
+        var items = fs.readdirSync('plugins');
+        for(var i in items) {
+
+            //var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
+            let target = pluginDir+'/'+items[i];
+            let src = cwd+'/plugins/'+items[i];
+
+            _symlink(src,target);
+        }
+
+        // setup sub-module plugins
+        var submodules = glob.sync('node_modules/jbconnect-hook-*');
+        for(var j in submodules) {
+            var tmp = submodules[j].split('/');                
+            var moduleName = tmp[tmp.length-1];
+
+            var items = fs.readdirSync(cwd+'/'+submodules[j]+'/plugins');
+            for(var i in items) {
+                //var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
+                let target = pluginDir+'/'+items[i];
+                let src = cwd+'/'+submodules[j]+'/plugins/'+items[i];
+                
+                _symlink(src,target);
+            }
+        }
+        
+        function _symlink(src,target) {
+            console.log("plugin inject",src,target);
+            if (!fs.existsSync(src))
+                fs.symlinkSync(src,target,'dir');
+        }
+    },    
+    /**
+     * Add a route
+     * 
+     * @param {object} params - eg. ``{app: <app-object>,express: <express-object>}``
+     * @param {string} module - the module name (ie. ``"jquery"``)
+     * @param {string} route - the route (ie. ``"/jblib/jquery"``)
+     * @param {string} target - the target (ie ``"/var/www/html/jbconnect/node_modules/jquery"``)
+     */
+    addRoute: function(params,module,route,target) {
+        var app = params.app;
+        var express = params.express;
+        sails.log.info("adding libroute (%s) %s %s",module,route,target);
+        app.use(route, express.static(target));
+    },
+    /**
+     * Add a plugin route
+     * 
+     * @param {object} params - eg. ``{app: <app-object>,express: <express-object>}``
+     * @param {string} module - the module name (ie. ``"jblast"``)
+     * @param {string} route - the route (ie. ``"/jbrowse/plugins/JBlast"``)
+     * @param {string} target - the target (ie ``"/var/www/html/jbconnect/node_modules/jbconnect-hook-jblast/plugins/JBlast"``)
+     * 
+     */
+    addPluginRoute: function(params,module,route,target) {
+        var app = params.app;
+        var express = params.express;
+        sails.log.info("adding plugin route (%s) %s %s",module,route,target);
+        app.use(route, express.static(target));
     }
+    
     
 };
 

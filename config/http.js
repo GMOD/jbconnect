@@ -11,7 +11,7 @@
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.http.html
  */
 var fs = require('fs');
-var jbRouteUtil = require('../api/services/jbRouteUtil');
+var jblib = require('../api/services/jbutillib');
 var appRoot = require('app-root-path');
 
 module.exports.http = {
@@ -43,7 +43,7 @@ module.exports.http = {
         //app.use('/docs',express.static('./docs/html'));
         //app.use('/docs2',express.static('./docs/docs/build/html'));
         
-        jbRouteUtil.addPluginRoutes({app:app,express:express});
+        //jbRouteUtil.addPluginRoutes({app:app,express:express});
         //jbRouteUtil.addLibRoutes({app:app,express:express});
 
         // setup kue and kue-ui
