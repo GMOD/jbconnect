@@ -53,14 +53,13 @@ var templateFilesToInject = [
 ];
 
 
+// inject jbconnect plugin dependencies
 let jb_css = jblib.getClientDependencies('.css');
 cssFilesToInject.splice.apply(cssFilesToInject, [0, 0].concat(jb_css));
 
 let jb_js = jblib.getClientDependencies('.js');
-jsFilesToInject.splice.apply(jsFilesToInject, [0, 0].concat(jb_js));
+jsFilesToInject.splice.apply(jsFilesToInject, [1, 0].concat(jb_js));
 
-console.log("css list",cssFilesToInject);
-console.log("js list",jsFilesToInject);
 
 // Default path for public folder (see documentation for more information)
 var tmpPath = '.tmp/public/';
