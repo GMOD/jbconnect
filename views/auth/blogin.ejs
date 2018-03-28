@@ -11,7 +11,7 @@
     <title>JBrowse Login</title>
 
     <!-- Bootstrap -->
-    <link href="/jblib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--link href="/jblib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"-->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -145,20 +145,23 @@
     </div>
 
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="/jblib/jquery/dist/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/jblib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
-        var url = new URL(window.location.href);
-        var c = url.searchParams.get("next");
-        //console.log("close",c);
-        if (c===null)
-            $('.close').remove();
-        else {
-            $('button.close').attr('onclick',"location.href='"+c+"'");
-            $('button#register').attr('onclick',"location.href='/register?next="+c+"'");
+        window.onload = function() {
+            if (window.jQuery) {  
+                var url = new URL(window.location.href);
+                var c = url.searchParams.get("next");
+                if (c===null)
+                    $('.close').remove();
+                else {
+                    $('button.close').attr('onclick',"location.href='"+c+"'");
+                    $('button#register').attr('onclick',"location.href='/register?next="+c+"'");
+                }
+            } else {
+                alert("jQuery not loaded");
+            }
         }
+        /*
+        */
     </script>
   </body>
 </html>
