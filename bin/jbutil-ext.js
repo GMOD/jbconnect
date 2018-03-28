@@ -27,13 +27,13 @@ module.exports = {
             console.log("jbutil failed to initialize");
             return;
         }
-        
+        /*
         var tool = opt.options['setupindex'];
         if (typeof tool !== 'undefined') {
             jblib.exec_setupindex(this.config);
             jblib.exec_setupPlugins(this.config);
         }
-        
+        */
         var tool = opt.options['dbreset'];
         if (typeof tool !== 'undefined') {
             process.stdin.resume();

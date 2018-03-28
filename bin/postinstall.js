@@ -17,5 +17,18 @@ if (!fs.existsSync(configjs)) {
 //var cmd = './jb_setup.js';
 //shelljs.exec(cmd);
 
+// copy plugin dependencies to assets/jblib
+console.log("Copying plugin dependencies to assets/jblib...");
+let targDir = approot+'/assets/jblib';
+fs.ensureDirSync(targDir);
 
-
+// jquery
+fs.copySync(approot+'/node_modules/jquery/dist/jquery.min.js',targDir+'/jquery.min.js',{overwrite:true});
+// bootstrap
+fs.copySync(approot+'/node_modules/bootstrap/dist/css',targDir,{overwrite:true});
+fs.copySync(approot+'/node_modules/bootstrap/dist/js',targDir,{overwrite:true});
+// jquery-ui
+fs.copySync(approot+'/node_modules/jquery-ui-dist',targDir,{overwrite:true});
+// mb.extruder
+fs.copySync(approot+'/node_modules/jquery.mb.extruder/css',targDir,{overwrite:true});
+fs.copySync(approot+'/node_modules/jquery.mb.extruder/inc',targDir,{overwrite:true});
