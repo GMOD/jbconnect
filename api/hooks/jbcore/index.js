@@ -66,7 +66,7 @@ module.exports = function (sails) {
                 // Inject css/js into the active JBrowse index.html
                 var config = sails.config.globals.jbrowse;
                 //console.log("config",config);
-                jbutillib.exec_setupindex(config);
+                //jbutillib.exec_setupindex(config);
                 jbutillib.exec_setupPlugins(config);                
                 return cb();
                 

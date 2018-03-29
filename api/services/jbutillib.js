@@ -4,14 +4,17 @@
  * Support library for jbutil command
  *  
  */
-var fs = require('fs-extra');
-var path = require('path');
-var approot = require('app-root-path'); 
-var glob = require('glob');
-var sh = require('shelljs');
-var merge = require('deepmerge');
-var config = require(approot+'/config/globals.js').globals;
-var util = require('./utilFn');
+const fs = require('fs-extra');
+const path = require('path');
+const approot = require('app-root-path'); 
+const glob = require('glob');
+const sh = require('shelljs');
+const merge = require('deepmerge');
+const config = require(approot+'/config/globals.js').globals;
+const util = require('./utilFn');
+const html2json = require('html2json').html2json;
+const json2html = require('html2json').json2html;
+const _ = require('lodash');
 
 module.exports = {
     dbName: 'localDiskDb.db',
@@ -95,6 +98,119 @@ module.exports = {
         return deps;        
     },
     /**
+     * 
+     */
+    injectIncludesIntoHtml() {
+        let config = this.getMergedConfig();
+        let index = config.jbrowsePath+'index.html';
+        let webIncludes = config.webIncludes;
+        let insertThis = [];
+        let indexModified = false;
+        
+        // count webInclues
+        let count = 0;
+        for(let i in webIncludes) count++;
+        
+        if (count) {
+            let sectionStart = {
+                    "node": "comment",
+                    "text": " JBConnect injector "
+            };
+            let sectionEnd = {
+                    "node": "comment",
+                "text": " JBConnect injector END "
+            };
+            let newLine = {
+                    "node": "text",
+                    "text": "\n"
+            };
+            let blankLine = {
+                    "node": "text",
+                    "text": "\n\n"
+            };
+            let jsTemplate = {
+                    "node": "element",
+                    "tag": "script",
+                    "attr": {
+                            "src": "/jblib/mbExtruder.js"
+                    },
+                    "child": [
+                            {
+                                    "node": "text",
+                                    "text": ""
+                            }
+                    ]
+            };
+            let cssTemplate = {
+                    "node": "element",
+                    "tag": "link",
+                    "attr": {
+                            "rel": "stylesheet",
+                            "href": "/jblib/jquery.min.css"
+                    }
+            };
+            
+            // build injection list (insertThis)
+            insertThis = [blankLine,sectionStart,newLine];
+
+            for(let i in webIncludes) {
+                    if (webIncludes[i].lib.indexOf('.js') !== -1) {
+                            let newItem = _.cloneDeep(jsTemplate);
+                            newItem.attr.src = webIncludes[i].lib;
+                            insertThis.push(newItem);
+                            insertThis.push(newLine);
+                    }
+                    if (webIncludes[i].lib.indexOf('.css') !== -1) {
+                            let newItem = _.cloneDeep(cssTemplate);
+                            newItem.attr.src = webIncludes[i].lib;
+                            insertThis.push(newItem);
+                            insertThis.push(newLine);
+                    }
+            }
+            insertThis.push(sectionEnd);
+        }
+        
+        // read the index file
+        let content  = fs.readFileSync(index,'utf-8');
+        let json = html2json(content);
+
+        let n = json.child[0].child;
+        head = _.findIndex(n, function(o) { return o.tag === 'head'; });    // index of <head>
+        n = n[head].child;
+        title = _.findIndex(n, function(o) { return o.tag === 'title'; });  // index of <title>
+
+        // n is now the array of <head> section
+
+        // remove existing JBConnector section (if any)
+        let bStart = _.findIndex(n, function(o) { return o.text === ' JBConnect injector '; });
+        if (bStart > -1) {
+                let bEnd = _.findIndex(n, function(o) { return o.text === ' JBConnect injector END '; });
+
+                n.splice(bStart,bEnd-bStart+2);
+                //console.log("head elements",n);
+                
+                indexModified = true;
+        }
+
+        if (count) {
+            // insert new JBConnector section below <title>
+            n.splice.apply(n, [title+1, 0].concat(insertThis));
+            indexModified = true;
+        }    
+
+        if (indexModified) {
+            // reconstitute new <head> section
+            json.child[0].child[head].child = n;
+
+            let newContent = "<!DOCTYPE html>\n"+json2html(json);
+            //console.log(newContent);
+            
+            // write file
+            fs.writeFileSync(index,newContent);
+        }
+
+    },
+    /**
      * Builds an index.html based on ``/bin/index_tesmplate.html``.  It will
      * inject web includes .js and .css references.  These are defined in the config file,
      * jbrowse.webIncludes section.
@@ -102,7 +218,7 @@ module.exports = {
      * @returns {string} content of the html file.
      * 
      */
-    /*
+/*    
     buildHtml: function() {
         var conf = this.getMergedConfig();
         var indexFile = approot+'/bin/index_template.html';
@@ -135,7 +251,7 @@ module.exports = {
 
         return content;
     },
-    */
+*/    
     /**
      * Writes the index.html file. A backup of the original index.html will be made.
      * 
@@ -335,7 +451,7 @@ module.exports = {
     },
     injectPlugins(params){
         // inject plugin routes
-        var g = sails.config.globals.jbrowse;
+        var g = this.getMergedConfig();
 
         var sh = require('shelljs');
         var cwd = sh.pwd();
@@ -375,7 +491,7 @@ module.exports = {
         }
         
         function _symlink(src,target) {
-            console.log("plugin inject",src,target);
+            console.log("plugin inject",target);
             if (!fs.existsSync(src))
                 fs.symlinkSync(src,target,'dir');
         }
@@ -391,7 +507,7 @@ module.exports = {
     addRoute: function(params,module,route,target) {
         var app = params.app;
         var express = params.express;
-        sails.log.info("adding libroute (%s) %s %s",module,route,target);
+        console.log("adding libroute (%s) %s %s",module,route,target);
         app.use(route, express.static(target));
     },
     /**
@@ -406,7 +522,7 @@ module.exports = {
     addPluginRoute: function(params,module,route,target) {
         var app = params.app;
         var express = params.express;
-        sails.log.info("adding plugin route (%s) %s %s",module,route,target);
+        console.log.info("adding plugin route (%s) %s %s",module,route,target);
         app.use(route, express.static(target));
     }
     

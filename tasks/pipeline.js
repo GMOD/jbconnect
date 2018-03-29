@@ -28,7 +28,7 @@ var cssFilesToInject = [
 var jsFilesToInject = [
 
   // Load sails.io before everything else
-  'js/dependencies/sails.io.js',
+  //'js/dependencies/sails.io.js',
 
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',
@@ -58,8 +58,16 @@ let jb_css = jblib.getClientDependencies('.css');
 cssFilesToInject.splice.apply(cssFilesToInject, [0, 0].concat(jb_css));
 
 let jb_js = jblib.getClientDependencies('.js');
-jsFilesToInject.splice.apply(jsFilesToInject, [1, 0].concat(jb_js));
+jsFilesToInject.splice.apply(jsFilesToInject, [0, 0].concat(jb_js));
 
+/* debug
+let fs = require('fs-extra');
+let out = {
+    cssFilesToInject: cssFilesToInject,
+    jsFilesToInject: jsFilesToInject
+};
+fs.writeFileSync('pipeline.out',JSON.stringify(out,null,4));
+*/
 
 // Default path for public folder (see documentation for more information)
 var tmpPath = '.tmp/public/';
@@ -77,5 +85,9 @@ module.exports.templateFilesToInject = templateFilesToInject.map(function(tplPat
   return require('path').join('assets/',tplPath);
 });
 
-// inject client-side plugins
+console.log('inject client-side plugins');
 jblib.injectPlugins();
+
+console.log("Injecting dependencies to JBrowse index.html");
+jblib.injectIncludesIntoHtml();
+
