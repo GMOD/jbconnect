@@ -48,17 +48,17 @@ var g = {
          */
         webIncludes: {
             "css-bootstrap":         {lib: "/jblib/bootstrap.min.css"},
-            "css-mbextruder":        {lib: "/jblib/mbExtruder.css"},
+            "css-mbextruder":        {lib: "/jblib/mb.extruder/mbExtruder.css"},
             "css-jqueryui":          {lib: "/jblib/jquery-ui.min.css"},
             "css-jqueryuistructure": {lib: "/jblib/jquery-ui.structure.min.css"},
             "css-jqueryuitheme":     {lib: "/jblib/jquery-ui.theme.min.css"},
-//            "js-sailsio":            {lib: "/js/dependencies/sails.io.js"},
+            "js-sailsio":            {lib: "/js/dependencies/sails.io.js"},
             "js-jquery":             {lib: "/jblib/jquery.min.js" },
             "js-jqueryui":           {lib: "/jblib/jquery-ui.min.js" },
             "js-bootstrap":          {lib: "/jblib/bootstrap.min.js"},
             "js-mbextruderHover":    {lib: "/jblib/jquery.hoverIntent.min.js"},
             "js-mbextruderFlip":     {lib: "/jblib/jquery.mb.flipText.js"},
-            "js-mbextruder":         {lib: "/jblib/mbExtruder.js"}
+            "js-mbextruder":         {lib: "/jblib/mb.extruder/mbExtruder.js"}
         }
     }
 
