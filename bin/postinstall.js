@@ -30,5 +30,6 @@ fs.copySync(approot+'/node_modules/bootstrap/dist/js',targDir,{overwrite:true});
 // jquery-ui
 fs.copySync(approot+'/node_modules/jquery-ui-dist',targDir,{overwrite:true});
 // mb.extruder
-fs.copySync(approot+'/node_modules/jquery.mb.extruder/css',targDir,{overwrite:true});
-fs.copySync(approot+'/node_modules/jquery.mb.extruder/inc',targDir,{overwrite:true});
+fs.copySync(approot+'/node_modules/jquery.mb.extruder/css',targDir+'/mb.extruder',{overwrite:true});
+fs.copySync(approot+'/node_modules/jquery.mb.extruder/inc',targDir+'/mb.extruder',{overwrite:true});
+fs.copySync(approot+'/node_modules/jquery.mb.extruder/elements',targDir+'/elements',{overwrite:true});
