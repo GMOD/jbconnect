@@ -5,15 +5,15 @@ var jblib = require('../api/services/jbutillib');
 module.exports = {
     getOptions: function() {
         return [
-            //['' , 'setupindex'       , '(JBConnect) setup index.html and plugins']
-            ['' , 'dbreset'        , '(JBConnect) reset the database to default'],
-            ['' , 'setpassword',   , '(JBConnect) change password of user'],
-            ['' , 'setadmin',      , '(JBConnect) set admin flag']
+            ['d' , 'dbreset'        , 'reset the database to default and clean kue db'],
+            ['p' , 'setpassword',   , 'change password of user'],
+            ['a' , 'setadmin',      , 'set admin flag'],
+            ['r' , 'removeall'      , 'remove JBConnect components from JBrowse']
         ];        
     },
     getHelpText: function() {
         return "\n"+
-            "./jbutil --setpassword <username> <true|false>\n"+
+            "./jbutil --setpassword <username>\n"+
             "./jbutil --setadmin <username> <true|false\n";
         
     },
@@ -27,13 +27,6 @@ module.exports = {
             console.log("jbutil failed to initialize");
             return;
         }
-        /*
-        var tool = opt.options['setupindex'];
-        if (typeof tool !== 'undefined') {
-            jblib.exec_setupindex(this.config);
-            jblib.exec_setupPlugins(this.config);
-        }
-        */
         var tool = opt.options['dbreset'];
         if (typeof tool !== 'undefined') {
             process.stdin.resume();
@@ -58,15 +51,14 @@ module.exports = {
         if (typeof tool !== 'undefined') {
             console.log('opt',opt);
         }
+        var tool = opt.options['removeall'];
+        if (typeof tool !== 'undefined') {
+            jblib.removeIncludesFromHtml();
+            jblib.removePlugins();
+            jblib.unsetupPlugins();
+        }
     },
     init: function(config) {
-        //console.log("config",config);
-        /*
-         * get values for --gpath, apikey and gurl; grab from saved globals if necessary
-         */
-        //this.gurl = config.galaxy.galaxyUrl;
-        //this.gpath = config.galaxy.galaxyPath;
-        //this.apikey = config.galaxy.galaxyAPIKey;
         return 1; // successful init
     }
     
@@ -76,3 +68,26 @@ module.exports = {
  * process commands arguments - implementation
  **********************************************/
 
+function exec_cleankue(params) {
+    kue.Job.rangeByType( 'workflow', 'failed', 0, 10000, 'asc', function( err, jobs ) {
+        jobs.forEach( function( job ) {
+            removejob(job);
+        });
+    });
+    kue.Job.rangeByType( 'workflow', 'active', 0, 10000, 'asc', function( err, jobs ) {
+        jobs.forEach( function( job ) {
+            removejob(job);
+        });
+    });
+    kue.Job.rangeByType( 'workflow', 'completed', 0, 10000, 'asc', function( err, jobs ) {
+        jobs.forEach( function( job ) {
+            removejob(job);
+        });
+    });
+    
+    function removejob(job) {
+        job.remove( function(){
+          console.log( 'removed ', job.id ,job.data.name);
+        });
+    }
+}

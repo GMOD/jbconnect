@@ -98,7 +98,7 @@ module.exports = {
         return deps;        
     },
     /**
-     * 
+     * Inject css/js into JBrowse index.html
      */
     injectIncludesIntoHtml() {
         let config = this.getMergedConfig();
@@ -106,10 +106,9 @@ module.exports = {
         let webIncludes = config.webIncludes;
         let insertThis = [];
         let indexModified = false;
+        let countInc = 0;
         
-        console.log("Injecting module dependencies...");
-        
-        // count webInclues
+        // count webIncludes
         let count = 0;
         for(let i in webIncludes) count++;
         
@@ -156,18 +155,23 @@ module.exports = {
             insertThis = [blankLine,sectionStart,newLine];
 
             for(let i in webIncludes) {
-                    if (webIncludes[i].lib.indexOf('.js') !== -1) {
-                            let newItem = _.cloneDeep(jsTemplate);
-                            newItem.attr.src = webIncludes[i].lib;
-                            insertThis.push(newItem);
-                            insertThis.push(newLine);
-                    }
-                    if (webIncludes[i].lib.indexOf('.css') !== -1) {
-                            let newItem = _.cloneDeep(cssTemplate);
-                            newItem.attr.href = webIncludes[i].lib;
-                            insertThis.push(newItem);
-                            insertThis.push(newLine);
-                    }
+                
+                if (webIncludes[i].lib.indexOf('.js') !== -1) {
+                    console.log("including "+webIncludes[i].lib);
+                    let newItem = _.cloneDeep(jsTemplate);
+                    newItem.attr.src = webIncludes[i].lib;
+                    insertThis.push(newItem);
+                    insertThis.push(newLine);
+                    countInc++;
+                }
+                if (webIncludes[i].lib.indexOf('.css') !== -1) {
+                    console.log("including "+webIncludes[i].lib);
+                    let newItem = _.cloneDeep(cssTemplate);
+                    newItem.attr.href = webIncludes[i].lib;
+                    insertThis.push(newItem);
+                    insertThis.push(newLine);
+                    countInc++;
+                }
             }
             insertThis.push(sectionEnd);
         }
@@ -211,75 +215,9 @@ module.exports = {
             // write file
             fs.writeFileSync(index,newContent);
         }
+        console.log(countInc+" modules injected in index.html");
 
     },
-    /**
-     * Builds an index.html based on ``/bin/index_tesmplate.html``.  It will
-     * inject web includes .js and .css references.  These are defined in the config file,
-     * jbrowse.webIncludes section.
-     * 
-     * @returns {string} content of the html file.
-     * 
-     */
-/*    
-    buildHtml: function() {
-        var conf = this.getMergedConfig();
-        var indexFile = approot+'/bin/index_template.html';
-        var content = "";
-        try {
-            content = fs.readFileSync(indexFile,'utf-8');
-        }
-        catch(err) {
-            console.log("failed to read",indexFile,err);
-            return content;
-        }
-        //console.log("conf",conf);
-        var str = "";
-
-        for(var i in conf.webIncludes) {
-            //console.log(i);
-            if (conf.webIncludes[i].lib.indexOf('.js') !== -1) {
-                str += '<script type="text/javascript" src="'+conf.webIncludes[i].lib+'"></script>\n';
-            }
-            if (conf.webIncludes[i].lib.indexOf('.css') !== -1) {
-                str += '<link type="text/css" rel="stylesheet" href="'+conf.webIncludes[i].lib+'" />\n';
-            }
-        }
-        //console.log(str);
-
-        var lookFor = '<!-- JBConnect Modules -->';
-        content = content.replace(lookFor,str);
-
-        //console.log(content);
-
-        return content;
-    },
-*/    
-    /**
-     * Writes the index.html file. A backup of the original index.html will be made.
-     * 
-     * @param {object} config 
-     * @returns {undefined}
-     */
-    /*
-    exec_setupindex: function(config) {
-        var g = config;
-        //console.log("config",g);
-
-        var content = this.buildHtml();
-
-        var srcpath = path.normalize(approot+"/bin");
-        console.log("Injecting css/js into index.html...");
-        //console.log(srcpath+'/index.html',g.jbrowsePath+'index.html');
-
-        //var bakfile = safeCopy(srcpath+'/index.html',g.jbrowsePath+'/index.html');
-        var bakfile = this.safeWriteFile(content,g.jbrowsePath+'/index.html');
-        if (bakfile)
-            console.log('a backup of jbrowse/index.html was made in', bakfile);
-        //else
-        //    console.log('index.html content unchanged.');
-    },
-    */
     
     /**
      * add plugins to ``trackList.json``.
@@ -310,9 +248,16 @@ module.exports = {
 
             var conf = JSON.parse(trackListData);
 
-            // add the JBlast & JBClient plugin, if they don't already exist  
-            if (conf.plugins.indexOf('JBClient') === -1) conf.plugins.push("JBClient");
-            if (conf.plugins.indexOf('ServerSearch') === -1) conf.plugins.push("ServerSearch");
+            let plugins = this.getPlugins();
+            
+            if (plugins.length === 0)   return;
+
+            // add the JBlast & JBClient plugin, if they don't already exist
+            for(let i in plugins) {
+                if (conf.plugins.indexOf(plugins[i].name) === -1) conf.plugins.push(plugins[i].name);
+            }
+            //if (conf.plugins.indexOf('JBClient') === -1) conf.plugins.push("JBClient");
+            //if (conf.plugins.indexOf('ServerSearch') === -1) conf.plugins.push("ServerSearch");
 
 
            // write trackList.json
@@ -322,6 +267,107 @@ module.exports = {
             catch(err) {
               console.log("failed write",trackListPath,err);
             }
+        }
+    },
+    /**
+     * remove css/js from JBrowse index.html
+     * 
+     */
+    removeIncludesFromHtml() {
+        let config = this.getMergedConfig();
+        let index = config.jbrowsePath+'index.html';
+        let insertThis = [];
+        let indexModified = false;
+        
+        // read the index file
+        let content  = fs.readFileSync(index,'utf-8');
+        let json = html2json(content);
+
+        let n = json.child[0].child;
+        head = _.findIndex(n, function(o) { return o.tag === 'head'; });    // index of <head>
+        n = n[head].child;
+        title = _.findIndex(n, function(o) { return o.tag === 'title'; });  // index of <title>
+
+        // n is now the array of <head> section
+
+        // remove existing JBConnect section (if any)
+        let bStart = _.findIndex(n, function(o) { return o.text === ' JBConnect injector '; });
+        if (bStart > -1) {
+                let bEnd = _.findIndex(n, function(o) { return o.text === ' JBConnect injector END '; });
+
+                n.splice(bStart,bEnd-bStart+2);
+                
+                indexModified = true;
+        }
+
+        if (indexModified) {
+            
+            // reconstitute new <head> section
+            json.child[0].child[head].child = n;
+
+            let newContent = "<!DOCTYPE html>\n"+json2html(json);
+            //console.log(newContent);
+            
+            // write file
+            fs.writeFileSync(index,newContent);
+            
+            console.log("Removed JBConnect dependencies from index.html");
+        }
+        
+    },
+    /**
+     * remove plugins from ``trackList.json``.
+     * 
+     */
+    unsetupPlugins: function() {
+        let g = this.getMergedConfig();
+
+        // get dataSet
+        var dataSet = "-----";
+        for(var i in g.dataSet) {
+            dataSet = g.dataSet[i].path;
+
+            var trackListPath = g.jbrowsePath + dataSet + '/trackList.json';
+
+            // read trackList.json
+            var error = 0;
+            try {
+              var trackListData = fs.readFileSync (trackListPath);
+            }
+            catch(err) {
+                console.log("exec_setupSearchPlugin failed read",trackListPath,err);
+                error = 1;
+            }
+            if (error) return;
+
+            var conf = JSON.parse(trackListData);
+
+            let jbplugins = this.getPlugins();
+            //console.log("jbplugins",jbplugins);
+            
+            if (jbplugins.length === 0)   return;
+
+            let xPlugins = [];
+            let countRemoved = 0;
+            
+            // add the JBlast & JBClient plugin, if they don't already exist
+            for(let i in conf.plugins) {
+                let x = _.findIndex(jbplugins, function(o) { return o.name === conf.plugins[i]; });
+                //console.log(conf.plugins[i],x);
+                if (x === -1) xPlugins.push(conf.plugins[i]);
+                else countRemoved++;
+            }
+            //console.log("xPlugins",xPlugins);
+            conf.plugins = xPlugins;
+            
+           // write trackList.json
+            try {
+              fs.writeFileSync(trackListPath,JSON.stringify(conf,null,4));
+            }
+            catch(err) {
+              console.log("failed write",trackListPath,err);
+            }
+            console.log(countRemoved+' plugins removed from dataset: '+dataSet);
         }
     },
     
@@ -449,7 +495,11 @@ module.exports = {
         }
         
     },
-    injectPlugins(params){
+    /**
+     * Inject client-side plugins into the JBrowse plugins dir
+     * 
+     */
+    injectPlugins(){
         // inject plugin routes
         var g = this.getMergedConfig();
 
@@ -496,6 +546,105 @@ module.exports = {
                 fs.symlinkSync(src,target,'dir');
         }
     },    
+    /**
+     * remove client side plugins from JBrowse index.html
+     */
+    removePlugins() {
+        var g = this.getMergedConfig();
+
+        var sh = require('shelljs');
+        var cwd = sh.pwd();
+        let pluginDir = g.jbrowsePath+'plugins';
+        let countRemoved = 0;
+
+        // check if jbrowse dir exists
+        if (!fs.existsSync(g.jbrowsePath)) {
+            console.log("JBrowse directory does not exist:",g.jbrowsePath);
+            process.exit(1);
+        }
+
+        // setup local plugins
+        var items = fs.readdirSync('plugins');
+        for(var i in items) {
+
+            //var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
+            let target = pluginDir+'/'+items[i];
+            let src = cwd+'/plugins/'+items[i];
+
+            _unlink(src,target);
+        }
+
+        // setup sub-module plugins
+        var submodules = glob.sync('node_modules/jbconnect-hook-*');
+        for(var j in submodules) {
+            var tmp = submodules[j].split('/');                
+            var moduleName = tmp[tmp.length-1];
+
+            var items = fs.readdirSync(cwd+'/'+submodules[j]+'/plugins');
+            for(var i in items) {
+                //var pluginRoute = '/'+g.routePrefix+'/plugins/'+items[i];
+                let target = pluginDir+'/'+items[i];
+                let src = cwd+'/'+submodules[j]+'/plugins/'+items[i];
+                
+                _unlink(src,target);
+            }
+        }
+        
+        console.log(countRemoved+" plugins removed JBrowse plugins dir");
+        
+        function _unlink(src,target) {
+            if (fs.existsSync(target)) {
+                console.log("Unlink plugin",target);
+                fs.unlinkSync(target);
+                countRemoved++;
+            }
+        }
+    },
+    /**
+     * get the list of plugins
+     * @returns {object} array of plugin objects
+     */
+    getPlugins() {
+        var g = this.getMergedConfig();
+
+        var sh = require('shelljs');
+        var cwd = sh.pwd();
+        let pluginDir = g.jbrowsePath+'plugins';
+        let plugins = [];
+
+        // setup local plugins
+        var items = fs.readdirSync('plugins');
+        for(var i in items) {
+
+            let target = pluginDir+'/'+items[i];
+            let src = cwd+'/plugins/'+items[i];
+
+            _insert(items[i],src,target);
+        }
+
+        // setup sub-module plugins
+        var submodules = glob.sync('node_modules/jbconnect-hook-*');
+        for(var j in submodules) {
+            var tmp = submodules[j].split('/');                
+            var moduleName = tmp[tmp.length-1];
+
+            var items = fs.readdirSync(cwd+'/'+submodules[j]+'/plugins');
+            for(var i in items) {
+                let target = pluginDir+'/'+items[i];
+                let src = cwd+'/'+submodules[j]+'/plugins/'+items[i];
+                
+                _insert(items[i],src,target);
+            }
+        }
+        return plugins;
+        function _insert(name,src,target) {
+            plugins.push({
+                name:name,
+                src:src,
+                target:target
+            });
+        }
+    },
     /**
      * Add a route
      * 
