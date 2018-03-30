@@ -56,8 +56,8 @@ var g = {
             "js-jquery":             {lib: "/jblib/jquery.min.js" },
             "js-jqueryui":           {lib: "/jblib/jquery-ui.min.js" },
             "js-bootstrap":          {lib: "/jblib/bootstrap.min.js"},
-            "js-mbextruderHover":    {lib: "/jblib/jquery.hoverIntent.min.js"},
-            "js-mbextruderFlip":     {lib: "/jblib/jquery.mb.flipText.js"},
+            "js-mbextruderHover":    {lib: "/jblib/mb.extruder/jquery.hoverIntent.min.js"},
+            "js-mbextruderFlip":     {lib: "/jblib/mb.extruder/jquery.mb.flipText.js"},
             "js-mbextruder":         {lib: "/jblib/mb.extruder/mbExtruder.js"}
         }
     }
