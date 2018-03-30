@@ -164,7 +164,7 @@ module.exports = {
                     }
                     if (webIncludes[i].lib.indexOf('.css') !== -1) {
                             let newItem = _.cloneDeep(cssTemplate);
-                            newItem.attr.src = webIncludes[i].lib;
+                            newItem.attr.href = webIncludes[i].lib;
                             insertThis.push(newItem);
                             insertThis.push(newLine);
                     }
