@@ -13,7 +13,7 @@ var mergedConfig = jblib.getMergedConfig();
 
 // local options
 var options = [
-    ['','config', 'display merged configuration']
+    ['c','config', 'display merged configuration']
     //['','testsetupindex','testsetupinex']
 ];
 
