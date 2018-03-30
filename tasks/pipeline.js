@@ -85,9 +85,3 @@ module.exports.templateFilesToInject = templateFilesToInject.map(function(tplPat
   return require('path').join('assets/',tplPath);
 });
 
-console.log('inject client-side plugins');
-jblib.injectPlugins();
-
-console.log("Injecting dependencies to JBrowse index.html");
-jblib.injectIncludesIntoHtml();
-

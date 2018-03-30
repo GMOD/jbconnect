@@ -107,6 +107,8 @@ module.exports = {
         let insertThis = [];
         let indexModified = false;
         
+        console.log("Injecting module dependencies...");
+        
         // count webInclues
         let count = 0;
         for(let i in webIncludes) count++;
@@ -199,6 +201,7 @@ module.exports = {
         }    
 
         if (indexModified) {
+            
             // reconstitute new <head> section
             json.child[0].child[head].child = n;
 
@@ -281,12 +284,9 @@ module.exports = {
     /**
      * add plugins to ``trackList.json``.
      * 
-     * @param {object} config - reference the configuration.
-     * 
      */
-    exec_setupPlugins: function(config) {
-        console.log("Adding plugins to trackList.json...");
-        var g = config;
+    setupPlugins: function() {
+        let g = this.getMergedConfig();
 
         // get dataSet
         var dataSet = "-----";
@@ -491,7 +491,7 @@ module.exports = {
         }
         
         function _symlink(src,target) {
-            console.log("plugin inject",target);
+            console.log("Plugin inject",target);
             if (!fs.existsSync(src))
                 fs.symlinkSync(src,target,'dir');
         }

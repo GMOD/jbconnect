@@ -13,6 +13,8 @@
  */
 module.exports = function(grunt) {
   grunt.registerTask('prod', [
+    'jb-inject-plugins',
+    'jb-inject-index',
     'compileAssets',
     'concat',
     'uglify',

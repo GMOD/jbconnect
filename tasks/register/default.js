@@ -17,5 +17,11 @@
  *
  */
 module.exports = function (grunt) {
-  grunt.registerTask('default', ['compileAssets', 'linkAssets',  'watch']);
+  grunt.registerTask('default', [
+      'jb-inject-plugins',
+      'jb-inject-index',
+      'compileAssets', 
+      'linkAssets',
+      'watch'
+  ]);
 };

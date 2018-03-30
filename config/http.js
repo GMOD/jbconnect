@@ -24,7 +24,7 @@ module.exports.http = {
      * @returns {undefined}
      */
     customMiddleware: function (app) {
-        console.log("config of Middleware config/http.js for jbrowse");
+        //console.log("config of Middleware config/http.js for jbrowse");
         
         var express = require('express');
         
@@ -37,7 +37,7 @@ module.exports.http = {
         
         // main JBrowse application route
         app.use('/'+routePrefix, express.static(jbrowsePath));
-        sails.log("approot",""+appRoot);
+        //sails.log("approot",""+appRoot);
         
         // documentation route
         //app.use('/docs',express.static('./docs/html'));

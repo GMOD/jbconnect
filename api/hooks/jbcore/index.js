@@ -45,7 +45,7 @@ module.exports = function (sails) {
 
             sails.on('hook:orm:loaded', function() {
             //sails.on('lifted', function() {
-                sails.log(">>> jbcore sails lifted");
+                //sails.log(">>> jbcore sails lifted");
                 
                 setTimeout(function() {
                     Service.Init({},function() {
@@ -67,7 +67,7 @@ module.exports = function (sails) {
                 var config = sails.config.globals.jbrowse;
                 //console.log("config",config);
                 //jbutillib.exec_setupindex(config);
-                jbutillib.exec_setupPlugins(config);                
+                //jbutillib.exec_setupPlugins(config);                
                 return cb();
                 
             });
