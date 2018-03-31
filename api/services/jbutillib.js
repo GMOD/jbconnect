@@ -498,6 +498,9 @@ module.exports = {
     /**
      * Inject client-side plugins into the JBrowse plugins dir
      * 
+     * Note: as of JBrowse 1.13.0, you must run `npm run build` after this function, webpack build.
+     * 
+     * @returns (int) count - count of plugins injected.
      */
     injectPlugins(){
         // inject plugin routes
@@ -506,6 +509,7 @@ module.exports = {
         var sh = require('shelljs');
         var cwd = sh.pwd();
         let pluginDir = g.jbrowsePath+'plugins';
+        let count = 0;  // count of injected plugins
 
         // check if jbrowse dir exists
         if (!fs.existsSync(g.jbrowsePath)) {
@@ -539,11 +543,22 @@ module.exports = {
                 _symlink(src,target);
             }
         }
+        return count;
         
         function _symlink(src,target) {
-            console.log("Plugin inject",target);
-            if (!fs.existsSync(src))
+            if (!fs.existsSync(target)) {
                 fs.symlinkSync(src,target,'dir');
+                console.log("Plugin inject:",target);
+                
+                // check if it got created
+                if (!fs.existsSync(target)) {
+                    throw "Failed to symlink "+target;
+                }
+                else count++;
+            }
+            else {
+                console.log("Plugin exists:",target);
+            }
         }
     },    
     /**
@@ -590,7 +605,11 @@ module.exports = {
             }
         }
         
-        console.log(countRemoved+" plugins removed JBrowse plugins dir");
+        console.log(countRemoved+" plugins removed JBrowse plugins dir.");
+        if (countRemoved)
+            console.log("In jbrowse directory, run 'npm run build'");
+
+        return countRemoved;
         
         function _unlink(src,target) {
             if (fs.existsSync(target)) {
@@ -601,7 +620,7 @@ module.exports = {
         }
     },
     /**
-     * get the list of plugins
+     * get the list of plugins.  This includes JBConnect plugins as well as plugins of JBConnect hook modules that are loaded.
      * @returns {object} array of plugin objects
      */
     getPlugins() {
