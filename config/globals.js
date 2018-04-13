@@ -59,6 +59,9 @@ var g = {
             "js-mbextruderHover":    {lib: "/jblib/mb.extruder/jquery.hoverIntent.min.js"},
             "js-mbextruderFlip":     {lib: "/jblib/mb.extruder/jquery.mb.flipText.js"},
             "js-mbextruder":         {lib: "/jblib/mb.extruder/mbExtruder.js"}
+        },
+        excludePlugins: {
+            "ServerSearch": true    // doesn't work with JBrowse 1.13.0+
         }
     }
 
