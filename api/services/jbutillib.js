@@ -630,6 +630,7 @@ module.exports = {
         var cwd = sh.pwd();
         let pluginDir = g.jbrowsePath+'plugins';
         let plugins = [];
+        let excludePlugins = g.excludePlugins;
 
         // setup local plugins
         var items = fs.readdirSync('plugins');
@@ -638,7 +639,8 @@ module.exports = {
             let target = pluginDir+'/'+items[i];
             let src = cwd+'/plugins/'+items[i];
 
-            _insert(items[i],src,target);
+            let exclude = _.find(excludePlugins, function(val,plugin) { return plugin === items[i] && val===true; });
+            if (!exclude) _insert(items[i],src,target);
         }
 
         // setup sub-module plugins
@@ -652,7 +654,8 @@ module.exports = {
                 let target = pluginDir+'/'+items[i];
                 let src = cwd+'/'+submodules[j]+'/plugins/'+items[i];
                 
-                _insert(items[i],src,target);
+                let exclude = _.find(excludePlugins, function(val,plugin) { return plugin === items[i] && val===true; });
+                if (!exclude) _insert(items[i],src,target);
             }
         }
         return plugins;
