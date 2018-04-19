@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-
-var jblib = require('../api/services/jbutillib');
+const jblib = require('../api/services/jbutillib');
+const fetch = require('node-fetch');
 
 module.exports = {
     getOptions: function() {
@@ -29,23 +29,15 @@ module.exports = {
         }
         var tool = opt.options['dbreset'];
         if (typeof tool !== 'undefined') {
-            process.stdin.resume();
-            process.stdin.setEncoding('utf8');
-            var util = require('util');
-            console.log('JBConnect database will be reset to default.  Type "YES" to confirm.');
-
-            process.stdin.on('data', function (text) {
-              if (text === 'YES\n') {
-                  jblib.install_database(1);
-              }
-              else {
-                  console.log('nothing done.');
-              }
-              done();
-            });
-            function done() {
-              process.exit();
-            }            
+            // perform a test to see if JBConnect is running.
+            fetch(config.jbrowseRest+'/jobactive/get')
+                .then(res => res.json())
+                .then(json => {
+                   console.log("This command only works when JBConnect is not running."); 
+                })                
+                .catch(err => {
+                    process_dbreset();
+                });
         }
         var tool = opt.options['password'];
         if (typeof tool !== 'undefined') {
@@ -68,26 +60,22 @@ module.exports = {
  * process commands arguments - implementation
  **********************************************/
 
-function exec_cleankue(params) {
-    kue.Job.rangeByType( 'workflow', 'failed', 0, 10000, 'asc', function( err, jobs ) {
-        jobs.forEach( function( job ) {
-            removejob(job);
-        });
+function process_dbreset(done) {
+    process.stdin.resume();
+    process.stdin.setEncoding('utf8');
+    var util = require('util');
+    console.log('JBConnect database will be reset to default.  Type "YES" to confirm.');
+
+    process.stdin.on('data', function (text) {
+      if (text === 'YES\n') {
+          jblib.install_database(1);
+          jblib.zapRedis(done);
+      }
+      else {
+          console.log('nothing done.');
+      }
+      setTimeout(function() {
+          process.exit();
+      },1000);
     });
-    kue.Job.rangeByType( 'workflow', 'active', 0, 10000, 'asc', function( err, jobs ) {
-        jobs.forEach( function( job ) {
-            removejob(job);
-        });
-    });
-    kue.Job.rangeByType( 'workflow', 'completed', 0, 10000, 'asc', function( err, jobs ) {
-        jobs.forEach( function( job ) {
-            removejob(job);
-        });
-    });
-    
-    function removejob(job) {
-        job.remove( function(){
-          console.log( 'removed ', job.id ,job.data.name);
-        });
-    }
 }

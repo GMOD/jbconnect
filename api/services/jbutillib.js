@@ -496,6 +496,33 @@ module.exports = {
         
     },
     /**
+     * cleanout redis database
+     */
+    zapRedis() {
+        console.log("Cleaning redis database...");
+        let redis = require("redis").createClient();
+
+        redis.on("error", function (err) {
+            console.log("Error " + err);
+        });
+        redis.keys("*", function (err, replies) {
+            if (replies.length === 0) {
+                console.log ('no redis records - nothing to delete');
+            }
+            else {
+                console.log('deleting '+replies.length + ' keys:');
+                replies.forEach(function (reply, i) {
+                    if (reply.startsWith("q:")) {
+                        console.log("    " + reply);
+                        redis.del(reply);
+                    }
+                });
+            }
+            redis.quit();
+        });            
+        
+    },
+    /**
      * Inject client-side plugins into the JBrowse plugins dir
      * 
      * Note: as of JBrowse 1.13.0, you must run `npm run build` after this function, webpack build.
