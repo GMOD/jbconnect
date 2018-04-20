@@ -6,7 +6,6 @@ module.exports = {
     getOptions: function() {
         return [
             ['d' , 'dbreset'        , 'reset the database to default and clean kue db'],
-            ['p' , 'setpassword',   , 'change password of user'],
             ['a' , 'setadmin',      , 'set admin flag'],
             ['r' , 'removeall'      , 'remove JBConnect components from JBrowse']
         ];        
@@ -39,10 +38,7 @@ module.exports = {
                     process_dbreset();
                 });
         }
-        var tool = opt.options['password'];
-        if (typeof tool !== 'undefined') {
-            console.log('opt',opt);
-        }
+
         var tool = opt.options['removeall'];
         if (typeof tool !== 'undefined') {
             jblib.removeIncludesFromHtml();
