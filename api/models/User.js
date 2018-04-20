@@ -44,11 +44,15 @@ var User = {
            return cb(err);
         });
     },
-    /*
-     * Set password for a given user
+    /**
+     * Set password for a given user.  This call is designed to be called from the `sails` console.
+     * The callback is optionsl.
      * 
      * Example
      * ``User.SetPassword('juser','password',console.log);``
+     * 
+     * Sails Console Example:
+     * ``User.SetPassword('juser','password');``
      * 
      * @param {string} user - username
      * @param {string} pass - new password
@@ -59,6 +63,7 @@ var User = {
     
         this.findOne({username:user}).exec(function(err,ufound) {
             if (err) {
+                console.error("Find Error: "+"("+err.code+") "+err.details);
                 if (typeof cb === 'function' ) return cb(err);
                 else return;
             }
@@ -66,11 +71,12 @@ var User = {
             
             Passport.update({user:ufound.id},{password:pass}).exec(function(err,updated){
                 if (err) {
+                    console.error("Error: "+"("+err.code+") "+err.details);
                     if (typeof cb === 'function' ) return cb(err);
                     else return;
                 }
                 var msg = 'Password for '+user+' changed.';
-                //console.log(msg);
+                console.log(msg);
                 
                 if (typeof cb === 'function' ) return cb(null,msg);
                 else return;
