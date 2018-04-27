@@ -49,5 +49,6 @@ before(function(done) {
 
 after(function(done) {
   // here you can clear fixtures, etc.
+  console.log("lowering sails");
   sails.lower(done);
 });
