@@ -67,7 +67,7 @@ ul.jb-logged-in-menu {
     outline: none;
     border: 0;
     position: relative;
-    top: 0px;
+    top: 2px;
     height: 22px;	
     padding-left:26px !important;
 }
@@ -84,7 +84,7 @@ ul.jb-logged-in-menu {
     outline: none;
     border: 0;
     position: relative;
-    top: 0px;
+    top: 2px;
     height: 22px;	
 	
 }
@@ -108,4 +108,16 @@ ul.jb-logged-in-menu {
     height: 22px;	
 }
 
+/* tweak dataset name */
+
+.jbrowse div.menuBar > div.dataset-name {
+    margin-right: 150px;
+    border-right: 1px solid white;
+}
+
+/* tweak locationThumb */
+.jbrowse div.overview > div.locationThumb {
+    height: 17px !important;
+    top: -1px !important;
+}
 
