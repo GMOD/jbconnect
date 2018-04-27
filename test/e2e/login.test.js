@@ -1,13 +1,12 @@
-var nightwatch = require('nightwatch');
+const nightwatch = require('nightwatch');
+const _ = require('lodash');
+const argv = require('minimist')(process.argv.slice(2));
 
-var argv = require('minimist')(process.argv.slice(2));
 var nightwatchTest = argv['nightwatch-test'];
 if (typeof nightwatchTest === 'undefined') nightwatchTest = 'default';
 
 var nightwatchConf = require('../nightwatch.conf.js');
-var nw_conf = Object.assign(
-    nightwatchConf.test_settings[nightwatchTest]
-);
+var nw_conf = _.clone(nightwatchConf.test_settings[nightwatchTest]);
 var client = nightwatch.initClient(nw_conf);
 
 var browser = client.api();
