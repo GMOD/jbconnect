@@ -57,6 +57,7 @@
     "kue": "^0.11.6",
     "kue-ui": "^0.1.0",
     "merge": "^1.2.0",
+    "node-fetch": "^2.1.2"
     "node-getopt": "^0.2.3",
     "normalize.css": "^5.0.0",
     "passport": "^0.3.2",
