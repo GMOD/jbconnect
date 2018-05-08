@@ -141,7 +141,12 @@ module.exports = {
             });            
         }
         function _debugPushEvents() {
-            setInterval(function() {
+            var t1 = setInterval(function() {
+                if (sails.exiting) {
+                    console.log("clear interval _debugPushEvents()");
+                    clearInterval(t1);
+                }
+                
                 console.log('_eventProc',thisb._eventProc,thisb._eventList.length);
             }, 3000);
         }
@@ -227,7 +232,12 @@ module.exports = {
         var queue = gg.kue_queue;
         var thisb = this;
         
-        setInterval(function() {
+        let t1 = setInterval(function() {
+            if (sails.exiting) {
+                console.log("clear interval _jobRunner");
+                clearInterval(t1);
+            }
+                
             gg.kue.Job.rangeByState( 'inactive', 0, 1000000, 'asc', function( err, kJobs ) {
                 if (err) {
                     sails.log("process loop Job.rangeByState failed",err);

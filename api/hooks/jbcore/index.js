@@ -43,6 +43,8 @@ module.exports = function (sails) {
         initialize: function(cb) {
             sails.log("Hook: jbcore initialize"); 
 
+            sails.exiting = false;
+
             sails.on('hook:orm:loaded', function() {
             //sails.on('lifted', function() {
                 //sails.log(">>> jbcore sails lifted");

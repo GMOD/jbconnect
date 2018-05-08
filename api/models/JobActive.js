@@ -63,7 +63,12 @@ module.exports = {
             writeActive(total);
         });
         
-        setInterval(function() {
+        let t1 = setInterval(function() {
+            if (sails.exiting) {
+                console.log("clear interval _activeMonitor");
+                clearInterval(t1);
+            }
+            
             //console.log("active mon");
             queue.activeCount(Job._queueName, function( err, total ) {
                 //console.log("active count",total);
