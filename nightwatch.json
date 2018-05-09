@@ -1,5 +1,5 @@
 {
-    "src_folders" : ["test/bootstrap"],
+    "src_folders" : ["test/bootstrap","test/e2e"],
     "output_folder" : "test/reports",
     "page_objects_path" : "",
     "custom_assertions_path" : "",
