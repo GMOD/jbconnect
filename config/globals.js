@@ -30,16 +30,17 @@ var g = {
         },
         
         // search service settings
-        serverSearch: {
-            resultPath: "ServerSearch",
-            resultCategory: "Search Results",
-            trackTemplate: "ServerSearchTrackTemplate.json",
-            workflowScript: "ServerSearch.workflow.js",
-            processScript:   'ServerSearchProcess.html'
-        },
+//        serverSearch: {
+//            resultPath: "ServerSearch",
+//            resultCategory: "Search Results",
+//            trackTemplate: "ServerSearchTrackTemplate.json",
+//            workflowScript: "ServerSearch.workflow.js",
+//            processScript:   'ServerSearchProcess.html'
+//        },
         // search job service registration
         services: {
-            //'serverSearchService': {name: 'serverSearchService',  type: 'service'}
+            //'serverSearchService': {name: 'serverSearchService',  type: 'service'},
+            'nothingBurgerService': {name: 'nothingBurgerService',  type: 'service'}
         },
         
         /*
