@@ -9,12 +9,12 @@
     "start": "node app.js",
     "postinstall": "node ./bin/postinstall.js",
     "test": "nightwatch",
-    "xtest": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test selenium",
-    "testjblast": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/jblast/google.test.js --nightwatch-test selenium",
     "xtest": "nyc node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/integration/**/*.test.js test/e2e/**/*.test.js --nightwatch-test default",
+    "testjblast": "node ./node_modules/mocha/bin/mocha test/bootstrap.test.js test/jblast/google.test.js --nightwatch-test selenium",
     "gendocs": "node docs/gendocs_run.js",
     "phantomjs": "node node_modules/phantomjs-prebuilt/bin/phantomjs",
-    "e2e-setup": "selenium-standalone install"
+    "e2e-setup": "selenium-standalone install",
+    "nightwatch": "nightwatch"
   },
   "engines": {
     "node": ">=6.8.0"
@@ -57,6 +57,7 @@
     "kue": "^0.11.6",
     "kue-ui": "^0.1.0",
     "merge": "^1.2.0",
+    "node-fetch": "^2.1.2",
     "node-getopt": "^0.2.3",
     "normalize.css": "^5.0.0",
     "passport": "^0.3.2",
