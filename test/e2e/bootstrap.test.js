@@ -24,7 +24,7 @@ before(function(client, done) {
     });
     let t1 = setInterval(function(){
         if (lifted) {
-            console.log('fmonitor', fmonitor.childData);
+            //console.log('fmonitor', fmonitor.childData);
             pid = fmonitor.childData.pid;
             clearInterval(t1);
             done();
