@@ -21,18 +21,19 @@ describe('End-2-End:', function() {
           done();
         });
 
-        it('JBClient Login Page', function (client) {
+        it('JBClient Register Page', function (client) {
             client
                 // start the login page and login
-                .url('http://localhost:1337/login')
+                .url('http://localhost:1337/register')
                 .waitForElementVisible('body', 1000)
                 .assert.visible('h4.modal-title')
-                .assert.containsText('h4.modal-title', 'JBrowse Login', 'Checking login box title')
-                .setValue("input[name='identifier']", ['juser'])
+                .assert.containsText('h4.modal-title', 'JBrowse Register New User', 'Checking login box title')
+                .setValue("input[name='username']", ['testuser'])
+                .setValue("input[name='email']", ['testuser@gmail.com'])
                 .setValue("input[name='password']", ['password'])
-                .click('button[type="submit"]');
+                .click('button[name="submit"]');
         });
-        it('Success login', function (client) {
+        it('Success registering', function (client) {
             client
                 // verify the launch volvox link is there
                 .waitForElementVisible('a[href="?data=sample_data/json/volvox"]',3000)
