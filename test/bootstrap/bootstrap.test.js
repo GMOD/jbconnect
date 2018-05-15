@@ -4,16 +4,13 @@ var shell = require('shelljs');
 
 before(function(client, done) {
     console.log("Lifting SAILS...");
+
     
-    console.log("Using DB test/data/localDb.db");
-    if (shell.cp('test/data/localDiskDb.db','test/data/localDb.db').code !== 0) {
-      shell.echo('error copying test database');
-      shell.exit(1);
-    }
-    sails.lift({
+    let params = {
 
         // configuration for testing purposes
         // If you want to use a different DB for testing, uncomment these and replace with your own DB info.
+        
         connections: {
           // Replace the following with whatever suits you.
             localDb: {
@@ -33,12 +30,22 @@ before(function(client, done) {
         models: {
           connection: 'localDb',
           migrate: 'drop'
-        },
+        }
+        ,
         policies: {
             '*': true
         }
-        
-    }, function(err) {
+            
+    }; 
+    
+    params = {};
+    
+//    console.log("Using DB test/data/localDb.db");
+    if (shell.cp('test/data/localDiskDb.db','test/data/localDb.db').code !== 0) {
+      shell.echo('error copying test database');
+      shell.exit(1);
+    }
+    sails.lift(params, function(err) {
         if (err) return done(err);
         // here you can load fixtures, etc.
         setTimeout(function() {
