@@ -478,7 +478,7 @@ module.exports = {
             fs.ensureDirSync(dbTargDir);
             if (overwrite === 1) {
                 console.log("Setting up default JBConnect database...");
-                sh.cp(dbSrc,dbTarg+this.dbName);
+                sh.cp(dbSrc,dbTarg);
             }
             else {
                 if (!fs.existsSync(dbTarg)) {
