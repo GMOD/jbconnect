@@ -1,17 +1,17 @@
 .. _jbs-hooks:
 
-******************
-JBConnect jbh-hooks
-******************
+***************
+JBConnect Hooks
+***************
 
-A 'JBConnect jbh-hook' is an 
+A 'JBConnect Hook' is an 
 `installable sails hook <http://sailsjs.com/documentation/concepts/extending-sails/hooks/installable-hooks>`_ 
 with specific methods for
-extending JBConnect.  jbh-hooks must have the prefix ``jbh-`` prepended to the name.
-For example: jbh-jblast.  When the hook is installed (i.e. ``npm install jbh-jblast``).  JBConnect
+extending JBConnect.  Hooks must have the suffix ``-jbconnect-hook`` appended to the name.
+For example: jblast-jbconnect-hook.  When the hook is installed (i.e. ``npm install jblast-jbconnect-hook``).  JBConnect
 will automatically integrate a number of features of the hook directly into JBConnect upon ``sails lift``.
 
-jbh-* Integration
+JBConnect Hook Integration
 * Models, Controller, Policies, Services (via marlinspikes)
 * jbutil command extensions
 * client-side plugin exposure, and client module dependencies
@@ -23,10 +23,10 @@ These features are described below.
 Directory Layout
 ================
 
-This is the standard directory layout of a jbh- module
+This is the standard directory layout of a JBConnect hook module
 ::
 
-    jbh- hook project
+    *-jbconnect-hook project
     ├── api                             Standard Sails modules layout
     │   ├── controllers
     │   ├── hooks
@@ -54,50 +54,78 @@ Standard sails hooks should contain the following section in the package.json
 
     "sails": {
       "isHook": true,
-      "hookName": "jblast"
+      "hookName": "jblast",
+      "isJBConnectHook": true
     }
 
 Configurations (globals.js)
 ===========================
 
 This file contains config options that are specific to the hook module.
-These config options are merged with other jbh- hooks and the JBConnect globals.js.
+These config options are merged with other JBConnect hooks and the JBConnect globals.js.
 
 From JBConnect, use ``./jbutil --config`` to see the aggregated config. 
 
 
-Library Routes (libroutes)
-==========================
+Web Include (client dependencies)
+=================================
 
-libroutes maps dependancy routes for client-side access.
+Web Includes maps dependancies for client-side access.
 These are routes to modules that are required for use by the client-side 
 plugins or other client-side code.
-The framework looks for libroutes.js in jbh- (hook modules), in their respective config directories
+The framework looks for globals.js in jbh- (hook modules), in their respective config directories
 
-For example: for the module jquery,
-The module is installed with 'npm install jquery'
-The mapping the mapping 'jquery': '/jblib/jquery'
-makes the jquery directory accessible as /jblib/jquery from the client side.
+For example: for the dependency module jquery,
+Relevant assets are copied into assets/jblib by bin/postinstall.js
+The mapping the mapping 'js-jquery': '/jblib/jquery'
+makes the jquery directory accessible as /jblib/jquery.min.js from the client side.
 
-libroutes.js
+globals.js
 ::
 
-    module.exports = {
-        lib: {
-                'jquery.mb.extruder':       '/jblib/mb.extruder',
-                'jQuery-ui-Slider-Pips':    '/jblib/slider-pips',
-                'jquery-ui-dist':           '/jblib/jquery-ui'
-        }
-    };
+    ...
 
+    jbrowse: {
+        /*
+         * Web Includes
+         * These includes are injected into JBrowse upon sails lift (see tasks/pipeline.js).
+         */
+        webIncludes: {
+            "css-bootstrap":         {lib: "/jblib/bootstrap.min.css"},
+            "css-mbextruder":        {lib: "/jblib/mb.extruder/mbExtruder.css"},
+            "css-jqueryui":          {lib: "/jblib/jquery-ui.min.css"},
+            "css-jqueryuistructure": {lib: "/jblib/jquery-ui.structure.min.css"},
+            "css-jqueryuitheme":     {lib: "/jblib/jquery-ui.theme.min.css"},
+            "js-sailsio":            {lib: "/js/dependencies/sails.io.js"},
+            "js-jquery":             {lib: "/jblib/jquery.min.js" },
+            "js-jqueryui":           {lib: "/jblib/jquery-ui.min.js" },
+            "js-bootstrap":          {lib: "/jblib/bootstrap.min.js"},
+            "js-mbextruderHover":    {lib: "/jblib/mb.extruder/jquery.hoverIntent.min.js"},
+            "js-mbextruderFlip":     {lib: "/jblib/mb.extruder/jquery.mb.flipText.js"},
+            "js-mbextruder":         {lib: "/jblib/mb.extruder/mbExtruder.js"}
+        },
+    }
+    ...
 
 
 Client-Side Plugins
 ===================
 
-Client-side plugins in this directory are made available on the JBrowse
-client side as routes in the JBrowse plugin directories upon ``sails lift``.
+Client-side plugins in plugins directory are copied to the target JBrowse plugins
+directories upon ``sails lift``.
 
+A plugin can be disabled if it has an entry in the ``excludePlugins:`` section 
+of config/globals.js file
+
+::
+
+    jbrowse: {
+        ...
+        excludePlugins: {
+            "ServerSearch": true    // doesn't work with JBrowse 1.13.0+
+        },
+        ...
+    }
 
 
 .. _jbs-hooks-extend
