@@ -19,7 +19,7 @@ const _ = require('lodash');
 module.exports = {
     dbName: 'localDiskDb.db',
     /**
-     * Traverse ``jbutils-ext.js`` of submodules (jbconnect-hook-*)
+     * Traverse ``jbutils-ext.js`` of submodules (*-jbconnect-hook)
      * 
      * @param {function} cb - callback
      * 
@@ -27,7 +27,7 @@ module.exports = {
     doExtScripts: function(cb) {
         var cwd = sh.pwd();
 
-        var extScripts = glob.sync(approot+'/node_modules/jbconnect-hook-*');
+        var extScripts = glob.sync(approot+'/node_modules/*-jbconnect-hook');
         extScripts.push(approot);
         //console.log("extScripts",extScripts)
         for(var i in extScripts) {
@@ -44,14 +44,14 @@ module.exports = {
 
     /**
      * Returned merged jbrowse config.  
-     * Merged from ``jbconnect-hook-*`` ``config/globals.js``, local ``config/globals.js``
+     * Merged from ``*-jbconnect-hook`` ``config/globals.js``, local ``config/globals.js``
      */
     getMergedConfig() {
         var cwd = sh.pwd();
 
         var merged = {};
 
-        var scripts = glob.sync(approot+'/node_modules/jbconnect-hook-*');
+        var scripts = glob.sync(approot+'/node_modules/*-jbconnect-hook');
         //console.log('scripts',scripts);
 
         for(var i in scripts) {
@@ -556,7 +556,7 @@ module.exports = {
         }
 
         // setup sub-module plugins
-        var submodules = glob.sync('node_modules/jbconnect-hook-*');
+        var submodules = glob.sync('node_modules/*-jbconnect-hook');
         for(var j in submodules) {
             var tmp = submodules[j].split('/');                
             var moduleName = tmp[tmp.length-1];
@@ -617,7 +617,7 @@ module.exports = {
         }
 
         // setup sub-module plugins
-        var submodules = glob.sync('node_modules/jbconnect-hook-*');
+        var submodules = glob.sync('node_modules/*-jbconnect-hook');
         for(var j in submodules) {
             var tmp = submodules[j].split('/');                
             var moduleName = tmp[tmp.length-1];
@@ -671,7 +671,7 @@ module.exports = {
         }
 
         // setup sub-module plugins
-        var submodules = glob.sync('node_modules/jbconnect-hook-*');
+        var submodules = glob.sync('node_modules/*-jbconnect-hook');
         for(var j in submodules) {
             var tmp = submodules[j].split('/');                
             var moduleName = tmp[tmp.length-1];
@@ -714,7 +714,7 @@ module.exports = {
      * @param {object} params - eg. ``{app: <app-object>,express: <express-object>}``
      * @param {string} module - the module name (ie. ``"jblast"``)
      * @param {string} route - the route (ie. ``"/jbrowse/plugins/JBlast"``)
-     * @param {string} target - the target (ie ``"/var/www/html/jbconnect/node_modules/jbconnect-hook-jblast/plugins/JBlast"``)
+     * @param {string} target - the target (ie ``"/var/www/html/jbconnect/node_modules/jblast-jbconnect-hook/plugins/JBlast"``)
      * 
      */
     addPluginRoute: function(params,module,route,target) {
