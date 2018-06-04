@@ -104,8 +104,8 @@
 var fs = require("fs-extra");
 var approot = require("app-root-path");
 
-var phantomjs = require('phantomjs-prebuilt');
-var binPath = phantomjs.path;
+var phantomjs = null;// = require('phantomjs-prebuilt');
+var binPath = null;//phantomjs.path;
 
 module.exports = {
 
@@ -113,6 +113,8 @@ module.exports = {
         send_search_result:     'post'
     },
     init: function(params,cb) {
+        phantomjs = require('phantomjs-prebuilt');
+        binPath = phantomjs.path;
         return cb();
     },
     /**
