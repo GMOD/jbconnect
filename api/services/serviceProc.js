@@ -72,9 +72,10 @@ module.exports = {
             function _init() {
                 async.eachSeries(services, function(service,cb1) {
                     
-                    if (typeof(service.enable)!=='undefined' && service.disable===false)
+                    if (typeof(service.enable)!=='undefined' && service.enable===false) {
+                        sails.log.info("disabled service",service.name);
                         return cb1();
-                    
+                    }
                     var params = {
                         name:   service.name,
                         type:   service.type,
