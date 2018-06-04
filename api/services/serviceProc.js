@@ -72,7 +72,7 @@ module.exports = {
             function _init() {
                 async.eachSeries(services, function(service,cb1) {
                     
-                    if (typeof(service.disable)!=='undefined' && service.disable===true)
+                    if (typeof(service.enable)!=='undefined' && service.disable===false)
                         return cb1();
                     
                     var params = {
