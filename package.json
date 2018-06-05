@@ -61,7 +61,7 @@
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "rc": "1.1.6",
+    "rc": "^1.2.8",
     "redis": "^2.8.0",
     "redis-server": "0.0.3",
     "replaceall": "^0.1.6",
