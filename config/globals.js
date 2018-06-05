@@ -39,7 +39,7 @@ var g = {
 //        },
         // search job service registration
         services: {
-            //'serverSearchService': {name: 'serverSearchService',  type: 'service'},
+            'serverSearchService': {enable: false, name: 'serverSearchService',  type: 'service'},
             'nothingBurgerService': {name: 'nothingBurgerService',  type: 'service'}
         },
         
