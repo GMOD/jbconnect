@@ -1,68 +1,42 @@
-var sails = require('sails');
-var shell = require('shelljs');
+//var sails = require('sails');
+const shell = require('shelljs');
+const spork = require('spork');
+const sleep = require('sleep-promise');
+//spork(command, args, options);
+const jblib = require('../../api/services/jbutillib');
 
+let fmonitor = {};
+let pid = 0;
 
 before(function(client, done) {
+    console.log("resetting database...");
+    jblib.install_database(1);
+    jblib.zapRedis(done);
+    
+    let lifted = false;
     console.log("Lifting SAILS...");
-
-    
-    let params = {
-
-        // configuration for testing purposes
-        // If you want to use a different DB for testing, uncomment these and replace with your own DB info.
-        
-        connections: {
-          // Replace the following with whatever suits you.
-            localDb: {
-              adapter: 'sails-disk',
-              filePath: 'test/data/'
-            },
-            testMysql: {
-              adapter   : 'sails-mysql',
-              host      : 'localhost',
-              port      : 3306,
-              user      : 'mySQLUser',
-              password  : 'MyAwesomePassword',
-              database  : 'testDB'
-            }
-        },
-
-        models: {
-          connection: 'localDb',
-          migrate: 'drop'
+    fmonitor = spork('sails', ['lift'], {exit: true})
+    .on('stdout', function(data) {
+        if (data.indexOf('Active Job Monitor starting') >= 0) {
+            console.log(">> lift complete detected");
+            lifted = true;
         }
-        ,
-        policies: {
-            '*': true
-        }
-            
-    }; 
-    
-    params = {};
-    
-//    console.log("Using DB test/data/localDb.db");
-    if (shell.cp('test/data/localDiskDb.db','test/data/localDb.db').code !== 0) {
-      shell.echo('error copying test database');
-      shell.exit(1);
-    }
-    sails.lift(params, function(err) {
-        if (err) return done(err);
-        // here you can load fixtures, etc.
-        setTimeout(function() {
-            done(err, sails);
-        },2000);
     });
+    let t1 = setInterval(function(){
+        if (lifted) {
+            //console.log('fmonitor', fmonitor.childData);
+            pid = fmonitor.childData.pid;
+            clearInterval(t1);
+            done();
+        }
+    },500);
 });
 
 after(function(client,done) {
     console.log("Lowering SAILS...");
-    sails.lower(function() {
-        console.log("done lowering sails.");
-            done();
-            setTimeout(function() {
-                process.exit(1);
-            },2000);
-    });
+    if (pid) {
+        shell.exec('kill '+pid);
+    }
+    done();
 });
-
 
