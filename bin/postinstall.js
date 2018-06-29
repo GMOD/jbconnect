@@ -33,3 +33,6 @@ fs.copySync(approot+'/node_modules/jquery-ui-dist',targDir,{overwrite:true});
 fs.copySync(approot+'/node_modules/jquery.mb.extruder/css',targDir+'/mb.extruder',{overwrite:true});
 fs.copySync(approot+'/node_modules/jquery.mb.extruder/inc',targDir+'/mb.extruder',{overwrite:true});
 fs.copySync(approot+'/node_modules/jquery.mb.extruder/elements',targDir+'/elements',{overwrite:true});
+
+// install selenium
+shelljs.exec('./node_modules/selenium-standalone/bin/selenium-standalone install');
