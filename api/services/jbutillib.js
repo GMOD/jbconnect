@@ -556,10 +556,12 @@ module.exports = {
         }
 
         // setup sub-module plugins
-        var submodules = glob.sync('node_modules/*-jbconnect-hook');
+        console.log("injecting submodule plugins");
+        let submodules = glob.sync('node_modules/*-jbconnect-hook');
+        let subcount = 0;
         for(var j in submodules) {
-            var tmp = submodules[j].split('/');                
-            var moduleName = tmp[tmp.length-1];
+            let tmp = submodules[j].split('/');                
+            let moduleName = tmp[tmp.length-1];
 
             var items = fs.readdirSync(cwd+'/'+submodules[j]+'/plugins');
             for(var i in items) {
@@ -568,11 +570,14 @@ module.exports = {
                 let src = cwd+'/'+submodules[j]+'/plugins/'+items[i];
                 
                 _symlink(src,target);
+                subcount++;
             }
         }
+        console.log("submodule plutins: "+subcount);
         return count;
         
         function _symlink(src,target) {
+            console.log("_symlink",src,target);
             if (!fs.existsSync(target)) {
                 fs.symlinkSync(src,target,'dir');
                 console.log("Plugin inject:",target);
