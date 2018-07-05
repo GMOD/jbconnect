@@ -5,7 +5,7 @@ var assert = chai.assert;
 
 
 describe('ServiceModel', function() {
-
+    /*
     describe('#basic', function() {
         it('should check that find function returns no services', () => {
             return Service.find()
@@ -15,7 +15,7 @@ describe('ServiceModel', function() {
                 })
         });
     });
-
+    */
     describe("#service operations", () => {
         it('should be able to add a service with serviceProc', (done) => {
             let testWorkflowSvc = require('../../data/testWorkflowService');
