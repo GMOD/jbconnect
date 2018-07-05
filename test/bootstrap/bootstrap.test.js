@@ -1,10 +1,18 @@
+/*
+ * sails bootstrap for mocha
+ * 
+ *  "scripts": {
+ *    "test": "mocha test/bootstrap/bootstrap.test.js...
+ */
+
 var sails = require('sails');
 var shell = require('shelljs');
 
 
-before(function(client, done) {
+before(function(done) {
     console.log("Lifting SAILS...");
 
+    this.timeout(20000);
     
     let params = {
 
@@ -49,18 +57,19 @@ before(function(client, done) {
         if (err) return done(err);
         // here you can load fixtures, etc.
         setTimeout(function() {
-            done(err, sails);
+            console.log(">>>post timeout");
+            done();
         },2000);
     });
 });
 
-after(function(client,done) {
+after(function(done) {
     console.log("Lowering SAILS...");
     sails.lower(function() {
         console.log("done lowering sails.");
-            done();
-            setTimeout(function() {
-                process.exit(1);
-            },2000);
+            //done();
+            //setTimeout(function() {
+                //process.exit(0);
+            //},2000);
     });
 });
