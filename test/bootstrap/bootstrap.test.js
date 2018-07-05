@@ -67,9 +67,9 @@ after(function(done) {
     console.log("Lowering SAILS...");
     sails.lower(function() {
         console.log("done lowering sails.");
-            //done();
-            //setTimeout(function() {
+            setTimeout(function() {
+                done();
                 //process.exit(0);
-            //},2000);
+            },2000);
     });
 });
