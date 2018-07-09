@@ -14,4 +14,4 @@ It is a node.js, sails/express-based framework that enables:
 - Extensible Policy Engine
 - Basic job service enabling integration with third-party workflow engines like Galaxy
 
-[Setup and documentation](http://jbserver.readthedocs.io)
+[Setup and documentation](http://jbconnect.readthedocs.io)
