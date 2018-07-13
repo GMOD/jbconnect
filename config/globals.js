@@ -13,7 +13,6 @@
  * Note: globals defined in jbconnect take precedent over jbconnect-hook-* module globals.js definitions. 
  */
 
-var merge = require('deepmerge');
 var approot = require('app-root-path');
 var jbPath = approot + "/node_modules/@gmod/jbrowse/";
 var util = require(approot+"/api/services/utilFn");
