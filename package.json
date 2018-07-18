@@ -9,7 +9,8 @@
     "postinstall": "node ./bin/postinstall.js",
     "test": "mocha test/unit/**/*.test.js test/bootstrap/bootstrap.test.js",
     "e2e-test": "nightwatch -c test/nightwatch.json test/bootstrap/bootstrap-fork.test.js test/e2e",
-    "jblast-test": "nightwatch -c test/jblast/nightwatch.json test/bootstrap/bootstrap-fork.test.js test/jblast",
+    "xjblast-test": "nightwatch -c test/jblast/nightwatch.json test/bootstrap/bootstrap-fork.test.js test/jblast",
+    "jblast-test": "mocha test/jblast-int/**/*.test.js test/bootstrap/bootstrap.test.js",
     "gendocs": "node docs/gendocs_run.js",
     "phantomjs": "node node_modules/phantomjs-prebuilt/bin/phantomjs",
     "selenium-install": "selenium-standalone install"
@@ -89,10 +90,11 @@
     "jsdoc": "^3.5.4",
     "jsdoc-sphinx": "0.0.6",
     "minimist": "^1.2.0",
+    "mocha": "^5.2.0",
     "nightwatch": "^0.9.21",
     "selenium-standalone": "^6.15.1",
     "spork": "^0.3.2",
-    "supertest": "^3.0.0",
+    "supertest": "^3.1.0",
     "util": "^0.10.3"
   },
   "main": "app.js",

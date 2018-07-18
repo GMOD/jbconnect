@@ -5,8 +5,8 @@
  *    "test": "mocha test/bootstrap/bootstrap.test.js...
  */
 
-var sails = require('sails');
-var shell = require('shelljs');
+sails = require('sails');
+const shell = require('shelljs');
 
 
 before(function(done) {
@@ -40,9 +40,9 @@ before(function(done) {
           migrate: 'drop'
         }
         ,
-        policies: {
-            '*': true
-        }
+//        policies: {
+//            '*': true
+//        }
             
     }; 
     
@@ -69,7 +69,7 @@ after(function(done) {
         console.log("done lowering sails.");
             setTimeout(function() {
                 done();
-                //process.exit(0);
+                process.exit(0);  // not sure why this is needed.
             },2000);
     });
 });
