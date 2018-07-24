@@ -40,9 +40,9 @@ before(function(done) {
           migrate: 'drop'
         }
         ,
-//        policies: {
-//            '*': true
-//        }
+        policies: {
+            '*': true
+        }
             
     }; 
     

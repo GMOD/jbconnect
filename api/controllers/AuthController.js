@@ -211,7 +211,7 @@ var AuthController = {
         default:
           let params = req.allParams();
           //console.log(params);
-          sails.log.info("*** Login failure ***");
+          sails.log.error("*** Login failure ***");
           let redirectTo = '/login';
           if (params.next)
               redirectTo += '?next='+params.next;
