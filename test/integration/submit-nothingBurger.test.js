@@ -3,7 +3,6 @@
 
 const chai = require('chai')
 const chaiHttp = require('chai-http');
-
 chai.use(chaiHttp);
 
 const server = 'http://localhost:1337';
@@ -11,6 +10,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 
 describe('integration test', function(){
+    this.timeout(25000);
     it('login', function(done) {
         
         let app = sails.hooks.http.app;
@@ -47,33 +47,33 @@ describe('integration test', function(){
                         console.log('/loginstate error',err);
                         return done(err);
                      }
-                     done();
+                     setTimeout(function() {
+                         done();
+                     },20000);
                   });
               //done();
           });
     });
     it('submit nothing burger', function(done) {
         
-        //let app = sails.hooks.http.app;
-        //agent = chai.request.agent(app);
+        //this.timeout(25000);
+        console.log("Timeout for this test: 25sec");
 
         agent
           .post('/job/submit')
-//          .set('content-type', 'application/json; charset=utf-8')
           .send({
               'service': 'nothingBurgerService',
               'dataset':'sample_data/json/volvox'
           })
           .end((err,res,body) => {
-              console.log('/job/submit status',res.status);
-              expect(res).to.have.status(200);
-              if (err) {
-                console.log('login error',err);
-                return done(err);
-              }
-              console.log('/job/submit body',body);
-              //console.log('/job/submit res',res);
-              done();
+                console.log('/job/submit status',res.status);
+                expect(res).to.have.status(200);
+                if (err) {
+                  console.log('login error',err);
+                  return done(err);
+                }
+                console.log('/job/submit body',body);
+                setTimeout(done,20000);
           });
     });
     
