@@ -47,9 +47,7 @@ describe('integration test', function(){
                         console.log('/loginstate error',err);
                         return done(err);
                      }
-                     setTimeout(function() {
-                         done();
-                     },20000);
+                     done();
                   });
               //done();
           });
@@ -72,7 +70,9 @@ describe('integration test', function(){
                   console.log('login error',err);
                   return done(err);
                 }
-                console.log('/job/submit body',body);
+                console.log('/job/submit body',res.body);
+                let ret = res.body;
+                console.log("Job id=",ret.jobId);
                 setTimeout(done,20000);
           });
     });
