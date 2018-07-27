@@ -1,6 +1,3 @@
-//const request = require('supertest');
-//const session = require('supertest-session');
-
 const chai = require('chai')
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
@@ -14,7 +11,7 @@ describe('integration test', function(){
     it('login', function(done) {
         
         let app = sails.hooks.http.app;
-        agent = chai.request.agent(app);
+        agent = chai.request.agent(server);
 
         agent
           .post('/auth/local?next=/jbrowse')
