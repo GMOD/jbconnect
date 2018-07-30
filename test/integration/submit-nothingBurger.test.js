@@ -1,3 +1,4 @@
+const tlib = require('./test-lib');
 const chai = require('chai')
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
@@ -51,9 +52,6 @@ describe('integration test', function(){
     });
     it('submit nothing burger', function(done) {
         
-        //this.timeout(25000);
-        console.log("Timeout for this test: 25sec");
-
         agent
           .post('/job/submit')
           .send({
@@ -70,37 +68,16 @@ describe('integration test', function(){
                 console.log('/job/submit body',res.body);
                 let ret = res.body;
                 console.log("Job id=",ret.jobId);
-                waitForJobComplete(ret.jobId,function(complete,err){
-                    done();
+                
+                let t = setTimeout(function(){      // handle timeout if waitForJobComplete times out.
+                    done("function timeout");
+                },20000);
+                
+                tlib.waitForJobComplete(ret.jobId,function(complete,data){
+                    clearTimeout(t);
+                    if (!complete) return done(data);
+                    return done();
                 });
-                setTimeout(done,20000);
           });
-          function waitForJobComplete(jobId,complete) {
-              
-            let loop = setInterval(function() {
-                agent.get("/job/get?id="+jobId)
-                  .set('content-type','application/json; charset=utf-8')
-                  .end((err,res,body) => {
-                      if (err) 
-                         return complete(0,err);
-                      
-                      console.log(res.body);
-                      var job = res.body;
-                      if (job[0].id !== jobId)
-                          return complete(0,"job "+jobId+" does not exist");
-                     
-                      if (job[0].state === "complete"){
-                          clearInterval(loop);
-                          return complete(true);
-                      }
-                      else if (job[0].state === "error"){
-                          clearInterval(loop);
-                          console.log("*** job completed in error");
-                          return complete(0,"job completed in error");
-                      }
-                  });
-            },3000);
-          }
     });
-    
 });
