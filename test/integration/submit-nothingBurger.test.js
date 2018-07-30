@@ -11,7 +11,7 @@ describe('integration test', function(){
     this.timeout(25000);
     it('login', function(done) {
         
-        let app = sails.hooks.http.app;
+        //let app = sails.hooks.http.app;
         agent = chai.request.agent(server);
 
         agent
