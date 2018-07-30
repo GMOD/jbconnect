@@ -7,7 +7,7 @@
     "debug": "node debug app.js",
     "start": "node app.js",
     "postinstall": "node ./bin/postinstall.js",
-    "test": "mocha test/unit/**/*.test.js mocha test/integration/**/*.test.js test/bootstrap/bootstrap.test.js",
+    "test": "mocha test/unit/**/*.test.js test/integration/**/*.test.js test/bootstrap/bootstrap.test.js",
     "e2e-test": "nightwatch -c test/nightwatch.json test/bootstrap/bootstrap-fork.test.js test/e2e",
     "xjblast-test": "nightwatch -c test/jblast/nightwatch.json test/bootstrap/bootstrap-fork.test.js test/jblast",
     "jblast-test": "mocha test/jblast-int/**/*.test.js test/bootstrap/bootstrap.test.js",
