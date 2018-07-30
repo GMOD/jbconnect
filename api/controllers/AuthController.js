@@ -223,7 +223,10 @@ var AuthController = {
       if (err || !user) {
         return tryAgain(challenges);
       }
-
+      if (typeof req.login === 'undefined') {
+          sails.log.error("req.login undefined - passport.callback");
+          return;
+      }
       req.login(user, function (err) {
         if (err) {
           return tryAgain(err);
