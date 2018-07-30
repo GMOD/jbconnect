@@ -24,30 +24,19 @@ describe('integration test', function(){
           })
           .type('form')
           .end((err,res,body) => {
-                console.log('/service/get status',res.status);
-                //console.log('login response',res);
-                //console.log('session id',res.sessionID);
                 expect(res).to.have.status(200);
-                if (err) {
-                  console.log('login error',err);
-                  return done(err);
-                }
+        
                 agent
                   .get('/loginstate')
                   .set('content-type','application/json; charset=utf-8')
                   .end((err,res,body) => {
-                     console.log('/service/get status',res.status);
-                     //console.log('/loginstate response',res);
                      console.log('/loginstate body',res.body);
-                     expect(res).to.have.status(200);
+                     expect(res).to.have.status(200, '/loginstate status 200');
+                     expect(res.body.loginstate).to.equal(true, 'login state true');
+                     expect(res.body.user.username).to.equal('juser','login username is juser');
 
-                     if (err) {
-                        console.log('/loginstate error',err);
-                        return done(err);
-                     }
                      done();
                   });
-              //done();
           });
     });
     it('submit nothing burger', function(done) {
@@ -61,22 +50,34 @@ describe('integration test', function(){
           .end((err,res,body) => {
                 console.log('/job/submit status',res.status);
                 expect(res).to.have.status(200);
-                if (err) {
-                  console.log('login error',err);
-                  return done(err);
-                }
                 console.log('/job/submit body',res.body);
-                let ret = res.body;
-                console.log("Job id=",ret.jobId);
+                let jobId = res.body.jobId;
+                console.log("Job id=",jobId);
                 
-                let t = setTimeout(function(){      // handle timeout if waitForJobComplete times out.
-                    done("function timeout");
-                },20000);
-                
-                tlib.waitForJobComplete(ret.jobId,function(complete,data){
-                    clearTimeout(t);
-                    if (!complete) return done(data);
-                    return done();
+                tlib.waitForJobComplete(jobId,function(complete,data){
+                    
+                    expect(complete).to.equal(true);
+                    expect(data.state).to.equal('complete','job completed');
+                    
+                    let trackLabel = data.data.track.label;
+                    
+                    expect(trackLabel).to.equal("NOTHING_"+jobId);
+                    
+                    agent.get("/track/get?lkey="+trackLabel)
+                      .set('content-type','application/json; charset=utf-8')
+                      .end((err,res,body) => {
+                          let trackData = res.body[0];
+                          let trackLabelShould = 'NOTHING_'+jobId;
+                          console.log("track data",trackData);
+                          
+                          expect(res).to.have.status(200,'/track/get status 200');
+                          expect(trackData.trackData.nothing).to.equal(true,'the track nothing field must be true');
+                          expect(trackData.trackData.label).to.equal(trackLabelShould,'track label confirmed '+trackLabelShould);
+                          expect(trackData.lkey).to.equal(trackLabelShould,'track label confirmed '+trackLabelShould);
+
+                          done();
+                     });
+                    
                 });
           });
     });
