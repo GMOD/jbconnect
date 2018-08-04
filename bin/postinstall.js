@@ -6,10 +6,10 @@ var jbutillib = require('../api/services/jbutillib.js');
 // install default database, don't overwrite if it exists.  Use jbutil --dbreset to reset to default.
 jbutillib.install_database();
 
-// don't copy config.js if it already exists.
-let configjs = approot+"/config.js";
+// don't copy jbconnect.config.js if it already exists.
+let configjs = approot+"/jbconnect.config.js";
 if (!fs.existsSync(configjs)) {
-    shelljs.cp(approot+'/bin/config.js',configjs);
+    shelljs.cp(approot+'/bin/jbconnect.config.js',configjs);
 }
 
 // run jbrowse jb_setup.js to setup sample data

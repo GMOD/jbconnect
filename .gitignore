@@ -125,6 +125,7 @@ data
 blastdb
 blastbin
 config.js
+jbconnect.config.js
 workflows
 assets/jblib
 test/data/localDb.db
