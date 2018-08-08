@@ -1,4 +1,4 @@
-const tlib = require('./test-lib');
+const tlib = require('../share/test-lib');
 const chai = require('chai')
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
