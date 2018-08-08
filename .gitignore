@@ -129,3 +129,4 @@ jbconnect.config.js
 workflows
 assets/jblib
 test/data/localDb.db
+/tmp
