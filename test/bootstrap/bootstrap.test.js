@@ -12,7 +12,7 @@ const shell = require('shelljs');
 before(function(done) {
     console.log("Lifting SAILS...");
 
-    this.timeout(20000);
+    this.timeout(60000);
     
     let params = {
 
