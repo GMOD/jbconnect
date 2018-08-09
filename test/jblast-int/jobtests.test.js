@@ -23,13 +23,13 @@ describe('integration test', function(){
               'submit':'login'
           })
           .type('form')
-          .end((err,res,body) => {
+          .end((err,res) => {
                 expect(res).to.have.status(200);
         
                 agent
                   .get('/loginstate')
                   .set('content-type','application/json; charset=utf-8')
-                  .end((err,res,body) => {
+                  .end((err,res) => {
                      console.log('/loginstate body',res.body);
                      expect(res).to.have.status(200, '/loginstate status 200');
                      expect(res.body.loginstate).to.equal(true, 'login state true');
@@ -43,7 +43,7 @@ describe('integration test', function(){
         agent
             .get('/service/exec/get_workflows')
             .set('content-type','application/json; charset=utf-8')
-            .end((err,res,body) => {
+            .end((err,res) => {
                 expect(res).to.have.status(200, 'get_blastdata api status 200');
                 let data = res.body;
                 console.log("return data: ",data);
@@ -56,7 +56,7 @@ describe('integration test', function(){
         agent
             .get('/service/exec/get_blastdata?asset=jblast_sample&dataset=sample_data/json/volvox')
             .set('content-type','application/json; charset=utf-8')
-            .end((err,res,body) => {
+            .end((err,res) => {
                 expect(res).to.have.status(200, 'get_blastdata api status 200');
                 let data = res.body;
                 console.log("return data: ",data);
@@ -65,20 +65,10 @@ describe('integration test', function(){
                 done();
             });
     });
-    it('get_trackdata api',function(done) {
-        agent
-            .get('/service/exec/get_trackdata?asset=jblast_sample&dataset=sample_data/json/volvox')
-            .set('content-type','text/plain; charset=utf-8')
-            .end((err,res,body) => {
-                expect(res).to.have.status(200, 'get_trackdata status 200');
-                console.log("return data: ",res.text);
-                done();
-            });
-    });
     it('lookup_accession api',function(done) {
         agent
             .get('/service/exec/lookup_accession/?accession=L08874')
-            .end((err,res,body) => {
+            .end((err,res) => {
                 expect(res).to.have.status(200, '/lookup_accession status 200');
                 console.log("return data: ",res.body);
                 done();
@@ -87,7 +77,7 @@ describe('integration test', function(){
     it('get_hit_details api',function(done) {
         agent
             .get('/service/exec/get_hit_details/?asset=jblast_sample&dataset=sample_data/json/volvox&hitkey=gi-310775-gb-L08874-1-SYNPHSCSKV-1')
-            .end((err,res,body) => {
+            .end((err,res) => {
                 expect(res).to.have.status(200, '/lookup_accession status 200');
                 let data = res.body;
 
@@ -110,11 +100,58 @@ describe('integration test', function(){
               asset: 'jblast_sample',
               dataset: 'sample_data/json/volvox'
           })
-          .end((err,res,body) => {
+          .end((err,res) => {
             expect(res).to.have.status(200, '/lookup_accession status 200');
             console.log("return data: ",res.body);
-            done();
+
+                agent
+                .post('/service/exec/set_filter')
+                .send({
+                    filterParams: { gaps: { val: '8.45' }},
+                    asset: 'jblast_sample',
+                    dataset: 'sample_data/json/volvox'
+                })
+                .end((err,res) => {
+                expect(res).to.have.status(200, '/lookup_accession status 200');
+                console.log("return data: ",res.body);
+
+                    agent
+                    .post('/service/exec/set_filter')
+                    .send({
+                        filterParams: { identity: { val: '83.5' }},
+                        asset: 'jblast_sample',
+                        dataset: 'sample_data/json/volvox'
+                    })
+                    .end((err,res) => {
+                    expect(res).to.have.status(200, '/lookup_accession status 200');
+                    console.log("return data: ",res.body);
+
+                        agent
+                        .post('/service/exec/set_filter')
+                        .send({
+                            filterParams: { evalue: { val: 5.697149473041933e-40 }},
+                            asset: 'jblast_sample',
+                            dataset: 'sample_data/json/volvox'
+                        })
+                        .end((err,res) => {
+                        expect(res).to.have.status(200, '/lookup_accession status 200');
+                        console.log("return data: ",res.body);
+                        done();
+                        });
+                    });
+                });
           });
+    });
+    // this relies on the previous set_filter test
+    it('get_trackdata api',function(done) {
+        agent
+            .get('/service/exec/get_trackdata?asset=jblast_sample&dataset=sample_data/json/volvox')
+            .set('content-type','text/plain; charset=utf-8')
+            .end((err,res) => {
+                expect(res).to.have.status(200, 'get_trackdata status 200');
+                console.log("return data: ",res.text);
+                done();
+            });
     });
     it('submit blast', function(done) {
         
@@ -126,7 +163,7 @@ describe('integration test', function(){
               'region': '>ctgA ctgA:23755..25049 length=1295\ntcccatagcccgccgaccgggtctgactcaactgtgttttcgctatcccaggctagcacttctattctttgttacgtc\ncagtcatagtgttactatagggtaattttagtcatagtagacggccgctttttcgtatggcccgagaccgtccaccgg\nctacccaattaagtcacatccggatcttgggtctagatattcctatcgaaaatagtctcgccgcctcactgcgtagtt\ncagggggcgtcacacttgttcgcggcttttcctcatgggatctttacccgatggttgatgcaataaatgtctacaccg\ngactggcgtgtccgagacgactttatacacgtgtgacgagtagatcagatcgtacgaatggtctgtctcacctatccc\nagtgggaggatggaaaacactcctgcctaccgggtcgaattatttacgcgtgttacaatatgtaatttagaaaaaggg\nattgctggtcgatgcgtctccaagggattttttatctaaaagcatccttttgggtgtactctgatcgcacgtcgcaga\ncagcagtgggttttgacgcagtccgtaggcccacagactcgtttgttgtttattaatcccaggggagcgttgaagcca\ncacctattctgtagctgtttgaaaggtagctagcccggatattactcaaggtgactcccttcagaatcacacgtcgct\nggagtcgccacagggtggcatatacgagtgatagagcaccttactttcgaggtagcggtacattagtgcaacgatgaa\ncccactatagtcttagtgatttcatgttttacttacgcgaaaacgtggggttttgtcaacacgtatacgttgaatgca\ncatgcctcatcctaaactgatgcactgccacaagtctgaaagagcgacagtctgcaacatagcggaaggttacgccca\nagccagtggtgatcccccataagcttggagggactccccttagcgttggatgtctttgccccagcggcctcggtgtac\ngggttctccaccccactatggtttggaactatgaagaggtacggcaacctacccgaggcaccaaatcgtgaacctacg\ncctatatatacggatagcagggtatccattcttaccatgagctcgtaaaccactccgctgaattcgatgggctttggc\ngcacatcaccgtttctatcacagatctgtcaacggaatctaacgctatttactcggcgcacacagatcggaaaaccca\nactgtggcgcgggacggactccaggaatcgttacgcgttatcacctt',
               'workflow':'NCBI.blast.workflow.js'
           })
-          .end((err,res,body) => {
+          .end((err,res) => {
                 console.log('/job/submit status',res.status);
                 expect(res).to.have.status(200);
                 console.log('/job/submit body',res.body);
@@ -136,27 +173,28 @@ describe('integration test', function(){
                 tlib.waitForJobComplete(jobId,function(complete,data){
                     
                     expect(complete).to.equal(true);
-                    expect(data.state).to.equal('complete','job completed');
+                    expect(data.state).to.equal('complete','job should be completed');
                     
-                    let trackLabel = data.data.track.label;
-                    
-                    done();
-                    // expect(trackLabel).to.equal("NOTHING_"+jobId);
-                    
-                    // agent.get("/track/get?lkey="+trackLabel)
-                    //   .set('content-type','application/json; charset=utf-8')
-                    //   .end((err,res,body) => {
-                    //       let trackData = res.body[0];
-                    //       let trackLabelShould = 'NOTHING_'+jobId;
-                    //       console.log("track data",trackData);
-                          
-                    //       expect(res).to.have.status(200,'/track/get status 200');
-                    //       expect(trackData.trackData.nothing).to.equal(true,'the track nothing field must be true');
-                    //       expect(trackData.trackData.label).to.equal(trackLabelShould,'track label confirmed '+trackLabelShould);
-                    //       expect(trackData.lkey).to.equal(trackLabelShould,'track label confirmed '+trackLabelShould);
+                    expect(data.data.track,"should have a result track").to.not.be.undefined;
 
-                    //       done();
-                    //  });
+                    let trackLabel = data.data.track.label;
+                    console.log("Track Label = "+trackLabel);
+                    
+                    //done();
+                    
+                    agent.get("/track/get?lkey="+trackLabel)
+                      .set('content-type','application/json; charset=utf-8')
+                      .end((err,res,body) => {
+                          let trackData = res.body[0];
+                          console.log("track data",trackData);
+                          
+                          expect(res).to.have.status(200,'/track/get status 200');
+                          expect(trackData.trackData.jblast).to.equal(1,'the new track jblast field should be 1');
+                          expect(trackData.trackData.label).to.equal(trackLabel,'track label confirmed '+trackLabel);
+                          expect(trackData.lkey).to.equal(trackLabel,'track label confirmed '+trackLabel);
+
+                          done();
+                     });
                     
                 });
           });
