@@ -29,6 +29,7 @@
                 "999999",
                 "--colors",
                 "${workspaceRoot}/test/bootstrap/bootstrap.test.js",
+                "${workspaceRoot}/test/unit/**/*.test.js",
                 "${workspaceRoot}/test/integration/**/*.test.js"
             ],
             "internalConsoleOptions": "openOnSessionStart"
