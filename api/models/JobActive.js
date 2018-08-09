@@ -67,6 +67,7 @@ module.exports = {
             if (sails.exiting) {
                 console.log("clear interval _activeMonitor");
                 clearInterval(t1);
+                return;
             }
             
             //console.log("active mon");
