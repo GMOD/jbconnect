@@ -45,7 +45,10 @@ describe('integration test', function(){
             .set('content-type','application/json; charset=utf-8')
             .end((err,res,body) => {
                 expect(res).to.have.status(200, 'get_blastdata api status 200');
-                console.log("return data: ",res.body);
+                let data = res.body;
+                console.log("return data: ",data);
+                expect(data[0].id).to.equal('NCBI.blast.workflow.js','id[0] is not NCBI.blast.workflow.js');
+                expect(data[1].id).to.equal('Sim.blast.workflow.js','id[1] is Sim.blast.workflow.js');
                 done();
             });
     });
@@ -55,16 +58,20 @@ describe('integration test', function(){
             .set('content-type','application/json; charset=utf-8')
             .end((err,res,body) => {
                 expect(res).to.have.status(200, 'get_blastdata api status 200');
-                console.log("return data: ",res.body);
+                let data = res.body;
+                console.log("return data: ",data);
+                expect(data.result).to.equal('success',"result is not 'success'");
+                expect(data.hits).to.equal(792,'number of hits is not 792');
                 done();
             });
     });
     it('get_trackdata api',function(done) {
         agent
             .get('/service/exec/get_trackdata?asset=jblast_sample&dataset=sample_data/json/volvox')
+            .set('content-type','text/plain; charset=utf-8')
             .end((err,res,body) => {
                 expect(res).to.have.status(200, 'get_trackdata status 200');
-                console.log("return data: ",res.body);
+                console.log("return data: ",res.text);
                 done();
             });
     });
