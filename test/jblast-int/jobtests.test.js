@@ -52,19 +52,6 @@ describe('integration test', function(){
                 done();
             });
     });
-    it('get_blastdata api',function(done) {
-        agent
-            .get('/service/exec/get_blastdata?asset=jblast_sample&dataset=sample_data/json/volvox')
-            .set('content-type','application/json; charset=utf-8')
-            .end((err,res) => {
-                expect(res).to.have.status(200, 'get_blastdata api status 200');
-                let data = res.body;
-                console.log("return data: ",data);
-                expect(data.result).to.equal('success',"result is not 'success'");
-                expect(data.hits).to.equal(792,'number of hits is not 792');
-                done();
-            });
-    });
     it('lookup_accession api',function(done) {
         agent
             .get('/service/exec/lookup_accession/?accession=L08874')
@@ -101,8 +88,9 @@ describe('integration test', function(){
               dataset: 'sample_data/json/volvox'
           })
           .end((err,res) => {
-            expect(res).to.have.status(200, '/lookup_accession status 200');
-            console.log("return data: ",res.body);
+            expect(res).to.have.status(200, '/set_filter score status 200');
+            expect(res.body.result).to.equal('success',"result is not 'success'");
+            console.log('/set_filter-score status',res.status);
 
                 agent
                 .post('/service/exec/set_filter')
@@ -112,7 +100,8 @@ describe('integration test', function(){
                     dataset: 'sample_data/json/volvox'
                 })
                 .end((err,res) => {
-                expect(res).to.have.status(200, '/lookup_accession status 200');
+                expect(res).to.have.status(200, '/set_filter gaps status 200');
+                expect(res.body.result).to.equal('success',"result is not 'success'");
                 console.log("return data: ",res.body);
 
                     agent
@@ -123,7 +112,8 @@ describe('integration test', function(){
                         dataset: 'sample_data/json/volvox'
                     })
                     .end((err,res) => {
-                    expect(res).to.have.status(200, '/lookup_accession status 200');
+                    expect(res).to.have.status(200, '/set_filter identity status 200');
+                    expect(res.body.result).to.equal('success',"result is not 'success'");
                     console.log("return data: ",res.body);
 
                         agent
@@ -134,13 +124,29 @@ describe('integration test', function(){
                             dataset: 'sample_data/json/volvox'
                         })
                         .end((err,res) => {
-                        expect(res).to.have.status(200, '/lookup_accession status 200');
+                        expect(res).to.have.status(200, '/set_filter evalue status 200');
+                        expect(res.body.result).to.equal('success',"result is not 'success'");
                         console.log("return data: ",res.body);
                         done();
                         });
                     });
                 });
           });
+    });
+    // this relies on the previous set_filter test
+    it('get_blastdata api',function(done) {
+        agent
+            .get('/service/exec/get_blastdata?asset=jblast_sample&dataset=sample_data/json/volvox')
+            .set('content-type','application/json; charset=utf-8')
+            .end((err,res) => {
+                expect(res).to.have.status(200, 'get_blastdata api status 200');
+                let data = res.body;
+                console.log("return data: ",data);
+                expect(data.result).to.equal('success',"result is not 'success'");
+                expect(data.hits).to.equal(792,'number of hits is not 792');
+                expect(data.filteredHits).to.equal(22,'filtereed hits is not 22');
+                done();
+            });
     });
     // this relies on the previous set_filter test
     it('get_trackdata api',function(done) {
@@ -150,6 +156,9 @@ describe('integration test', function(){
             .end((err,res) => {
                 expect(res).to.have.status(200, 'get_trackdata status 200');
                 console.log("return data: ",res.text);
+                let lines = res.text.split('\n');
+                console.log(">> string length",lines.length);
+                expect(lines.length).to.equal(23,"result is not 23");
                 done();
             });
     });
