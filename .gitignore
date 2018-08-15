@@ -119,14 +119,16 @@ nbproject
 .vscode/
 
 #jbconnect specific
-workflows
-utils
-data
-blastdb
-blastbin
-config.js
-jbconnect.config.js
-workflows
-assets/jblib
-test/data/localDb.db
+/workflows
+/utils
+/data
+/blastdb
+/blastbin
+/config.js
+/jbconnect.config.js
+/workflows
+/assets/jblib
+/test/data/localDb.db
 /tmp
+/test/jblast
+/test/jblast-int
