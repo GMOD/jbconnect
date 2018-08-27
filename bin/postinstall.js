@@ -6,10 +6,10 @@ var jbutillib = require('../api/services/jbutillib.js');
 // install default database, don't overwrite if it exists.  Use jbutil --dbreset to reset to default.
 jbutillib.install_database();
 
-// don't copy config.js if it already exists.
-let configjs = approot+"/config.js";
+// don't copy jbconnect.config.js if it already exists.
+let configjs = approot+"/jbconnect.config.js";
 if (!fs.existsSync(configjs)) {
-    shelljs.cp(approot+'/bin/config.js',configjs);
+    shelljs.cp(approot+'/bin/jbconnect.config.js',configjs);
 }
 
 // run jbrowse jb_setup.js to setup sample data
@@ -33,3 +33,13 @@ fs.copySync(approot+'/node_modules/jquery-ui-dist',targDir,{overwrite:true});
 fs.copySync(approot+'/node_modules/jquery.mb.extruder/css',targDir+'/mb.extruder',{overwrite:true});
 fs.copySync(approot+'/node_modules/jquery.mb.extruder/inc',targDir+'/mb.extruder',{overwrite:true});
 fs.copySync(approot+'/node_modules/jquery.mb.extruder/elements',targDir+'/elements',{overwrite:true});
+
+// copy special utils
+console.log("Copying utils...");
+targDir = approot+"/utils";
+fs.ensureDirSync(targDir);
+shelljs.cp(approot+'/bin/utils/jb_setup.js',targDir+'/jb_setup.js');
+
+
+// install selenium
+shelljs.exec('./node_modules/selenium-standalone/bin/selenium-standalone install');

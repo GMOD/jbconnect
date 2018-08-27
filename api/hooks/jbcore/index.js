@@ -47,8 +47,7 @@ module.exports = function (sails) {
 
             sails.on('hook:orm:loaded', function() {
             //sails.on('lifted', function() {
-                //sails.log(">>> jbcore sails lifted");
-                
+
                 setTimeout(function() {
                     Service.Init({},function() {
 
@@ -65,11 +64,6 @@ module.exports = function (sails) {
                     });
                 },1000);
 
-                // Inject css/js into the active JBrowse index.html
-                var config = sails.config.globals.jbrowse;
-                //console.log("config",config);
-                //jbutillib.exec_setupindex(config);
-                //jbutillib.exec_setupPlugins(config);                
                 return cb();
                 
             });

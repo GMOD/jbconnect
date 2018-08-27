@@ -55,7 +55,7 @@ module.exports = {
             }
             kJob.data.name = nothingName+kJob.data.count--;
             kJob.update(function() {});
-            console.log(kJob.data.name);
+            sails.log.info(kJob.data.name);
         },1000);
     },
     _postProcess: function(kJob) {

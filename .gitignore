@@ -117,3 +117,19 @@ nbproject
 .idea
 .node_history
 .vscode/
+
+#jbconnect specific
+/workflows
+/utils
+/data
+/blastdb
+/blastbin
+/config.js
+/jbconnect.config.js
+/workflows
+/assets/jblib
+/test/data/localDb.db
+/tmp
+/test/jblast
+/test/jblast-int
+/docs/genapi-rst

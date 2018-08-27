@@ -4,11 +4,11 @@ var merge = require('deepmerge');
 
 module.exports = {
     /*
-     * returns the config, merged with the contents of config.js
+     * returns the config, merged with the contents of jbconnect.config.js
      */
     mergeConfigJs(config) {
-        // merge approot/config.js
-        let config_js = approot+"/config.js";
+        // merge approot/jbconnect.config.js
+        let config_js = approot+"/jbconnect.config.js";
         if (fs.existsSync(config_js)) {
             let conf = require(config_js);
             config = merge(config,conf);

@@ -1,5 +1,5 @@
 {
-    "src_folders" : ["test/bootstrap","test/e2e"],
+    "xxsrc_folders" : ["test/bootstrap","test/integration","test/e2e"],
     "output_folder" : "test/reports",
     "page_objects_path" : "",
     "custom_assertions_path" : "",
@@ -40,13 +40,13 @@
 
     "selenium" : {
         "start_process" : true,
-        "server_path" : "node_modules/selenium-standalone/.selenium/selenium-server/3.8.1-server.jar",
+        "server_path" : "node_modules/selenium-standalone/.selenium/selenium-server/3.12.0-server.jar",
         "log_path" : "./test/reports",
         "host" : "127.0.0.1",
         "port" : 4444,
         "cli_args" : {
-            "webdriver.chrome.driver" : "node_modules/selenium-standalone/.selenium/chromedriver/2.37-x64-chromedriver",
-            "webdriver.gecko.driver" : "node_modules/selenium-standalone/.selenium/geckodriver/0.20.0-x64-geckodriver",
+            "webdriver.chrome.driver" : "node_modules/selenium-standalone/.selenium/chromedriver/2.40-x64-chromedriver",
+            "webdriver.gecko.driver" : "node_modules/selenium-standalone/.selenium/geckodriver/0.20.1-x64-geckodriver",
             "webdriver.edge.driver" : ""
         }
     },

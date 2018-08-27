@@ -376,7 +376,7 @@ The returned ``data`` is a JSON array of *job* objects.
         },
         "name": "ttt search",
         "asset": "113_search_1513478281528",
-        "path": "/var/www/html/4jbserver/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
+        "path": "/var/www/html/jbconnect/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
         "outfile": "113_search_1513478281528.gff",
         "track": {
           "maxFeatureScreenDensity": 16,
@@ -871,7 +871,7 @@ Kue event messages are stuffed into a FIFO `_eventList` and dequeued with `_proc
         },
         "name": "ttt search",
         "asset": "113_search_1513478281528",
-        "path": "/var/www/html/4jbserver/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
+        "path": "/var/www/html/jbconnect/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
         "outfile": "113_search_1513478281528.gff",
         "track": {
           "maxFeatureScreenDensity": 16,
@@ -1684,90 +1684,6 @@ Ref: `Sails Policies Concepts <http://sailsjs.org/#!/documentation/concepts/Poli
 
    <hr style="border-color: black; border-width: 2px;">
 
-Module: ``services/jbRouteUtil``
-********************************
-
-
-.. contents:: Local Navigation
-   :local:
-
-   
-Description
-===========
-
-This module provides functions to inject plugin routes and library routes
-that are accessible by the client side.
-
-
-.. _module-services_jbRouteUtil.addPluginRoutes:
-
-
-Function: ``addPluginRoutes``
-=============================
-
-inject client-side plugins into the clinet plugin directory as routes.
-handles submodules plugins too.
-
-.. js:function:: addPluginRoutes(params)
-
-    
-    :param object params: eg. ``{app: <app-object>,express: <express-object>}``
-    
-.. _module-services_jbRouteUtil.addLibRoutes:
-
-
-Function: ``addLibRoutes``
-==========================
-
-Add library routes
-
-.. js:function:: addLibRoutes(params)
-
-    
-    :param object params: eg. ``{app: <app-object>,express: <express-object>}``
-    
-.. _module-services_jbRouteUtil.addRoute:
-
-
-Function: ``addRoute``
-======================
-
-Add a route
-
-.. js:function:: addRoute(params, module, route, target)
-
-    
-    :param object params: eg. ``{app: <app-object>,express: <express-object>}``
-    :param string module: the module name (ie. ``"jquery"``)
-    :param string route: the route (ie. ``"/jblib/jquery"``)
-    :param string target: the target (ie ``"/var/www/html/3jbserver/node_modules/jquery"``)
-    
-.. _module-services_jbRouteUtil.addPluginRoute:
-
-
-Function: ``addPluginRoute``
-============================
-
-Add a plugin route
-
-.. js:function:: addPluginRoute(params, module, route, target)
-
-    
-    :param object params: eg. ``{app: <app-object>,express: <express-object>}``
-    :param string module: the module name (ie. ``"jblast"``)
-    :param string route: the route (ie. ``"/jbrowse/plugins/JBlast"``)
-    :param string target: the target (ie ``"/var/www/html/3jbserver/node_modules/jbh-jblast/plugins/JBlast"``)
-    
-
-
-
-
-
-
-.. raw:: html
-
-   <hr style="border-color: black; border-width: 2px;">
-
 Module: ``services/jbutillib``
 ******************************
 
@@ -1788,7 +1704,7 @@ Support library for jbutil command
 Function: ``doExtScripts``
 ==========================
 
-Traverse ``jbutils-ext.js`` of submodules (jbh-*)
+Traverse ``jbutils-ext.js`` of submodules (*-jbconnect-hook)
 
 .. js:function:: doExtScripts(cb)
 
@@ -1802,53 +1718,73 @@ Function: ``getMergedConfig``
 =============================
 
 Returned merged jbrowse config.  
-Merged from ``jbh-*`` ``config/globals.js``, local ``config/globals.js``
+Merged from ``*-jbconnect-hook`` ``config/globals.js``, local ``config/globals.js``
 
 .. js:function:: getMergedConfig()
 
     
     
-.. _module-services_jbutillib.buildHtml:
+.. _module-services_jbutillib.getClientDependencies:
 
 
-Function: ``buildHtml``
-=======================
+Function: ``getClientDependencies``
+===================================
 
-Builds an index.html based on ``/bin/index_tesmplate.html``.  It will
-inject web includes .js and .css references.  These are defined in the config file,
-jbrowse.webIncludes section.
 
-.. js:function:: buildHtml()
+
+.. js:function:: getClientDependencies(filter)
 
     
-    :return string: content of the html file.
+    :param string filter: (ie. ".css" or ".js")
+    :return Array: the aggregated client dependencies from webIncludes.
     
-.. _module-services_jbutillib.exec_setupindex:
+.. _module-services_jbutillib.injectIncludesIntoHtml:
 
 
-Function: ``exec_setupindex``
-=============================
+Function: ``injectIncludesIntoHtml``
+====================================
 
-Writes the index.html file. A backup of the original index.html will be made.
+Inject css/js into JBrowse index.html
 
-.. js:function:: exec_setupindex(config)
+.. js:function:: injectIncludesIntoHtml()
 
     
-    :param object config: Writes the index.html file. A backup of the original index.html will be made.
-    :return undefined: Writes the index.html file. A backup of the original index.html will be made.
     
-.. _module-services_jbutillib.exec_setupPlugins:
+.. _module-services_jbutillib.setupPlugins:
 
 
-Function: ``exec_setupPlugins``
-===============================
+Function: ``setupPlugins``
+==========================
 
 add plugins to ``trackList.json``.
 
-.. js:function:: exec_setupPlugins(config)
+.. js:function:: setupPlugins()
 
     
-    :param object config: reference the configuration.
+    
+.. _module-services_jbutillib.removeIncludesFromHtml:
+
+
+Function: ``removeIncludesFromHtml``
+====================================
+
+remove css/js from JBrowse index.html
+
+.. js:function:: removeIncludesFromHtml()
+
+    
+    
+.. _module-services_jbutillib.unsetupPlugins:
+
+
+Function: ``unsetupPlugins``
+============================
+
+remove plugins from ``trackList.json``.
+
+.. js:function:: unsetupPlugins()
+
+    
     
 .. _module-services_jbutillib.safeCopy:
 
@@ -1894,7 +1830,135 @@ Install the sails database from ``./bin``.
     
     :param int overwrite: 0, do not overwrite db.  1, overwrite db.
     
+.. _module-services_jbutillib.zapRedis:
 
+
+Function: ``zapRedis``
+======================
+
+cleanout redis database
+
+.. js:function:: zapRedis()
+
+    
+    
+.. _module-services_jbutillib.injectPlugins:
+
+
+Function: ``injectPlugins``
+===========================
+
+Inject client-side plugins into the JBrowse plugins dir
+
+Note: as of JBrowse 1.13.0, you must run `npm run build` after this function, webpack build.
+
+.. js:function:: injectPlugins()
+
+    
+    :return injectPlugins(): (int) count - count of plugins injected.
+    
+.. _module-services_jbutillib.removePlugins:
+
+
+Function: ``removePlugins``
+===========================
+
+remove client side plugins from JBrowse index.html
+
+.. js:function:: removePlugins()
+
+    
+    
+.. _module-services_jbutillib.getPlugins:
+
+
+Function: ``getPlugins``
+========================
+
+get the list of plugins.  This includes JBConnect plugins as well as plugins of JBConnect hook modules that are loaded.
+
+.. js:function:: getPlugins()
+
+    
+    :return object: array of plugin objects
+    
+.. _module-services_jbutillib.addRoute:
+
+
+Function: ``addRoute``
+======================
+
+Add a route
+
+.. js:function:: addRoute(params, module, route, target)
+
+    
+    :param object params: eg. ``{app: <app-object>,express: <express-object>}``
+    :param string module: the module name (ie. ``"jquery"``)
+    :param string route: the route (ie. ``"/jblib/jquery"``)
+    :param string target: the target (ie ``"/var/www/html/jbconnect/node_modules/jquery"``)
+    
+.. _module-services_jbutillib.addPluginRoute:
+
+
+Function: ``addPluginRoute``
+============================
+
+Add a plugin route
+
+.. js:function:: addPluginRoute(params, module, route, target)
+
+    
+    :param object params: eg. ``{app: <app-object>,express: <express-object>}``
+    :param string module: the module name (ie. ``"jblast"``)
+    :param string route: the route (ie. ``"/jbrowse/plugins/JBlast"``)
+    :param string target: the target (ie ``"/var/www/html/jbconnect/node_modules/jblast-jbconnect-hook/plugins/JBlast"``)
+    
+
+
+.. _module-services_jbutillib.fs:
+
+Constant: ``fs``: 
+
+.. _module-services_jbutillib.path:
+
+Constant: ``path``: 
+
+.. _module-services_jbutillib.approot:
+
+Constant: ``approot``: 
+
+.. _module-services_jbutillib.glob:
+
+Constant: ``glob``: 
+
+.. _module-services_jbutillib.sh:
+
+Constant: ``sh``: 
+
+.. _module-services_jbutillib.merge:
+
+Constant: ``merge``: 
+
+.. _module-services_jbutillib.config:
+
+Constant: ``config``: 
+
+.. _module-services_jbutillib.util:
+
+Constant: ``util``: 
+
+.. _module-services_jbutillib.html2json:
+
+Constant: ``html2json``: 
+
+.. _module-services_jbutillib.json2html:
+
+Constant: ``json2html``: 
+
+.. _module-services_jbutillib._:
+
+Constant: ``_``: 
 
 
 
@@ -2065,7 +2129,7 @@ Job queue entry:
         },
         "name": "atagt search",
         "asset": "113_search_1513478281528",
-        "path": "/var/www/html/4jbserver/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
+        "path": "/var/www/html/jbconnect/node_modules/jbrowse/sample_data/json/volvox/ServerSearch",
         "outfile": "113_search_1513478281528.gff",
         "track": {
           "maxFeatureScreenDensity": 16,

@@ -211,7 +211,7 @@ var AuthController = {
         default:
           let params = req.allParams();
           //console.log(params);
-          sails.log.info("*** Login failure ***");
+          sails.log.error("*** Login failure ***");
           let redirectTo = '/login';
           if (params.next)
               redirectTo += '?next='+params.next;
@@ -223,7 +223,10 @@ var AuthController = {
       if (err || !user) {
         return tryAgain(challenges);
       }
-
+      if (typeof req.login === 'undefined') {
+          sails.log.error("req.login undefined - passport.callback");
+          return;
+      }
       req.login(user, function (err) {
         if (err) {
           return tryAgain(err);

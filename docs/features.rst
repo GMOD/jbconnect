@@ -18,14 +18,17 @@ JBConnect is a server/analysis framework for JBrowse and has the following featu
 | * Auth and Secure Tracks/Datasets/Assets                                           |
 | * Track/Asset SubPub events with `Socket.io <http://socket.io>`_                   |
 +------------------------------------------------------------------------------------+
+| Extensible server-side analysis enables integration with Galaxy workflows or       |
+| stand-alone workflows.                                                             |
++------------------------------------------------------------------------------------+
+| Job queue - based on kue
++------------------------------------------------------------------------------------+
 | Flexible Authentication – (`Passport.js <http://passportjs.org>`_) supporting      |
 | strategies, like OAuth2, OpenID, etc.                                              |
 +------------------------------------------------------------------------------------+
-| User management services                                                           |
+| Basic user management services                                                           |
 +------------------------------------------------------------------------------------+
-| Policy Engine f0r managing access to Tracks, Datasets, Services, Assets            |
-+------------------------------------------------------------------------------------+
-| Extensible server-side analysis with workflow abstraction and job queue            |
+| Policy Engine for managing access to Tracks, Datasets, Services, Assets            |
 +------------------------------------------------------------------------------------+
 | `Waterline ORM <http://waterlinejs.org/>`_ (MongoDB, MySQL, Postgres, Redis, etc.) |
 | with integrated                                                                    |
@@ -45,12 +48,11 @@ Directory Layout
 ::
 
     JBConnect project
-    ├── api                             Standard sails API layout
+    ├── api                             Standard sails API layout, models, controllers, etc.
     ├── assets                          contains client accessible assets
     ├── bin                             Utilities
     ├── config                          Configuration files.
-    │   ├── globals.js                  Config file for module
-    │   └── libroutes.js                Library Routes
+    │   └── globals.js                  global config file for module
     ├── data                            Contains the local database file
     │   └── localDiskDb.db              Local database file
     ├── docs                            Documentation
@@ -58,9 +60,9 @@ Directory Layout
     ├── plugins                         Client-side Plugins
     │   └── JBClient                    Client plugin             
     ├── test                            Test
-    ├── views                           View pages
+    ├── views                           Login / registration pages
     ├── Gruntfile.js                    Grunt config
-    ├── jbutil                          JBConnect Utility
+    ├── jbutil                          JBConnect Utility (exe)
     └── package.json
 
 
@@ -68,16 +70,18 @@ Directory Layout
 jbutil Command
 ==============
 
-``jbutil`` is a setup/configuration utility for JBConnect.  jbh-hook can extend
+``jbutil`` is a setup/configuration utility for JBConnect.  *-jbconnect-hook modules can extend
 ``jbutil`` command options. (see: :ref:`jbs-hooks-extend`)
 
-This example shows that ``jbh-jblast`` adds a number of commands to ``jbutil``
+This example shows that ``JBlast`` adds a number of commands to ``jbutil``
+
+todo: update help
 
 ::
 
     $ ./jbutil --help
     Usage: jbutil [OPTION]
-          --config            display merged config
+          --config            display aggregated config
           --blastdbpath=PATH  (jblast) existing database path
           --setupworkflows    (jblast) [install|<path>] "install" project wf, or specify .ga file 
           --setuptools        (jblast) setup jblast tools for galaxy
@@ -111,7 +115,7 @@ This route can be disabled with in config/http.js.
 Configuration
 =============
 
-JBrowse configurations are in ``config/globals.js``
+JBConnect configurations are in ``config/globals.js``
 
 :: 
 
@@ -127,26 +131,24 @@ JBrowse configurations are in ``config/globals.js``
     }
 
 
+
 Client-Side Plugins
 ===================
 
-Client-side plugins are defined in the `plugins` directory.  Plugins will automatically
+Client-side plugins are in the `plugins` directory.  Plugins will automatically
 be accessible by the client side.  However, they need to be configured in the `plugins:`
 section of the particular dataset in JBrowse `trackList.json`.
 
-Plugin routes are virtual routes
-With respect to the client side, they appear in the client-side's plugin directory
-only when the server is lifted.
+Plugins are copied to the configured JBrowse instance upon ``sails lift``.
 
 
-
-Library Routes
-==============
+Web Includes
+============
 
 libroutes maps dependancy routes for client-side access.
 These provide access to modules that are required for use by the client-side 
 plugins or other client-side code.
-The framework looks for libroutes.js in jbh- (hook modules), in their respective config directories
+The framework looks for libroutes.js in , in their respective config directories
 
 For example: for the module jquery,
 The module is installed with 'npm install jquery'
