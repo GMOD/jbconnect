@@ -86,7 +86,12 @@ module.exports = {
                 //sails.log('active written',record);
                 JobActive.publishUpdate(1,record);
             }).catch(function(err) {
+                let e = (""+err).split('\n');
+                // trap corner case error that occurs sometimes on npm test
+                if (e[0]==="TypeError: Cannot read property 'select' of undefined")
+                    return;
                 sails.log('writeActive() error writing active job flag', err);
+                //console.dir(err);
             });
             
         }
