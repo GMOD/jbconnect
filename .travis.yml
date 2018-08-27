@@ -6,8 +6,8 @@ services:
 install:
   - npm install
 before_script:
-  - npm install -g sails#1.0.2
-  - npm install -g gmod/jbrowse#1.15.1-release
+  - npm install -g sails@1.0.2
+  - npm install -g gmod/jbrowse@1.15.1-release
 script:
   - npm test
 after_failure:
