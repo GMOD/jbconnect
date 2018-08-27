@@ -35,8 +35,10 @@ fs.copySync(approot+'/node_modules/jquery.mb.extruder/inc',targDir+'/mb.extruder
 fs.copySync(approot+'/node_modules/jquery.mb.extruder/elements',targDir+'/elements',{overwrite:true});
 
 // copy special utils
-let TargDir = approot+"/utils";
-fs.copySync(approot+'/bin/utils/jb_setup.js',targDir+'/jb_setup.js',{overwrite:true});
+console.log("Copying utils...");
+targDir = approot+"/utils";
+fs.ensureDirSync(targDir);
+shelljs.cp(approot+'/bin/utils/jb_setup.js',targDir+'/jb_setup.js');
 
 
 // install selenium
