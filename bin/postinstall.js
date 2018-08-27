@@ -34,5 +34,10 @@ fs.copySync(approot+'/node_modules/jquery.mb.extruder/css',targDir+'/mb.extruder
 fs.copySync(approot+'/node_modules/jquery.mb.extruder/inc',targDir+'/mb.extruder',{overwrite:true});
 fs.copySync(approot+'/node_modules/jquery.mb.extruder/elements',targDir+'/elements',{overwrite:true});
 
+// copy special utils
+let TargDir = approot+"/utils";
+fs.copySync(approot+'/bin/utils/jb_setup.sh',targDir+'/jb_setup.sh',{overwrite:true});
+
+
 // install selenium
 shelljs.exec('./node_modules/selenium-standalone/bin/selenium-standalone install');
