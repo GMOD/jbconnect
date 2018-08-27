@@ -6,9 +6,9 @@ services:
 install:
   - npm install
 before_script:
+  - npm install -g sails#1.0.2
+  - npm install -g gmod/jbrowse#1.15.1-release
 script:
   - npm test
 after_failure:
   - cat JBrowse-1.x.x-dev/setup.log 
-  - find JBrowse-1.x.x-dev/extlib/lib/perl5
-  - cat JBrowse-1.x.x-dev/src/build-report.txt
