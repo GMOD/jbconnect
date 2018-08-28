@@ -8,9 +8,8 @@ install:
 before_script:
   - npm i -g sails@1.0.2
   - npm i @gmod/jbrowse@1.15.2
-  - ls node_modules/@gmod/jbrowse
   - node ./utils/jb_setup.js
 script:
   - npm test
 after_failure:
-  - cat JBrowse-1.x.x-dev/setup.log 
+  - cat node_modules/@gmod/jbrowse/setup.log 
