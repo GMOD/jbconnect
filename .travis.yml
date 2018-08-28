@@ -13,3 +13,4 @@ script:
   - npm test
 after_failure:
   - cat node_modules/@gmod/jbrowse/setup.log 
+
