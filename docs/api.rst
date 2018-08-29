@@ -852,6 +852,7 @@ through the use of Kue's API.
 Kue event messages are stuffed into a FIFO `_eventList` and dequeued with `_processNextEvent` to ensure order.
       * **Example Job object:**
 ::
+
   {
       "id": 113,
       "type": "workflow",
@@ -900,6 +901,7 @@ Kue event messages are stuffed into a FIFO `_eventList` and dequeued with `_proc
     }
       
 **Event Mappings:**
+
 +----------------------------+----------------+
 | Kue Events                 | Job Events     |
 +============================+================+
