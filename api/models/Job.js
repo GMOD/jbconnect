@@ -10,6 +10,7 @@
  * Kue event messages are stuffed into a FIFO `_eventList` and dequeued with `_processNextEvent` to ensure order.
  *       * **Example Job object:**
  * ::
+ * 
  *   {
  *       "id": 113,
  *       "type": "workflow",
@@ -58,6 +59,7 @@
  *     }
  *       
  * **Event Mappings:**
+ * 
  * +----------------------------+----------------+
  * | Kue Events                 | Job Events     |
  * +============================+================+
