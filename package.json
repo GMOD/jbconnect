@@ -15,7 +15,8 @@
     "selenium-install": "selenium-standalone install"
   },
   "engines": {
-    "node": ">=6.8.0"
+    "node": ">= 10.3.0",
+    "npm": ">= 6.4.0"
   },
   "dependencies": {
     "app-root-path": "^2.0.1",
