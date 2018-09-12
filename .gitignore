@@ -119,8 +119,11 @@ nbproject
 .vscode/
 
 #jbconnect specific
-/workflows
-/utils
+/workflows/
+/utils/
+#!*/utils/*
+#!*/utils/**
+
 /data
 /blastdb
 /blastbin
@@ -133,3 +136,4 @@ nbproject
 /test/jblast
 /test/jblast-int
 /docs/genapi-rst
+*.bak
