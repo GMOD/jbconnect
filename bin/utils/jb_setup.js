@@ -21,4 +21,4 @@ shelljs.exec("./"+setupScript);
 
 shelljs.cd(thisPath);
 
-shelljs.cp(approot+"/nodemodules/@gmod/jbrowse/setup.log",approot+"/jbrowse-setup.log");
+shelljs.cp(approot+"/node_modules/@gmod/jbrowse/setup.log",approot+"/jbrowse-setup.log");
