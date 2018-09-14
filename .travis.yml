@@ -7,7 +7,7 @@ install:
   - npm install
 before_script:
   - npm i -g sails@1.0.2
-  - npm i @gmod/jbrowse@1.15.2
+  - npm i @gmod/jbrowse@1.15.1
   - node ./utils/jb_setup.js
 script:
   - npm test
