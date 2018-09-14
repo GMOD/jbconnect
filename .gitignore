@@ -137,3 +137,4 @@ nbproject
 /test/jblast-int
 /docs/genapi-rst
 *.bak
+/.nyc_output
