@@ -11,15 +11,14 @@ JBrowse may also be installed in a separate directory.
 Pre-Install
 ===========
 
-JBConnect requires `redis <https://redis.io/>`_ as a pre-requisite, which is only used by the queue framework 
-(`kue <https://www.npmjs.com/package/kue>`_).
-
-Install and run *redis*
+JBConnect requires `sailsjs <https://sailsjs.com/>`_ and `redis <https://redis.io/>`_ . *Redis* is only used by the queue framework 
+(`kue <https://www.npmjs.com/package/kue>`_)
 
 :: 
 
     yum install redis
     redis-server
+    npm install -g sails@1.0.2
 
 Install
 =======
@@ -31,7 +30,7 @@ Install the JBConnect and JBrowse.  jb_setup.js ensures the sample data is loade
     git clone http://github.com/gmod/jbconnect
     cd jbconnect
     npm install
-    npm install @gmod/jbrowse@1.15.2
+    npm install @gmod/jbrowse@1.15.1
     ./jb_setup.js
 
 Run
