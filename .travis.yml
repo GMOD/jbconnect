@@ -10,7 +10,7 @@ before_script:
   - npm i @gmod/jbrowse@1.15.1
   - node ./utils/jb_setup.js
 script:
-  - npm test
+  - npm run test-coverage
 after_failure:
   - cat node_modules/@gmod/jbrowse/setup.log 
 
