@@ -98,7 +98,7 @@ module.exports = {
 
         let trackLabel = kJob.id+' nothing burger results';
         
-        newTrackJson[0].label = "NOTHING_"+kJob.id; 
+        newTrackJson[0].label = "NOTHING_"+kJob.id+Math.random(); 
         newTrackJson[0].key = trackLabel;     
         
         // validate the new track JSON structures
