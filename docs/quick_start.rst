@@ -31,7 +31,7 @@ Install the JBConnect and JBrowse.  jb_setup.js ensures the sample data is loade
     cd jbconnect
     npm install
     npm install @gmod/jbrowse@1.15.1
-    ./jb_setup.js
+    ./utils/jb_setup.js
 
 Run
 ===
