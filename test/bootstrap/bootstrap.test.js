@@ -55,9 +55,10 @@ before(function(done) {
     }
     sails.lift(params, function(err) {
         if (err) return done(err);
+
         // here you can load fixtures, etc.
         setTimeout(function() {
-            console.log(">>>post timeout");
+            //console.log(">>>post timeout",typeof done);
             done();
         },2000);
     });
