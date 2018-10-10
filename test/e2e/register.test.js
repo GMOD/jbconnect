@@ -3,24 +3,6 @@ describe('End-2-End:', function() {
 
         this.timeout(10000);
 
-        before(function(client, done) {
-          done();
-        });
-
-        after(function(client, done) {
-          client.end(function() {
-            done();
-          });
-        });
-
-        afterEach(function(client, done) {
-          done();
-        });
-
-        beforeEach(function(client, done) {
-          done();
-        });
-
         it('JBClient Register Page', function (client) {
             client
                 // start the login page and login
@@ -28,10 +10,12 @@ describe('End-2-End:', function() {
                 .waitForElementVisible('body', 1000)
                 .assert.visible('h4.modal-title')
                 .assert.containsText('h4.modal-title', 'JBrowse Register New User', 'Checking login box title')
-                .setValue("input[name='username']", ['testuser'])
-                .setValue("input[name='email']", ['testuser@gmail.com'])
+                .setValue("input[name='username']", ['newtestuser'])
+                .setValue("input[name='email']", ['newtestuser@gmail.com'])
                 .setValue("input[name='password']", ['password'])
                 .click('button[name="submit"]');
+//                .click('button[value="Register"]');
+
         });
         it('Success registering', function (client) {
             client
@@ -44,6 +28,8 @@ describe('End-2-End:', function() {
             client
                 // check hierarchical track pane is there
                 .waitForElementVisible('div[widgetid="hierarchicalTrackPane"]',3000)
-                .assert.visible('div[widgetid="hierarchicalTrackPane"]');
-        });
+                .assert.visible('div[widgetid="hierarchicalTrackPane"]')
+                .url('http://localhost:1337/logout')
+                .pause(500);
+              });
 });

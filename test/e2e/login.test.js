@@ -44,6 +44,7 @@ describe('End-2-End:', function() {
                 // check hierarchical track pane is there
                 .waitForElementVisible('div[widgetid="hierarchicalTrackPane"]',3000)
                 .assert.visible('div[widgetid="hierarchicalTrackPane"]')
-                .url('http://localhost:1337/logout');
+                .url('http://localhost:1337/logout')
+                .pause(500);
         });
 });
