@@ -2,7 +2,7 @@
 describe('End-2-End:', function() {
 
         this.timeout(10000);
-
+/*
         before(function(client, done) {
           done();
         });
@@ -20,7 +20,7 @@ describe('End-2-End:', function() {
         beforeEach(function(client, done) {
           done();
         });
-
+*/
         it('JBClient Login Page', function (client) {
             client
                 // start the login page and login
@@ -43,6 +43,7 @@ describe('End-2-End:', function() {
             client
                 // check hierarchical track pane is there
                 .waitForElementVisible('div[widgetid="hierarchicalTrackPane"]',3000)
-                .assert.visible('div[widgetid="hierarchicalTrackPane"]');
+                .assert.visible('div[widgetid="hierarchicalTrackPane"]')
+                .url('http://localhost:1337/logout');
         });
 });
