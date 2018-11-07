@@ -115,5 +115,20 @@
   "directories": {
     "doc": "docs",
     "test": "test"
+  },  
+  "nyc": {
+    "exclude": [
+      "Gruntfile.js",
+      "config/*",
+      "test/*",
+      "tasks/*",
+      "api/responses/*",
+      "api/services/protocols/*",
+      "api/policies/*",
+      "api/services/kueTestService.js",
+      "api/services/serverSearchService.js"
+    ]
   }
+
+
 }
