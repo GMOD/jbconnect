@@ -45,7 +45,7 @@ module.exports = {
         
         sails.log.info("nothingBurgerService beginProcessing"+kJob.id);
 
-        kJob.data.count = 10;
+        kJob.data.count = 5;
        
         // delay 5 seconds for nothing, really (just so it sits in the queue for longer)
         let f1 = setInterval(function() {
