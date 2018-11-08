@@ -42,6 +42,7 @@ module.exports = {
     /**
      * Initializes datasets as defined in config/globals.js.
      * (see: :ref:`jbs-globals-config`)
+     * @param {object} params - callback function 
      * @param {function} cb - callback function 
      * @returns {undefined}
      */
@@ -90,7 +91,8 @@ module.exports = {
      *      dataset (string - i.e. "sample_data/json/volvox" if input was an id
      *      
      */
-    Resolve: function(dval){
+    /* istanbul ignore next */
+    Resolve(dval){
         if (typeof this._dataSets[dval] !== 'undefined')
             return this._dataSets[dval];
         sails.log.error('Dataset.resolve not found (we shouldnt get here',dval);
@@ -104,7 +106,7 @@ module.exports = {
      * @param (function) cb - callback function
      */
     Sync:function(cb) {
-        //sails.log.debug('syncDatasets()');
+        sails.log.debug('Dataset.Sync()');
         var g = sails.config.globals.jbrowse;
         var thisb = this;
 
@@ -122,6 +124,7 @@ module.exports = {
         }
 
         Dataset.find({}, function(err,mItems) {
+            /* istanbul ignore if */
             if (err) {
                 cb(err);
                 return;
@@ -131,6 +134,7 @@ module.exports = {
 
             async.each(thisb._dataSets,function(item,cb1) {
                 //console.log('item',item,modelItems);
+                /* istanbul ignore else */
                 if (typeof modelItems[item.path] !== 'undefined') {     
 
                     thisb._dataSets[item.path].id = modelItems[item.path].id
@@ -149,6 +153,7 @@ module.exports = {
                     Dataset.create(data,function(err, newDataset) {
                         if (err) {
                             var msg = 'failed to create dataset (it may exists) = path '+i;
+                            console.log(msg);
                             return cb1(err);
                         }
 
@@ -168,6 +173,7 @@ module.exports = {
                     });
                 }
             },function asyncEachDone(err) {
+                /* istanbul ignore if */
                 if (err) {
                     sails.log.error("asyncEachDone failed",err);
                     return cb(err);
@@ -182,7 +188,9 @@ module.exports = {
                     if (typeof thisb._dataSets[item.path] === 'undefined') {
                         //sails.log('deleting dataset',j);
 
+                        /* istanbul ignore next  */
                         Dataset.destroy(item.id,function(err) {
+                            /* istanbul ignore else  */
                             if (err) {
                                 sails.log.error('Dataset.destroy failed - id=',item.id);
                                 return cb(err);
@@ -193,7 +201,7 @@ module.exports = {
                             return cb();
                         });
                     }
-                }, function(err) {
+                }, /* istanbul ignore next */ function(err) {
                     if (err) {
                         sails.log.error("deleteItems failed");
                         //return cb(err);
