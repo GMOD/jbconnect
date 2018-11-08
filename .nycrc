@@ -1,0 +1,20 @@
+{
+    "exclude": [
+      "Gruntfile.js",
+      "config/*",
+      "test/*",
+      "tasks/*",
+      "api/responses/*",
+      "api/services/protocols/*",
+      "api/policies/*",
+      "api/services/kueTestService.js",
+      "api/services/serverSearchService.js",
+      "api/services/nothingBurgerService.js",
+      "api/services/passport.js",
+      "api/services/jbutillib.js",
+      "api/services/utilFn.js",
+      "api/models/Passport.js",
+      "api/controllers/*"
+    ]
+}
+
