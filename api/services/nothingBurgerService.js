@@ -7,7 +7,7 @@ var approot = require("app-root-path");
 module.exports = {
 
     fmap: {
-        send_search_result:     'post'
+        crazy_test:     'get'
     },
     init: function(params,cb) {
         return cb();
@@ -45,7 +45,7 @@ module.exports = {
         
         sails.log.info("nothingBurgerService beginProcessing"+kJob.id);
 
-        kJob.data.count = 5;
+        kJob.data.count = 2;
        
         // delay 5 seconds for nothing, really (just so it sits in the queue for longer)
         let f1 = setInterval(function() {
@@ -120,6 +120,13 @@ module.exports = {
         kJob.update(function() {});
 
         cb(newTrackJson);
+    },
+    crazy_test(req,res) {
+        let data = {
+            hi: "there",
+            by: "gone"
+        }        
+        return res.ok(data);
     }
     
 };
