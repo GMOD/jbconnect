@@ -1,4 +1,9 @@
 #!/usr/bin/env node
+
+/*
+    this extends jbutil
+*/
+
 const jblib = require('../api/services/jbutillib');
 const fetch = require('node-fetch');
 
@@ -6,13 +11,14 @@ module.exports = {
     getOptions: function() {
         return [
             ['d' , 'dbreset'        , 'reset the database to default and clean kue db'],
+            ['f' , 'force'          , '--dbreset without verifying'],
             ['a' , 'setadmin',      , 'set admin flag'],
             ['r' , 'removeall'      , 'remove JBConnect components from JBrowse']
         ];        
     },
     getHelpText: function() {
         return "\n"+
-            "./jbutil --setpassword <username>\n"+
+            //"./jbutil --setpassword <username>\n"+
             "./jbutil --setadmin <username> <true|false\n";
         
     },
@@ -27,6 +33,7 @@ module.exports = {
             return;
         }
         var tool = opt.options['dbreset'];
+        var force = opt.options['force'];
         if (typeof tool !== 'undefined') {
             // perform a test to see if JBConnect is running.
             fetch(config.jbrowseRest+'/jobactive/get')
@@ -35,7 +42,7 @@ module.exports = {
                    console.log("This command only works when JBConnect is not running."); 
                 })                
                 .catch(err => {
-                    process_dbreset();
+                    process_dbreset(force);
                 });
         }
 
@@ -56,22 +63,32 @@ module.exports = {
  * process commands arguments - implementation
  **********************************************/
 
-function process_dbreset(done) {
+function process_dbreset(force) {
     process.stdin.resume();
     process.stdin.setEncoding('utf8');
     var util = require('util');
-    console.log('JBConnect database will be reset to default.  Type "YES" to confirm.');
+    
+    if (force) {
+        jblib.install_database(1);
+        jblib.zapRedis();
+        setTimeout(function() {
+            process.exit();
+        },1000);
+    }
+    else {
+        console.log('JBConnect database will be reset to default.  Type "YES" to confirm.');
 
-    process.stdin.on('data', function (text) {
-      if (text === 'YES\n') {
-          jblib.install_database(1);
-          jblib.zapRedis(done);
-      }
-      else {
-          console.log('nothing done.');
-      }
-      setTimeout(function() {
-          process.exit();
-      },1000);
-    });
+        process.stdin.on('data', function (text) {
+        if (text === 'YES\n') {
+            jblib.install_database(1);
+            jblib.zapRedis();
+        }
+        else {
+            console.log('nothing done.');
+        }
+        setTimeout(function() {
+            process.exit();
+        },1000);
+        });
+    }
 }
