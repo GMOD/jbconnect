@@ -62,6 +62,7 @@ var User = {
     SetPassword: function(user,pass,cb) {
     
         this.findOne({username:user}).exec(function(err,ufound) {
+            /* istanbul ignore if */
             if (err) {
                 console.error("Find Error: "+"("+err.code+") "+err.details);
                 if (typeof cb === 'function' ) return cb(err);
@@ -70,6 +71,7 @@ var User = {
             //console.log("found user",ufound);
             
             Passport.update({user:ufound.id},{password:pass}).exec(function(err,updated){
+                /* istanbul ignore if */
                 if (err) {
                     console.error("Error: "+"("+err.code+") "+err.details);
                     if (typeof cb === 'function' ) return cb(err);
@@ -96,13 +98,14 @@ var User = {
      * 
      */
     SetAdmin: function(user,adminflag,cb) {
-
+        /* istanbul ignore if */
         if ( typeof adminflag !== 'boolean') {
             if (typeof cb === 'function' ) return cb('Admin flag must be boolean.');
             else return;
         }
         
         this.update({username:user},{admin: adminflag}).exec(function(err,updated) {
+            /* istanbul ignore if */
             if (err) {
                 if (typeof cb === 'function' ) return cb(err);
                 else return;
@@ -110,6 +113,7 @@ var User = {
             var msg = 'Set admin flag for '+user+' to '+updated[0].admin;
             //console.log(msg);
 
+            /* istanbul ignore else */
             if (typeof cb === 'function' ) return cb(null,msg);
             else return;
             
