@@ -13,7 +13,9 @@ before(function(browser,done) {
     console.log("Lifting SAILS...");
 
     this.timeout(60000);
-    
+
+    shell.exec('./jbutil --force --dbreset');
+
     let params = {
 
         // configuration for testing purposes
