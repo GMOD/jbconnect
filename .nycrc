@@ -5,6 +5,7 @@
       "test/*",
       "tasks/*",
       "api/responses/*",
+      "api/bin/jbutil-ext.js",
       "api/services/protocols/*",
       "api/policies/*",
       "api/services/kueTestService.js",
@@ -13,8 +14,7 @@
       "api/services/passport.js",
       "api/services/jbutillib.js",
       "api/services/utilFn.js",
-      "api/models/Passport.js",
-      "api/controllers/*"
+      "api/models/Passport.js"
     ]
 }
 
