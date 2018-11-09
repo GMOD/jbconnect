@@ -223,6 +223,7 @@ module.exports = {
         sails.log("service %s cmd %s",serviceName,cmdName, req.allParams());
         
         // does service exist or is it registered
+        /* istanbul ignore next */
         if (typeof this.services[serviceName] === 'undefined') {
             sails.log.error('service does not exist:',serviceName);
             return res.forbidden();
@@ -230,11 +231,13 @@ module.exports = {
         // determine type of request GET/POST, etc.  Reject invalid
         var method = req.method;
         method = method.toLowerCase();
+        /* istanbul ignore next */
         if (method !== this.services[serviceName].fmap[cmdName]) {
             sails.log.error('forbidden request method:',req.method,method,this.services[serviceName].fmap[cmdName]);
             return res.forbidden();
         }
         // is the command implemented
+        /* istanbul ignore next */
         if (typeof this.services[serviceName].fmap[cmdName] === 'undefined' || typeof this.services[serviceName][cmdName] !== 'function') {
             sails.log.error('invalid command:',cmdName);
             return res.forbidden();
