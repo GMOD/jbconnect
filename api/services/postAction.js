@@ -22,7 +22,9 @@ module.exports = {
         var dataset = kJob.data.dataset;
         var trackname = track.label;
 
-        Track.Add(dataset,track,function(err,added) {
+        track.dataset = dataset;
+
+        Track.Add(track,function(err,added) {
             /* istanbul ignore if */
             if (err) {
                 sails.log('failed to add track',trackname);
