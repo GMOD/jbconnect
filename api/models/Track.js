@@ -293,7 +293,7 @@ module.exports = {
         var mTracks = {};       // model db tracks
         var fTracks = {};       // file (trackList.json) tracks
 
-        Track.find({path:ds})
+        Track.find({path:ds.path})
             .then(function(modelTracks) {
                 //sails.log.debug("syncTracks modelTracks",modelTracks.length);
 
@@ -344,6 +344,10 @@ module.exports = {
         };
         function addOrUpdateItemsToModel(mTracks,fTracks) {
             // add or update file items to model
+
+            for(var i in fTracks) console.log("ftracks",fTracks[i].label,ds.id);
+            for(var i in mTracks) console.log("mtracks",mTracks[i].lkey);
+
             for(var k in fTracks) {
 
               if (typeof mTracks[k] === 'undefined') {
