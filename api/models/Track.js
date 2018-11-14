@@ -47,7 +47,7 @@ module.exports = {
             type: 'string',
             required: true
         },
-        lkey: {     // this is the same as label in the jbrowse track
+        lkey: {     // lkey is the tracklabel|<dataset index>  i.e. "sample_data/json/volvox|1"
             type: 'string',
             required: true,
             unique: true

@@ -36,9 +36,11 @@ module.exports = {
         }
     },
     /*
-     * assoc array of datasets {path:"sample_data/json/volvox", id:1}
+     * cached assoc array of datasets {path:"sample_data/json/volvox", id:1}
+     * is indexed by both id and path.
      */
     _dataSets: {},
+    
     /**
      * Initializes datasets as defined in config/globals.js.
      * (see: :ref:`jbs-globals-config`)
@@ -89,13 +91,13 @@ module.exports = {
      *     
      * @returns {object} - dataset object
      *      dataset (string - i.e. "sample_data/json/volvox" if input was an id
+     *      returns null if not found
      *      
      */
-    /* istanbul ignore next */
     Resolve(dval){
         if (typeof this._dataSets[dval] !== 'undefined')
             return this._dataSets[dval];
-        sails.log.error('Dataset.resolve not found (we shouldnt get here',dval);
+        sails.log.error('Dataset.Resolve not found (we shouldnt get here)',dval);
         return null;
     },
     /**
