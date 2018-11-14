@@ -32,9 +32,12 @@ module.exports = {
     get: function(req,res) {
         var params = req.allParams();
         sails.log("/track/get",params);
+        /* istanbul ignore else */
         if (req.method === 'GET') {
             Track.Get(params,function(err,records) {
+                /* istanbul ignore next */
                 if (err) res.serverError(err);
+                /* istanbul ignore next */
                 if (records.length===0) return res.notFound();
                 return res.ok(records);
             });
@@ -81,13 +84,16 @@ module.exports = {
         var params = req.allParams();
         var track = params;
         console.log("TrackController /track/add track",track);
-        if (req.method === 'POST') {
 
+        /* istanbul ignore else */
+        if (req.method === 'POST') {
+            /* istanbul ignore if */
             if (_.isUndefined(track.dataset)) 
                 return res.serverError({err:"dataset property not defined",track:track});
 
             Track.Add(track,function(err,created) {
-                console.log('created',created);
+                //console.log('created',created);
+                /* istanbul ignore next */
                 if (err) return res.serverError({err:err,track:track});
                 return res.ok(created);
             });
@@ -158,8 +164,10 @@ module.exports = {
     remove: function(req,res) {
         var params = req.allParams();
         var id = params.trackId;
+        /* istanbul ignore else */
         if (req.method === 'POST') {
             Track.Remove(id,function(err) {
+                /* istanbul ignore next */
                 if (err) return res.serverError({err:err});
                 return res.ok();
             });
