@@ -23,7 +23,7 @@ module.exports = {
      * 
      * ``GET /track/get?id=1`` where id is the dataset id
      * 
-     * ``GET /track/get?pat=sample_data/json/volvox`` where path is the dataset path
+     * ``GET /track/get?path=sample_data/json/volvox`` where path is the dataset path
      * 
      * @param {object} req - request
      * @param {object} res - response
@@ -47,9 +47,12 @@ module.exports = {
      * 
      * ``POST /track/add``
      * 
+     * Must include "dataset" in the fields, which can be the path (string) or id (int)
+     * 
      * Calling example:
      * ::
      *   let newTrack = {
+     *       "dataset":"sample_data/json/volvox",
      *       "autocomplete": "all",
      *       "track": "EST",
      *       "style": {
@@ -76,9 +79,15 @@ module.exports = {
      */
     add: function(req,res) {
         var params = req.allParams();
-        var track = params.track;
+        var track = params;
+        console.log("TrackController /track/add track",track);
         if (req.method === 'POST') {
+
+            if (_.isUndefined(track.dataset)) 
+                return res.serverError({err:"dataset property not defined",track:track});
+
             Track.Add(track,function(err,created) {
+                console.log('created',created);
                 if (err) return res.serverError({err:err,track:track});
                 return res.ok(created);
             });

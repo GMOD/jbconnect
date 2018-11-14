@@ -28,11 +28,12 @@
  * 
  */
 
-var Promise = require("bluebird");
-var fs = Promise.promisifyAll(require("fs"));
-var path = require('path');
-var deferred = require('deferred');
-var deepmerge = require('deepmerge');
+const Promise = require("bluebird");
+const fs = Promise.promisifyAll(require("fs"));
+const path = require('path');
+const deferred = require('deferred');
+const deepmerge = require('deepmerge');
+const _ = require('lodash');
 
 module.exports = {
 
@@ -105,24 +106,35 @@ module.exports = {
      */
     Get: function(params,cb) {
         this.find(params).then(function(foundList) {
-           return cb(null,foundList) 
+           cb(null,foundList) 
         }).catch(function(err){
-           return cb(err);
+           cb(err);
         });
     },
     /*
+     * Add a track. into trackList.json and db.
+     * addTrack.dataset must be defined as either int ( of db dataset id) or string (dataset string ie. ref of data = "sample_data/json/volvox")
+     * addTrack.label must be defined and unique
+     * dataset must exist with a physical location.
      * 
      * @param {object} track - this is a object that is essentially a track in trackList.json
-     * @param {string} dataset - dataset string (i.e. "sample_data/json/volvox"
-     * @returns {object} track db element
+     * @returns {object} lkey (ie. {lkey:"xxxx"})
      */
-    Add: function(dataset,addTrack,cb) {
+    Add: function(addTrack,cb) {
+        console.log("Add",addTrack);
         var thisb = this;
         var g = sails.config.globals.jbrowse;
-        var dataSet = Dataset.Resolve(dataset);
-        var trackListPath = g.jbrowsePath + dataSet.path + '/' + 'trackList.json';
+        if (_.isUndefined(addTrack.dataset)) return cb("dataset not defined");
+        var ds = Dataset.Resolve(addTrack.dataset);
+        var trackListPath = g.jbrowsePath + ds.path + '/' + 'trackList.json';
 
-        Track.PauseWatch(dataSet.id);
+        // validate
+        if (ds===null) return cb("dataset does not exist");
+        if (typeof addTrack.label !== 'string') return cb("invalid track label",addTrack.label);
+    
+        Track.PauseWatch(ds.id);
+
+        addTrack.dataset = ds.id;
         
         // save track to tracklist json
         try {
@@ -133,15 +145,15 @@ module.exports = {
         }
         catch(err) {
             sails.log.error("addTrack failed",addTrack.label,err);
-            Track.ResumeWatch(dataSet.id);
+            Track.ResumeWatch(ds.id);
             return cb(err);
         }
 
         // write to track db
         var data = {
-            dataset: dataSet.id,
-            path: dataSet.path,
-            lkey: addTrack.label,
+            dataset: ds.id,
+            path: ds.path,
+            lkey: addTrack.label+"|"+ds.id,
             trackData: addTrack
         };
 
@@ -150,13 +162,13 @@ module.exports = {
             sails.log.debug("Track.Add created:",created.id,created.lkey);
             
             Track.publishCreate(created);       // announce
-            Track.ResumeWatch(dataSet.id);
+            Track.ResumeWatch(ds.id);
             
             return cb(null,created);
         })        
         .catch(function(err) {
             sails.log.error("addTrack track create failed",err);
-            Track.ResumeWatch(dataSet.id);
+            Track.ResumeWatch(ds.id);
             return cb(err);
         });
         
@@ -351,6 +363,7 @@ module.exports = {
                   if (JSON.stringify(mTracks[k].trackData) !== JSON.stringify(fTracks[k])) {
                       Track.update({path:ds, lkey:fTracks[k].label},{trackData:fTracks[k]})
                       .then(function(item) {
+                          /* istanbul ignore else */
                           if (item.length) {
                             Track.publishUpdate(item[0].id,item[0]);
                           }
@@ -364,7 +377,7 @@ module.exports = {
                   }
               }
             }
-        };
+        }
     },
     
     /*
@@ -374,7 +387,8 @@ module.exports = {
      * 
      * @param {string} dataSet, if dataset is not defined, all models are committed.
      */
-    Save: function(dataSet) {
+    /*
+    Save(dataSet) {
         var g = sails.config.globals.jbrowse;
         var trackListPath = g.jbrowsePath + dataSet.dataPath + '/' + 'trackList.json';
         //var dataSet = g.dataSet[0].dataPath;
@@ -403,10 +417,11 @@ module.exports = {
           }
         });
     },
-    /**
-     * Given tracks array, find and update the item with the given updateTrack.
-     * updateTrack must contain label.
-     */
+    */
+    
+    //Given tracks array, find and update the item with the given updateTrack.
+    //updateTrack must contain label.
+    /*
     _modifyTrack: function(tracks,updateTrack){
         for(var i in tracks) {
             if (tracks[i].label === updateTrack.label) {
@@ -416,9 +431,7 @@ module.exports = {
         }
         return false;   // not found
     },
-    /**
-     * Given tracks array, remove the item with the given key (which is track label)
-     */
+    // Given tracks array, remove the item with the given key (which is track label)
     _removeTrack: function(tracks,key){
         for(var i in tracks) {
             if (tracks[i].label === key) {
@@ -428,6 +441,7 @@ module.exports = {
         }
         return false;   // not found
     }
+    */
 };
 
 
