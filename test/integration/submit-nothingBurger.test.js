@@ -59,7 +59,7 @@ describe('integration test', function(){
                     expect(complete).to.equal(true);
                     expect(data.state).to.equal('complete','job completed');
                     
-                    let trackLabel = data.data.track.label;
+                    let trackLabel = data.data.track.label+"|1";
                     
                     //expect(trackLabel).to.equal("NOTHING_"+jobId);
                     
