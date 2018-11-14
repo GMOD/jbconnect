@@ -90,6 +90,7 @@ var AuthController = {
 
     var redirectTo = '/jbrowse';
 
+    /* istanbul ignore next */
     if (typeof req.query.next !== 'undefined'){
         sails.log.debug("req.query.next",req.query.next);
         redirectTo = req.query.next;
@@ -117,7 +118,8 @@ var AuthController = {
    * @param {Object} res - response
    * 
    */
-  register: function (req, res) {
+  /* istanbul ignore next: not sure we get here */
+  register(req, res) {
     sails.log.debug("/register");
     res.view('auth/bregister',{
       errors: req.flash('error')
@@ -179,8 +181,9 @@ var AuthController = {
    * @param {Object} res - response
    * 
    */
-  callback: function (req, res) {
+  callback(req, res) {
     //  sails.log.debug("authController callback()");
+    /* istanbul ignore next */
     function tryAgain (err) {
 
       // Only certain error messages are returned via req.flash('error', someError)
@@ -220,14 +223,17 @@ var AuthController = {
     }
 
     passport.callback(req, res, function (err, user, challenges, statuses) {
+      /* istanbul ignore next */
       if (err || !user) {
         return tryAgain(challenges);
       }
+      /* istanbul ignore next */
       if (typeof req.login === 'undefined') {
           sails.log.error("req.login undefined - passport.callback");
           return;
       }
       req.login(user, function (err) {
+        /* istanbul ignore next */
         if (err) {
           return tryAgain(err);
         }
@@ -242,7 +248,7 @@ var AuthController = {
               sails.log.info("params",req.query.next);
               
               var redirectTo = "/";
-              if (typeof req.query.next != 'undefined')
+              if (typeof req.query.next !== 'undefined')
                   redirectTo = req.query.next;
 
         sails.log.info("redirecting to"+redirectTo);
@@ -260,7 +266,8 @@ var AuthController = {
    * @param {Object} res - response
    * 
    */
-  disconnect: function (req, res) {
+  /* istanbul ignore next */
+  disconnect(req, res) {
       sails.log.debug("authController disconnect()");
     passport.disconnect(req, res);
   }

@@ -43,7 +43,7 @@ module.exports = {
     Get: function(params,cb) {
         this.find(params).then(function(foundList) {
            return cb(null,foundList) 
-        }).catch(function(err){
+        }).catch( /* istanbul ignore next */ function(err){
            return cb(err);
         });
     },
@@ -64,6 +64,7 @@ module.exports = {
         });
         
         let t1 = setInterval(function() {
+            /* istanbul ignore next */
             if (sails.exiting) {
                 console.log("clear interval _activeMonitor");
                 clearInterval(t1);
@@ -85,7 +86,10 @@ module.exports = {
             JobActive.updateOrCreate({id:1},{active:val}).then(function(record) {
                 //sails.log('active written',record);
                 JobActive.publishUpdate(1,record);
-            }).catch(function(err) {
+            })
+            .catch(
+            /* istanbul ignore next */
+            function(err) {
                 let e = (""+err).split('\n');
                 // trap corner case error that occurs sometimes on npm test
                 if (e[0]==="TypeError: Cannot read property 'select' of undefined")

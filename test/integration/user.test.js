@@ -127,9 +127,27 @@ describe('integration test', function(){
                            done();
                         });
                 });
-      
-                //done();
             });
         });
     });
+    it('should call rest /logout', function(done) {
+        agent
+          .get('/logout')
+          .set('content-type','application/json; charset=utf-8')
+          .end((err,res,body) => {
+                expect(res).to.have.status(200);
+                done();
+          });
+    });
+    // thought this would cover AuthController.disconnect, but it doesn't.  Why?
+    it('should call rest /auth/disconnect', function(done) {
+        agent
+          .get('/auth/disconnect')
+          .set('content-type','application/json; charset=utf-8')
+          .end((err,res,body) => {
+                expect(res).to.have.status(200);
+                done();
+          });
+    });
+
 });

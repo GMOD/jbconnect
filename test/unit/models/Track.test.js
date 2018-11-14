@@ -55,7 +55,7 @@ describe('Track Model', function() {
   it('should call /track/add', function(done) {
         
     // this preserves session data for subsequent calls
-//    agent = chai.request.agent(server);
+    // agent = chai.request.agent(server);
 
     let dataset = Dataset.Resolve(1);
 
@@ -99,9 +99,69 @@ describe('Track Model', function() {
                  expect(res).to.have.status(200, 'status 200');
                  assert.equal(res.body[0].lkey,theKey, 'verify');
 
+                 // save global track id for later (modify and remove test)
+                 theTrackId = res.body[0].id;  
+
                  done();
               });
       });
   });
-  
+  /*
+  it('should call /track/modify', function(done) {
+        
+    let dataset = Dataset.Resolve(1);
+    agent
+      .post('/track/modify')
+      //.set('Content-Type', 'application/json; charset=utf-8')
+      .send(newTrack)
+      //.type('form')
+      .end((err,res,body) => {
+            //console.log('/track/add status',res.status);
+            expect(res).to.have.status(200);
+            //console.log("test /track/add",res.body,body);
+
+            let theKey = res.body.lkey;
+            let geturl = '/track/get?lkey='+theKey;
+
+            agent
+              .get(geturl)
+              .set('content-type','application/json; charset=utf-8')
+              .end((err,res,body) => {
+                 console.log('add track - /track/get verify',res.body);
+                 expect(res).to.have.status(200, 'status 200');
+                 assert.equal(res.body[0].lkey,theKey, 'verify');
+
+                 done();
+              });
+      });
+  });
+  it('should call /track/remove', function(done) {
+        
+    let dataset = Dataset.Resolve(1);
+    agent
+      .post('/track/remove')
+      //.set('Content-Type', 'application/json; charset=utf-8')
+      .send(newTrack)
+      //.type('form')
+      .end((err,res,body) => {
+            //console.log('/track/add status',res.status);
+            expect(res).to.have.status(200);
+            //console.log("test /track/add",res.body,body);
+
+            let theKey = res.body.lkey;
+            let geturl = '/track/get?lkey='+theKey;
+
+            agent
+              .get(geturl)
+              .set('content-type','application/json; charset=utf-8')
+              .end((err,res,body) => {
+                 console.log('add track - /track/get verify',res.body);
+                 expect(res).to.have.status(200, 'status 200');
+                 assert.equal(res.body[0].lkey,theKey, 'verify');
+
+                 done();
+              });
+      });
+  });
+  */
 });
