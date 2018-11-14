@@ -7,7 +7,7 @@
 
 sails = require('sails');
 const shell = require('shelljs');
-
+const _ = require("lodash");
 
 before(function(done) {
     console.log("Lifting SAILS...");
@@ -60,8 +60,36 @@ before(function(done) {
 
         // here you can load fixtures, etc.
         setTimeout(function() {
-            //console.log(">>>post timeout",typeof done);
-            done();
+            console.log(">>>post timeout",typeof done);
+
+            Track.find({}).then(function(records) {
+                //console.log('xxxbootstrap records',records)
+                if (err) {
+                    console.log("bootstrap failed to get tracks",err);
+                    return done();
+                }
+                if (_.isUndefined(records)) {
+                    sails.log.error("Track.Get undefined records");
+                    return done();
+                }
+                if (records.length > 0) {
+                    sails.log.info("Removing test tracks with category JBConnectTest");
+                    for(var i in records ) {
+                        if ( !_.isUndefined(records[i].trackData.category) && records[i].trackData.category==='JBConnectTest' ) {
+                            sails.log.info('removing id',records[i].id, records[i].lkey);
+                            Track.Remove(records[i].dataset,records[i].id,function(err,id) {
+                                if (err) {
+                                    sails.log.error("failed to remove",id);
+                                }
+                            });
+                        }
+                    }
+                }
+                else {
+                    console.log ("no nothing tracks to delete");
+                }
+                done();
+            });
         },2000);
     });
 });
