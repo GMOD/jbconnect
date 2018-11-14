@@ -241,7 +241,7 @@ module.exports = {
             catch(err) {
                 sails.log.error("removeTrack failed",trackListPath,err);
                 Track.ResumeWatch(dataSet.id);
-                return cb(err);
+                return cb(err,dataSet.id);
             }
             Track.destroy(id).then(function() {
                 sails.log.debug("removeTrack track destroyed:",id,found.trackData.label);
@@ -254,7 +254,7 @@ module.exports = {
             .catch(function(err) {
                 sails.log.error("removeTrack destroy failed",id, err);
                 Track.ResumeWatch(dataSet.id);
-                return cb(err);
+                return cb(err,dataSet.id);
             });
             
         }).catch(function(err){
@@ -262,23 +262,33 @@ module.exports = {
             Track.ResumeWatch(dataSet.id);
             return cb(err);
         });
+        // Given tracks array, remove the item with the given key (which is track label)
+        function _removeTrack(tracks,key){
+            for(var i in tracks) {
+                if (tracks[i].label === key) {
+                    delete tracks[i];
+                    return true;    // success
+                }
+            }
+            return false;   // not found
+        }
     },
     /**
      * Sync tracklist.json tracks with Track model (promises version)
      * 
-     * todo: dataSet should accept string or dataSet object id
-     * 
-     * @param {string} ds, if dataset is not defined, all models are committed.
+     * @param {string} dataset   ie. ("sample_data/json/volvox")
      * 
      */
     
-    Sync: function(ds) {
+    Sync: function(dataset) {
         var g = sails.config.globals.jbrowse;
 
         //console.log("Track.sync dataset",ds);
 
+        let ds = Dataset.Resolve(dataset);
+
         // todo: handle trackList.json open error / not found
-        var trackListPath = g.jbrowsePath + ds + '/' + 'trackList.json';
+        var trackListPath = g.jbrowsePath + ds.path + '/' + 'trackList.json';
 
         var mTracks = {};       // model db tracks
         var fTracks = {};       // file (trackList.json) tracks
@@ -301,7 +311,7 @@ module.exports = {
                 //sails.log.debug('syncTracks fileTracks',fileTracks.length);
 
                 for(var i in fileTracks)
-                  fTracks[fileTracks[i].label] = fileTracks[i];
+                  fTracks[fileTracks[i].label+"|"+ds.id] = fileTracks[i];
 
                 //ftracks = fTracks;
 
@@ -337,11 +347,11 @@ module.exports = {
             for(var k in fTracks) {
 
               if (typeof mTracks[k] === 'undefined') {
-                    var dataset = Dataset.Resolve(ds);
-                    var data = {
-                        dataset: dataset.id,
-                        path: dataset.path,
-                        lkey: fTracks[k].label,
+                    //var dataset = Dataset.Resolve(ds);
+                    let data = {
+                        dataset: ds.id,
+                        path: ds.path,
+                        lkey: fTracks[k].label+'|'+ds.id,
                         trackData: fTracks[k]
                     };
 
@@ -361,7 +371,10 @@ module.exports = {
                   var toOmit = ['id','createdAt','updatedAt','dataSet','dataset','dataSetPath','ikey'];
                   //sails.log('omit',mTracks[k].trackData);
                   if (JSON.stringify(mTracks[k].trackData) !== JSON.stringify(fTracks[k])) {
-                      Track.update({path:ds, lkey:fTracks[k].label},{trackData:fTracks[k]})
+                      Track.update({
+                          path:ds.path, 
+                          lkey:fTracks[k].label+'|'+ds.id
+                        },{trackData:fTracks[k]})
                       .then(function(item) {
                           /* istanbul ignore else */
                           if (item.length) {
@@ -430,18 +443,9 @@ module.exports = {
             }
         }
         return false;   // not found
-    },
-    // Given tracks array, remove the item with the given key (which is track label)
-    _removeTrack: function(tracks,key){
-        for(var i in tracks) {
-            if (tracks[i].label === key) {
-                delete tracks[i];
-                return true;    // success
-            }
-        }
-        return false;   // not found
     }
     */
+    
 };
 
 
