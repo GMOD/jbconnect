@@ -345,8 +345,8 @@ module.exports = {
         function addOrUpdateItemsToModel(mTracks,fTracks) {
             // add or update file items to model
 
-            for(var i in fTracks) console.log("ftracks",fTracks[i].label,ds.id);
-            for(var i in mTracks) console.log("mtracks",mTracks[i].lkey);
+            //for(var i in fTracks) console.log("ftracks",fTracks[i].label,ds.id);
+            //for(var i in mTracks) console.log("mtracks",mTracks[i].lkey);
 
             for(var k in fTracks) {
 
