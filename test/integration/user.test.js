@@ -12,7 +12,7 @@ describe('integration test', function(){
     this.timeout(25000);
     it('login', function(done) {
         
-        //let app = sails.hooks.http.app;
+        // this preserves session data for subsequent calls
         agent = chai.request.agent(server);
 
         agent
@@ -73,7 +73,7 @@ describe('integration test', function(){
                   .get('/loginstate')
                   .set('content-type','application/json; charset=utf-8')
                   .end((err,res,body) => {
-                     console.log('/loginstate body',res.body);
+                     //console.log('/loginstate body',res.body);
                      expect(res).to.have.status(200, '/loginstate status 200');
                      expect(res.body.loginstate).to.equal(true, 'login state true');
                      expect(res.body.user.username).to.equal('ike.mike','login username is juser');
@@ -101,7 +101,7 @@ describe('integration test', function(){
     it('should set ike.mike password', function(done) {
         User.SetPassword('ike.mike','8candycane',function(err){
             User.find({username:'ike.mike'},function(err,found) {
-                console.log(found[0]);
+                //console.log(found[0]);
                 // verify password change
                 agent
                 .post('/auth/local?next=/jbrowse')
@@ -119,7 +119,7 @@ describe('integration test', function(){
                         .get('/loginstate')
                         .set('content-type','application/json; charset=utf-8')
                         .end((err,res,body) => {
-                           console.log('/loginstate body',res.body);
+                           //console.log('/loginstate body',res.body);
                            expect(res).to.have.status(200, '/loginstate status 200');
                            expect(res.body.loginstate).to.equal(true, 'login state true');
                            expect(res.body.user.username).to.equal('ike.mike','login username is ike.mike');
