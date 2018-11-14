@@ -1,4 +1,12 @@
-let assert = require('assert');
+const _ = require("lodash");
+const tlib = require('../../share/test-lib');
+const chai = require('chai')
+const chaiHttp = require('chai-http');
+chai.use(chaiHttp);
+
+const server = 'http://localhost:1337';
+const expect = chai.expect;
+const assert = chai.assert;
 
 describe('Dataset Model', function() {
 
@@ -50,6 +58,21 @@ describe('Dataset Model', function() {
       assert.equal(dataset,null,"resolve value not found");
       done();
     });
+  });
+  it('should call /dataset/get', function(done) {
+        
+      let geturl = '/dataset/get';
+
+      agent
+        .get(geturl)
+        .set('content-type','application/json; charset=utf-8')
+        .end((err,res,body) => {
+            console.log('/dataset/get verify',res.body);
+            expect(res).to.have.status(200, 'status 200');
+            assert.equal(res.body[0].name,'Volvox', 'verify name of dataset is Volvox');
+
+            done();
+        });
   });
   
 });
