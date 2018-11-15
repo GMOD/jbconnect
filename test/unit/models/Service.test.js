@@ -1,7 +1,12 @@
-var chai = require('chai');
-var chaiAsPromised = require("chai-as-promised");
-chai.use(chaiAsPromised);
-var assert = chai.assert;
+const _ = require("lodash");
+const tlib = require('../../share/test-lib');
+const chai = require('chai')
+const chaiHttp = require('chai-http');
+chai.use(chaiHttp);
+
+const server = 'http://localhost:1337';
+const expect = chai.expect;
+const assert = chai.assert;
 
 
 describe('ServiceModel', function() {
@@ -38,5 +43,15 @@ describe('ServiceModel', function() {
                     .then(done,done)
             })
         });
+    });
+    it('should call rest /service/get', function(done) {
+        agent
+          .get('/service/get')
+          .set('content-type','application/json; charset=utf-8')
+          .end((err,res,body) => {
+                console.log("/service/get",res.body);
+                expect(res).to.have.status(200);
+                done();
+          });
     });
 });
