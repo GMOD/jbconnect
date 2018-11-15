@@ -99,8 +99,8 @@ describe('Track Model', function() {
                  expect(res).to.have.status(200, 'status 200');
                  assert.equal(res.body[0].lkey,theKey, 'verify');
 
-                 // save global track id for later (modify and remove test)
-                 theTrackId = res.body[0].id;  
+                 // save global track for later (modify and remove test)
+                 theNewTrack = res.body[0];  
 
                  done();
               });
@@ -135,20 +135,20 @@ describe('Track Model', function() {
               });
       });
   });
+  */
   it('should call /track/remove', function(done) {
         
     let dataset = Dataset.Resolve(1);
     agent
       .post('/track/remove')
       //.set('Content-Type', 'application/json; charset=utf-8')
-      .send(newTrack)
+      .send(theNewTrack)
       //.type('form')
       .end((err,res,body) => {
-            //console.log('/track/add status',res.status);
             expect(res).to.have.status(200);
             //console.log("test /track/add",res.body,body);
 
-            let theKey = res.body.lkey;
+            let theKey = theNewTrack.lkey;
             let geturl = '/track/get?lkey='+theKey;
 
             agent
@@ -156,12 +156,12 @@ describe('Track Model', function() {
               .set('content-type','application/json; charset=utf-8')
               .end((err,res,body) => {
                  console.log('add track - /track/get verify',res.body);
-                 expect(res).to.have.status(200, 'status 200');
-                 assert.equal(res.body[0].lkey,theKey, 'verify');
+                 expect(res).to.have.status(404, 'status 404 expected (not found because deleted)');
+                 //assert.equal(res.body[0].lkey,theKey, 'verify');
 
                  done();
               });
       });
   });
-  */
+  
 });

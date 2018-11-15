@@ -8,6 +8,7 @@
 sails = require('sails');
 const shell = require('shelljs');
 const _ = require("lodash");
+const async = require("async");
 
 before(function(done) {
     console.log("Lifting SAILS...");
@@ -73,22 +74,38 @@ before(function(done) {
                     return done();
                 }
                 if (records.length > 0) {
-                    sails.log.info("Removing test tracks with category JBConnectTest");
+                    
+                    let deleteRecs = [];
                     for(var i in records ) {
                         if ( !_.isUndefined(records[i].trackData.category) && records[i].trackData.category==='JBConnectTest' ) {
-                            sails.log.info('removing id',records[i].id, records[i].lkey);
-                            Track.Remove(records[i].dataset,records[i].id,function(err,id) {
-                                if (err) {
-                                    sails.log.error("failed to remove",id);
-                                }
-                            });
+                            deleteRecs.push(records[i]);
                         }
                     }
+                    if (deleteRecs.length) {
+                        sails.log.info("Removing test tracks with category JBConnectTest");
+                    
+                        async.eachLimit(deleteRecs,1,
+                            function(rec,cb){
+                                console.log("rec",rec);
+                                Track.Remove(rec,function(err,id) {
+                                    if (err) {
+                                        sails.log.error("failed to remove",err);
+                                        return cb(err);
+                                    }
+                                    sails.log.info("removed",rec.lkey);
+                                    return cb();
+                                });
+                            },
+                            function(err){
+                                // all done
+                                done();
+                            }
+                        );
+                    }
+                    else done();
                 }
-                else {
-                    console.log ("no nothing tracks to delete");
-                }
-                done();
+                else 
+                    done();
             });
         },2000);
     });

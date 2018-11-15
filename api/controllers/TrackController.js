@@ -153,7 +153,7 @@ module.exports = {
      * 
      * Calling example:
      * ::
-     *   $.post( "/track/remove", { trackId: 23 }, function( data ) {
+     *   $.post( "/track/remove", { id: 23 }, function( data ) {
      *     console.log( "result", data );
      *   }, "json");
      * 
@@ -162,11 +162,14 @@ module.exports = {
      * 
      */
     remove: function(req,res) {
-        var params = req.allParams();
-        var id = params.trackId;
+        let params = req.allParams();
+        //let id = params.id;
+        //let dataset = Dataset.Resolve(params.dataset);
+        //let label = params.label;
+
         /* istanbul ignore else */
         if (req.method === 'POST') {
-            Track.Remove(id,function(err) {
+            Track.Remove(params,function(err) {
                 /* istanbul ignore next */
                 if (err) return res.serverError({err:err});
                 return res.ok();

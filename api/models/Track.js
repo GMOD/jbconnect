@@ -221,21 +221,25 @@ module.exports = {
      * @param {ing} dataset - dataset string (i.e. "sample_data/json/volvox"
      * @param (function) cb - callback function(err,
      */
-    Remove: function(dataset,id,cb) {
+    Remove: function(params,cb) {
         var thisb = this;
         var g = sails.config.globals.jbrowse;
-        var dataSet = Dataset.Resolve(dataset);
+        if (_.isUndefined(params.dataset)) return cb("dataset not defined");
+        if (_.isUndefined(params.id)) return cb("id not defined");
+        let dataSet = Dataset.Resolve(params.dataset);
+        let id = params.id;
 
         Track.PauseWatch(dataSet.id);
         
         Track.findOne({id:id,path:dataSet.path}).then(function(found) {
             var key = found.lkey;
+            let label = found.trackData.label;
             // save track to tracklist json
             var trackListPath = g.jbrowsePath + dataSet.path + '/' + 'trackList.json';
             try {
               var trackListData = fs.readFileSync (trackListPath);
               var config = JSON.parse(trackListData);
-              _removeTrack(config.tracks,key);
+              _removeTrack(config.tracks,label);
               fs.writeFileSync(trackListPath,JSON.stringify(config,null,4));
             }
             catch(err) {
@@ -266,7 +270,8 @@ module.exports = {
         function _removeTrack(tracks,key){
             for(var i in tracks) {
                 if (tracks[i].label === key) {
-                    delete tracks[i];
+                    tracks.splice(2,1);
+                    //delete tracks[i];
                     return true;    // success
                 }
             }
@@ -310,10 +315,17 @@ module.exports = {
 
                 //sails.log.debug('syncTracks fileTracks',fileTracks.length);
 
-                for(var i in fileTracks)
-                  fTracks[fileTracks[i].label+"|"+ds.id] = fileTracks[i];
-
+                for(var i in fileTracks) {
+                    try {
+                        fTracks[fileTracks[i].label+"|"+ds.id] = fileTracks[i];
+                    }
+                    catch(err) {
+                        console.log('ftrack',i,fileTracks[i].label+"|"+ds.id)
+                    }
+                }
                 //ftracks = fTracks;
+            for(var i in fTracks) console.log("ftracks",fTracks[i].label,ds.id);
+            for(var i in mTracks) console.log("mtracks",mTracks[i].lkey);
 
                 deleteModelItems(mTracks,fTracks);
                 addOrUpdateItemsToModel(mTracks,fTracks);            
