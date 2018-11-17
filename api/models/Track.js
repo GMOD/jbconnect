@@ -104,7 +104,7 @@ module.exports = {
      * @param {function} cb - callback ``function(err,array)``
      * 
      */
-    Get: function(params,cb) {
+    Get(params,cb) {
         this.find(params).then(function(foundList) {
            cb(null,foundList) 
         }).catch(function(err){
@@ -173,6 +173,48 @@ module.exports = {
         });
         
     },
+    dbAdd: function (addTrack,cb){
+        // write to track db
+        var data = {
+            dataset: ds.id,
+            path: ds.path,
+            lkey: addTrack.label+"|"+ds.id,
+            trackData: addTrack
+        };
+
+        Track.create(data)
+        .then(function(created) {
+            sails.log.debug("Track.Add created:",created.id,created.lkey);
+            
+            Track.publishCreate(created);       // announce
+            Track.ResumeWatch(ds.id);
+            
+            return cb(null,created);
+        })        
+        .catch(function(err) {
+            sails.log.error("addTrack track create failed",err);
+            Track.ResumeWatch(ds.id);
+            return cb(err);
+        });
+
+    },
+    fAdd: function (addTrack,cb) {
+        var g = sails.config.globals.jbrowse;
+        var ds = Dataset.Resolve(addTrack.dataset);
+        var trackListPath = g.jbrowsePath + ds.path + '/' + 'trackList.json';
+        // save track to tracklist json
+        try {
+            var trackListData = fs.readFileSync (trackListPath);
+            var config = JSON.parse(trackListData);
+            config.tracks.push(addTrack);
+            fs.writeFileSync(trackListPath,JSON.stringify(config,null,4));
+        }
+        catch(err) {
+            sails.log.error("addTrack failed",addTrack.label,err);
+            Track.ResumeWatch(ds.id);
+            return cb(err);
+        }
+    },
     /*
      * 
      * @param {string} dataset - (eg: "sample_data/json/volvlx")
@@ -234,21 +276,28 @@ module.exports = {
         Track.findOne({id:id,path:dataSet.path}).then(function(found) {
             var key = found.lkey;
             let label = found.trackData.label;
+
+            sails.log.debug('Track.Remove',found.lkey);
+
             // save track to tracklist json
+            
             var trackListPath = g.jbrowsePath + dataSet.path + '/' + 'trackList.json';
             try {
               var trackListData = fs.readFileSync (trackListPath);
               var config = JSON.parse(trackListData);
-              _removeTrack(config.tracks,label);
-              fs.writeFileSync(trackListPath,JSON.stringify(config,null,4));
+              if (_removeTrack(config.tracks,label)){
+                fs.writeFileSync(trackListPath,JSON.stringify(config,null,4));
+                console.log("track removed from file",label,trackListPath);
+              }
             }
             catch(err) {
                 sails.log.error("removeTrack failed",trackListPath,err);
                 Track.ResumeWatch(dataSet.id);
                 return cb(err,dataSet.id);
             }
-            Track.destroy(id).then(function() {
-                sails.log.debug("removeTrack track destroyed:",id,found.trackData.label);
+            
+            Track.destroy(id).then(function(destroyed) {
+                sails.log.debug("track removed from db",id,found.trackData.label);
 
                 Track.publishDestroy(id);       // announce
                 Track.ResumeWatch(dataSet.id);
@@ -285,14 +334,13 @@ module.exports = {
      * 
      */
     
-    Sync: function(dataset) {
+    Sync: function(dataset,cb) {
         var g = sails.config.globals.jbrowse;
 
         //console.log("Track.sync dataset",ds);
 
         let ds = Dataset.Resolve(dataset);
 
-        // todo: handle trackList.json open error / not found
         var trackListPath = g.jbrowsePath + ds.path + '/' + 'trackList.json';
 
         var mTracks = {};       // model db tracks
@@ -305,27 +353,20 @@ module.exports = {
                 for(var i in modelTracks)
                   mTracks[modelTracks[i].lkey] = modelTracks[i];
 
-                //mtracks = mTracks;  // debug
-
                 // read file tracks
                 return fs.readFileAsync(trackListPath);
             })
             .then(function(trackListData) {
                 var fileTracks = JSON.parse(trackListData).tracks;
 
-                //sails.log.debug('syncTracks fileTracks',fileTracks.length);
-
-                for(var i in fileTracks) {
-                    try {
+                for(var i in fileTracks) 
                         fTracks[fileTracks[i].label+"|"+ds.id] = fileTracks[i];
-                    }
-                    catch(err) {
-                        console.log('ftrack',i,fileTracks[i].label+"|"+ds.id)
-                    }
-                }
+                
                 //ftracks = fTracks;
-            for(var i in fTracks) console.log("ftracks",fTracks[i].label,ds.id);
-            for(var i in mTracks) console.log("mtracks",mTracks[i].lkey);
+                let c = 0;
+                for(var i in fTracks) console.log("ftracks",c++,i);
+                c = 0;
+                for(var i in mTracks) console.log("mtracks",c++,i, mTracks[i].id);
 
                 deleteModelItems(mTracks,fTracks);
                 addOrUpdateItemsToModel(mTracks,fTracks);            
@@ -334,6 +375,7 @@ module.exports = {
                 sails.log.error(err);
             });
 
+        // delete items from db if they do not exist in trackList
         function deleteModelItems(mTracks,fTracks) {
             var toDel = [];
             for(var k in mTracks) {
@@ -356,9 +398,6 @@ module.exports = {
         };
         function addOrUpdateItemsToModel(mTracks,fTracks) {
             // add or update file items to model
-
-            //for(var i in fTracks) console.log("ftracks",fTracks[i].label,ds.id);
-            //for(var i in mTracks) console.log("mtracks",mTracks[i].lkey);
 
             for(var k in fTracks) {
 
