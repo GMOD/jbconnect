@@ -48,7 +48,7 @@ module.exports = {
      * @param {function} cb - callback function 
      * @returns {undefined}
      */
-    Init: function(params,cb) {
+    Init(params,cb) {
         this.Sync(cb);
         
         // todo: need to handle this in callback
@@ -60,7 +60,7 @@ module.exports = {
      * @param {object} params - search critera (i.e. ``{id: 1,user:'jimmy'}`` )
      * @param {function} cb - callback ``function(err,array)``
      */
-    Get: function(params,cb) {
+    Get(params,cb) {
         this.find(params).then(function(foundList) {
            return cb(null,foundList) 
         }).catch(function(err){
@@ -107,7 +107,7 @@ module.exports = {
      * 
      * @param (function) cb - callback function
      */
-    Sync:function(cb) {
+    Sync(cb) {
         sails.log.debug('Dataset.Sync()');
         var g = sails.config.globals.jbrowse;
         var thisb = this;
