@@ -337,9 +337,8 @@ module.exports = {
     Sync: function(dataset,cb) {
         var g = sails.config.globals.jbrowse;
 
-        //console.log("Track.sync dataset",ds);
-
         let ds = Dataset.Resolve(dataset);
+        console.log("Track.sync dataset",ds);
 
         var trackListPath = g.jbrowsePath + ds.path + '/' + 'trackList.json';
 

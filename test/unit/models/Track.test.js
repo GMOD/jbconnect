@@ -12,6 +12,9 @@ const asyncmod = require("async");
 
 describe('Track Model', function() {
 
+  let org_mlen = 0;
+  let org_flen = 0;
+
   it('login', function(done) {
         
     // this preserves session data for subsequent calls
@@ -42,109 +45,319 @@ describe('Track Model', function() {
               });
       });
   });
-  it('should verify boostrap Track.Sync was successful', function(done) {
-    // only test the first dataset    
-    let dataset = Dataset.Resolve(1);
 
-    Track.find({dataset:dataset.id})
-    .then(function(results) {
+  describe('verify boostrap Track.Sync was successful', function() {
+    it('should verify boostrap Track.Sync was successful', function(done) {
+      // only test the first dataset    
+      let dataset = Dataset.Resolve(1);
 
-      console.log('results',results);
-      console.log('results.0',results[0].lkey);
+      read_db_and_f(dataset.path,function(t) {
 
-      assert.isAbove(results.length,0,"results.length is > 0");
+        //var i;
+        //for(i in t.mtracks) console.log("m",t.mtracks[i].label);  // debug
+        //for(i in t.ftracks) console.log("f",t.mtracks[i].label);
 
-      let mtracks = {}, ftracks = {};
-      for(var i in results) mtracks[results[i].lkey] = results[i].trackData;
+        //console.log("count",Object.keys(t.mtracks).length,Object.keys(t.ftracks).length);
+
+        assert.isAbove(Object.keys(t.mtracks).length,0,"model tracks > 0");
+        assert.isAbove(Object.keys(t.ftracks).length,0,"file tracks > 0");
+        assert.equal(Object.keys(t.mtracks).length,Object.keys(t.ftracks).length,"length of countm and countf are equal");
+
+        // save original lengths for future tests
+        org_mlen = Object.keys(t.mtracks).length;
+        org_flen = Object.keys(t.ftracks).length;
+
+        for(var i in t.mtracks) assert.deepEqual(t.mtracks[i],t.ftracks[i],"objects are deep equal");
+    
+        done();
+      });
+
+    });
+  });
+
+
+  describe('test Track.Sync after adding new db items', function() {
+    it('should test Track.Sync after adding new db items', function(done) {
+      // only test the first dataset    
+      let dataset = Dataset.Resolve(1);
+
+      let cr1,cr2;
+
+      let t1 = {
+        "dataset":dataset.id,
+        "path": dataset.path,
+        "lkey": "test1|"+dataset.id,
+        "trackData": {
+          "label": "test1",
+          "key": "test1",
+          "storeClass": "JBrowse/Store/SeqFeature/NCList",
+          "urlTemplate": "tracks/EST/{refseq}/trackData.json",
+          "type": "FeatureTrack",
+          "category": "JBConnectTest"
+        }
+      };
+      let t2 = {
+        "dataset":dataset.id,
+        "path": dataset.path,
+        "lkey": "test2|"+dataset.id,
+        "trackData": {
+          "label": "test2",
+          "key": "test2",
+          "storeClass": "JBrowse/Store/SeqFeature/NCList",
+          "urlTemplate": "tracks/EST/{refseq}/trackData.json",
+          "type": "FeatureTrack",
+          "category": "JBConnectTest"
+        }
+      };
+
+      Track.create(t1)
+      .then(function(created){
+          cr1 = created;
+          return Track.create(t2);
+      })
+      .then(function(created) {
+          cr2 = created;
+
+          read_db_and_f(dataset.path,function(t) {
+
+            for(var i in t.mtracks) console.log("m",t.mtracks[i].label);  // debug
+            for(i in t.ftracks) console.log("f",t.ftracks[i].label);
+      
+            console.log("count",Object.keys(t.mtracks).length,Object.keys(t.ftracks).length);
+      
+            assert.isAbove(Object.keys(t.mtracks).length,0,"model tracks > 0");
+            assert.isAbove(Object.keys(t.ftracks).length,0,"file tracks > 0");
+            assert.equal(Object.keys(t.mtracks).length,2+Object.keys(t.ftracks).length,"mcount = 2+fcount");
+        
+            Track.Sync(dataset.id);
+
+            setTimeout(function(){
+
+              read_db_and_f(dataset.path,function(t) {
+
+                console.log('post sync');
+                for(var i in t.mtracks) console.log("m",t.mtracks[i].label);  // debug
+                for(i in t.ftracks) console.log("f",t.mtracks[i].label);
+          
+                console.log("count",Object.keys(t.mtracks).length,Object.keys(t.ftracks).length);
+          
+                assert.isAbove(Object.keys(t.mtracks).length,0,"model tracks > 0");
+                assert.isAbove(Object.keys(t.ftracks).length,0,"file tracks > 0");
+                assert.equal(Object.keys(t.mtracks).length,Object.keys(t.ftracks).length,"mcount = 2+fcount");
+      
+                done();
+              });
+            },1000);
+          }); //read
+      }); //then
+    });
+  });  
+
+  
+  describe('verify trackcounts should be original value', function() {
+    it('should verify boostrap Track.Sync was successful', function(done) {
+      // only test the first dataset    
+      let dataset = Dataset.Resolve(1);
+
+      read_db_and_f(dataset.path,function(t) {
+
+        //var i;
+        //for(i in t.mtracks) console.log("m",t.mtracks[i].label);  // debug
+        //for(i in t.ftracks) console.log("f",t.mtracks[i].label);
+
+        //console.log("count",Object.keys(t.mtracks).length,Object.keys(t.ftracks).length);
+
+        assert.isAbove(Object.keys(t.mtracks).length,0,"model tracks > 0");
+        assert.isAbove(Object.keys(t.ftracks).length,0,"file tracks > 0");
+        assert.equal(Object.keys(t.mtracks).length,Object.keys(t.ftracks).length,"length of countm and countf are equal");
+
+        // save original lengths for future tests
+        assert.equal(org_mlen,Object.keys(t.mtracks).length);
+        assert.equal(org_flen,Object.keys(t.ftracks).length);
+        assert.equal(org_mlen,org_flen);
+
+        for(var i in t.mtracks) assert.deepEqual(t.mtracks[i],t.ftracks[i],"objects are deep equal");
+    
+        done();
+      });
+
+    });
+  });
+
+
+  describe('test Track.Sync after adding new file items', function() {
+    it('should test Track.Sync after adding new db items', function(done) {
+      // only test the first dataset    
+      let ds = Dataset.Resolve(1);
+
+      let cr1,cr2;
+
+      let t1 = {
+          "label": "test3",
+          "key": "test3",
+          "storeClass": "JBrowse/Store/SeqFeature/NCList",
+          "urlTemplate": "tracks/EST/{refseq}/trackData.json",
+          "type": "FeatureTrack",
+          "category": "JBConnectTest"
+      };
+      let t2 = {
+          "label": "test4",
+          "key": "test4",
+          "storeClass": "JBrowse/Store/SeqFeature/NCList",
+          "urlTemplate": "tracks/EST/{refseq}/trackData.json",
+          "type": "FeatureTrack",
+          "category": "JBConnectTest"
+      };
 
       var g = sails.config.globals.jbrowse;
-      var trackListPath = g.jbrowsePath + dataset.path + '/' + 'trackList.json';
+      var trackListPath = g.jbrowsePath + ds.path + '/' + 'trackList.json';
       var trackListData = fs.readFileSync (trackListPath);
       var config = JSON.parse(trackListData);
       var tracks = config.tracks;
-      assert.isAbove(tracks.length,0,"tracks.length > 0");
 
-      for(i in tracks) ftracks[tracks[i].label+"|1"] = tracks[i];
+      let tracks_a = {};
+      for(var i in tracks) tracks_a[tracks[i].label] = tracks[i];
 
-      //for(i in mtracks) console.log("m",mtracks[i].label);  // debug
-      //for(i in ftracks) console.log("f",mtracks[i].label);
+      assert.isUndefined(tracks_a[t1.label],t1.label+" already exists in trackList.json");
+      if (_.isUndefined(tracks_a[t1.label])) tracks.push(t1);
 
-      console.log("mtrack.length",Object.keys(mtracks).length);
-      assert.equal(Object.keys(mtracks).length,Object.keys(ftracks).length,"length of countm and countf are equal");
+      assert.isUndefined(tracks_a[t2.label],t2.label+" already exists in trackList.json");
+      if (_.isUndefined(tracks_a[t2.label])) tracks.push(t2);
 
-      for(i in mtracks) assert.deepEqual(mtracks[i],ftracks[i],"objects are deep equal");
+      fs.writeFileSync(trackListPath,JSON.stringify(config,null,4));
+      
 
-      done();
-    })
-    .catch(done);
-  });
+      read_db_and_f(ds.path,function(t) {
 
-  describe('Track.find()', function() {
-    it('should check find function', function (done) {
-      Track.find()
-      .then(function(results) {
-        // some tests
-        done();
-      })
-      .catch(done);
+        for(var i in t.mtracks) console.log("m",t.mtracks[i].label);  // debug
+        for(i in t.ftracks) console.log("f",t.ftracks[i].label);
+  
+        console.log("count",Object.keys(t.mtracks).length,Object.keys(t.ftracks).length);
+  
+        assert.isAbove(Object.keys(t.mtracks).length,0,"model tracks > 0");
+        assert.isAbove(Object.keys(t.ftracks).length,0,"file tracks > 0");
+        assert.equal(2+Object.keys(t.mtracks).length,Object.keys(t.ftracks).length,"fcount = 2 + mcount");
+    
+        Track.Sync(ds.id);
+
+        setTimeout(function(){
+
+          read_db_and_f(ds.path,function(t) {
+
+            console.log('post sync');
+            for(var i in t.mtracks) console.log("m",t.mtracks[i].label);  // debug
+            for(i in t.ftracks) console.log("f",t.mtracks[i].label);
+      
+            console.log("count",Object.keys(t.mtracks).length,Object.keys(t.ftracks).length);
+      
+            assert.isAbove(Object.keys(t.mtracks).length,0,"model tracks > 0");
+            assert.isAbove(Object.keys(t.ftracks).length,0,"file tracks > 0");
+            assert.equal(Object.keys(t.mtracks).length,Object.keys(t.ftracks).length,"mcount = 2+fcount");
+            assert.equal(org_mlen+2,Object.keys(t.mtracks).length, "should indicate we added 2 tracks");
+
+            done();
+          });
+        },1000);
+      }); //read
+    });
+  });  
+
+  
+
+  describe(' call /track/add', function() {
+    it('should call /track/add', function(done) {
+          
+      // this preserves session data for subsequent calls
+      // agent = chai.request.agent(server);
+
+      let ds = Dataset.Resolve(1);
+
+      let newTrack = {
+          "dataset":ds.id,
+          "key": "test5",
+          "storeClass": "JBrowse/Store/SeqFeature/NCList",
+          "urlTemplate": "tracks/EST/{refseq}/trackData.json",
+          "label": "test5",
+          "type": "FeatureTrack",
+          "category": "JBConnectTest"
+      };
+
+      agent
+        .post('/track/add')
+        //.set('Content-Type', 'application/json; charset=utf-8')
+        .send(newTrack)
+        //.type('form')
+        .end((err,res,body) => {
+              //console.log('/track/add status',res.status);
+              expect(res).to.have.status(200);
+              //console.log("test /track/add",res.body,body);
+
+              let theKey = res.body.lkey;
+              let geturl = '/track/get?lkey='+theKey;
+
+              agent
+                .get(geturl)
+                .set('content-type','application/json; charset=utf-8')
+                .end((err,res,body) => {
+                  console.log('add track - /track/get verify',res.body);
+                  expect(res).to.have.status(200, 'status 200');
+                  assert.equal(res.body[0].lkey,theKey, 'verify');
+
+                  // save global track for later (modify and remove test)
+                  theNewTrack = res.body[0];  
+
+                  read_db_and_f(ds.path,function(t) {
+
+                    console.log('post sync');
+                    for(var i in t.mtracks) console.log("m",t.mtracks[i].label);  // debug
+                    for(i in t.ftracks) console.log("f",t.mtracks[i].label);
+              
+                    console.log("count",Object.keys(t.mtracks).length,Object.keys(t.ftracks).length);
+              
+                    assert.isAbove(Object.keys(t.mtracks).length,0,"model tracks > 0");
+                    assert.isAbove(Object.keys(t.ftracks).length,0,"file tracks > 0");
+                    assert.equal(Object.keys(t.mtracks).length,Object.keys(t.ftracks).length,"mcount = 2+fcount");
+                    assert.equal(org_mlen+3,Object.keys(t.mtracks).length, "should indicate we added 2 tracks");
+          
+                    done();
+                  });
+        
+                });
+        });
     });
   });
-  /*
-  it('should call /track/add', function(done) {
-        
-    // this preserves session data for subsequent calls
-    // agent = chai.request.agent(server);
 
-    let dataset = Dataset.Resolve(1);
+/*
+  describe('test /track/remove & Track.Remove', function() {
+    it('should call /track/remove', function(done) {
+          
+      let dataset = Dataset.Resolve(1);
+      agent
+        .post('/track/remove')
+        //.set('Content-Type', 'application/json; charset=utf-8')
+        .send(theNewTrack)
+        //.type('form')
+        .end((err,res,body) => {
+              expect(res).to.have.status(200);
+              //console.log("test /track/add",res.body,body);
 
-    let newTrack = {
-        "dataset":dataset.id,
-        "autocomplete": "all",
-        "track": "EST",
-        "style": {
-            "className": "est"
-        },
-        "key": "HTMLFeatures - ESTs Test",
-        "feature": [
-            "EST_match:est"
-        ],
-        "storeClass": "JBrowse/Store/SeqFeature/NCList",
-        "urlTemplate": "tracks/EST/{refseq}/trackData.json",
-        "compress": 0,
-        "label": "TestTrack1",
-        "type": "FeatureTrack",
-        "category": "JBConnectTest"
-    };
+              let theKey = theNewTrack.lkey;
+              let geturl = '/track/get?lkey='+theKey;
 
-    agent
-      .post('/track/add')
-      //.set('Content-Type', 'application/json; charset=utf-8')
-      .send(newTrack)
-      //.type('form')
-      .end((err,res,body) => {
-            //console.log('/track/add status',res.status);
-            expect(res).to.have.status(200);
-            //console.log("test /track/add",res.body,body);
+              agent
+                .get(geturl)
+                .set('content-type','application/json; charset=utf-8')
+                .end((err,res,body) => {
+                  console.log('add track - /track/get verify',res.body);
+                  expect(res).to.have.status(404, 'status 404 expected (not found because deleted)');
+                  //assert.equal(res.body[0].lkey,theKey, 'verify');
 
-            let theKey = res.body.lkey;
-            let geturl = '/track/get?lkey='+theKey;
-
-            agent
-              .get(geturl)
-              .set('content-type','application/json; charset=utf-8')
-              .end((err,res,body) => {
-                 console.log('add track - /track/get verify',res.body);
-                 expect(res).to.have.status(200, 'status 200');
-                 assert.equal(res.body[0].lkey,theKey, 'verify');
-
-                 // save global track for later (modify and remove test)
-                 theNewTrack = res.body[0];  
-
-                 done();
-              });
-      });
+                  done();
+                });
+        });
+    });
   });
-  */
+*/
   /*
   it('should call /track/modify', function(done) {
         
@@ -175,86 +388,28 @@ describe('Track Model', function() {
       });
   });
   */
- /*
-  it('should call /track/remove', function(done) {
-        
-    let dataset = Dataset.Resolve(1);
-    agent
-      .post('/track/remove')
-      //.set('Content-Type', 'application/json; charset=utf-8')
-      .send(theNewTrack)
-      //.type('form')
-      .end((err,res,body) => {
-            expect(res).to.have.status(200);
-            //console.log("test /track/add",res.body,body);
+  function read_db_and_f(ds,done) {
+    console.log('read_db_and_f');
+    let t = {
+      ftracks: {},
+      mtracks: {}
+    }
+    Track.find({path:ds})
+    .then(function(results) {
 
-            let theKey = theNewTrack.lkey;
-            let geturl = '/track/get?lkey='+theKey;
+      for(var i in results) t.mtracks[results[i].lkey] = results[i].trackData;
 
-            agent
-              .get(geturl)
-              .set('content-type','application/json; charset=utf-8')
-              .end((err,res,body) => {
-                 console.log('add track - /track/get verify',res.body);
-                 expect(res).to.have.status(404, 'status 404 expected (not found because deleted)');
-                 //assert.equal(res.body[0].lkey,theKey, 'verify');
+      var g = sails.config.globals.jbrowse;
+      var trackListPath = g.jbrowsePath + ds + '/' + 'trackList.json';
+      var trackListData = fs.readFileSync (trackListPath);
+      var config = JSON.parse(trackListData);
+      var tracks = config.tracks;
 
-                 done();
-              });
-      });
-  });
-*/
-  it('should test Track.Sync', function(done) {
-        
-    // this preserves session data for subsequent calls
-    // agent = chai.request.agent(server);
-
-    let dataset = Dataset.Resolve(1);
-
-    let newTrack = {
-        "dataset":dataset.id,
-        "autocomplete": "all",
-        "track": "EST",
-        "key": "",
-        "storeClass": "JBrowse/Store/SeqFeature/NCList",
-        "urlTemplate": "tracks/EST/{refseq}/trackData.json",
-        "compress": 0,
-        "label": "TestTrack1",
-        "type": "FeatureTrack",
-        "category": "JBConnectTest"
-    };
-    done();
-    /*
-    Track.dbAdd(newTrack);
-
-    agent
-      .post('/track/add')
-      //.set('Content-Type', 'application/json; charset=utf-8')
-      .send(newTrack)
-      //.type('form')
-      .end((err,res,body) => {
-            //console.log('/track/add status',res.status);
-            expect(res).to.have.status(200);
-            //console.log("test /track/add",res.body,body);
-
-            let theKey = res.body.lkey;
-            let geturl = '/track/get?lkey='+theKey;
-
-            agent
-              .get(geturl)
-              .set('content-type','application/json; charset=utf-8')
-              .end((err,res,body) => {
-                 console.log('add track - /track/get verify',res.body);
-                 expect(res).to.have.status(200, 'status 200');
-                 assert.equal(res.body[0].lkey,theKey, 'verify');
-
-                 // save global track for later (modify and remove test)
-                 theNewTrack = res.body[0];  
-
-                 done();
-              });
-      });
-*/
+      for(i in tracks) t.ftracks[tracks[i].label+"|1"] = tracks[i];
+      done(t);
+    })
+    .catch(function(err) {
+      console.log("read_db_and_f",err);
     });
-
+  }
 });
