@@ -138,7 +138,7 @@ module.exports = {
         }
         // istanbul ignore next
         function _testdelete(job) {
-            sails.log('deleteing job',job.id)
+            sails.log('deleteing job',job.id);
             job.remove(function(err){
               if (err) throw err;
               console.log('removed completed job #%d', job.id);
@@ -168,7 +168,7 @@ module.exports = {
      */
     Get: function(params,cb) {
         this.find(params).then(function(foundList) {
-           return cb(null,foundList) 
+           return cb(null,foundList); 
         }).catch(function(err){
             // istanbul ignore next
             return cb(err);
@@ -396,7 +396,7 @@ module.exports = {
             Job.create(job1).then(function(created) {
                sails.log("sJob created",created.id); 
                Job.publishCreate(created);       // announce create
-               cb()
+               cb();
 
             }).catch(function(err) {
                 /* istanbul ignore next */ if (true) {
@@ -561,7 +561,7 @@ module.exports = {
                 
                 // if kJob element not in sJobs, create it in sJobs
                 var createList = {};
-                for(var i in kJobs) {
+                for(i in kJobs) {
                     if (typeof sJobs[i] === 'undefined') createList[i] = kJobs[i];
                     else delete sJobs[i].delete;       // clear delete flag if both exist
                 }
