@@ -135,7 +135,7 @@ module.exports = {
      */
     modify: function(req,res) {
         var params = req.allParams();
-        var track = params.track;
+        var track = params;
         if (req.method === 'POST') {
             Track.Modify(track,function(err,modified) {
                 if (err) return res.serverError({err:err,track:track});
