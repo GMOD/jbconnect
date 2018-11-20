@@ -267,30 +267,23 @@ describe('Track Model', function() {
   describe(' call /track/add', function() {
     it('should call /track/add', function(done) {
           
-      // this preserves session data for subsequent calls
-      // agent = chai.request.agent(server);
-
       let ds = Dataset.Resolve(1);
-
-      let newTrack = {
+      let t1 = {
           "dataset":ds.id,
+          "label": "test5",
           "key": "test5",
           "storeClass": "JBrowse/Store/SeqFeature/NCList",
           "urlTemplate": "tracks/EST/{refseq}/trackData.json",
-          "label": "test5",
           "type": "FeatureTrack",
           "category": "JBConnectTest"
       };
 
+
       agent
         .post('/track/add')
-        //.set('Content-Type', 'application/json; charset=utf-8')
-        .send(newTrack)
-        //.type('form')
+        .send(t1)
         .end((err,res,body) => {
-              //console.log('/track/add status',res.status);
               expect(res).to.have.status(200);
-              //console.log("test /track/add",res.body,body);
 
               let theKey = res.body.lkey;
               let geturl = '/track/get?lkey='+theKey;
@@ -327,37 +320,48 @@ describe('Track Model', function() {
     });
   });
 
-/*
+
   describe('test /track/remove & Track.Remove', function() {
     it('should call /track/remove', function(done) {
           
       let dataset = Dataset.Resolve(1);
-      agent
+
+      Track.findOne({lkey: "test4|1"}).exec(function(err,found) {
+        console.log("track remove findeOne",found);
+        assert.exists(found, "track4 track found");
+        assert.equal(found.trackData.label,"test4");
+      
+        let id = found.id;
+
+        agent
         .post('/track/remove')
         //.set('Content-Type', 'application/json; charset=utf-8')
-        .send(theNewTrack)
+        .send({id:id,dataset:dataset.path})
         //.type('form')
         .end((err,res,body) => {
               expect(res).to.have.status(200);
-              //console.log("test /track/add",res.body,body);
+              console.log("post /track/remove",res.body,body);
 
-              let theKey = theNewTrack.lkey;
+              let theKey = found.lkey;
               let geturl = '/track/get?lkey='+theKey;
 
               agent
                 .get(geturl)
                 .set('content-type','application/json; charset=utf-8')
                 .end((err,res,body) => {
-                  console.log('add track - /track/get verify',res.body);
+                  console.log('track remove - /track/get verify',res.body);
                   expect(res).to.have.status(404, 'status 404 expected (not found because deleted)');
                   //assert.equal(res.body[0].lkey,theKey, 'verify');
 
                   done();
                 });
         });
+
+      });
+
     });
   });
-*/
+
   /*
   it('should call /track/modify', function(done) {
         

@@ -86,7 +86,8 @@ before(function(done) {
                     
                         async.eachLimit(deleteRecs,1,
                             function(rec,cb){
-                                console.log("rec",rec);
+                                console.log("remove rec",rec);
+                                
                                 Track.Remove(rec,function(err,id) {
                                     if (err) {
                                         sails.log.error("failed to remove",err);
@@ -95,6 +96,8 @@ before(function(done) {
                                     sails.log.info("removed",rec.lkey);
                                     return cb();
                                 });
+                                
+                                //return cb();
                             },
                             function(err){
                                 // all done
