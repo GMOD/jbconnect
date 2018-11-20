@@ -121,7 +121,7 @@ module.exports = {
      * @returns {object} lkey (ie. {lkey:"xxxx"})
      */
     Add: function(addTrack,cb) {
-        console.log("Add",addTrack);
+        //console.log("Add",addTrack,typeof addTrack.trackData.label);
         var thisb = this;
         var g = sails.config.globals.jbrowse;
         if (_.isUndefined(addTrack.dataset)) return cb("dataset not defined");
@@ -319,7 +319,7 @@ module.exports = {
         function _removeTrack(tracks,key){
             for(var i in tracks) {
                 if (tracks[i].label === key) {
-                    tracks.splice(2,1);
+                    tracks.splice(i,1);
                     //delete tracks[i];
                     return true;    // success
                 }

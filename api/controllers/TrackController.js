@@ -83,7 +83,7 @@ module.exports = {
     add: function(req,res) {
         var params = req.allParams();
         var track = params;
-        console.log("TrackController /track/add track",track);
+        //console.log("TrackController /track/add track",track);
 
         /* istanbul ignore else */
         if (req.method === 'POST') {
