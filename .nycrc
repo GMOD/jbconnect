@@ -5,7 +5,7 @@
       "test/*",
       "tasks/*",
       "api/responses/*",
-      "api/bin/jbutil-ext.js",
+      "bin/jbutil-ext.js",
       "api/services/protocols/*",
       "api/policies/*",
       "api/services/kueTestService.js",
