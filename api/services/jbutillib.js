@@ -2,8 +2,9 @@
  * @module
  * @description 
  * Support library for jbutil command
- *  
+ * 
  */
+/* istanbul ignore file */
 const fs = require('fs-extra');
 const path = require('path');
 const approot = require('app-root-path'); 
