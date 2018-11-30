@@ -46,6 +46,9 @@
                 "999999",
                 "--colors",
                 "${workspaceRoot}/test/bootstrap/bootstrap.test.js",
+                "${workspaceRoot}/test/unit/models/Track.test.js"
+            ],
+            "args-x": [
                 "${workspaceRoot}/test/unit/**/*.test.js"
             ],
             "internalConsoleOptions": "openOnSessionStart"
@@ -62,7 +65,7 @@
                 "999999",
                 "--colors",
                 "${workspaceRoot}/test/bootstrap/bootstrap.test.js",
-                "${workspaceRoot}/test/jblast-int/**/*.test.js"
+                "${workspaceRoot}/node_modules/jblast-jbconnect-hook/test/jblast-int/**/*.test.js"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         }
