@@ -80,9 +80,12 @@ before(function(done) {
                         if ( !_.isUndefined(records[i].trackData.category) && records[i].trackData.category==='JBConnectTest' ) {
                             deleteRecs.push(records[i]);
                         }
+                        if ( !_.isUndefined(records[i].trackData.testtrack) && records[i].trackData.testtrack===true ) {
+                            deleteRecs.push(records[i]);
+                        }
                     }
                     if (deleteRecs.length) {
-                        sails.log.info("Removing test tracks with category JBConnectTest");
+                        sails.log.info("Removing test tracks with category test tracks");
                     
                         async.eachLimit(deleteRecs,1,
                             function(rec,cb){
