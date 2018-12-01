@@ -1,20 +1,14 @@
 {
     "exclude": [
-      "Gruntfile.js",
-      "config/*",
-      "test/*",
-      "tasks/*",
-      "api/responses/*",
-      "bin/jbutil-ext.js",
-      "api/services/protocols/*",
-      "api/policies/*",
-      "api/services/kueTestService.js",
-      "api/services/serverSearchService.js",
-      "api/services/nothingBurgerService.js",
-      "api/services/passport.js",
-      "api/services/jbutillib.js",
-      "api/services/utilFn.js",
-      "api/models/Passport.js"
+    ],
+    "include": [
+      "**/api/models",
+      "**/api/controllers",
+      "**/api/services",
+      "**/api/hooks",
+      "!**/api/services/protocols",
+      "../jbrowse/plugins/JBClient"
+
     ]
 }
-
+ 
