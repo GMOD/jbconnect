@@ -101,24 +101,11 @@ Example: ``GET http://localhost:1337/logout``
 Function: ``register``
 ======================
 
-Render the registration page
 
-Just like the login form, the registration form is just simple HTML:
-::
-  <form role="form" action="/auth/local/register" method="post">
-    <input type="text" name="username" placeholder="Username">
-    <input type="text" name="email" placeholder="Email">
-    <input type="password" name="password" placeholder="Password">
-    <button type="submit">Sign up</button>
-  </form>
 
-``GET /register``
-
-.. js:function:: register(req, res)
+.. js:function:: register()
 
     
-    :param Object req: request
-    :param Object res: response
     
 .. _AuthController.loginstate:
 
@@ -190,15 +177,11 @@ http://passportjs.org/guide/login/
 Function: ``disconnect``
 ========================
 
-Disconnect a passport from a user
 
-``GET /logout``
 
-.. js:function:: disconnect(req, res)
+.. js:function:: disconnect()
 
     
-    :param Object req: request
-    :param Object res: response
     
 
 
@@ -548,7 +531,7 @@ Get filtered tracks by dataset:
 
 ``GET /track/get?id=1`` where id is the dataset id
 
-``GET /track/get?pat=sample_data/json/volvox`` where path is the dataset path
+``GET /track/get?path=sample_data/json/volvox`` where path is the dataset path
 
 .. js:function:: get(req, res)
 
@@ -566,9 +549,12 @@ add a new track
 
 ``POST /track/add``
 
+Must include "dataset" in the fields, which can be the path (string) or id (int)
+
 Calling example:
 ::
   let newTrack = {
+      "dataset":"sample_data/json/volvox",
       "autocomplete": "all",
       "track": "EST",
       "style": {
@@ -646,7 +632,7 @@ remove an existing track
 
 Calling example:
 ::
-  $.post( "/track/remove", { trackId: 23 }, function( data ) {
+  $.post( "/track/remove", { id: 23 }, function( data ) {
     console.log( "result", data );
   }, "json");
 
@@ -756,9 +742,10 @@ Function: ``Init``
 Initializes datasets as defined in config/globals.js.
 (see: :ref:`jbs-globals-config`)
 
-.. js:function:: Init(cb)
+.. js:function:: Init(params, cb)
 
     
+    :param object params: callback function
     :param function cb: callback function
     :return undefined: Initializes datasets as defined in config/globals.js.
     (see: :ref:`jbs-globals-config`)
@@ -807,6 +794,7 @@ it returns a dataset object in the form:
         }
     :return object: - dataset object
          dataset (string - i.e. "sample_data/json/volvox" if input was an id
+         returns null if not found
     
 .. _module-models_Dataset.Sync:
 
@@ -1452,51 +1440,36 @@ Function: ``Sync``
 
 Sync tracklist.json tracks with Track model (promises version)
 
-todo: dataSet should accept string or dataSet object id
-
-.. js:function:: Sync(ds,)
+.. js:function:: Sync(dataset)
 
     
-    :param string ds,: if dataset is not defined, all models are committed.
-    
-.. _module-models_Track.Save:
-
-
-Function: ``Save``
-==================
-
-
-
-.. js:function:: Save()
-
-    
-    
-.. _module-models_Track._modifyTrack:
-
-
-Function: ``_modifyTrack``
-==========================
-
-Given tracks array, find and update the item with the given updateTrack.
-updateTrack must contain label.
-
-.. js:function:: _modifyTrack()
-
-    
-    
-.. _module-models_Track._removeTrack:
-
-
-Function: ``_removeTrack``
-==========================
-
-Given tracks array, remove the item with the given key (which is track label)
-
-.. js:function:: _removeTrack()
-
-    
+    :param string dataset: ie. ("sample_data/json/volvox")
     
 
+
+.. _module-models_Track.Promise:
+
+Constant: ``Promise``: 
+
+.. _module-models_Track.fs:
+
+Constant: ``fs``: 
+
+.. _module-models_Track.path:
+
+Constant: ``path``: 
+
+.. _module-models_Track.deferred:
+
+Constant: ``deferred``: 
+
+.. _module-models_Track.deepmerge:
+
+Constant: ``deepmerge``: 
+
+.. _module-models_Track._:
+
+Constant: ``_``: 
 
 
 
