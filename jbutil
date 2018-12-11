@@ -19,7 +19,6 @@ var options = [
 
 // add jbconnect-hook-* hook options
 jblib.doExtScripts(function(ext,path) {
-    //console.log('ext options',ext.getOptions(),path);
     options = options.concat(ext.getOptions());
 });
 
@@ -55,21 +54,13 @@ if (!process.argv.slice(2).length) {
  * process commands
  ************************************************/
 
+ // process commands for hook modules
 jblib.doExtScripts(function(ext,path) {
-    //console.log("mergedConfig",mergedConfig);
     ext.process(opt,path,mergedConfig);
 });
 
-//console.log("opt",opt);
-if (typeof opt.options['config'] !== 'undefined') proc_Config();  
+if (opt.options['config']) proc_Config();  
 
-//if (typeof opt.options['testsetupindex'] !== 'undefined') proc_setupindex();  
-
-/*
-function proc_setupindex() {
-    buildHtml();
-}
-*/
 // --config - list config
 function proc_Config() {
 
