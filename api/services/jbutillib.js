@@ -528,16 +528,22 @@ module.exports = {
      * 
      * Note: as of JBrowse 1.13.0, you must run `npm run build` after this function, webpack build.
      * 
+     * if env _COVERAGE is defined, it will instrument the plugins before installing.
+     * 
      * @returns (int) count - count of plugins injected.
      */
     injectPlugins(){
         // inject plugin routes
-        var g = this.getMergedConfig();
+        let g = this.getMergedConfig();
 
-        var sh = require('shelljs');
-        var cwd = sh.pwd();
+        let sh = require('shelljs');
+        let cwd = sh.pwd();
         let pluginDir = g.jbrowsePath+'plugins';
         let count = 0;  // count of injected plugins
+
+        let _link = _symlink;
+        //if (process.env.E2E_COVERAGE && process.env.E2E_COVERAGE===("TRUE").toUpperCase()) 
+            _link = _symlinkCoverage; 
 
         // check if jbrowse dir exists
         if (!fs.existsSync(g.jbrowsePath)) {
@@ -553,7 +559,7 @@ module.exports = {
             let target = pluginDir+'/'+items[i];
             let src = cwd+'/plugins/'+items[i];
 
-            _symlink(src,target);
+            _link(src,target);
         }
 
         // setup sub-module plugins
@@ -570,7 +576,7 @@ module.exports = {
                 let target = pluginDir+'/'+items[i];
                 let src = cwd+'/'+submodules[j]+'/plugins/'+items[i];
                 
-                _symlink(src,target);
+                _link(src,target);
                 subcount++;
             }
         }
@@ -579,19 +585,83 @@ module.exports = {
         
         function _symlink(src,target) {
             console.log("_symlink",src,target);
+
+            // unlink target
+            if (fs.existsSync(target))  fs.unlinkSync(target);
+
+            fs.symlinkSync(src,target,'dir');
+            console.log("Plugin inject:",target);
+            
+            // check if it got created
             if (!fs.existsSync(target)) {
-                fs.symlinkSync(src,target,'dir');
-                console.log("Plugin inject:",target);
-                
-                // check if it got created
-                if (!fs.existsSync(target)) {
-                    throw "Failed to symlink "+target;
-                }
-                else count++;
+                throw "Failed to symlink "+target;
             }
-            else {
-                console.log("Plugin exists:",target);
+            else count++;
+        }
+        function _symlinkCoverage(src,target) {
+            console.log("*************** _symlinkCoverage",src,target);
+
+            // nyc (instrument) instrument the plugin
+            // the instrumented plugin will be in the tmp dir
+            _instrumentDir(src,target);
+
+                // symlink the instrumented plugin into the jbrowse/plugin dir.
+
+
+            // unlink target
+            cmd = 'unlink '+target;
+            console.log(target,"exists",fs.existsSync(target));
+            if (fs.existsSync(target))  {//fs.unlinkSync(target);
+                console.log(cmd);
+                sh.exec(cmd);
             }
+            //fs.symlinkSync(_tmpPluginDir(src),target,'dir');
+            cmd = 'ln -s '+_tmpPluginDir(src)+' '+target;
+            console.log(cmd);
+            sh.exec(cmd);
+
+            console.log("Plugin inject:",target);
+            
+
+            // check if it got created
+            if (!fs.existsSync(target)) {
+                throw "Failed to symlink "+target;
+            }
+            else count++;
+        }
+        // copy plugin and instrument
+        function _instrumentDir(src,target) {
+
+            let cmd = 'rm -rf '+_tmpPluginDir(src);
+            console.log(cmd,fs.existsSync(_tmpPluginDir(src)));
+            if (fs.existsSync(_tmpPluginDir(src))) sh.exec(cmd);
+
+            // copy plugin into tmp dir
+            try {
+                //cmd = 'mkdir '+ _tmpPluginDir(src);
+                //sh.exec(cmd);
+                cmd  = 'cp -r '+src+' '+_tmpPluginDir(src);
+                console.log(cmd);
+                sh.exec(cmd);
+            }
+            catch(err) {
+                console.log("error copying plugin ",src,'to',_tmpPluginDir(src),err);
+                return;
+            }
+
+            // call nyc instrument plugins/<plugin> tmp/<plugin>
+            cmd = 'node_modules/nyc/bin/nyc.js instrument '+src+' '+_tmpPluginDir(src);
+            console.log(cmd);
+            try {
+                sh.exec(cmd);
+            }
+            catch(err) {
+                console.log('nyc instrument error',err);
+            }
+        }
+        function _tmpPluginDir(src) {
+            let str = src.split("/plugins");
+            return approot+'/tmp'+str[1];
         }
     },    
     /**

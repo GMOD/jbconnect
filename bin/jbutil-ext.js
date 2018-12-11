@@ -12,8 +12,9 @@ module.exports = {
         return [
             ['d' , 'dbreset'        , 'reset the database to default and clean kue db'],
             ['f' , 'force'          , '--dbreset without verifying'],
-            ['a' , 'setadmin',      , 'set admin flag'],
-            ['r' , 'removeall'      , 'remove JBConnect components from JBrowse']
+            ['a' , 'setadmin'       , 'set admin flag'],
+            ['r' , 'removeall'      , 'remove JBConnect components from JBrowse'],
+            [''  ,'pushplugins'     , 'process plugins']
         ];        
     },
     getHelpText: function() {
@@ -32,9 +33,8 @@ module.exports = {
             console.log("jbutil failed to initialize");
             return;
         }
-        var tool = opt.options['dbreset'];
-        var force = opt.options['force'];
-        if (typeof tool !== 'undefined') {
+        if (opt.options['dbreset']) {
+            let force = opt.options['force'];
             // perform a test to see if JBConnect is running.
             fetch(config.jbrowseRest+'/jobactive/get')
                 .then(res => res.json())
@@ -46,8 +46,11 @@ module.exports = {
                 });
         }
 
-        var tool = opt.options['removeall'];
-        if (typeof tool !== 'undefined') {
+        if (opt.options['pushplugins']) {
+            jblib.injectPlugins();
+        }
+
+        if (opt.options['removeall']) {
             jblib.removeIncludesFromHtml();
             jblib.removePlugins();
             jblib.unsetupPlugins();
