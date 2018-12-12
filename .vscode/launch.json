@@ -4,7 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
             "type": "node",
             "request": "attach",
@@ -14,8 +13,10 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceRoot}/app.js"
+            "name": "lift",
+            "program": "/usr/local/bin/sails",
+            "args": ["lift"],
+            "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "type": "node",
@@ -68,6 +69,14 @@
                 "${workspaceRoot}/node_modules/jblast-jbconnect-hook/test/jblast-int/**/*.test.js"
             ],
             "internalConsoleOptions": "openOnSessionStart"
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "test jbutil --pushplugins",
+            "program": "${workspaceRoot}/jbutil",
+            "args": ["--pushplugins"],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
     ]
 }
