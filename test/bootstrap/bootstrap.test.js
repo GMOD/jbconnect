@@ -118,12 +118,18 @@ before(function(done) {
 });
 
 after(function(done) {
-    console.log("Lowering SAILS...");
-    sails.lower(function() {
-        console.log("done lowering sails.");
-            setTimeout(function() {
-                done();
-                process.exit(0);  // not sure why this is needed.
-            },2000);
-    });
+    console.log('after');
+    
+    lowerSails();
+
+    function lowerSails() {
+        console.log("Lowering SAILS...");
+        sails.lower(function() {
+            console.log("done lowering sails.");
+                setTimeout(function() {
+                    done();
+                    process.exit(0);  // not sure why this is needed.
+                },2000);
+        });
+    }
 });

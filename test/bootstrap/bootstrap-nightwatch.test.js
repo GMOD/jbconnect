@@ -7,12 +7,28 @@
 
 sails = require('sails');
 const shell = require('shelljs');
+const fs = require('fs-extra');
 
+
+const tlib = require('../share/test-lib');
+const chai = require('chai')
+const chaiHttp = require('chai-http');
+chai.use(chaiHttp);
+
+const iServer = 'http://localhost:8888';    // istanbul server
+const expect = chai.expect;
+const assert = chai.assert;
+
+//const jbutil = require('api/services/jbutillib');
 
 before(function(browser,done) {
     console.log("Lifting SAILS...");
 
     this.timeout(60000);
+
+    //jbutil.injectPlugins();
+
+    console.log('******** check for Coverage',process.env.E2E_COVERAGE);
 
     shell.exec('./jbutil --force --dbreset');
 
@@ -65,14 +81,35 @@ before(function(browser,done) {
         },2000);
     });
 });
-
 after(function(browser,done) {
-    console.log("Lowering SAILS...");
-    sails.lower(function() {
-        console.log("done lowering sails.");
-            setTimeout(function() {
-                done();
-                process.exit(0);  // not sure why this is needed.
-            },2000);
+    console.log('after');
+
+    browser.execute(function(data) {
+        return window.__coverage__;
+    },[], function(result) {
+        //console.log("result from browser",result);
+        fs.writeFileSync('.nyc_output/client.json',JSON.stringify(result,null,4));
+
+        // var Report = require('istanbul').Report;
+        // var report = Report.create('text');
+        // var collector = new require('istanbul').Collector;
+   
+        // collector.add(result);
+        // report.on('done', function () { console.log('done'); });
+        // report.writeReport(collector);
+
+        lowerSails();
     });
+
+    function lowerSails() {
+        console.log("Lowering SAILS...");
+        sails.lower(function() {
+            console.log("done lowering sails.");
+                setTimeout(function() {
+                    done();
+                    shell.exec('pkill chrome');
+                    process.exit(0);  // not sure why this is needed.
+                },2000);
+        });
+    }
 });
