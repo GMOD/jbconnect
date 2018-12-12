@@ -542,8 +542,15 @@ module.exports = {
         let count = 0;  // count of injected plugins
 
         let _link = _symlink;
-        //if (process.env.E2E_COVERAGE && process.env.E2E_COVERAGE===("TRUE").toUpperCase()) 
-            _link = _symlinkCoverage; 
+        console.log('E2E_COVERAGE',process.env.E2E_COVERAGE);
+        //fs.writeFileSync("tmp/dat.out",process.env);
+        if (process.env.E2E_COVERAGE) {
+            let e2e = process.env.E2E_COVERAGE;
+            if (e2e.toUpperCase()==="TRUE") {
+                console.log("********* installing coverage instrumented plugins **********");
+                _link = _symlinkCoverage;
+            } 
+        }
 
         // check if jbrowse dir exists
         if (!fs.existsSync(g.jbrowsePath)) {
@@ -563,7 +570,7 @@ module.exports = {
         }
 
         // setup sub-module plugins
-        console.log("injecting submodule plugins");
+        //console.log("injecting submodule plugins");
         let submodules = glob.sync('node_modules/*-jbconnect-hook');
         let subcount = 0;
         for(var j in submodules) {
@@ -587,10 +594,18 @@ module.exports = {
             console.log("_symlink",src,target);
 
             // unlink target
-            if (fs.existsSync(target))  fs.unlinkSync(target);
-
-            fs.symlinkSync(src,target,'dir');
-            console.log("Plugin inject:",target);
+            //if (fs.existsSync(target))  {
+                cmd = 'unlink '+target;
+                sh.exec(cmd);
+            //}
+            try {
+                cmd = 'ln -s '+src+' '+target;
+                sh.exec(cmd);
+            }
+            catch(err) {
+                console.log("faild ",cmd,err);
+            }
+            console.log("Plugin:",target);
             
             // check if it got created
             if (!fs.existsSync(target)) {
@@ -598,30 +613,23 @@ module.exports = {
             }
             else count++;
         }
+        // instruments plugin. stores the instrumented plugin in tmp
         function _symlinkCoverage(src,target) {
-            console.log("*************** _symlinkCoverage",src,target);
+            console.log("_symlinkCoverage",src,target);
 
             // nyc (instrument) instrument the plugin
             // the instrumented plugin will be in the tmp dir
             _instrumentDir(src,target);
 
-                // symlink the instrumented plugin into the jbrowse/plugin dir.
-
-
             // unlink target
-            cmd = 'unlink '+target;
-            console.log(target,"exists",fs.existsSync(target));
-            if (fs.existsSync(target))  {//fs.unlinkSync(target);
-                console.log(cmd);
+            //if (fs.existsSync(target))  {//fs.unlinkSync(target);
+                cmd = 'unlink '+target;
                 sh.exec(cmd);
-            }
-            //fs.symlinkSync(_tmpPluginDir(src),target,'dir');
+            //}
             cmd = 'ln -s '+_tmpPluginDir(src)+' '+target;
-            console.log(cmd);
             sh.exec(cmd);
 
-            console.log("Plugin inject:",target);
-            
+            console.log("Plugin (instrumented):",target);
 
             // check if it got created
             if (!fs.existsSync(target)) {
@@ -629,19 +637,16 @@ module.exports = {
             }
             else count++;
         }
-        // copy plugin and instrument
+        // copy plugin and instrument in tmp
         function _instrumentDir(src,target) {
 
             let cmd = 'rm -rf '+_tmpPluginDir(src);
-            console.log(cmd,fs.existsSync(_tmpPluginDir(src)));
             if (fs.existsSync(_tmpPluginDir(src))) sh.exec(cmd);
 
             // copy plugin into tmp dir
             try {
-                //cmd = 'mkdir '+ _tmpPluginDir(src);
-                //sh.exec(cmd);
                 cmd  = 'cp -r '+src+' '+_tmpPluginDir(src);
-                console.log(cmd);
+                //console.log(cmd);
                 sh.exec(cmd);
             }
             catch(err) {
@@ -650,8 +655,8 @@ module.exports = {
             }
 
             // call nyc instrument plugins/<plugin> tmp/<plugin>
-            cmd = 'node_modules/nyc/bin/nyc.js instrument '+src+' '+_tmpPluginDir(src);
-            console.log(cmd);
+            cmd = 'node_modules/nyc/bin/nyc.js instrument --produce-source-map '+src+' '+_tmpPluginDir(src);
+            //console.log(cmd);
             try {
                 sh.exec(cmd);
             }
