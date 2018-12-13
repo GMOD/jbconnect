@@ -12,15 +12,22 @@ const jblib = require('../api/services/jbutillib');
 
 const conf = jblib.getMergedConfig();
 
-const setupScript = "setup.sh";
 const thisPath = process.cwd();
 
+let setupScript = "./setup.sh";
+//setupScript = "npm run build";
+
 // check if jbrowse is a module
-if (fs.pathExistsSync(conf.jbrowsePath+setupScript)) {
+if (fs.existsSync(conf.jbrowsePath)) {
     sh.cd(conf.jbrowsePath);
+    console.log("dir",process.cwd());
+}
+else {
+    console.log("could not find jbrowse.  check if jbrowsePath is defined.");
+    process.exit(1);
 }
 
-sh.exec("./"+setupScript);
+sh.exec(setupScript);
 
 sh.cd(thisPath);
 
