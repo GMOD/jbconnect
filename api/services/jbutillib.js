@@ -528,11 +528,13 @@ module.exports = {
      * 
      * Note: as of JBrowse 1.13.0, you must run `npm run build` after this function, webpack build.
      * 
-     * if env _COVERAGE is defined, it will instrument the plugins before installing.
+     * if env E2E_COVERAGE is defined, it will instrument the plugins before installing.
+     * 
+     * @param {string} plugin if defined (ie. "JBClient"), it will instrument the given plugin
      * 
      * @returns (int) count - count of plugins injected.
      */
-    injectPlugins(){
+    injectPlugins(plugin){
         // inject plugin routes
         let g = this.getMergedConfig();
 
@@ -541,9 +543,9 @@ module.exports = {
         let pluginDir = g.jbrowsePath+'plugins';
         let count = 0;  // count of injected plugins
 
+        /*
         let _link = _symlink;
         console.log('E2E_COVERAGE',process.env.E2E_COVERAGE);
-        //fs.writeFileSync("tmp/dat.out",process.env);
         if (process.env.E2E_COVERAGE) {
             let e2e = process.env.E2E_COVERAGE;
             if (e2e.toUpperCase()==="TRUE") {
@@ -551,7 +553,7 @@ module.exports = {
                 _link = _symlinkCoverage;
             } 
         }
-
+        */
         // check if jbrowse dir exists
         if (!fs.existsSync(g.jbrowsePath)) {
             console.log("JBrowse directory does not exist:",g.jbrowsePath);
@@ -566,7 +568,8 @@ module.exports = {
             let target = pluginDir+'/'+items[i];
             let src = cwd+'/plugins/'+items[i];
 
-            _link(src,target);
+            if (plugin && src.indexOf(plugin) !== -1) _symlinkCoverage(src,target);
+            else _symlink(src,target);
         }
 
         // setup sub-module plugins
@@ -583,7 +586,9 @@ module.exports = {
                 let target = pluginDir+'/'+items[i];
                 let src = cwd+'/'+submodules[j]+'/plugins/'+items[i];
                 
-                _link(src,target);
+                if (plugin && src.indexOf(plugin) !== -1) _symlinkCoverage(src,target);
+                else _symlink(src,target);
+
                 subcount++;
             }
         }
@@ -591,7 +596,7 @@ module.exports = {
         return count;
         
         function _symlink(src,target) {
-            console.log("_symlink",src,target);
+            //console.log("_symlink",src,target);
 
             // unlink target
             //if (fs.existsSync(target))  {
@@ -615,7 +620,7 @@ module.exports = {
         }
         // instruments plugin. stores the instrumented plugin in tmp
         function _symlinkCoverage(src,target) {
-            console.log("_symlinkCoverage",src,target);
+            //console.log("_symlinkCoverage",src,target);
 
             // nyc (instrument) instrument the plugin
             // the instrumented plugin will be in the tmp dir
@@ -655,7 +660,7 @@ module.exports = {
             }
 
             // call nyc instrument plugins/<plugin> tmp/<plugin>
-            cmd = 'node_modules/nyc/bin/nyc.js instrument --produce-source-map '+src+' '+_tmpPluginDir(src);
+            cmd = 'node_modules/nyc/bin/nyc.js instrument '+src+' '+_tmpPluginDir(src);
             //console.log(cmd);
             try {
                 sh.exec(cmd);
@@ -668,7 +673,27 @@ module.exports = {
             let str = src.split("/plugins");
             return approot+'/tmp'+str[1];
         }
-    },    
+    },  
+    buildWebpack() {
+        const conf = this.getMergedConfig();
+        const origPath = process.cwd();
+        
+        let setupScript = "./setup.sh";
+        setupScript = "npm run build";
+        
+        // check if jbrowse is a module
+        if (fs.existsSync(conf.jbrowsePath)) {
+            sh.cd(conf.jbrowsePath);
+            console.log("JBrowse path",process.cwd());
+        }
+        else {
+            console.log("could not find jbrowse.  check if jbrowsePath is defined.");
+            process.exit(1);
+        }
+        
+        sh.exec(setupScript);
+        sh.cd(origPath);
+    },  
     /**
      * remove client side plugins from JBrowse index.html
      */

@@ -14,13 +14,16 @@ module.exports = {
             ['f' , 'force'          , '--dbreset without verifying'],
             ['a' , 'setadmin'       , 'set admin flag'],
             ['r' , 'removeall'      , 'remove JBConnect components from JBrowse'],
-            [''  ,'pushplugins'     , 'process plugins']
+            [''  ,'pushplugins'     , 'link plugins into JBrowse dir'],
+            [''  ,'coverage=PLUGIN' , 'used with --pushplugins to add coverage instrumentation'],
+            [''  ,'buildwebpack'    , 'build jbrowse webpack']
         ];        
     },
     getHelpText: function() {
         return "\n"+
             //"./jbutil --setpassword <username>\n"+
-            "./jbutil --setadmin <username> <true|false\n";
+            "./jbutil --setadmin <username> <true|false>\n"+
+            "./jbutil --pushplugins --coverage=<plugin name> - instruments specified plugin\n";
         
     },
     process: function(opt,path,config) {
@@ -47,13 +50,18 @@ module.exports = {
         }
 
         if (opt.options['pushplugins']) {
-            jblib.injectPlugins();
+            let plugin = opt.options['coverage'];
+            if (plugin) jblib.injectPlugins(plugin);
+            else jblib.injectPlugins();
         }
 
         if (opt.options['removeall']) {
             jblib.removeIncludesFromHtml();
             jblib.removePlugins();
             jblib.unsetupPlugins();
+        }
+        if (opt.options['buildwebpack']) {
+            jblib.buildWebpack();
         }
     },
     init: function(config) {
