@@ -1,0 +1,10 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "_misc/jtrackwatch/package.json",
+        "package.json"
+      ]
+    }
+  }
+}
