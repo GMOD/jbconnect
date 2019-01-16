@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/GMOD/jbconnect.svg?branch=master)](https://travis-ci.org/GMOD/jbconnect)
+[![Build Status](https://travis-ci.org/GMOD/jbconnect.svg?branch=master)](https://travis-ci.org/GMOD/jbconnect) [![Greenkeeper badge](https://badges.greenkeeper.io/GMOD/jbconnect.svg)](https://greenkeeper.io/)
 
 # JBConnect
 
