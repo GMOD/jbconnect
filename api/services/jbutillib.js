@@ -527,8 +527,13 @@ module.exports = {
      * Inject client-side plugins into the JBrowse plugins dir
      * 
      * Note: as of JBrowse 1.13.0, you must run `npm run build` after this function, webpack build.
+     * called in sails lift /tasks/register .. jb-inject-plugins to function properly
      * 
      * if env E2E_COVERAGE is defined, it will instrument the plugins before installing.
+     * 
+     * Example:
+     * // injects plugins and instruments JBClient plugin and builds webpack in JBrowse
+     * ./jbutil --pushplugins --coverage JBClient --buildwebpack
      * 
      * @param {string} plugin if defined (ie. "JBClient"), it will instrument the given plugin
      * 
@@ -542,6 +547,8 @@ module.exports = {
         let cwd = sh.pwd();
         let pluginDir = g.jbrowsePath+'plugins';
         let count = 0;  // count of injected plugins
+
+        //fs.appendFileSync('./.nyc_output/log.out','injectPlugins '+new Date().toISOString());
 
         /*
         let _link = _symlink;
