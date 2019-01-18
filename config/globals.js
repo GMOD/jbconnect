@@ -27,6 +27,9 @@ var g = {
         dataSet: {
              Volvox: {path: "sample_data/json/volvox"}
         },
+
+	      // default dataset after successful login (optional.  if not defined then the first dataSet is used)
+	      defaultDataSet: "Volvox",
         
         // search service settings
 //        serverSearch: {

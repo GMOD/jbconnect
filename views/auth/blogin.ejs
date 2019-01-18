@@ -55,6 +55,21 @@
             width: 40%;
         }
     </style>
+    <%
+        let g = sails.config.globals.jbrowse;
+
+        // determines the next url path after sucessful login.
+        let nextPath = "";
+
+        if (Object.keys(g.dataSet)[0]) nextPath = g.dataSet[Object.keys(g.dataSet)[0]].path;   // the first element
+
+        // if defaultDataSet is defined, then use it
+        if (g.defaultDataSet && g.dataSet[g.defaultDataSet].path)
+            nextPath = g.dataSet[g.defaultDataSet].path;
+
+        if (nextPath.length)
+            nextPath = '/?data=' + nextPath;
+    %>
   </head>
   <body style="background-color:lightgray">
     <!--link href="//netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.css" rel="stylesheet"-->
@@ -68,7 +83,7 @@
                 <div class="row">
                     <div class="col-xs-6">
                         <div class="well">
-                            <form role="form" action="/auth/local?next=/jbrowse" method="post">
+                            <form role="form" action="/auth/local?next=/jbrowse<%= nextPath %>" method="post">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
