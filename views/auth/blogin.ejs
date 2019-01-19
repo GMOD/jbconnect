@@ -117,7 +117,7 @@
                     </div>
                     <div class="col-xs-6">
                         <% if (errors.length) {%>
-			<div class="box">							
+			              <div class="box">							
                             <div class="icon">
                                 <div class="image"><p>!</p></div>
                                 <div class="info bg-danger">
@@ -129,9 +129,15 @@
                                 </div>
                             </div>
                             <div class="space"></div>
-			</div> 
+			              </div> 
+                        <% } else { %>
+                            <div class="box">
+                                <br><br>
+                                <strong>                                Guest login:<br>
+                                juser/password
+                                </strong>
+                            </div>
                         <% } %>
-                        
                         <!--h5>Login with</h5-->
                         <ul class="list-unstyled list-social">
                             <!--
