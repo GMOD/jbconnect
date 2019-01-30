@@ -49,7 +49,6 @@ Contents
    quick_start
    features
    setup
-   jobservice
    hooks
    api
 
