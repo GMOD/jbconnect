@@ -157,6 +157,8 @@ options into jbutil (the JBConnect utility).
 * it extends new command line options
 * it extends the help (i.e. ``./jbutil --help``)
 
+*more...*
+
 
 Sails Module Layout
 ===================
@@ -222,6 +224,7 @@ in the module.
 The framework will process the request as the specified 
 
 ::
+
     module.exports = {
         fmap: {
             set_filter:         'post',
@@ -244,6 +247,7 @@ The framework will process the request as the specified
             return res.send(ret);
         },
 
+
 For request parameters, see:
 `Sails req <https://sailsjs.com/documentation/reference/request-req>`_
 
@@ -263,6 +267,7 @@ making the handlers rather indiscriminate to how the parameters are passed.
 
 An example of a POST request.
 ::
+
     var postData = {
           filterParams: filter,
           asset: "152_search_1517988101045", // usually the track.label name
@@ -272,8 +277,11 @@ An example of a POST request.
         console.log( data );
     }, "json");
 
+
 An example of a GET request as configured in trackList.json.
+
 ::
+
     "baseUrl": "/",
     "urlTemplate": "/service/exec/get_trackdata/?asset=151_1517462263883&dataset=sample_data%2Fjson%2Fvolvox",
 
@@ -300,6 +308,7 @@ Obligatory Functions for Job Runners
 Job services that are job runners, that react to job execution must implement the following functions:
 
 ::
+
     // job service parameter validation
     // jservice calls this to determine if the parameters are sufficient to execute the job.
     validateParams: function(params) {
@@ -325,6 +334,7 @@ Job Service Configuration
 Job services are defined in config/globals.js or in jbconnect.config.js.
 
 ::
+
     jbrowse: {
         // list of services that will get registered.
         services: {
@@ -333,6 +343,7 @@ Job services are defined in config/globals.js or in jbconnect.config.js.
             'filterService':            {name: 'filterService',         type: 'service'},
             'entrezService':            {name: 'entrezService',         type: 'service'}
         },
+
 
 where 
 - *service* refers to the job service module name
@@ -350,6 +361,7 @@ of the type of job that is being submitted.  However, ``service:`` must be
 included and reference an existing job service.
 
 ::
+
     var postData = {
           service: "jblast",
           dataset: "sample_data/json/volvox",
@@ -361,12 +373,11 @@ included and reference an existing job service.
     }, "json");
 
 
-
-
 ``service`` can either be the service module name (ie. "basicWorkflowService")
 or an the alias, if an alias if defined, given the configuration example below.
 
 ::
+
     services: {
         // service                  display name                    type                alias
         'basicWorkflowService':     {name: 'basicWorkflowService',  type: 'workflow', alias: "jblast"},
