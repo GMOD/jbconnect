@@ -138,32 +138,73 @@ globals.js
     ...
 
 
-Plugin identifying login state
-------------------------------
-
-TBD
-
-
-
 .. _jbs-hooks-extend
 
 
-Extending jbutil
-================
+Extending Commands
+==================
 
-jbutil-ext.js is the file that is read by JBConnect and integrates additional command 
-options into jbutil (the JBConnect utility). 
+jbutil is a general command of JBConnect that are used for various operations.
+jbutil-ext.js can be used by the hook to extend options of jbutil. 
 
-* it extends new command line options
-* it extends the help (i.e. ``./jbutil --help``)
+* it can extend new command line options
+* it can extend the help (i.e. ``./jbutil --help``)
 
-*more...*
+This is a simplified example of jbutil-ext.js.
+:
+
+module.exports = {
+
+    // defining the options
+    getOptions: function() {
+        return [
+            ['f' , 'fox'   , 'make a fox sound'],
+            ['d' , 'dog'   , 'take out the dog'],
+        ];        
+    },
+
+    // this is displayed when the user uses the --help or -h option
+    getHelpText: function() {
+        return  "What does the fox say\n"+
+                "./jbutil -fox\n"+
+                'Take out the dog\n"+
+                "./jbutil -dog\n";
+        
+    },
+
+    // processing the options
+    process: function(opt,path,config) {
+        if (opt.options['cat']) {
+            ....
+        }
+        if (opt.options['dog']) {
+            ....
+        }
+        
+    },
+
+    // do some pre initialization
+    init: function(opt,path,config) {
+        return 1; // successful init, or 0 if failed.
+    }
+    
+};
+
+
+More info about the command options processor can be found in 'node-getopt (https://www.npmjs.com/package/node-getopt)_ .
+
+
+Additional non-jbutil commands
+------------------------------
+
+The hook can also deploy any additional commands in the JBConnect's utils directory.  
+
 
 
 Sails Module Layout
 ===================
 
-This is the standard sails directory layout for modules of a sails hook.
+This is the standard sails directory layout for models, controllers, policies, and services of a sails hook.
 The framework uses marlinspike to integrate controllers, models, policies,
 and services into JBConnect.
 
@@ -171,7 +212,7 @@ ref: marlinspike
 
 ::
 
-    jbh- project
+    hook project root
     ├── api                             Standard Sails modules layout
         ├── controllers
         ├── hooks
@@ -180,20 +221,18 @@ ref: marlinspike
         └── services
 
 
-The Main Hook
-=============
+api/hooks/<hook name>/index.js can be basically be copied from 'here (https://github.com/GMOD/jblast-jbconnect-hook/blob/master/api/hooks/jblast/index.js)'_ . 
 
-index.js should not be modified.
-
-This core fragment starts the initialization of JBConnect.
+This core fragment starts the initialization of the hook.
 
 
 Config Directory
 ================
 
-This directory contain config files for the hook.  If the name matches it's counterpart
-file in JBConnect's config directory, the configurations similar files will be
-merged.
+The config file for the hook in the hook project is config/globals.js.  This directory can contain any other config files for the hook, as well.
+If a config file is the same as one in the JBConnect project, it will be merged with the corresponding file in the JBConnect/config directory.
+Generally, config/globals.js should contain default configurations for the hook, while the jbconnect.config.js file (in JBConnect root) contains user
+defined configurations.
 
 
 .. _jbs-jobservice:
@@ -202,20 +241,15 @@ merged.
 Job Service
 ===========
 
-A job service (jservice) is a special service that can react to the job queue
-framework asking it to execute something.  It can also service specialized routes
-(eg. ``/service/exec/<function>/...``).
+A job service is a special service that can react to the job queue
+framework asking it to execute something.  
 
-It is generally named something
-
-A job service code reside in the ``api/services`` directory. 
+The job service generally resides in api/services directory of the hook and is named <something>Service.js.
 
 
-JBConnect has a pre-packaged job service: jbs-job-search-service_
 
-
-Function Map - Job Service
---------------------------
+Function Map
+------------
 
 Job services must contain a ``fmap`` section which defines the routes that the
 job service exposes.  And there should be corresponding route functions defined
@@ -255,10 +289,10 @@ For response options, see:
 `Sails res <https://sailsjs.com/documentation/reference/response-res>`_
 
 
-Calling the functions
----------------------
+Calling fmap functions
+----------------------
 
-``fmap`` functions are addressed with either GET or POST using the URL route
+``fmap`` functions are called with either GET or POST using the URL route
 (eg. ``"/service/exec/set_filter"``).  Parameters can be passed as data payload
 or as URL parameters.  
 
@@ -286,6 +320,8 @@ An example of a GET request as configured in trackList.json.
     "urlTemplate": "/service/exec/get_trackdata/?asset=151_1517462263883&dataset=sample_data%2Fjson%2Fvolvox",
 
 
+*incomplete*
+
 Function Name Overlap
 ---------------------
 
@@ -305,7 +341,7 @@ However, serviceB.my_function can still be addressed with the service-specific c
 Obligatory Functions for Job Runners
 ------------------------------------
 
-Job services that are job runners, that react to job execution must implement the following functions:
+Job services that are job runners that react to job execution, must implement the following functions:
 
 ::
 
@@ -317,7 +353,7 @@ Job services that are job runners, that react to job execution must implement th
         return 0;   // success
     },
     // job name generator
-    // jservice framework calls this to determine the jobs user-readable name.
+    // jservice framework calls this to determine the jobs user-readable name that appears in the job queue.
     generateName(params) {
         return params.searchParams.expr+' search';
     },
@@ -348,7 +384,7 @@ Job services are defined in config/globals.js or in jbconnect.config.js.
 where 
 - *service* refers to the job service module name
 - *display name* is the human readable name of the service
-- *type* - ``workflow`` means it's a job runner and ``service`` means it on hosts route functions.
+- *type* - ``workflow`` means it's a job runner and ``service`` means it only hosts route functions.
 
 
 Submitting a Job
@@ -363,8 +399,9 @@ included and reference an existing job service.
 ::
 
     var postData = {
-          service: "jblast",
+          service: "jblast",  // this can be the name of the job service or its alias
           dataset: "sample_data/json/volvox",
+          // FASTA formated query sequence
           region: ">ctgA ctgA:44705..47713 (- strand) class=remark length=3009\nacatccaatggcgaacataa...gcgagttt",
           workflow: "NCBI.blast.workflow.js"
       };
@@ -382,9 +419,4 @@ or an the alias, if an alias if defined, given the configuration example below.
         // service                  display name                    type                alias
         'basicWorkflowService':     {name: 'basicWorkflowService',  type: 'workflow', alias: "jblast"},
 
-
-Extending jbutil command
-========================
-
-todo
 
