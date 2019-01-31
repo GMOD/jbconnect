@@ -50,6 +50,7 @@ Contents
    features
    setup
    hooks
+   tutorials
    api
 
 
