@@ -78,7 +78,7 @@ The following illustrates how to create a client-side plugin under the framework
 Developing JBrowse Plugins Under the Framework
 ----------------------------------------------
 
-Refer to 'Writing JBrowse Plugins (https://jbrowse.org/docs/plugins.html)'_ for more information.
+Refer to `Writing JBrowse Plugins <https://jbrowse.org/docs/plugins.html>`_ for more information.
 
 Client-side plugins in plugins directory are copied to the target JBrowse plugins
 directories upon ``sails lift``.
@@ -110,7 +110,7 @@ Relevant assets are copied into assets/jblib by bin/postinstall.js
 The mapping the mapping 'js-jquery': '/jblib/jquery'
 makes the jquery directory accessible as /jblib/jquery.min.js from the client side.
 
-globals.js
+``globals.js``
 ::
 
     ...
@@ -144,8 +144,8 @@ globals.js
 Extending Commands
 ==================
 
-jbutil is a general command of JBConnect that are used for various operations.
-jbutil-ext.js can be used by the hook to extend options of jbutil. 
+``jbutil`` is a general command of JBConnect that are used for various operations.
+``jbutil-ext.js`` can be used by the hook to extend options of jbutil. 
 
 * it can extend new command line options
 * it can extend the help (i.e. ``./jbutil --help``)
@@ -153,45 +153,45 @@ jbutil-ext.js can be used by the hook to extend options of jbutil.
 This is a simplified example of jbutil-ext.js.
 :
 
-module.exports = {
+    module.exports = {
 
-    // defining the options
-    getOptions: function() {
-        return [
-            ['f' , 'fox'   , 'make a fox sound'],
-            ['d' , 'dog'   , 'take out the dog'],
-        ];        
-    },
+        // defining the options
+        getOptions: function() {
+            return [
+                ['f' , 'fox'   , 'make a fox sound'],
+                ['d' , 'dog'   , 'take out the dog'],
+            ];        
+        },
 
-    // this is displayed when the user uses the --help or -h option
-    getHelpText: function() {
-        return  "What does the fox say\n"+
-                "./jbutil -fox\n"+
-                'Take out the dog\n"+
-                "./jbutil -dog\n";
-        
-    },
+        // this is displayed when the user uses the --help or -h option
+        getHelpText: function() {
+            return  "What does the fox say\n"+
+                    "./jbutil -fox\n"+
+                    'Take out the dog\n"+
+                    "./jbutil -dog\n";
+            
+        },
 
-    // processing the options
-    process: function(opt,path,config) {
-        if (opt.options['cat']) {
-            ....
+        // processing the options
+        process: function(opt,path,config) {
+            if (opt.options['cat']) {
+                ....
+            }
+            if (opt.options['dog']) {
+                ....
+            }
+            
+        },
+
+        // do some pre initialization
+        init: function(opt,path,config) {
+            return 1; // successful init, or 0 if failed.
         }
-        if (opt.options['dog']) {
-            ....
-        }
         
-    },
-
-    // do some pre initialization
-    init: function(opt,path,config) {
-        return 1; // successful init, or 0 if failed.
-    }
-    
-};
+    };
 
 
-More info about the command options processor can be found in 'node-getopt (https://www.npmjs.com/package/node-getopt)_ .
+More info about the command options processor can be found in `node-getopt <https://www.npmjs.com/package/node-getopt>`_ .
 
 
 Additional non-jbutil commands
@@ -221,7 +221,7 @@ ref: marlinspike
         └── services
 
 
-api/hooks/<hook name>/index.js can be basically be copied from 'here (https://github.com/GMOD/jblast-jbconnect-hook/blob/master/api/hooks/jblast/index.js)'_ . 
+api/hooks/<hook name>/index.js can be basically be copied from `here <https://github.com/GMOD/jblast-jbconnect-hook/blob/master/api/hooks/jblast/index.js>`_ . 
 
 This core fragment starts the initialization of the hook.
 
@@ -229,9 +229,9 @@ This core fragment starts the initialization of the hook.
 Config Directory
 ================
 
-The config file for the hook in the hook project is config/globals.js.  This directory can contain any other config files for the hook, as well.
+The config file for the hook in the hook project is ``config/globals.js``.  This directory can contain any other config files for the hook, as well.
 If a config file is the same as one in the JBConnect project, it will be merged with the corresponding file in the JBConnect/config directory.
-Generally, config/globals.js should contain default configurations for the hook, while the jbconnect.config.js file (in JBConnect root) contains user
+Generally, ``config/globals.js`` should contain default configurations for the hook, while the ``jbconnect.config.js`` file (in JBConnect root) contains user
 defined configurations.
 
 
@@ -244,7 +244,7 @@ Job Service
 A job service is a special service that can react to the job queue
 framework asking it to execute something.  
 
-The job service generally resides in api/services directory of the hook and is named <something>Service.js.
+The job service generally resides in ``api/services`` directory of the hook and is named ``<something>Service.js``.
 
 
 
@@ -367,7 +367,7 @@ Job services that are job runners that react to job execution, must implement th
 Job Service Configuration
 -------------------------
 
-Job services are defined in config/globals.js or in jbconnect.config.js.
+Job services are defined in ``config/globals.js`` or in ``jbconnect.config.js``.
 
 ::
 
@@ -385,6 +385,10 @@ where
 - *service* refers to the job service module name
 - *display name* is the human readable name of the service
 - *type* - ``workflow`` means it's a job runner and ``service`` means it only hosts route functions.
+
+``service`` can either be the service module name (ie. "basicWorkflowService")
+or an the alias, if an alias if defined, given the configuration example below.
+
 
 
 Submitting a Job
@@ -408,15 +412,5 @@ included and reference an existing job service.
     $.post( "/job/submit", postData , function( result ) {
         console.log( result );
     }, "json");
-
-
-``service`` can either be the service module name (ie. "basicWorkflowService")
-or an the alias, if an alias if defined, given the configuration example below.
-
-::
-
-    services: {
-        // service                  display name                    type                alias
-        'basicWorkflowService':     {name: 'basicWorkflowService',  type: 'workflow', alias: "jblast"},
 
 

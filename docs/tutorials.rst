@@ -7,22 +7,26 @@ Creating a Stand-Alone Job Service for local workflow processing
 
 This tutorial demonstrates how to create a job service that can be executed by the JBlast Plugin.
 
+The source code for the tutorial can be found `here <https://github.com/GMOD/jbconnect/blob/master/api/services/sampleJobService.js>`_
+
 
 Job Runner functions
 --------------------
 
+The function map defines the REST APIs that the job service supports.
+In the function map (``fmap``), ``get_workflow`` function is minimally require from the Process BLAST dialog.
+``get_hit_details`` is not required since we don't actaully do a blast operation in the example.
 ::
 
     module.exports = {
 
-        //  in the function map (fmap), get_workflow function is minimally require from the Process BLAST dialog.
-        //  get_hit_details is not required since we don't actaully do a blast operation in the example.
         fmap: {
             get_workflows:      'get'
         },
 
 
 **(required by Job Service)**
+
 Provides opportunity to initialize the Job Service module.
 ::
 
@@ -32,6 +36,7 @@ Provides opportunity to initialize the Job Service module.
 
 
 **(required by Job Runner Service)**
+
 Provides mechanism to validate parameters given by the job queuer.
 Since our example job is submitted by JBlast, we extect to see a region parameter.
 ::
@@ -43,6 +48,7 @@ Since our example job is submitted by JBlast, we extect to see a region paramete
 
 
 **(required by Job Runner Service)**
+
 Job service generate readable name for the job that will appear in the job queue
 ::
 
@@ -51,9 +57,10 @@ Job service generate readable name for the job that will appear in the job queue
         },
 
 
-**(required by JBClient)**
+**(required by JBClient, not required for Job Services in general)**
+
 Return a list of available available options.  This is used to populate the Plugin's Workflow.
-This should minimally return at least one item.
+This should minimally return at least one item for JBlast client to work properly.
 Here, we are just passing a dummy list, which will be ignored by the rest of the example.
 ::
 
@@ -73,17 +80,9 @@ Here, we are just passing a dummy list, which will be ignored by the rest of the
 
 
 **(required by Job Runner Service)**
-beginProcessing() is called by the job execution engine to begin processing.
-The kJob parameter is a reference to the 'Kue (https://www.npmjs.com/package/kue)'_ job.
 
-Note that queue data can be changed with the following:
-
-
-::
-
-    kJob.data.name = nothingName+kJob.data.count--;
-    kJob.update(function() {});
-
+``beginProcessing()`` is called by the job execution engine to begin processing.
+The kJob parameter is a reference to the `Kue <https://www.npmjs.com/package/kue>`_ job.
 
 ::
 
@@ -134,10 +133,18 @@ Note that queue data can be changed with the following:
         }
 
 
+Note that queue data can be changed with the following:
+::
+
+    kJob.data.name = nothingName+kJob.data.count--;
+    kJob.update(function() {});
+
+
+
 Configuration
 -------------
 
-To enable: edit jbconnect.config.js add the sampleJobService line under services and disable the other services.
+To enable: edit jbconnect.config.js add the ``sampleJobService`` line under services and disable the other services.
 ::
 
     module.exports  = {
@@ -166,8 +173,8 @@ Completion processing
 To complete a job, call one of the following. 
 ::
 
-    (success) kJob.kDoneFn();                                 
-    (fail)    kJob.kDoneFn(new Error("failed to add track"));
+    **(success)** kJob.kDoneFn();                                 
+    **(fail)**    kJob.kDoneFn(new Error("failed to add track"));
 
 
 This will change the status of the job to either completed or error.
@@ -178,5 +185,5 @@ In our example, the helper library postAction handles the completion:
     postAction.addToTrackList(kJob,newTrackJson);
 
 
-Upon calling kJob.kDoneFn(), the module is required to perform any necessary cleanup.
+Upon calling ``kJob.kDoneFn()``, the module is required to perform any necessary cleanup.
 
