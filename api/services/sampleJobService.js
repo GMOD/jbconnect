@@ -1,3 +1,19 @@
+/*
+    This is a sample Job Service that is recognized by JBClient.
+
+    To enable: add the sampleJobService line under services and disable the other services.
+
+    module.exports  = {
+        jbrowse: {
+            services: {
+                'sampleJobService':         {enable: true,  name: 'sampleJobService    ',  type: 'workflow', alias: "jblast"},
+                'basicWorkflowService':     {enable: false, name: 'basicWorkflowService',  type: 'workflow', alias: "jblast"},
+                'galaxyService':            {enable: false, name: 'galaxyService',         type: 'workflow', alias: "jblast"}
+            },
+        }
+    };
+
+*/
 var fs = require("fs-extra");
 var approot = require("app-root-path");
 
@@ -11,13 +27,14 @@ module.exports = {
 
     //  (required by Job Service)
     //  perform any initialization on the module
-    init: function(params,cb) {
+    init(params,cb) {
         return cb();
     },
 
     //  (required by Job Runner Service)
     //  provides mechanism to validate parameters of the job service
-    validateParams: function(params) {
+    validateParams(params) {
+        if (typeof params.region === 'undefined') return "region not undefined";
         return 0;   // success
     },
 
@@ -33,7 +50,7 @@ module.exports = {
     //  Here, we are just passing a dummy list.
     get_workflows (req, res) {
         
-        wflist = [
+        let wflist = [
             {
                 id: "something",
                 name: "sample do nothing job",
@@ -48,12 +65,9 @@ module.exports = {
     // (required by Job Runner Service)
     // this is called by the job execution engine to begin processing
     beginProcessing(kJob) {
-        //let g = sails.config.globals.jbrowse;
         let thisb = this;
         let nothingName = "sample nothing ";
         
-        sails.log.info("sampleJobService beginProcessing"+kJob.id);
-
         kJob.data.count = 10;   // 10 seconds of nothing
        
         let f1 = setInterval(function() {
@@ -63,14 +77,13 @@ module.exports = {
             }
             kJob.data.name = nothingName+kJob.data.count--;
             kJob.update(function() {});
-            sails.log.info(kJob.data.name);
         },1000);
     },
 
     //  (not required)
     //  After the job completes, we do some processing in postDoNothing() and then call 
     //  addToTrackList to insert a new track into JBrowse
-    _postProcess: function(kJob) {
+    _postProcess(kJob) {
         
         // insert track into trackList.json
         this.postDoNothing(kJob,function(newTrackJson) {
@@ -81,26 +94,11 @@ module.exports = {
     //  (not required)
     //  here, we do some arbitrary post prosessing.
     //  in this example, we are setting a dummy jbrowse track data.    
-    postDoNothing:function(kJob,cb) {
+    postDoNothing(kJob,cb) {
 
-        var g = sails.config.globals.jbrowse;
-        var templateFile = approot+'/bin/nothingTrackTemplate.json';
-        var newTrackJson = {};
+        let templateFile = approot+'/bin/nothingTrackTemplate.json';
+        let newTrackJson = [JSON.parse(fs.readFileSync(templateFile))];
         
-        var error = false;
-        try {
-            var newTrackData = fs.readFileSync(templateFile);
-            newTrackJson = JSON.parse(newTrackData);
-        }
-        catch(err) {
-            var msg = "failed to read template file: "+templateFile+' '+err;
-            sails.log.error(msg);
-            error = err;
-        }
-        if (error) return cb(error);
-        
-            newTrackJson = [ newTrackJson ];
-
         let trackLabel = kJob.id+' sample job results';
         
         newTrackJson[0].label = "SAMPLEJOB_"+kJob.id+Math.random(); 

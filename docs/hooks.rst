@@ -1,8 +1,8 @@
 .. _jbs-hooks:
 
-******************************************
-JBConnect Hooks - Creating JBConnect Hooks
-******************************************
+***************
+JBConnect Hooks
+***************
 JBconnect-Hook leverages the `Sails Installable Hook <http://sailsjs.com/documentation/concepts/extending-sails/hooks/installable-hooks>`_ 
 framework and adds facilities to extend it for JBConnect:
 * Job Service integration - provides a runnable job that is launched by the job queue.  This may also include an adapter for local or 3rd party server API access such as Galaxy.  
