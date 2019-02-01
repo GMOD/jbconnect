@@ -144,7 +144,7 @@ Note that queue data can be changed with the following:
 Configuration
 -------------
 
-To enable: edit jbconnect.config.js add the ``sampleJobService`` line under services and disable the other services.
+To enable: edit jbconnect.config.js add the ``sampleJobService`` line under ``services`` and disable the other services.
 ::
 
     module.exports  = {
@@ -173,8 +173,8 @@ Completion processing
 To complete a job, call one of the following. 
 ::
 
-    **(success)** kJob.kDoneFn();                                 
-    **(fail)**    kJob.kDoneFn(new Error("failed to add track"));
+    (success) kJob.kDoneFn();                                 
+    (fail)    kJob.kDoneFn(new Error("failed because something"));
 
 
 This will change the status of the job to either completed or error.

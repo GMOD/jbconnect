@@ -43,7 +43,7 @@ This is the standard directory layout of a JBConnect hook module
 package.json
 ============
 
-JBConnect hooks extend sails hooks and are required to contain the following section in the package.json
+JBConnect hooks extend sails hooks and are required to contain the following section in the ``package.json``:
 
 :: 
 
@@ -54,16 +54,19 @@ JBConnect hooks extend sails hooks and are required to contain the following sec
     }
 
 
-Note the naming convention *-jbconnect-hook is required.
+Note the naming convention ``*-jbconnect-hook`` is required.
 
 
-Configurations (globals.js)
-===========================
+Configurations
+==============
 
 This file contains the default config options that are specific to the hook module.
-These config options are merged with other JBConnect hooks and the JBConnect globals.js.
+These config options are merged with other JBConnect hooks and the JBConnect ``config/globals.js``.
 
 From JBConnect, use ``./jbutil --config`` to see the aggregated config. 
+
+Configurations in ``globals.js`` are intended to be project defaults.  Configurations can also be in JBConnect's root directory, called ``jbconnect.config.js``,
+which are user modified configurations.
 
 
 Client-Side JBrowse Plugins
@@ -197,7 +200,7 @@ More info about the command options processor can be found in `node-getopt <http
 Additional non-jbutil commands
 ------------------------------
 
-The hook can also deploy any additional commands in the JBConnect's utils directory.  
+The hook can also deploy any additional commands in the JBConnect's ``utils`` directory.  
 
 
 
@@ -208,31 +211,21 @@ This is the standard sails directory layout for models, controllers, policies, a
 The framework uses marlinspike to integrate controllers, models, policies,
 and services into JBConnect.
 
-ref: marlinspike
-
 ::
 
     hook project root
     ├── api                             Standard Sails modules layout
-        ├── controllers
-        ├── hooks
-        ├── models
-        ├── policies
-        └── services
+        ├── controllers                 optional
+        ├── hooks                       hook core index.js in here
+        ├── models                      optional
+        ├── policies                    optional
+        └── services                    Job services and supporting modules in here.
 
 
-api/hooks/<hook name>/index.js can be basically be copied from `here <https://github.com/GMOD/jblast-jbconnect-hook/blob/master/api/hooks/jblast/index.js>`_ . 
+A core index.js is in ``api/hooks/<hook name>/index.js`` 
+and can be basically be copied from `here <https://github.com/GMOD/jblast-jbconnect-hook/blob/master/api/hooks/jblast/index.js>`_ . 
 
 This core fragment starts the initialization of the hook.
-
-
-Config Directory
-================
-
-The config file for the hook in the hook project is ``config/globals.js``.  This directory can contain any other config files for the hook, as well.
-If a config file is the same as one in the JBConnect project, it will be merged with the corresponding file in the JBConnect/config directory.
-Generally, ``config/globals.js`` should contain default configurations for the hook, while the ``jbconnect.config.js`` file (in JBConnect root) contains user
-defined configurations.
 
 
 .. _jbs-jobservice:
@@ -252,8 +245,8 @@ Function Map
 ------------
 
 Job services must contain a ``fmap`` section which defines the routes that the
-job service exposes.  And there should be corresponding route functions defined
-in the module.
+job service exposes.  And there should be corresponding routes (or REST APIs) defined
+in the module.  The ``fmap`` section must exist, but does not need to be populated.
 
 The framework will process the request as the specified 
 
@@ -265,6 +258,8 @@ The framework will process the request as the specified
             get_blastdata:      'get',
             get_trackdata:      'get'
         },
+
+        // each function should be implemented in the job service
         set_filter(req, res) {
             var requestData = req.allParams();
             ...
@@ -299,7 +294,7 @@ or as URL parameters.
 Our handling functions generally use ``var requestData = req.allParams()``,
 making the handlers rather indiscriminate to how the parameters are passed.
 
-An example of a POST request.
+An example of a POST request:
 ::
 
     var postData = {
@@ -312,15 +307,14 @@ An example of a POST request.
     }, "json");
 
 
-An example of a GET request as configured in trackList.json.
-
+An example of a GET request:
 ::
 
-    "baseUrl": "/",
-    "urlTemplate": "/service/exec/get_trackdata/?asset=151_1517462263883&dataset=sample_data%2Fjson%2Fvolvox",
+    $.get("/service/exec/get_blastdata/?asset="+browser.jblast.asset+'&dataset='+encodeURIComponent(browser.config.dataRoot), function(data){
+        console.log( data );
+        $('.blast-hit-data').html("Hits: ("+data.filteredHits+'/'+data.hits+")");
+    });
 
-
-*incomplete*
 
 Function Name Overlap
 ---------------------
