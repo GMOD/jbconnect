@@ -155,7 +155,7 @@ Extending Commands
 * it can extend the help (i.e. ``./jbutil --help``)
 
 This is a simplified example of jbutil-ext.js.
-:
+::
 
     module.exports = {
 
@@ -248,8 +248,6 @@ Function Map
 Job services must contain a ``fmap`` section which defines the routes that the
 job service exposes.  And there should be corresponding routes (or REST APIs) defined
 in the module.  The ``fmap`` section must exist, but does not need to be populated.
-
-The framework will process the request as the specified 
 
 ::
 
