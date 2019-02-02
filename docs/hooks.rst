@@ -7,11 +7,11 @@ JBconnect-Hook leverages the `Sails Installable Hook <http://sailsjs.com/documen
 framework and adds facilities to extend it for JBConnect:
 
 * Job Service integration - provides a runnable job that is launched by the job queue.  This may also include an adapter for local or 3rd party server API access such as Galaxy.  
-It may also implement REST APIs specific to the service.  The actual adapter portion is optional.  
+  It may also implement REST APIs specific to the service.  The actual adapter portion is optional.  
 * The Job Queue relies on the adapter to provide translated job state information and execution pre and post processing of the analysis operations.  
 * The REST API service of the Job Service is a different interface than the standard sails controller interfaces.
 * JBrowse plugin / injection (plugins that are tightly integrated with the server-side hooks) along with client-side module dependencies, used by the JBrowse plugins.  
-The injection occurs upon sails lift and copies the necessary plugins into the JBrowse server plugins directory.
+  The injection occurs upon sails lift and copies the necessary plugins into the JBrowse server plugins directory.
 * Model/controllers/services as provided by Sails Blueprints.  These services are merged with native server models/controllers/services into globally accessible objects.
 * Commands via (jbutil) - command options and implementation are merged with the function of jbutil, providing extended command capabilities specific to the JBConnect hook.
 * Configurations are aggregated with the JBConnect server configurations.
