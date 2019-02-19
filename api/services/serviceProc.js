@@ -90,7 +90,7 @@ module.exports = {
                     try {
                         params.handler = eval(service.name);
                     } catch(err) {
-                        sails.log.warn('Service',service.name,'not found');
+                        sails.log.error('Service',service.name,'not found');
                         return cb1();
                     }
                     thisb.addService(params,cb1);
