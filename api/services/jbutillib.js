@@ -259,12 +259,8 @@ module.exports = {
             for(let i in plugins) {
 				let count = 0;
 				for(let j in conf.plugins) {
-					console.log("**** plugin ",conf.plugins[j]," | ",plugins[i].name);
 					if (conf.plugins[j] === plugins[i].name || conf.plugins[j].name === plugins[i].name) count++;
 				}
-                //if (conf.plugins.indexOf(plugins[i].name) === -1)
-			 	console.log("**** count",count,plugins[i].name);
-				//
 				if (count === 0) {
 					console.log("**** inserting",plugins[i].name,"plugin");
 					conf.plugins.push(plugins[i].name);
