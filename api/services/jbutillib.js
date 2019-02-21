@@ -253,9 +253,22 @@ module.exports = {
             
             if (plugins.length === 0)   return;
 
+			//console.log(conf.plugins);
+
             // add the JBlast & JBClient plugin, if they don't already exist
             for(let i in plugins) {
-                if (conf.plugins.indexOf(plugins[i].name) === -1) conf.plugins.push(plugins[i].name);
+				let count = 0;
+				for(let j in conf.plugins) {
+					console.log("**** plugin ",conf.plugins[j]," | ",plugins[i].name);
+					if (conf.plugins[j] === plugins[i].name || conf.plugins[j].name === plugins[i].name) count++;
+				}
+                //if (conf.plugins.indexOf(plugins[i].name) === -1)
+			 	console.log("**** count",count,plugins[i].name);
+				//
+				if (count === 0) {
+					console.log("**** inserting",plugins[i].name,"plugin");
+					conf.plugins.push(plugins[i].name);
+				}
             }
             //if (conf.plugins.indexOf('JBClient') === -1) conf.plugins.push("JBClient");
             //if (conf.plugins.indexOf('ServerSearch') === -1) conf.plugins.push("ServerSearch");
