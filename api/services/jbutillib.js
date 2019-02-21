@@ -253,8 +253,6 @@ module.exports = {
             
             if (plugins.length === 0)   return;
 
-			//console.log(conf.plugins);
-
             // add the JBlast & JBClient plugin, if they don't already exist
             for(let i in plugins) {
 				let count = 0;
@@ -266,11 +264,8 @@ module.exports = {
 					conf.plugins.push(plugins[i].name);
 				}
             }
-            //if (conf.plugins.indexOf('JBClient') === -1) conf.plugins.push("JBClient");
-            //if (conf.plugins.indexOf('ServerSearch') === -1) conf.plugins.push("ServerSearch");
 
-
-           // write trackList.json
+            // write trackList.json
             try {
               fs.writeFileSync(trackListPath,JSON.stringify(conf,null,4));
             }
