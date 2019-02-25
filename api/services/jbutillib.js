@@ -16,6 +16,7 @@ const util = require('./utilFn');
 const html2json = require('html2json').html2json;
 const json2html = require('html2json').json2html;
 const _ = require('lodash');
+const async = require('async');
 
 module.exports = {
     dbName: 'localDiskDb.db',
@@ -839,7 +840,63 @@ module.exports = {
         var express = params.express;
         console.log.info("adding plugin route (%s) %s %s",module,route,target);
         app.use(route, express.static(target));
-    }
+    },
+	demoCleanup: function(req, res) {
+		console.log("******* demoCleanup ********");
+		
+		
+		Track.find({}).then(function(records) {
+			if (err) {
+				console.log("failed to get tracks",err);
+				return done();
+			}
+			if (_.isUndefined(records)) {
+				sails.log.error("Track.Get undefined records");
+				return done();
+			}
+			if (records.length > 0) {
+				
+				let deleteRecs = [];
+				for(var i in records ) {
+					if (!_.isUndefined(records[i].trackData.keep) continue;
+					
+					if ( !_.isUndefined(records[i].trackData.category) && records[i].trackData.category==='JBConnectTest' ) {
+						deleteRecs.push(records[i]);
+					}
+					if ( !_.isUndefined(records[i].trackData.testtrack) && records[i].trackData.testtrack===true ) {
+						deleteRecs.push(records[i]);
+					}
+				}
+				if (deleteRecs.length) {
+					sails.log.info("Removing test tracks with category test tracks");
+				
+					async.eachLimit(deleteRecs,1,
+						function(rec,cb){
+							console.log("remove rec",rec);
+							
+							Track.Remove(rec,function(err,id) {
+								if (err) {
+									sails.log.error("failed to remove",err);
+									return cb(err);
+								}
+								sails.log.info("removed",rec.lkey);
+								return cb();
+							});
+							
+							//return cb();
+						},
+						function(err){
+							// all done
+							done();
+						}
+					);
+				}
+				else done();
+			}
+			else 
+				done();
+		});
+	}
     
     
 };
