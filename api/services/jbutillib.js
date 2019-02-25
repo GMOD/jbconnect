@@ -858,7 +858,7 @@ module.exports = {
 				
 				let deleteRecs = [];
 				for(var i in records ) {
-					if (!_.isUndefined(records[i].trackData.keep) continue;
+					if (!_.isUndefined(records[i].trackData.keep)) continue;
 					
 					if ( !_.isUndefined(records[i].trackData.category) && records[i].trackData.category==='JBConnectTest' ) {
 						deleteRecs.push(records[i]);
