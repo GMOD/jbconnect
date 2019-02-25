@@ -57,14 +57,15 @@
     </style>
     <%
         let g = sails.config.globals.jbrowse;
-
+		
         // determines the next url path after sucessful login.
         let nextPath = "";
 
-        if (Object.keys(g.dataSet)[0]) nextPath = g.dataSet[Object.keys(g.dataSet)[0]].path;   // the first element
+        if (Object.keys(g.dataSet)[0]) 
+			nextPath = g.dataSet[Object.keys(g.dataSet)[0]].path;   // the first element
 
         // if defaultDataSet is defined, then use it
-        if (g.defaultDataSet && g.dataSet[g.defaultDataSet].path)
+        if (g.defaultDataSet && g.dataSet[g.defaultDataSet] && g.dataSet[g.defaultDataSet].path)
             nextPath = g.dataSet[g.defaultDataSet].path;
 
         if (nextPath.length)
