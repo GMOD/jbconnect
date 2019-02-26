@@ -841,63 +841,114 @@ module.exports = {
         console.log.info("adding plugin route (%s) %s %s",module,route,target);
         app.use(route, express.static(target));
     },
+	/*
+	 * cleanup demo datablase and tracks in demo
+	 * req/res are express-based.
+	 */
 	demoCleanup: function(req, res) {
-		console.log("******* demoCleanup ********");
-		
-		
-		Track.find({}).then(function(records) {
-			if (err) {
-				console.log("failed to get tracks",err);
-				return done();
-			}
-			if (_.isUndefined(records)) {
-				sails.log.error("Track.Get undefined records");
-				return done();
-			}
-			if (records.length > 0) {
-				
-				let deleteRecs = [];
-				for(var i in records ) {
-					if (!_.isUndefined(records[i].trackData.keep)) continue;
-					
-					if ( !_.isUndefined(records[i].trackData.category) && records[i].trackData.category==='JBConnectTest' ) {
-						deleteRecs.push(records[i]);
-					}
-					if ( !_.isUndefined(records[i].trackData.testtrack) && records[i].trackData.testtrack===true ) {
-						deleteRecs.push(records[i]);
-					}
-				}
-				if (deleteRecs.length) {
-					sails.log.info("Removing test tracks with category test tracks");
-				
-					async.eachLimit(deleteRecs,1,
-						function(rec,cb){
-							console.log("remove rec",rec);
-							
-							Track.Remove(rec,function(err,id) {
-								if (err) {
-									sails.log.error("failed to remove",err);
-									return cb(err);
-								}
-								sails.log.info("removed",rec.lkey);
-								return cb();
-							});
-							
-							//return cb();
-						},
-						function(err){
-							// all done
-							done();
-						}
-					);
-				}
-				else done();
-			}
-			else 
-				done();
+	
+		let nJobs = 0;
+		let nTracks = 0;
+	
+		_deleteJobs(function(err) {
+			_deleteTracks(function(err) {
+				return res.status(200).send({tracks:nTracks,jobs:nJobs});
+			});
 		});
+	
+		function _deleteJobs(next) {
+			Job.find({})
+			.catch(function(err) {
+				console.log("Job.find failed");
+			})
+			.then(function(records) {
+				if (records && records.length > 0) {
+					
+					let deleteRecs = [];
+					
+					for(var i in records ) {
+						if (!_.isUndefined(records[i].data.keep)) continue;
+						
+						deleteRecs.push(records[i]);
+					}
+					if (deleteRecs.length) {
+					
+						deleteRecs.forEach(function(rec) {
+							sails.log.info("will remove job",rec.id,rec.data.name);
+						});
+						
+						async.eachLimit(deleteRecs,1,
+							function(rec,cb){
+								console.log("remove rec",rec);
+								
+								Job.Remove(rec,function(err,id) {
+									if (err) {
+										sails.log.error("failed to remove",err);
+										return cb(err);
+									}
+									sails.log.info("removed job",rec.id,rec.data.name);
+									return cb();
+								});
+							},
+							function(err){
+								// all done
+								return next();
+							}
+						);
+					}
+				}
+				else
+					return next();
+			});
+		}
+		function _deleteTracks(next) {
+			Track.find({dataset:1})
+			.catch(function(err) {
+				return next(err);
+			})
+			.then(function(records) {
+				if (records && records.length > 0) {
+					
+					let deleteRecs = [];
+					
+					for(var i in records ) {
+						if (!_.isUndefined(records[i].trackData.keep)) continue;
+
+                        if ( !_.isUndefined(records[i].trackData.category) && records[i].trackData.category==="JBlast Results" ) {
+                            deleteRecs.push(records[i]);
+                        }
+					}
+					
+					if (deleteRecs.length) {
+						
+						deleteRecs.forEach(function(rec) {
+							sails.log.info("will remove track",rec.lkey);
+						});
+						
+						async.eachLimit(deleteRecs,1,
+							function(rec,cb){
+								Track.Remove(rec,function(err,id) {
+									if (err) {
+										sails.log.error("failed to remove",err);
+										return cb(err);
+									}
+									sails.log.info("removed track",rec.lkey);
+									return cb();
+								});
+							},
+							function(err){
+								// all done
+								return next();
+							}
+						);
+						
+					}
+				}
+				else
+					return next();
+			});
+		}
 	}
-    
     
 };
 
