@@ -83,8 +83,9 @@
  * Ref: `Sails Models and ORM <http://sailsjs.org/documentation/concepts/models-and-orm/models>`_
  */
 
-var async = require('async');
-var _ = require('lodash');
+const async = require('async');
+const _ = require('lodash');
+const fetch = require('node-fetch');
 
 module.exports = {
 
@@ -174,6 +175,29 @@ module.exports = {
             return cb(err);
         });
     },
+    /**
+     * 
+     * @param {int} id - id of the item to be removed
+     * @param (function) cb - callback function(err,
+     */
+    Remove: function(params,cb) {
+        let thisb = this;
+        let g = sails.config.globals.jbrowse;
+        if (_.isUndefined(params.id)) return cb("id not defined");
+        let id = params.id;
+		
+		let url = g.jbrowseRest+'/api/job/'+id;
+		fetch(url, { method: 'DELETE'})
+		.then(res => res.json()) // expecting a json response
+		.then(json => {
+			console.log("Job DELETE result",json);
+			return cb(null,json);
+		})
+		.catch(function(err) {
+			return cb(err);
+		});
+		
+	},
     /*
      * Submit a job to the job queue
      * 
