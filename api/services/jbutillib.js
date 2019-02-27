@@ -849,13 +849,14 @@ module.exports = {
 	
 		let nJobs = 0;
 		let nTracks = 0;
-	
+		let simulate = false;  // for debug.  if true, won't actually delete anything.
+
 		_deleteJobs(function(err) {
 			_deleteTracks(function(err) {
 				return res.status(200).send({tracks:nTracks,jobs:nJobs});
 			});
 		});
-	
+		
 		function _deleteJobs(next) {
 			Job.find({})
 			.catch(function(err) {
@@ -876,25 +877,36 @@ module.exports = {
 						deleteRecs.forEach(function(rec) {
 							sails.log.info("will remove job",rec.id,rec.data.name);
 						});
+
+						let count = deleteRecs.length - 7;
+						deleteRecs2 = [];
+						for(let i=0;i < count;i++) deleteRecs2.push(deleteRecs[i]);
 						
-						async.eachLimit(deleteRecs,1,
-							function(rec,cb){
-								console.log("remove rec",rec);
-								
-								Job.Remove(rec,function(err,id) {
-									if (err) {
-										sails.log.error("failed to remove",err);
-										return cb(err);
-									}
-									sails.log.info("removed job",rec.id,rec.data.name);
-									return cb();
-								});
-							},
-							function(err){
-								// all done
-								return next();
-							}
-						);
+						deleteRecs2.forEach(function(rec) {
+							sails.log.info("selected to remove",rec.id,rec.data.name);
+						});
+
+						deleteRecs = deleteRecs2;
+						
+						if (!simulate) {
+							async.eachLimit(deleteRecs,1,
+								function(rec,cb){
+									Job.Remove(rec,function(err,id) {
+										if (err) {
+											sails.log.error("failed to remove",rec.id,rec.data.name,err);
+											return cb(err);
+										}
+										sails.log.info("removed job",rec.id,rec.data.name);
+										return cb();
+									});
+								},
+								function(err){
+									// all done
+									return next();
+								}
+							);
+						}
+						else return next();
 					}
 				}
 				else
@@ -925,29 +937,37 @@ module.exports = {
 							sails.log.info("will remove track",rec.lkey);
 						});
 						
-						async.eachLimit(deleteRecs,1,
-							function(rec,cb){
-								Track.Remove(rec,function(err,id) {
-									if (err) {
-										sails.log.error("failed to remove",err);
-										return cb(err);
-									}
-									sails.log.info("removed track",rec.lkey);
-									return cb();
-								});
-							},
-							function(err){
-								// all done
-								return next();
-							}
-						);
-						
+						if (!simulate) {
+							async.eachLimit(deleteRecs,1,
+								function(rec,cb){
+									Track.Remove(rec,function(err,id) {
+										if (err) {
+											sails.log.error("failed to remove",err);
+											return cb(err);
+										}
+										sails.log.info("removed track",rec.lkey);
+										return cb();
+									});
+								},
+								function(err){
+									// all done
+									return next();
+								}
+							);
+						}
+						else return next();
 					}
 				}
 				else
 					return next();
 			});
 		}
+	},
+	test(req, res) {
+		Job.Remove({id:2}, function(err,data) {
+			
+			return res.status(200).send({err:err,data:data});
+		});
 	}
     
 };
