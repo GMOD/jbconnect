@@ -81,6 +81,7 @@ module.exports.http = {
         
 		// demo cleanup
 		app.use('/democleanup',jbutillib.demoCleanup);
+		app.use('/testtest',jbutillib.test);
         
         /* for debugging
         app.use(function (req, res, next) {
