@@ -285,8 +285,8 @@ module.exports = {
     },
     /**
      * 
-     * @param {string} dataset - (eg: "sample_data/json/volvlx")
-     * @param {ing} dataset - dataset string (i.e. "sample_data/json/volvox"
+     * @param {string} dataset - (eg: "sample_data/json/volvox")
+     * @param {int} id - id of the item to be removed
      * @param (function) cb - callback function(err,
      */
     Remove: function(params,cb) {
