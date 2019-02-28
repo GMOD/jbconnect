@@ -7,28 +7,18 @@
 
 const approot = require('app-root-path'); 
 const fs = require("fs-extra");
-const sh = require("shelljs");
-const jblib = require('../api/services/jbutillib');
+const shelljs = require("shelljs");
 
-const conf = jblib.getMergedConfig();
-
+const setupScript = "setup.sh";
 const thisPath = process.cwd();
 
-let setupScript = "./setup.sh";
-//setupScript = "npm run build";
-
 // check if jbrowse is a module
-if (fs.existsSync(conf.jbrowsePath)) {
-    sh.cd(conf.jbrowsePath);
-    console.log("dir",process.cwd());
-}
-else {
-    console.log("could not find jbrowse.  check if jbrowsePath is defined.");
-    process.exit(1);
+if (fs.pathExistsSync(approot+"/node_modules/@gmod/jbrowse/"+setupScript)) {
+    shelljs.cd("node_modules/@gmod/jbrowse");
 }
 
-sh.exec(setupScript);
+shelljs.exec("./"+setupScript);
 
-sh.cd(thisPath);
+shelljs.cd(thisPath);
 
-sh.cp(approot+"/node_modules/@gmod/jbrowse/setup.log",approot+"/jbrowse-setup.log");
+shelljs.cp(approot+"/node_modules/@gmod/jbrowse/setup.log",approot+"/jbrowse-setup.log");
