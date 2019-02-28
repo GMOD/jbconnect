@@ -51,6 +51,9 @@ module.exports.policies = {
     },
     'UserController' : {
         '*': ['passport','sessionAuth','isAdmin']
+    },    
+    'UtilController' : {
+        '*': ['passport','isAdmin']
     }    
     
   /***************************************************************************

@@ -79,10 +79,6 @@ module.exports.http = {
         app.use('/api', g.kue.app);
         app.use('/kue', g.kue_ui.app);
         
-		// demo cleanup
-		app.use('/democleanup',jbutillib.demoCleanup);
-		app.use('/testtest',jbutillib.test);
-        
         /* for debugging
         app.use(function (req, res, next) {
           console.log("installed customMiddleware is used");
