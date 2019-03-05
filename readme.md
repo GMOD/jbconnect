@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/GMOD/jbconnect.svg?branch=master)](https://travis-ci.org/GMOD/jbconnect)
+[![Coverage Status](https://coveralls.io/repos/github/GMOD/jbconnect/badge.svg?branch=master)](https://coveralls.io/github/GMOD/jbconnect?branch=master)
 
 # JBConnect
 
