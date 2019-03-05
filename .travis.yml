@@ -13,6 +13,7 @@ before_script:
   - node ./utils/jb_setup.js
   - ./jbutil --pushplugins
   - ./jbutil --buildwebpack
+  - npm config set loglevel warn 
 script:
   - npm run coverage
 after_failure:
