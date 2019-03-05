@@ -25,7 +25,7 @@ var g = {
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
         
         dataSet: {
-//             Volvox: {path: "sample_data/json/volvox"}
+             Volvox: {path: "sample_data/json/volvox"}
         },
 
 	      // default dataset after successful login (optional.  if not defined then the first dataSet is used)
