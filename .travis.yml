@@ -1,6 +1,7 @@
 sudo: false
 language: node_js
 node_js:
+  - iojs
   - '10'
 before_install:
 services:
@@ -16,6 +17,8 @@ before_script:
 #  - npm config set loglevel warn 
 script:
   - npm run coverage
+after_success: 'npm run coveralls'
+  
 after_failure:
   - cat node_modules/@gmod/jbrowse/setup.log 
 
