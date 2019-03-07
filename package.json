@@ -12,7 +12,8 @@
     "e2e-test": "nightwatch -c test/nightwatch.json test/bootstrap/bootstrap-nightwatch.test.js test/e2e",
     "e2e-coverage": "nyc nightwatch -c test/nightwatch.json test/bootstrap/bootstrap-nightwatch.test.js test/e2e",
     "gendocs": "node docs/gendocs_run.js",
-    "selenium-install": "selenium-standalone install"
+    "selenium-install": "selenium-standalone install",
+	  "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "engines": {
     "node": ">= 10.3.0",
