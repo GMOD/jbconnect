@@ -13,6 +13,8 @@ before_script:
   - node ./utils/jb_setup.js
 script:
   - npm run coverage
-after_success: 'npm run coveralls'
+after_success:
+  - ls coverage 
+  - npm run coveralls
 after_failure:
   - cat node_modules/@gmod/jbrowse/setup.log 
