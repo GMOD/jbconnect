@@ -44,8 +44,7 @@ module.exports.routes = {
     'post /auth/local/:action': 'AuthController.callback', 
 
     'get /auth/:provider': 'AuthController.provider',
-    'get /auth/:provider/callback': 'AuthController.callback',
-    'get /auth/:provider/:action': 'AuthController.callback',
+    'get /auth/:provider/callback': 'AuthController.callback'
 
   /***************************************************************************
   *                                                                          *
@@ -57,5 +56,4 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-	'get /democleanup': 'UtilController.demoCleanup'
 };
