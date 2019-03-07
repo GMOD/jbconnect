@@ -16,5 +16,6 @@ script:
 after_success:
   - ls coverage 
   - npm run coveralls
+  - ./node_modules/nyc/bin/nyc.js report
 after_failure:
   - cat node_modules/@gmod/jbrowse/setup.log 
