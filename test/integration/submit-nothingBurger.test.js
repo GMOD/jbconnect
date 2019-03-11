@@ -92,4 +92,15 @@ describe('integration test', function(){
                 done();
           });
     });
+    it('should call rest /service/exec/crazy_test:nothingBurgerService', function(done) {
+        agent
+          .get('/service/exec/crazy_test:nothingBurgerService')
+          .set('content-type','application/json; charset=utf-8')
+          .end((err,res,body) => {
+                expect(res).to.have.status(200);
+                assert.equal(_.isEmpty(res.body),false,"should not be empty");
+                assert.equal(res.body.hi,'there',"verify return data");
+                done();
+          });
+    });
 });
