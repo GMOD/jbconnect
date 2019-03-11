@@ -85,13 +85,18 @@ module.exports = {
             newTrackJson = JSON.parse(newTrackData);
         }
         catch(err) {
+            // istanbul ignore next
+            {
             var msg = "failed to read template file: "+templateFile+' '+err;
             sails.log.error(msg);
             error = err;
+            }
         }
+        // istanbul ignore next
         if (error) return cb(error);
         
         //if it's a single definition, coerce to an array
+        // istanbul ignore next
         if (Object.prototype.toString.call(newTrackJson) !== '[object Array]') {
             newTrackJson = [ newTrackJson ];
         }
@@ -103,6 +108,7 @@ module.exports = {
         
         // validate the new track JSON structures
         newTrackJson.forEach (function (track) {
+            // istanbul ignore next
             if (!track.label) {
                 let msg = "Invalid track JSON: missing a label element";
                 sails.log.error(msg);

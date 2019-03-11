@@ -82,6 +82,7 @@ module.exports = {
                         module: 'jblast'
                     };
                     
+                    // istanbul ignore next
                     if (typeof service.alias !== 'undefined')
                         params.alias = service.alias;
                     
@@ -89,14 +90,16 @@ module.exports = {
                    
                     try {
                         params.handler = eval(service.name);
-                    } catch(err) {
+                    }
+                    // istanbul ignore next 
+                    catch(err) {
                         sails.log.error('Service',service.name,'not found');
                         return cb1();
                     }
                     thisb.addService(params,cb1);
 
                 }, function completedAddingServices(err) {
-
+                    // istanbul ignore next
                     if (err) {
                         sails.log("Services init failed:",err);
                         return cb2();
@@ -123,13 +126,15 @@ module.exports = {
                         Service.destroy(service.id).then(function(destroyed) {
                             sails.log("deleteUndefinedFromDb deleted service",service.id);
                             return cb1();
-                        }).catch(function(err) {
+                        }).catch(
+                            // istanbul ignore next
+                            function(err) {
                             sails.log("deleteUndefinedFromDb deleted service failed",service.id);
                             return cb1(err); 
                         });
                     }
                 }, function completedAddingServices(err) {
-
+                    // istanbul ignore next
                     if (err) {
                         sails.log("Services init failed:",err);
                         return;
@@ -154,14 +159,17 @@ module.exports = {
         
         sails.log.info('addService',service.name, service.type, service.module);
         
+        // istanbul ignore next
         if (typeof service.name === 'undefined') {
             sails.log.error('addService - no service name');
             return cb2('addService - no service name');
         } 
+        // istanbul ignore next
         if (typeof service.handler === 'undefined') {
             sails.log.error('addService - no handler defined',service.handler);
             return cb2('addService - no handler defined');
         }
+        // istanbul ignore next
         if (service.type === 'workflow') {
             if (typeof service.handler.beginProcessing === 'undefined') {
                 sails.log.error('addService - handler.beginProcessing not defined',service.handler);
@@ -181,7 +189,9 @@ module.exports = {
             _addService(handler,service.name);
             //sails.log('service added',service.name);
             return cb2();
-        }).catch(function(err) {
+        }).catch(
+            // istanbul ignore next
+            function(err) {
             sails.log('error adding service',service.name, err);
             return cb2(err);
         });
