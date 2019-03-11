@@ -248,6 +248,7 @@ var AuthController = {
               sails.log.info("params",req.query.next);
               
               var redirectTo = "/";
+              // istanbul ignore next
               if (typeof req.query.next !== 'undefined')
                   redirectTo = req.query.next;
 

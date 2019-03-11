@@ -24,9 +24,12 @@ module.exports = {
     get: function(req,res) {
         var params = req.allParams();
         sails.log("/user/get",params);
+        // istanbul ignore else
         if (req.method === 'GET') {
             User.Get(params,function(err,records) {
+                // istanbul ignore if
                 if (err) res.serverError(err);
+                // istanbul ignore if
                 if (records.length===0) return res.notFound();
                 return res.ok(records);
             });

@@ -87,9 +87,12 @@ module.exports = {
     get: function(req,res) {
         var params = req.allParams();
         sails.log("/job/get",params);
+        // istanbul ignore else
         if (req.method === 'GET') {
             Job.Get(params,function(err,records) {
+                // istanbul ignore if
                 if (err) res.serverError(err);
+                // istanbul ignore if
                 if (records.length===0) return res.notFound();
                 return res.ok(records);
             });
@@ -121,8 +124,10 @@ module.exports = {
     submit: function(req,res) {
         var params = req.allParams();
         sails.log("/job/submit",params);
+        // istanbul ignore else
         if (req.method === 'POST') {
             Job.Submit(params,function(err,result) {
+                // istanbul ignore if
                 if (err) res.serverError(err);
                 return res.ok(result);
             });

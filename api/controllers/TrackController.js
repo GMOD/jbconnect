@@ -98,7 +98,7 @@ module.exports = {
                 return res.ok(created);
             });
         } 
-        else 
+        else
             return res.forbidden('requires POST');
     },
     /**
@@ -136,8 +136,10 @@ module.exports = {
     modify: function(req,res) {
         var params = req.allParams();
         var track = params;
+        // istanbul ignore else
         if (req.method === 'POST') {
             Track.Modify(track,function(err,modified) {
+                // istanbul ignore if
                 if (err) return res.serverError({err:err,track:track});
                 return res.ok(modified);
             });
