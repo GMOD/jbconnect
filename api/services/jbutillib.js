@@ -12,7 +12,7 @@ const glob = require('glob');
 const sh = require('shelljs');
 const merge = require('deepmerge');
 const config = require(approot+'/config/globals.js').globals;
-const util = require('./utilFn');
+//const util = require('./utilFn');
 const html2json = require('html2json').html2json;
 const json2html = require('html2json').json2html;
 const _ = require('lodash');
@@ -20,13 +20,14 @@ const async = require('async');
 
 module.exports = {
     dbName: 'localDiskDb.db',
+    bilbo: "baggins",
     /**
      * Traverse ``jbutils-ext.js`` of submodules (*-jbconnect-hook)
      * 
      * @param {function} cb - callback
      * 
      */
-    doExtScripts: function(cb) {
+    doExtScripts(cb) {
         var cwd = sh.pwd();
 
         var extScripts = glob.sync(approot+'/node_modules/*-jbconnect-hook');
@@ -74,7 +75,7 @@ module.exports = {
 
         let aggregate = merge(merged,config);
         
-        aggregate = util.mergeConfigJs(aggregate);
+        aggregate = this.mergeConfigJs(aggregate);
         
         // make sure webIncludes for JBConnect come before webIncludes of hooks
         if (typeof merged.jbrowse !== 'undefined' && typeof merged.jbrowse.webIncludes !== 'undefined') { 
@@ -83,6 +84,18 @@ module.exports = {
         }
         
         return aggregate.jbrowse;
+    },
+    /*
+     * returns the config, merged with the contents of jbconnect.config.js
+     */
+    mergeConfigJs(config) {
+        // merge approot/jbconnect.config.js
+        let config_js = approot+"/jbconnect.config.js";
+        if (fs.existsSync(config_js)) {
+            let conf = require(config_js);
+            config = merge(config,conf);
+        }
+        return config;
     },
     /**
      * @param {string} filter - (ie. ".css" or ".js")

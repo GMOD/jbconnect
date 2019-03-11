@@ -15,7 +15,7 @@
 
 var approot = require('app-root-path');
 var jbPath = approot + "/node_modules/@gmod/jbrowse/";
-var util = require(approot+"/api/services/utilFn");
+var jblib = require(approot+"/api/services/jbutillib");
 
 var g = {
     
@@ -120,7 +120,10 @@ var g = {
 	// models: true
 };
 
-g = util.mergeConfigJs(g);
+console.log(typeof jblib.mergeConfigJs);
+
+if (jblib && jblib.mergeConfigJs)
+  g = jblib.mergeConfigJs(g);
 
 
 module.exports.globals = g;
