@@ -14,6 +14,7 @@
     };
 
 */
+/* istanbul ignore file */
 var fs = require("fs-extra");
 var approot = require("app-root-path");
 

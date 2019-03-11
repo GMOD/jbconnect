@@ -1,7 +1,7 @@
 /*
 Utility interfaces
 */
-
+/* istanbul ignore file */
 const _ = require('lodash');
 const async = require('async');
 
