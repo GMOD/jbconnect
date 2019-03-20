@@ -1,10 +1,33 @@
+/*
+ * 
+ * Notes callback framework:
+ * Provides a mechanism to register a call back when a job queue panel action occurs.
+ * Callbacks are registered with ctype and a callback function.
+ * 
+ * Callbacks        Data passed back        Description
+ * job-item-in      jbrowse config track    job queue hover in item
+ * job-item-out     jbrowse config track    job queue hover out item
+ *
+*/
 define(function(){
     return {
         jobs: {},
+        callback: {},
 
-        initQueue:function(browser) {
+        /*
+         * register callback for job panel
+         */
+        registerCallback(ctype,fn) {
+            if (typeof this.callback[ctype] === 'undefined') this.callback[ctype] = [];
+            this.callback[ctype].push(fn);
+        },
+        /*
+         * initialize the job queue panel.
+         */
+        initQueue(browser) {
             let thisb = this;
             this.browser = browser;
+            browser.jbconnect = { queue: this }
     
             // subscribe to all job objects including new
             io.socket.get('/job', function(resData, jwres) {console.log(resData);});
@@ -16,7 +39,6 @@ define(function(){
                 var data = event.data;
                 switch(event.verb) {
                     case 'created':
-                        //console.log('event job create',event.data.id,data);
                         thisb.jobs[data.id] = event.data;
                         $('#j-hist-grid #head').after(
                                 "<tr class='j-hist-item' id='"+data.id+"'>"
@@ -26,14 +48,12 @@ define(function(){
                                 +"</tr>");                
                                 break;
                     case 'updated':
-                        //console.log('event update',data.id,data);
                         thisb.jobs[data.id].state = data.state;
                         thisb.jobs[data.id].name = data.name;
                         $('#j-hist-grid #'+data.id+" .state").attr('questate',thisb.getQueState(data.state));
                         $('#j-hist-grid #'+data.id+" .name").html(data.data.name);
                         break;
                     case 'destroyed':
-                        //console.log('event remove',event.id);
                         delete thisb.jobs[event.id];
                         $("#j-hist-grid tr#"+event.id).remove();
                         break;
@@ -46,17 +66,26 @@ define(function(){
                 else $("div.flapEx").addClass("cogwheel");
             });    
             
+            this.registerCallback('job-item-in',function(track) {
+                $('label.tracklist-label > span:contains("'+track.key+'")').parent().css("border-style","solid").css("border-color","red");
+            });
+            this.registerCallback('job-item-out',function(track) {
+                $('label.tracklist-label > span:contains("'+track.key+'")').parent().css("border-style","none");
+            });
+
             thisb.doGetQueue();
         },
-        
-        doGetQueue:function() {
+        /*
+         * enumberate and populate queue entries
+         */  
+        doGetQueue() {
             
             var typeToWatch = 'workflow';
             let thisb = this;
+            let tracks = this.browser.config.tracks;
             
             thisb.getJobs(function(data){
                 jdata = JSON.parse(data);
-                //console.log("jobs ",jdata.length,jdata);
         
                 jdata.sort(function(a,b) {
                     if (a.id > b.id) return -1;
@@ -79,35 +108,40 @@ define(function(){
 
                         $('tr.j-hist-item#'+jdata[x].id).hover(
                             function(){
-                                //$(this).css("background-color", "yellow");
-                                console.log('hover in',this.id, thisb.browser);
-                                let tracks = thisb.browser.config.tracks;
-                                for(let i in tracks) {
-                                    if (tracks[i].jblast && tracks[i].job === parseInt(this.id)) {
-                                        console.log("found track",this.id,tracks[i].jblast,tracks[i].job);
-                                        $('label.tracklist-label > span:contains("'+tracks[i].key+'")').parent().css("border-style","solid").css("border-color","red");
-                                    }
-                                }
+                                let track = findTrack(parseInt(this.id));
+                                if (track)
+                                    //$('label.tracklist-label > span:contains("'+track.key+'")').parent().css("border-style","solid").css("border-color","red");
+                                    callbackFn('job-item-in',track);
                             }, 
                             function(){
-                                //$(this).css("background-color", "pink");
-                                console.log('hover out',this.id);
-                                let tracks = thisb.browser.config.tracks;
-                                for(let i in tracks) {
-                                    if (tracks[i].jblast && tracks[i].job === parseInt(this.id)) {
-                                        console.log("found track",this.id,tracks[i].jblast,tracks[i].job);
-                                        $('label.tracklist-label > span:contains("'+tracks[i].key+'")').parent().css("border-style","none");
-                                    }
-                                }
+                                let track = findTrack(parseInt(this.id));
+                                if (track)
+                                    //$('label.tracklist-label > span:contains("'+track.key+'")').parent().css("border-style","none");
+                                    callbackFn('job-item-out',track);
                             }                    
                         )
                     }
                 }
-                console.log("jobs",thisb.jobs);
-        
             });
+            // for the given job id, return track config, if it exists in the jbrowse track selector, otherwise return false
+            function callbackFn(ctype,data) {
+                if (thisb.callback[ctype]) {
+                    for(let i in thisb.callback[ctype]) {
+                        thisb.callback[ctype][i](data);
+                    }
+                }
+            }
+            function findTrack(jobid) {
+                for(let i in tracks) {
+                    if (tracks[i].jblast && tracks[i].job === jobid) return tracks[i];
+                }
+                return false;
+            }
         },
-        getJobs:function(callback) {
+        /*
+         * enumerate all jobs
+         */        
+        getJobs(callback) {
         
             $.ajax({
                 url: "/job/get",
@@ -115,11 +149,12 @@ define(function(){
                 success: function (data) {
                   callback(data);
                 }
-                // todo: handle errors
             });
         },
-        
-        getQueState:function(state) {
+        /*
+         * convert a queue state into a handled state image
+         */
+        getQueState(state) {
             switch(state) {
                 case 'active':
                 case 'complete':
@@ -129,9 +164,5 @@ define(function(){
                     return 'unknown';
             }
         }
-        
-        
-        
-
     };
 });
