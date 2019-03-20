@@ -80,11 +80,25 @@ define(function(){
                         $('tr.j-hist-item#'+jdata[x].id).hover(
                             function(){
                                 //$(this).css("background-color", "yellow");
-                                console.log('hover in',this.id);
+                                console.log('hover in',this.id, thisb.browser);
+                                let tracks = thisb.browser.config.tracks;
+                                for(let i in tracks) {
+                                    if (tracks[i].jblast && tracks[i].job === parseInt(this.id)) {
+                                        console.log("found track",this.id,tracks[i].jblast,tracks[i].job);
+                                        $('label.tracklist-label > span:contains("'+tracks[i].key+'")').parent().css("border-style","solid").css("border-color","red");
+                                    }
+                                }
                             }, 
                             function(){
                                 //$(this).css("background-color", "pink");
                                 console.log('hover out',this.id);
+                                let tracks = thisb.browser.config.tracks;
+                                for(let i in tracks) {
+                                    if (tracks[i].jblast && tracks[i].job === parseInt(this.id)) {
+                                        console.log("found track",this.id,tracks[i].jblast,tracks[i].job);
+                                        $('label.tracklist-label > span:contains("'+tracks[i].key+'")').parent().css("border-style","none");
+                                    }
+                                }
                             }                    
                         )
                     }
