@@ -92,10 +92,7 @@ return declare( JBrowsePlugin,
             thisB.setupEventTraps();
             startQueue();
         });
-        //dojo.subscribe("/jbrowse/jbclient_ready", function(){
-        //    startQueue();
-        //});
-        
+       
         
         function startQueue() {
             //console.log("jbclient_ready");
@@ -130,28 +127,54 @@ return declare( JBrowsePlugin,
         }
     },
     setupJobPanel: function() {
-        //$.get("plugins/JBClient/JobPanel.html", function(data){
-            //console.log("Loading Job Panel");
             
-            var data = "";
-            data += '<div id="extruderRight" class="{title:\'Jobs \', url:\'plugins/JBClient/JobPanel.html\'}"></div>';
-            
-            $('body').append(data);
-
-            $("#extruderRight").buildMbExtruder({
-                position:"right",
-                width:300,
-                extruderOpacity:.8,
-                hidePanelsOnClose:true,
-                accordionPanels:true,
-                onExtOpen:function(){},
-                onExtContentLoad:function(){
-                    jobPanelInit();
-                },
-                onExtClose:function(){}
-            });
-        //});            
+        let thisb = this;
+        let data = '<div id="extruderRight" class="{title:\'Jobs \', url:\'plugins/JBClient/JobPanel.html\'}"></div>';
         
+        $('body').append(data);
+
+        $("#extruderRight").buildMbExtruder({
+            position:"right",
+            width:300,
+            extruderOpacity:.8,
+            hidePanelsOnClose:true,
+            accordionPanels:true,
+            onExtOpen:function(){},
+            onExtContentLoad:function(){
+                thisb.jobPanelInit();
+                require([
+                    "plugins/JBClient/js/queList"
+                ], function(queue){
+                    queue.initQueue(thisb.browser);
+                });        
+            },
+            onExtClose:function(){}
+        });
+        setTimeout(function(){
+            $('.extruder-container').css('height','350px');     // for some reason, we must do this, why?
+        },3000);
+    
+    },
+    jobPanelInit() {              
+        console.log("jobPanelInit()");
+        
+        // fix position of flap
+        $("#extruderRight div.flap").addClass("flapEx");
+    
+        // add gear icon (activity indicator)
+        //$("#extruderRight div.flap").prepend("<img class='cogwheel hidden' src='plugins/JBlast/img/st_active.gif' />");
+        $("#extruderRight div.flap").attr('title','Workflow queue');
+    
+        $("#extruderRight .extruder-content").css('height','300px');
+        $("#extruderRight .extruder-content").css('border-bottom-left-radius','5px');
+    
+    
+    
+        //adjust grid height
+        setInterval(function() {
+            var h = $("#extruderRight div.extruder-content").height();
+            $("#j-hist-grid").height(h-3);
+        },1000);
     },
     setupEventTraps: function() {
         
@@ -172,24 +195,3 @@ return declare( JBrowsePlugin,
 });
 });
 
-function jobPanelInit() {              
-    console.log("jobPanelInit()");
-    
-    // fix position of flap
-    $("#extruderRight div.flap").addClass("flapEx");
-
-    // add gear icon (activity indicator)
-    //$("#extruderRight div.flap").prepend("<img class='cogwheel hidden' src='plugins/JBlast/img/st_active.gif' />");
-    $("#extruderRight div.flap").attr('title','Workflow queue');
-
-    $("#extruderRight .extruder-content").css('height','300px');
-    $("#extruderRight .extruder-content").css('border-bottom-left-radius','5px');
-
-
-
-    //adjust grid height
-    setInterval(function() {
-        var h = $("#extruderRight div.extruder-content").height();
-        $("#j-hist-grid").height(h-3);
-    },1000);
-}
