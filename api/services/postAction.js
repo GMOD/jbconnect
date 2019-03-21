@@ -23,6 +23,7 @@ module.exports = {
         var trackname = track.label;
 
         track.dataset = dataset;
+        track.job = kJob.id;
 
         Track.Add(track,function(err,added) {
             /* istanbul ignore if */
