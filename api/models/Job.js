@@ -416,6 +416,7 @@ module.exports = {
             job1.priority = kJob.priority();
             job1.progress = kJob.progress();
             job1.data = kJob.data;
+            if (kJob._error) job1.error = kJob._error;
             
             Job.create(job1).then(function(created) {
                sails.log("sJob created",created.id); 
@@ -473,6 +474,7 @@ module.exports = {
             diff.priority = r.kJob.priority();
             diff.progress = r.kJob.progress();
             diff.data = r.kJob.data;
+            if (r.kJob._error) diff.error = r.kJob._error;
             
             //if (typeof r.sJob === 'undefined') sails.log.error('value r',r);
             if (typeof r.sJob.id === 'undefined') {
@@ -575,7 +577,7 @@ module.exports = {
                 var kJobs = {}, sJobs = {};
                 r.kJobs.forEach(function(job,i) { kJobs[job.id] = job;});
                 r.sJobs.forEach(function(job,i) { sJobs[job.id] = job;});
-                
+
                 // display for debug
                 //for(var i in kJobs) console.log('+kJob',kJobs[i].id,i);
                 //for(var i in sJobs) console.log('-sJob',sJobs[i].id,i);
@@ -613,6 +615,7 @@ module.exports = {
                     job1.state = job.state();
                     job1.priority = job.priority();
                     job1.progress = job.progress();
+                    if (job._error) job1.error = job._error;
 
                     //sJobs[id] =  job1;
 
