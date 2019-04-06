@@ -27,7 +27,7 @@ const server = 'http://localhost:1337';
 		console.log(res.body);
 		
 		agent
-		.get("/democleanup")
+		.post("/democleanup")
 		.end((err,res) => {
 			if (err) {
 				console.log ("democleanup error",err.status);
