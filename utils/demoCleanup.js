@@ -8,7 +8,8 @@ const server = 'http://localhost:1337';
 
         
     // this preserves session data for subsequent calls
-    agent = chai.request.agent(server);
+    let agent = chai.request.agent(server);
+
 
     agent
 	.post('/auth/local?next=/loginstate')
@@ -21,19 +22,23 @@ const server = 'http://localhost:1337';
 	.type('form')
 	.end((err,res,body) => {
 		if (err) {
-			console.log ("login error",err.status);
+			console.log ("login error",err.code);
+			if (err.code === 'ECONNREFUSED') 
+				console.log('Is jbconnect running?');
 			return;
 		}
 		console.log(res.body);
 		
 		agent
-		.post("/democleanup")
-		.end((err,res) => {
+		.post("/util/democleanup")
+		.end((err,res,body) => {
 			if (err) {
-				console.log ("democleanup error",err.status);
+				console.log ("democleanup error",err.code);
 				return;
 			}
-			console.log(res.body);
+			if (res.status !== 200)
+			//console.log('err',err);
+			console.log('/democleanup status',res.status);
 			
 		});
 		
