@@ -11,15 +11,16 @@ module.exports = {
 	 * req/res are express-based.
 	 */
 	demoCleanup: function(req, res) {
+		console.log("demoCleanup");
 		if (req.method === 'POST') {
 
 			sails.log.info("********** demo cleanup *********************");
-		
+
 			let nJobs = 0;
 			let nTracks = 0;
-			let simulate = true;  // for debug.  if true, won't actually delete anything.
+			let simulate = false;  // for debug.  if true, won't actually delete anything.
 
-			if (simulate) sails.log.info("simulate");
+			if (simulate) sails.log.info("democleanup simulate");
 
 			_deleteJobs(function(err) {
 				_deleteTracks(function(err) {
@@ -39,16 +40,17 @@ module.exports = {
 						let deleteRecs = [];
 						
 						for(var i in records ) {
-							if (!_.isUndefined(records[i].data.keep)) continue;
+							if (!_.isUndefined(records[i].keep)) continue;
 							
 							deleteRecs.push(records[i]);
 						}
 						if (deleteRecs.length) {
 						
-							//deleteRecs.forEach(function(rec) {
-							//	sails.log.info("will remove job",rec.id,rec.data.name);
-							//});
+							deleteRecs.forEach(function(rec) {
+								sails.log.info("will remove job",rec.id,rec.data.name);
+							});
 
+							/*
 							let count = deleteRecs.length - 7;
 							deleteRecs2 = [];
 							for(let i=0;i < count;i++) deleteRecs2.push(deleteRecs[i]);
@@ -58,7 +60,8 @@ module.exports = {
 							});
 
 							deleteRecs = deleteRecs2;
-							
+							*/
+
 							if (!simulate) {
 								async.eachLimit(deleteRecs,1,
 									function(rec,cb){
