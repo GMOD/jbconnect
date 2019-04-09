@@ -238,8 +238,6 @@ module.exports = {
         
         // generate name
         jobdata.name = service.generateName(params);
-        //jobdata.searchParams = this._fixParams(jobdata.searchParams);  // necessary?
-        //jobdata.dataset = {path:jobdata.dataset};
 
         // create queue entry
         
