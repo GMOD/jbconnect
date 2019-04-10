@@ -7,6 +7,7 @@
  * Callbacks        Data passed back        Description
  * job-item-in      jbrowse config track    job queue hover in item
  * job-item-out     jbrowse config track    job queue hover out item
+ * job-item-click   jbrowse config track    job queue item click
  *
 */
 define(function(){
@@ -46,7 +47,7 @@ define(function(){
                                 +"<td class='state' questate='"+thisb.getQueState(data.state)+"'></td>"
                                 +"<td class='name'>"+data.data.name+"</td>"
                                 +"</tr>");                
-                                thisb.handleHover(data.id);
+                                thisb.handleJobQueueEvent(data.id);
                                 break;
                     case 'updated':
                         thisb.jobs[data.id].state = data.state;
@@ -102,7 +103,7 @@ define(function(){
                             +"<td>"+jdata[x].data.name+"</td>"
                             +"</tr>");
 
-                        thisb.handleHover(jdata[x].id);
+                        thisb.handleJobQueueEvent(jdata[x].id);
                     }
                 }
             });
@@ -124,7 +125,7 @@ define(function(){
             }
             return false;
         },
-        handleHover(id) {
+        handleJobQueueEvent(id) {
             let thisb = this;
 
             $('tr.j-hist-item#'+id).hover(
@@ -139,6 +140,11 @@ define(function(){
                         thisb.callbackFn('job-item-out',track);
                 }                    
             );
+            $('tr.j-hist-item#'+id).click(function () {
+                let track = thisb.findTrack(parseInt(id));
+                if (track)
+                    thisb.callbackFn('job-item-click',track);
+            });
         },
         /*
          * enumerate all jobs
