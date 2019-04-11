@@ -96,7 +96,7 @@ module.exports = {
 			}
 			function _deleteTracks(next) {
 				sails.log.info("deleting tracks");
-				Track.find({dataset:1})
+				Track.find({})
 				.catch(function(err) {
 					return next(err);
 				})
