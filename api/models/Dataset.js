@@ -139,19 +139,18 @@ module.exports = {
                 /* istanbul ignore else */
                 if (typeof modelItems[item.path] !== 'undefined') {     
 
-                    thisb._dataSets[item.path].id = modelItems[item.path].id
-                    thisb._dataSets[item.id] = thisb._dataSets[item.path]
+                    thisb._dataSets[item.path].id = modelItems[item.path].id;
+                    thisb._dataSets[item.id] = thisb._dataSets[item.path];
 
                     Track.Sync(item.path);
-                    
+
+                    updateItem(item,function(){});
+
                     return cb1();
-                }
+            }
                 // dataset is confItems, not in model Items --> add dataset to db
                 else {
-                    var data = {
-                        name: item.name,
-                        path: item.path
-                    }
+                    data = item;
                     Dataset.create(data,function(err, newDataset) {
                         if (err) {
                             var msg = 'failed to create dataset (it may exists) = path '+i;
@@ -180,12 +179,24 @@ module.exports = {
                     sails.log.error("asyncEachDone failed",err);
                     return cb(err);
                 }
-                deleteItems();
-                return cb();
+                deleteItems(function(err) {
+                    return cb(err);
+                });
+                
             });
             
+            function updateItem(data,updatecb) {
+                Dataset.update({id:data.id},data)
+                .then(function(updated) {
+                    return updatecb();
+                })
+                .catch(function(err) {
+                    return updatecb(err);
+                });
+            }    
+                    
             // delete datasets if they dont exist in config
-            function deleteItems() {
+            function deleteItems(deletecb) {
                 async.each(modelItems,function(item, cb) {
                     if (typeof thisb._dataSets[item.path] === 'undefined') {
                         //sails.log('deleting dataset',j);
@@ -203,12 +214,14 @@ module.exports = {
                             return cb();
                         });
                     }
-                }, /* istanbul ignore next */ function(err) {
+                }, 
+                /* istanbul ignore next */ 
+                function(err) {
                     if (err) {
                         sails.log.error("deleteItems failed");
                         //return cb(err);
                     }
-                    //return cb();
+                    return deletecb(err);
                 });
             }
         });
