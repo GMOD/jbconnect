@@ -10,7 +10,7 @@ install:
 before_script:
   - npm i -g sails@1.0.2
   - npm i @gmod/jbrowse@1.15.1
-  - ./fix_jbrowse_setup.sh
+  - patch node_modules/@gmod/jbrowse/setup.sh fix_jbrowse_setup.patch
   - ./utils/jb_setup.js
 script:
   - npm run coverage
