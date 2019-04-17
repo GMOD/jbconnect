@@ -35,7 +35,7 @@ Install the JBConnect and JBrowse.  jb_setup.js ensures the sample data is loade
     ./utils/jb_setup.js
 
 
-The patch operation is needed to make jbrowse 1.15.1 install properly.
+The patch operation is needed to make JBrowse 1.15.1 setup.sh run properly.
 If JBrowse is installed in another location, the patch should be run before setup.sh.
 
 Run
