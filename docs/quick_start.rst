@@ -31,7 +31,12 @@ Install the JBConnect and JBrowse.  jb_setup.js ensures the sample data is loade
     cd jbconnect
     npm install
     npm install @gmod/jbrowse@1.15.1
+    patch node_modules/@gmod/jbrowse/setup.sh fix_jbrowse_setup.patch
     ./utils/jb_setup.js
+
+
+The patch operation is needed to make jbrowse 1.15.1 install properly.
+If JBrowse is installed in another location, the patch should be run before setup.sh.
 
 Run
 ===
