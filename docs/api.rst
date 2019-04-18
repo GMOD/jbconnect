@@ -939,6 +939,20 @@ Get list of tracks based on critera in params
     :param object params: search critera (i.e. ``{id: 1,user:'jimmy'}`` )
     :param function cb: callback function(err,array)
     
+.. _module-models_Job.Remove:
+
+
+Function: ``Remove``
+====================
+
+
+
+.. js:function:: Remove(id)
+
+    
+    :param int id: id of the item to be removed
+    :param Remove(id): cb - callback function(err,
+    
 .. _module-models_Job.Submit:
 
 
@@ -1112,6 +1126,18 @@ Function: ``sJobs``
     
     
 
+
+.. _module-models_Job.async:
+
+Constant: ``async``: 
+
+.. _module-models_Job._:
+
+Constant: ``_``: 
+
+.. _module-models_Job.fetch:
+
+Constant: ``fetch``: 
 
 
 
@@ -1425,12 +1451,12 @@ Function: ``Remove``
 
 
 
-.. js:function:: Remove(dataset, dataset)
+.. js:function:: Remove(dataset, id)
 
     
-    :param string dataset: (eg: "sample_data/json/volvlx")
-    :param ing dataset: dataset string (i.e. "sample_data/json/volvox"
-    :param Remove(dataset, dataset): cb - callback function(err,
+    :param string dataset: (eg: "sample_data/json/volvox")
+    :param int id: id of the item to be removed
+    :param Remove(dataset, id): cb - callback function(err,
     
 .. _module-models_Track.Sync:
 
@@ -1699,6 +1725,18 @@ Merged from ``*-jbconnect-hook`` ``config/globals.js``, local ``config/globals.j
 
     
     
+.. _module-services_jbutillib.mergeConfigJs:
+
+
+Function: ``mergeConfigJs``
+===========================
+
+
+
+.. js:function:: mergeConfigJs()
+
+    
+    
 .. _module-services_jbutillib.getClientDependencies:
 
 
@@ -1826,11 +1864,31 @@ Function: ``injectPlugins``
 Inject client-side plugins into the JBrowse plugins dir
 
 Note: as of JBrowse 1.13.0, you must run `npm run build` after this function, webpack build.
+called in sails lift /tasks/register .. jb-inject-plugins to function properly
 
-.. js:function:: injectPlugins()
+if env E2E_COVERAGE is defined, it will instrument the plugins before installing.
+
+Example:
+// injects plugins and instruments JBClient plugin and builds webpack in JBrowse
+./jbutil --pushplugins --coverage JBClient --buildwebpack
+
+.. js:function:: injectPlugins(plugin)
 
     
-    :return injectPlugins(): (int) count - count of plugins injected.
+    :param string plugin: if defined (ie. "JBClient"), it will instrument the given plugin
+    :return injectPlugins(plugin): (int) count - count of plugins injected.
+    
+.. _module-services_jbutillib.buildWebpack:
+
+
+Function: ``buildWebpack``
+==========================
+
+
+
+.. js:function:: buildWebpack()
+
+    
     
 .. _module-services_jbutillib.removePlugins:
 
@@ -1919,10 +1977,6 @@ Constant: ``merge``:
 
 Constant: ``config``: 
 
-.. _module-services_jbutillib.util:
-
-Constant: ``util``: 
-
 .. _module-services_jbutillib.html2json:
 
 Constant: ``html2json``: 
@@ -1934,6 +1988,10 @@ Constant: ``json2html``:
 .. _module-services_jbutillib._:
 
 Constant: ``_``: 
+
+.. _module-services_jbutillib.async:
+
+Constant: ``async``: 
 
 
 

@@ -6,8 +6,19 @@ const _ = require('lodash');
 const async = require('async');
 
 module.exports = {
-	/*
-	 * cleanup demo datablase and tracks in demo
+	/** 
+	 * cleanup demo jobs and tracks
+	 * requires login
+	 * 
+	 * Jobs that have the property keep:true will not be removed
+	 * Tracks that have the property keep:true will not be removed. 
+	 * Only tracks that belong to the category "JBlast Results" will be affected.
+	 * 
+	 * utils/jb_democleanup.js will execute this.
+	 * jbutil --dbreset does not call this. --dbreset does a deeper reset of the entire database.
+	 * 
+	 * ``POST /democleanup``
+	 * 
 	 * req/res are express-based.
 	 */
 	demoCleanup: function(req, res) {
