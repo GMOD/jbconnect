@@ -24,6 +24,10 @@ var g = {
         jbrowsePath: jbPath,                        // or "/var/www/jbrowse/"
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
         
+        /*
+         * Datasets
+         * (paths relative the JBrowse directory)
+         */
         dataSet: {
             Volvox: {
                path: "sample_data/json/volvox",
