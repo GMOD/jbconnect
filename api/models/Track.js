@@ -122,7 +122,7 @@ module.exports = {
      * @returns {object} lkey (ie. {lkey:"xxxx"})
      */
     Add: function(addTrack,cb) {
-        //console.log("Add",addTrack,typeof addTrack.trackData.label);
+        //console.log(">>>>> TrackAdd",addTrack);
         var thisb = this;
         var g = sails.config.globals.jbrowse;
         if (_.isUndefined(addTrack.dataset)) return cb("dataset not defined");
@@ -135,9 +135,10 @@ module.exports = {
     
         Track.PauseWatch(ds.id);
 
-        addTrack.dataset = ds.id;
+        //addTrack.dataset = ds.id;
+        delete addTrack.dataset;
         
-        // save track to tracklist json
+        // save track to trackList.json
         try {
           var trackListData = fs.readFileSync (trackListPath);
           var config = JSON.parse(trackListData);
@@ -164,8 +165,11 @@ module.exports = {
         Track.create(data)
         .then(function(created) {
             sails.log.debug("Track.Add created:",created.id,created.lkey);
-            
-            Track.publishCreate(created);       // announce
+
+            let announceTrack = _.cloneDeep(created);
+            announceTrack.datasetPath = ds.path;
+
+            Track.publishCreate(announceTrack);       // announce
             Track.ResumeWatch(ds.id);
             
             return cb(null,created);
