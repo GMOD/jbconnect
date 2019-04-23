@@ -99,16 +99,20 @@ return declare( JBrowsePlugin,
 
             // new track event handlers
             io.socket.on('track', function(event){
-                //console.log('event track',event);
-                switch(event.verb) {
-                    case 'created':
-                        newTrackHandler ('new',event.data.trackData);
-                        break;
-                    case 'updated':
-                        newTrackHandler ('replace',event.data.trackData);
-                        break;
-                    default: 
-                        console.log('unhandled event');
+                console.log('event track',event.data);
+
+                if (event.data.datasetPath === browser.config.dataRoot) {
+
+                    switch(event.verb) {
+                        case 'created':
+                            newTrackHandler ('new',event.data.trackData);
+                            break;
+                        case 'updated':
+                            newTrackHandler ('replace',event.data.trackData);
+                            break;
+                        default: 
+                            console.log('unhandled event');
+                    }
                 }
             });    
 
@@ -116,6 +120,7 @@ return declare( JBrowsePlugin,
             function newTrackHandler(eventType,data) {
 
                 console.log("trackhandler "+eventType,data);
+
                 data.baseUrl = browser.config.baseUrl+browser.config.dataRoot+'/';
                 var notifyStoreConf = dojo.clone (data);
                 var notifyTrackConf = dojo.clone (data);
