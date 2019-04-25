@@ -1,6 +1,6 @@
-**************
-Setup Options
-**************
+*********************
+Configuration Options
+*********************
 
 .. _jbs-separate-dir:
 
