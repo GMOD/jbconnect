@@ -127,8 +127,6 @@ var g = {
 	// models: true
 };
 
-console.log(typeof jblib.mergeConfigJs);
-
 if (jblib && jblib.mergeConfigJs)
   g = jblib.mergeConfigJs(g);
 
