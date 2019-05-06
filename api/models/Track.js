@@ -465,13 +465,13 @@ module.exports = {
               }
               // update model if they are different
               else {
-                  var toOmit = ['id','createdAt','updatedAt','dataSet','dataset','dataSetPath','ikey'];
+                  //var toOmit = ['id','createdAt','updatedAt','dataSet','dataset','dataSetPath','ikey'];
                   //sails.log('omit',mTracks[k].trackData);
-                  if (JSON.stringify(mTracks[k].trackData) !== JSON.stringify(fTracks[k])) {
+                  if (JSON.stringify(mTracks[k].trackData) !== JSON.stringify(fTracks[k]) || mTracks[k].dataset !== ds.id || mTracks[k].path !== ds.path) {
                       Track.update({
                           path:ds.path, 
                           lkey:fTracks[k].label+'|'+ds.id
-                        },{trackData:fTracks[k]})
+                        },{dataset:ds.id,trackData:fTracks[k]})
                       .then(function(item) {
                           /* istanbul ignore else */
                           if (item.length) {
