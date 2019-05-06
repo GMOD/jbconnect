@@ -101,7 +101,7 @@ return declare( JBrowsePlugin,
             io.socket.on('track', function(event){
                 console.log('event track',event.data);
 
-                if (event.data.datasetPath === browser.config.dataRoot) {
+                if (event.data.path === browser.config.dataRoot) {
 
                     switch(event.verb) {
                         case 'created':
@@ -184,14 +184,8 @@ return declare( JBrowsePlugin,
     setupEventTraps: function() {
         
         // trap track events
-        io.socket.get('/track', function(resData, jwres) {
-            //console.log("registered for track events");
-            //console.log(resData);
-        });
+        io.socket.get('/track', function(resData, jwres) {console.log(resData);});
 
-        io.socket.on('track', function(event){
-            //console.log('event track',event);
-        });    
     },
     Browser_override_makeCurrentViewURL(x) {
         
