@@ -62,7 +62,7 @@ var g = {
             "css-jqueryui":          {lib: "/jblib/jquery-ui.min.css"},
             "css-jqueryuistructure": {lib: "/jblib/jquery-ui.structure.min.css"},
             "css-jqueryuitheme":     {lib: "/jblib/jquery-ui.theme.min.css"},
-            "js-sailsio":            {lib: "/js/dependencies/sails.io.js"},
+            "js-sailsio":            {lib: "https://cdn.jsdelivr.net/npm/sails.io.js-dist@1.1.13/sails.io.min.js"},
             "js-jquery":             {lib: "/jblib/jquery.min.js" },
             "js-jqueryui":           {lib: "/jblib/jquery-ui.min.js" },
             "js-bootstrap":          {lib: "/jblib/bootstrap.min.js"},

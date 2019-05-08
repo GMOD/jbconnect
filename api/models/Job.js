@@ -482,7 +482,7 @@ module.exports = {
             else {
                 Job.update({id:r.sJob.id},diff).then(function(updated) {
                    //sails.log("_updateJob sJob updated",updated[0].id,updated[0]); 
-                   Job.publishUpdate(updated[0].id,updated[0]);       // announce update
+                   Job.publishUpdate(0,updated[0]);       // announce update
                    return cbx();
 
                 }).catch(function(err) {

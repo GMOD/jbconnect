@@ -261,7 +261,7 @@ module.exports = {
         .then(function(updated) {
             sails.log.debug("modifyTrack track update:",updated[0].id,updated[0].lkey);
             
-            Track.publishUpdate(updated[0].id,updated[0]);       // announce
+            Track.publishUpdate(0,updated[0]);       // announce
             Track.ResumeWatch(ds.id);
             
             return cb(null,updated[0]);
@@ -475,7 +475,7 @@ module.exports = {
                       .then(function(item) {
                           /* istanbul ignore else */
                           if (item.length) {
-                            Track.publishUpdate(item[0].id,item[0]);
+                            Track.publishUpdate(0,item[0]);
                           }
                           else {
                               sails.log.error("syncTracks addOrUpdateItemsToModel failed to find", ds, fTracks[k].label);
