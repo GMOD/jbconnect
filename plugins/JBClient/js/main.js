@@ -28,7 +28,7 @@ return declare( JBrowsePlugin,
         setTimeout(function(){
             browser.publish ('/jbrowse/jbclient_ready',null);   // testing remove io
         },500);
-        
+
         // login panel (bootstrap.js)
         $.get("/loginstate",function(data) {
             //console.log("loginstate",data);
@@ -40,9 +40,9 @@ return declare( JBrowsePlugin,
                 txt += '<div class="dropdown-menu dropdown-menu-right panel panel-default jb-login-panel"><div class="panel-body">';
                 txt +=   '<form id="form-login" class="form-group" role="form" action="/auth/local?next=/jbrowse" method="post">';
                 txt +=     '<div class="input-group">';
-                txt +=       '<input class="form-control" type="text" name="identifier" placeholder="Username">';
+                txt +=       '<input id="login-user" class="form-control" type="text" name="identifier" placeholder="Username">';
                 txt +=       '<span class="input-group-addon"></span>';
-                txt +=       '<input class="form-control" type="password" name="password" placeholder="Password">';
+                txt +=       '<input id="login-pass" class="form-control" type="password" name="password" placeholder="Password">';
                 txt +=     '</div>';
                 txt +=     '<button class="btn btn-secondary jb-form-button" type="submit">Login</button>';
                 txt +=     '<button class="btn btn-secondary jb-form-button" type="button" onclick="window.location=\'/register?next='+window.location.href+'\'">Register</button>';
@@ -91,6 +91,9 @@ return declare( JBrowsePlugin,
             thisB.setupJobPanel();
             thisB.setupEventTraps();
             startQueue();
+
+            thisB.demoLogin();
+
         });
        
         
@@ -129,6 +132,27 @@ return declare( JBrowsePlugin,
                 notifyTrackConf.store = browser.addStoreConfig(undefined, notifyStoreConf);
                 browser.publish ('/jbrowse/v1/v/tracks/' + eventType, [notifyTrackConf]);
             };
+        }
+    },
+    demoLogin() {
+        let demo = this.browser.config.demo;
+
+        console.log("demoLogin()");
+
+        if (demo && demo.credentials && demo.credentials.user && demo.credentials.pass) {
+
+            $('.jb-loginbox button.btn').click(function(ev) {
+                setTimeout(function() {
+                    if ( $('.jb-loginbox > div.open').length) {
+                        if ($('#login-user').val()==="") {
+                            $('#login-user').val(demo.credentials.user);
+                            $('#login-pass').val(demo.credentials.pass);
+                            console.log("demo credentials filled");
+                        }
+                    }
+
+                },2000);
+            });
         }
     },
     setupJobPanel: function() {
