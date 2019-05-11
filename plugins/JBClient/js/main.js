@@ -17,9 +17,11 @@ define([
 return declare( JBrowsePlugin,
 {
     constructor: function( args ) {
-        var thisB = this;
-        var browser = this.browser;
+        let thisB = this;
+        let browser = this.browser;
         browser.loginState = false;
+        let demo = this.browser.config.demo;
+
         console.log("plugin: JBClient");
         
         
@@ -47,6 +49,9 @@ return declare( JBrowsePlugin,
                 txt +=     '<button class="btn btn-secondary jb-form-button" type="submit">Login</button>';
                 txt +=     '<button class="btn btn-secondary jb-form-button" type="button" onclick="window.location=\'/register?next='+window.location.href+'\'">Register</button>';
                 txt +=   '</form>';
+                if (demo && demo.showCredentials) {
+                    txt +=   '<div id="login-text"><div>';
+                }
                 txt += '</div></div>';
                 txt += '</div>';
             }
@@ -92,7 +97,7 @@ return declare( JBrowsePlugin,
             thisB.setupEventTraps();
             startQueue();
 
-            thisB.demoLogin();
+            thisB.decorateLogin();
 
         });
        
@@ -134,10 +139,8 @@ return declare( JBrowsePlugin,
             };
         }
     },
-    demoLogin() {
+    decorateLogin() {
         let demo = this.browser.config.demo;
-
-        console.log("demoLogin()");
 
         if (demo && demo.credentials && demo.credentials.user && demo.credentials.pass) {
 
@@ -150,10 +153,20 @@ return declare( JBrowsePlugin,
                             console.log("demo credentials filled");
                         }
                     }
-
                 },2000);
             });
         }
+        if (demo && demo.showCredentials) {
+            $('.jb-loginbox button.btn').click(function(ev) {
+                setTimeout(function() {
+                    if ( $('.jb-loginbox > div.open').length) {
+                        $('#login-text').html(demo.showCredentials);
+                        console.log('showCredentials',demo.showCredentials);
+                    }
+                },700);
+            });
+        }
+        
     },
     setupJobPanel: function() {
             

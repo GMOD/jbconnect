@@ -36,6 +36,12 @@ div.menuBar > span[widgetid*="dijit_form_Button_0"] {
    right:5px;
 }
 
+#login-text {
+    font-style: italic;
+    position: relative;
+    top: 10px;
+}
+
 .jb-dropdown {
     line-height: .9 !important;
     padding-left: 13px !important;
