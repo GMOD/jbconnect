@@ -82,4 +82,8 @@ module.exports = {
 
    // environment: process.env.NODE_ENV || 'development'
 
+
+    // make fs available to ejs scripts
+    fs: require('fs-extra')
+
 };

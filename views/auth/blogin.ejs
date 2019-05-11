@@ -57,6 +57,7 @@
     </style>
     <%
         let g = sails.config.globals.jbrowse;
+        let fs = sails.config.fs;
 		
         // determines the next url path after sucessful login.
         let nextPath = "";
@@ -70,6 +71,17 @@
 
         if (nextPath.length)
             nextPath = '/?data=' + nextPath;
+
+        // find trackList.json and load it.    
+        let fname = g.jbrowsePath+g.defaultDataSet+"/trackList.json";
+        let conf = JSON.parse(fs.readFileSync(fname,"utf8"));
+        let demoStr = "";
+
+        // set demoStr if showCredentials is defined.
+        if (conf.demo && conf.demo.showCredentials)
+            demoStr = conf.demo.showCredentials;
+
+        
     %>
   </head>
   <body style="background-color:lightgray">
@@ -134,9 +146,7 @@
                         <% } else { %>
                             <div class="box">
                                 <br><br>
-                                <strong>                                Guest login:<br>
-                                juser/password
-                                </strong>
+                                <strong><%= demoStr %></strong>
                             </div>
                         <% } %>
                         <!--h5>Login with</h5-->
