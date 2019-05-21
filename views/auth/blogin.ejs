@@ -58,22 +58,25 @@
     <%
         let g = sails.config.globals.jbrowse;
         let fs = sails.config.fs;
+        let ds = "";
 		
         // determines the next url path after sucessful login.
         let nextPath = "";
 
-        if (Object.keys(g.dataSet)[0]) 
-			nextPath = g.dataSet[Object.keys(g.dataSet)[0]].path;   // the first element
-
+        if (Object.keys(g.dataSet)[0]) {
+            nextPath = g.dataSet[Object.keys(g.dataSet)[0]].path;   // the first element
+            ds = nextPath;
+        }
         // if defaultDataSet is defined, then use it
         if (g.defaultDataSet && g.dataSet[g.defaultDataSet] && g.dataSet[g.defaultDataSet].path)
             nextPath = g.dataSet[g.defaultDataSet].path;
+            ds = nextPath;
 
         if (nextPath.length)
             nextPath = '/?data=' + nextPath;
 
         // find trackList.json and load it.    
-        let fname = g.jbrowsePath+g.defaultDataSet+"/trackList.json";
+        let fname = g.jbrowsePath + ds + "/trackList.json";
         let conf = JSON.parse(fs.readFileSync(fname,"utf8"));
         let demoStr = "";
 
