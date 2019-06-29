@@ -1,6 +1,6 @@
 {
   "name": "jbconnect",
-  "version": "0.0.101",
+  "version": "0.10.0",
   "description": "JBrowse Server Component (preliminary)",
   "keywords": [],
   "scripts": {
