@@ -48,8 +48,9 @@ var g = {
 //        },
         // search job service registration
         services: {
-            'serverSearchService': {enable: false, name: 'serverSearchService',  type: 'service'},
-            'nothingBurgerService': {name: 'nothingBurgerService',  type: 'service'}
+          'workflowService':       {enable: true, name: 'workflowService',  type: 'workflow', alias: "workflow"},
+          'serverSearchService':  {enable: false, name: 'serverSearchService',  type: 'service'},
+          'nothingBurgerService': {name: 'nothingBurgerService',  type: 'service'}
         },
         
         /*
