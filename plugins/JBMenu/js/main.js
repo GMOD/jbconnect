@@ -194,7 +194,7 @@ return declare( JBrowsePlugin,
                     console.log('Selected workflow',selWorkflow);
                     
                     var postData = {
-                          service: "jblast",
+                          service: "workflow",
                           dataset: thisB.config.dataRoot,
                           region: regionB,
                           workflow: selWorkflow

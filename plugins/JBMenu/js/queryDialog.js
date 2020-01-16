@@ -139,7 +139,7 @@ _fillActionBar: function ( actionBar ) {
                 if (browser.jbmenu.isOversized(bpSize)) return;
 
                 var postData = {
-                    service: "jblast",
+                    service: "workflow",
                     dataset: browser.config.dataRoot,
                     region: searchParams.sequence,
                     workflow: searchParams.workflow,
