@@ -1,0 +1,15 @@
+{
+  "maxFeatureScreenDensity": 16,
+  "style": {
+    "showLabels":false        
+  },
+  "displayMode": "normal",
+  "storeClass": "JBrowse/Store/SeqFeature/GFF3",
+  "urlTemplate": "../../raw/volvox/volvox.gff3",
+  "type": "JBrowse/View/Track/CanvasFeatures",  
+  "metadata": {
+    "description": "B"
+  },
+  "category": "JBConnectTest",
+  "nothing": true
+}
