@@ -144,7 +144,7 @@ return declare( JBrowsePlugin,
                 dialog.destroyRecursive();
             };
             var dialog = new Dialog({ 
-                title: 'Process BLAST',
+                title: 'Process Primer3',
                 onHide: function() {
                     destroyBlastDialog();
                 }
@@ -176,7 +176,7 @@ return declare( JBrowsePlugin,
             dojo.create('div', {
                 id: 'blast-box',
                 style: {'margin-top': '20px'},
-                innerHTML: 'This will process a BLAST search against the selected database.<br/><button id="submit-btn" type="button">Submit</button> <button id="cancel-btn" type="button">Cancel</button>'
+                innerHTML: 'This will process Primer3 analysis on the selected sequence.<br/><button id="submit-btn" type="button">Submit</button> <button id="cancel-btn" type="button">Cancel</button>'
             }, dialog.containerNode);
 
             var submitBtn = new Button({

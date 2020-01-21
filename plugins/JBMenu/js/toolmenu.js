@@ -41,7 +41,7 @@ define(function(){
                 */
                 browser.addGlobalMenuItem( 'tools', new dijitMenuItem({
                     id: 'menubar_blast_hilite',
-                    label: 'Submit highlighted region',
+                    label: 'Primer3 - Submit highlighted region',
                     //iconClass: 'dijitIconFilter',
                     onClick: function() {
                         let btnState = $("[widgetid*='highlight-btn'] > input").attr('aria-checked');
