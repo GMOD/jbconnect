@@ -107,16 +107,39 @@ module.exports = {
     beginProcessing(kJob) {
         let thisb = this;
         let g = sails.config.globals.jbrowse;
-
+        let tmpdir = approot+'/tmp';
+        let jobClass = kJob.data.workflow.split('.')[0];
+        let jobName = kJob.id + '-'+jobClass;
         let wf = approot+'/workflows/'+kJob.data.workflow;
-        //var outPath = g.jbrowsePath + kJob.data.dataset + '/' + g.jblast.blastResultPath;
+        let outPath = g.jbrowsePath + kJob.data.dataset + '/' + jobClass;
+
+        let jobDataFile = tmpdir+'/'+jobName + '-jobdata.json'; 
+
+        console.log('jobdata',JSON.stringify(kJob,null,2));
 
         let nothingName = "sample nothing ";
         
-        kJob.data.count = 10;   // 10 seconds of nothing
+        kJob.data.name = jobClass
+        kJob.update(function() {});
+
+        let jobData = _.clone(kJob.data);
+        jobData.id = kJob.id;
+        jobData.name = jobName;
+        jobData.class = jobClass;      
+
+        try {
+            fs.ensureDirSync(tmpdir);
+            fs.ensureDirSync(outPath);
+            fs.writeFileSync(jobDataFile,JSON.stringify(jobData,null,2));
+        }
+        catch(err) {
+            sails.log.error(err,jobDataFile);
+            return kJob.kDoneFn(Error('workflow failed to open jobDataFile', jobDataFile));
+        }
 
         sails.log('>>> Executing workflow',wf);
-        const bat = spawn(wf);
+        
+        const bat = spawn(wf,[kJob.id,jobName,jobDataFile,tmpdir,outPath]);
 
         bat.stdout.on('data', (data) => {
           console.log('+'+data.toString());
@@ -124,6 +147,7 @@ module.exports = {
         bat.stderr.on('data', (data) => {
           console.error('+'+data.toString());
           kJob.update(function() {});
+          return kJob.kDoneFn(Error('workflow script failed', jobDataFile));
         });
         bat.on('exit', (code) => {
           console.log(`+Child exited with code ${code}`);
@@ -237,12 +261,13 @@ module.exports = {
 
         let templateFile = approot+'/bin/nothingTrackTemplate.json';
         let newTrackJson = [JSON.parse(fs.readFileSync(templateFile))];
-        
-        let trackLabel = kJob.id+' sample job results';
-        
-        newTrackJson[0].label = "SAMPLEJOB_"+kJob.id+Math.random(); 
+
+        let trackLabel = kJob.id+' '+kJob.data.name+' job results';
+        newTrackJson[0].category = kJob.name,
+        newTrackJson[0].label = kJob.name+"_"+kJob.id+Math.random(); 
         newTrackJson[0].key = trackLabel;     
-        
+        newTrackJson[0].urlTemplate = '../../json/volvox/'+kJob.data.name+'/'+kJob.id+'-'+kJob.data.name+'.gff3',
+
         kJob.data.track = newTrackJson[0];
         kJob.update(function() {});
 
