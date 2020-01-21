@@ -14,6 +14,7 @@ define(function(){
                 'plugins/JBMenu/js/queryDialog'
             ], function(dom,dijitMenuItem,Dialog,dButton,queryDialog){
                 
+                /*
                 browser.addGlobalMenuItem( 'tools', new dijitMenuItem({
                     id: 'menubar_submit_seq',
                     label: 'Submit DNA sequence',
@@ -37,7 +38,7 @@ define(function(){
                         });                       
                     }
                 }));
-                
+                */
                 browser.addGlobalMenuItem( 'tools', new dijitMenuItem({
                     id: 'menubar_blast_hilite',
                     label: 'Submit highlighted region',
