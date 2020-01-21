@@ -1,3 +1,5 @@
+# cmd <id> <jobid> <jobdata> <tmpdir> <outdir>
+echo "command" $0 $1 $2 $3 $4 $5
 sleep 1s
 echo "1 second"
 sleep 1s
