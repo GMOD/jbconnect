@@ -59,9 +59,6 @@ try {
         let items = parser.items('');
         for(let j in items) {
             console.log(items[j][0],'=',items[j][1]);
-            //if (items[j][0].includes(prePair)) {
-            //    grpPair += ';'+truncPre(items[j][0],prePair)+'='+items[j][1];
-            //}
             if (items[j][0].includes('PRIMER_LEFT')) {
                 if (items[j][0].includes(preLeft))              grpLeft += ';'+truncPre(items[j][0],'PRIMER')+'='+items[j][1];
                 else if (items[j][0].indexOf('_',12) > -1)      ; 
@@ -80,10 +77,6 @@ try {
             }
         }
     
-        //console.log('>> grpPair',grpPair);
-        //console.log('>> grpLeft',grpLeft);
-        //console.log('>> grpRight',grpRight);
-        
         // global and pair attributes
         gff +=  seq.seq + '\t'
                 + "primer3" + '\t'
@@ -123,11 +116,6 @@ try {
                     +grpRight
                     +'\t'
                 + '\n';
-
-        //console.log('primer '+i,
-        //    seq.seq,start+parseInt(lval[0],10), start+parseInt(lval[1],10)+parseInt(lval[0],10), 
-        //    seq.seq,start+parseInt(rval[0],10), start+parseInt(rval[1],10)+parseInt(rval[0],10)
-        //);
 
         fs.writeFileSync(argv[2],gff);
     }
