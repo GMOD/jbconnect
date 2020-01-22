@@ -259,11 +259,11 @@ module.exports = {
     //  in this example, we are setting a dummy jbrowse track data.    
     postDoNothing(kJob,cb) {
 
-        let templateFile = approot+'/bin/nothingTrackTemplate.json';
+        let templateFile = approot+'/workflows/primer3TrackTemplate.json';
         let newTrackJson = [JSON.parse(fs.readFileSync(templateFile))];
 
         let trackLabel = kJob.id+' '+kJob.data.name+' job results';
-        newTrackJson[0].category = kJob.name,
+        //newTrackJson[0].category = kJob.name,
         newTrackJson[0].label = kJob.name+"_"+kJob.id+Math.random(); 
         newTrackJson[0].key = trackLabel;     
         newTrackJson[0].urlTemplate = '../../json/volvox/'+kJob.data.name+'/'+kJob.id+'-'+kJob.data.name+'.gff3',

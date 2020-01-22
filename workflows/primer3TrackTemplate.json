@@ -1,8 +1,17 @@
 {
   "maxFeatureScreenDensity": 16,
   "style": {
-    "showLabels":false        
+    "xx_defaultHistScale": 4,
+    "_defaultLabelScale": 30,
+    "_defaultDescriptionScale": 120,
+    "showLabels": true,
+    "showTooltips": true,
+    "label": "name,id",
+    "description": "customdescription",
+    "xxclassName": "feature",
+    "color": "#E32A3A"
   },
+
   "displayMode": "normal",
   "storeClass": "JBrowse/Store/SeqFeature/GFF3",
   "urlTemplate": "../../raw/volvox/volvox.gff3",
@@ -10,6 +19,6 @@
   "metadata": {
     "description": "B"
   },
-  "category": "JBConnectTest",
+  "category": "Primer3",
   "nothing": true
 }
