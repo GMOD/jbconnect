@@ -30,7 +30,7 @@ try {
     let seq = util.parseSeqData(jobdata.region);
     let len = util.countSequence(jobdata.region);
     let rangeHigh = len;
-    let rangeLow = Math.floor(len * .90);
+    let rangeLow = Math.floor(len * .85);
 
     console.log('seq',seq);
     primer3template = primer3template.replace('<<seq>>',seq.seqdata);
