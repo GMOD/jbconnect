@@ -60,20 +60,27 @@ try {
         for(let j in items) {
             console.log(items[j][0],'=',items[j][1]);
             if (items[j][0].includes('PRIMER_LEFT')) {
-                if (items[j][0].includes(preLeft))              grpLeft += ';'+truncPre(items[j][0],'PRIMER')+'='+items[j][1];
+                if (items[j][0].includes(preLeft))              grpLeft += ';'+truncPre(items[j][0],preLeft)+'='+items[j][1];
                 else if (items[j][0].indexOf('_',12) > -1)      ; 
                 else if (items[j][0].length <= 14)              ; 
                 else                                            grpLeft += ';'+truncPre(items[j][0],'PRIMER')+'='+items[j][1];
             }
             else if (items[j][0].includes('PRIMER_RIGHT')) {
-                if (items[j][0].includes(preRight))             grpRight += ';'+truncPre(items[j][0],'PRIMER')+'='+items[j][1];
-                else if (items[j][0].indexOf('_',12) > -1)      ; 
-                else if (items[j][0].length <= 14)              ; 
+                if (items[j][0].includes(preRight))             grpRight += ';'+truncPre(items[j][0],preRight)+'='+items[j][1];
+                else if (items[j][0].indexOf('_',13) > -1)      ; 
+                else if (items[j][0].length <= 15)              ; 
                 else                                            grpRight += ';'+truncPre(items[j][0],'PRIMER')+'='+items[j][1];
             } 
             else if (items[j][0] === 'SEQUENCE_TEMPLATE');
             else {
-                grpPair += ';'+truncPre(items[j][0],'PRIMER')+'='+items[j][1];
+                if (items[j][0].includes('PRIMER_PAIR')) {
+                    if (items[j][0].includes(prePair))         grpPair += ';'+truncPre(items[j][0],prePair)+'='+items[j][1]; 
+                    if (items[j][0].indexOf('_',12) > -1)      ; 
+                    else if (items[j][0].length <= 14)         ; 
+                    else grpPair += ';'+truncPre(items[j][0],'PRIMER')+'='+items[j][1];
+                }
+                else
+                    grpPair += ';'+truncPre(items[j][0],'PRIMER')+'='+items[j][1];
             }
         }
     
