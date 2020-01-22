@@ -52,19 +52,22 @@ try {
         let lPrimer = {pos:parseInt(lval[0],10), len:parseInt(lval[1],10)};
         let rPrimer = {pos:parseInt(rval[0],10), len:parseInt(rval[1],10)};
         
-        let items = parser.items('');
         let grpPair = '',grpLeft = '',grpRight = '';
         let prePair = 'PRIMER_PAIR_'+i, preLeft = 'PRIMER_LEFT_'+i, preRight = 'PRIMER_RIGHT_'+i;
         
         // build a list of semi-colon dilimited attributes from primer3 results
+        let items = parser.items('');
         for(let j in items) {
             console.log(items[j][0],'=',items[j][1]);
-            if (items[j][0].includes(prePair)) 
-                grpPair += ';'+items[j][0]+'='+items[j][1];
-            if (items[j][0].includes(preLeft)) 
-                grpLeft += ';'+items[j][0]+'='+items[j][1];
-            if (items[j][0].includes(preRight)) 
-                grpRight += ';'+items[j][0]+'='+items[j][1];
+            if (items[j][0].includes(prePair)) {
+                grpPair += ';'+truncPre(items[j][0],prePair)+'='+items[j][1];
+            }
+            if (items[j][0].includes(preLeft)) { 
+                grpLeft += ';'+truncPre(items[j][0],preLeft)+'='+items[j][1];
+            }
+            if (items[j][0].includes(preRight)) { 
+                grpRight += ';'+truncPre(items[j][0],preRight)+'='+items[j][1];
+            }
         }
     
         console.log('>> grpPair',grpPair);
@@ -120,6 +123,14 @@ try {
 
     //fs.writeFileSync(argv[2],parser);
     process.exit(0);
+
+    // truncate prefix
+    // "primer_right_0_penalty" becomes "penalty"
+    function truncPre(name,pre) {
+        if (name.length > pre.length)
+            return name.replace(pre+'_','');
+        return name;
+    }
 }
 catch(err) {
     console.error(err);
