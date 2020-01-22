@@ -49,35 +49,65 @@ try {
     for(let i=0;i<pairs;i++) {
         let lval = parser.get("", "PRIMER_LEFT_"+i).split(',');
         let rval = parser.get("", "PRIMER_RIGHT_"+i).split(',');
+        let lPrimer = {pos:parseInt(lval[0],10), len:parseInt(lval[1],10)};
+        let rPrimer = {pos:parseInt(rval[0],10), len:parseInt(rval[1],10)};
         
+        let items = parser.items('');
+        let grpPair = '',grpLeft = '',grpRight = '';
+        let prePair = 'PRIMER_PAIR_'+i, preLeft = 'PRIMER_LEFT_'+i, preRight = 'PRIMER_RIGHT_'+i;
+        
+        // build a list of semi-colon dilimited attributes from primer3 results
+        for(let j in items) {
+            console.log(items[j][0],'=',items[j][1]);
+            if (items[j][0].includes(prePair)) 
+                grpPair += ';'+items[j][0]+'='+items[j][1];
+            if (items[j][0].includes(preLeft)) 
+                grpLeft += ';'+items[j][0]+'='+items[j][1];
+            if (items[j][0].includes(preRight)) 
+                grpRight += ';'+items[j][0]+'='+items[j][1];
+        }
+    
+        console.log('>> grpPair',grpPair);
+        console.log('>> grpLeft',grpLeft);
+        console.log('>> grpRight',grpRight);
 
         gff +=  seq.seq + '\t'
                 + "primer3" + '\t'
                 + "primer" + '\t'
-                + (0+start+parseInt(lval[0],10)) +'\t'
-                + (0+start+parseInt(rval[1],10)+parseInt(rval[0],10)) +'\t'
+                + (0+start+lPrimer.pos) +'\t'
+                + (0+start+rPrimer.pos) +'\t'
                 + ".\t.\t.\t"
-                + 'ID=PRIMER_PAIR_'+i + ';Name=PRIMER_PAIR_'+i + '\t'
+                    +'ID=PRIMER_PAIR_'+i 
+                    +';Name=PRIMER_PAIR_'+i 
+                    +';Original_Offset='+start
+                    +grpPair  
+                    +'\t'
                 + '\n';
+        // left primer
         gff +=  seq.seq + '\t'
                 + "primer3" + '\t'
                 + "primer" + '\t'
-                + (0+start+parseInt(lval[0],10)) +'\t'
-                + (0+start+parseInt(lval[1],10)+parseInt(lval[0],10)) +'\t'
+                + (0+start + lPrimer.pos) +'\t'
+                + (0+start + lPrimer.pos + lPrimer.len -1) +'\t'
                 + ".\t.\t.\t"
                 + 'ID=PRIMER_LEFT_'+i
                     +';Parent=PRIMER_PAIR_'+i 
-                    +';Name=PRIMER_LEFT_'+i +'\t'
+                    +';Name=PRIMER_LEFT_'+i
+                    +grpLeft 
+                    +'\t'
                 + '\n';
+        // right primer        
         gff +=  seq.seq + '\t'
                 + "primer3" + '\t'
                 + "primer" + '\t'
-                + (0+start+parseInt(rval[0],10)) + '\t'
-                + (0+start+parseInt(rval[1],10)+parseInt(rval[0],10)) + '\t'
+                + (0+start + rPrimer.pos - rPrimer.len+1) +'\t'
+                + (0+start + rPrimer.pos) +'\t'
                 + ".\t.\t.\t"
                 + 'ID=PRIMER_RIGHT_'+i
                     +';Parent=PRIMER_PAIR_'+i 
-                    +';Name=PRIMER_RIGHT_'+i + '\t'
+                    +';Name=PRIMER_RIGHT_'+i
+                    +grpRight
+                    +'\t'
                 + '\n';
 
         //console.log('primer '+i,
