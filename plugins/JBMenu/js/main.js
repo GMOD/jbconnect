@@ -67,7 +67,7 @@ return declare( JBrowsePlugin,
             
          
             // skip the following if not logged in  <-------------------------
-            //if (!thisB.browser.loginState) return;
+            if (!thisB.browser.loginState) return;
 
             if (typeof browser.config.classInterceptList === 'undefined') {
                 browser.config.classInterceptList = {};
