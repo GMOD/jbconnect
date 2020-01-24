@@ -21,7 +21,7 @@ define(function(){
                     console.log("Analyze menu",i);
                     analyzeMenus[i].init(queryDialog);
                 }
-
+/*
                 browser.addGlobalMenuItem( 'tools', new dijitMenuItem({
                     id: 'menubar_submit_seq',
                     label: 'Submit DNA sequence',
@@ -45,7 +45,7 @@ define(function(){
                         });                       
                     }
                 }));
-                
+*/                
                 browser.addGlobalMenuItem( 'tools', new dijitMenuItem({
                     id: 'menubar_blast_hilite',
                     label: 'Primer3 - Submit highlighted region',

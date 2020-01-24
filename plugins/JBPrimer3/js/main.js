@@ -38,18 +38,16 @@ return declare( JBrowsePlugin,
         var browser = this.browser;
 
         browser.jbanalyze.analyzeMenus.testmenu = {
-            title: 'Test Dialog',
+            title: 'Primer3 Test',
             init:initMenu,
             contents:dialogContent,
             process:processInput
         };
         
         function initMenu(queryDialog,container) {
-            console.log("testmenu.init")
-
             browser.addGlobalMenuItem( 'tools', new MenuItem({
-                id: 'menubar_submit_test',
-                label: 'test',
+                id: 'menubar_submit_primer3',
+                label: 'Primer3 - submit',
                 //iconClass: 'dijitIconFilter',
                 onClick: function() {
                     //console.log(thisb,thisb.plugin);
@@ -76,8 +74,39 @@ return declare( JBrowsePlugin,
             var searchBoxDiv = dom.create('div', {
                 className: "section",
                 innerHTML:
-                    '<span classs="header">Input sequence to submit</span><br />'+ 
-                    '<textarea id="sequence-text" class="seq-text" />'
+                    '<div class="pr-params">'
+                    +'<table class="pr-table">'
+                    +'<tr>'
+                    +'    <td class="pr-head">Primer Size</td>'
+                    +'    <td>Min</td>'
+                    +'    <td><input type="text" name="PRIMER_MIN_SIZE"></td>'
+                    +'    <td>Opt</td>'
+                    +'    <td><input type="text" name="PRIMER_MIN_SIZE"></td>'
+                    +'    <td>Max</td>'
+                    +'    <td><input type="text" name="PRIMER_MIN_SIZE"></td>'
+                    +'</tr>'
+                    +'<tr>'
+                    +'    <td class="pr-head">Primer GC%</td>'
+                    +'    <td>Min</td>'
+                    +'    <td><input type="text" name="PRIMER_MIN_GC"></td>'
+                    +'    <td>Opt</td>'
+                    +'    <td><input type="text" name="PRIMER_OPT_GC"></td>'
+                    +'    <td>Max</td>'
+                    +'    <td><input type="text" name="PRIMER_MAX_GC"></td>'
+                    +'</tr>'
+                    +'<tr>'
+                    +'    <td class="pr-head">Primer Tm</td>'
+                    +'    <td>Min</td>'
+                    +'    <td><input type="text" name="PRIMER_MIN_TM"></td>'
+                    +'    <td>Opt</td>'
+                    +'    <td><input type="text" name="PRIMER_OPT_TM"></td>'
+                    +'    <td>Max</td>'
+                    +'    <td><input type="text" name="PRIMER_MAX_TM"></td>'
+                    +'</tr>'
+                    +'</table>'
+                    +'</div>'
+                    //'<span classs="header">Input sequence to submit</span><br />'+ 
+                    //</tr>/'<textarea id="sequence-text" class="seq-text" />'
             }, container );
         }
         function processInput() {
