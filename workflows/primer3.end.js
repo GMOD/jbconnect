@@ -92,7 +92,7 @@ try {
                 + (0+start+rPrimer.pos) +'\t'
                 + ".\t.\t.\t"
                     +'ID=PRIMER_PAIR_'+i 
-                    +';Name=PRIMER_PAIR_'+i 
+                    +';Name=PRIMER_PAIR_'+i+(i===0?" (best quality)":"") 
                     +';Original_Offset='+start
                     +grpPair  
                     +'\t'
