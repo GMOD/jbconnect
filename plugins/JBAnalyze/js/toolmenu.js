@@ -5,7 +5,6 @@ define(function(){
             let thisb = this;
             this.browser = browser;
             this.plugin = plugin; 
-            console.log("JBAnalyze toolmenu init",this);
             require([
                 'dojo/dom-construct',
                 'dijit/MenuItem',
@@ -14,7 +13,15 @@ define(function(){
                 'plugins/JBAnalyze/js/queryDialog'
             ], function(dom,dijitMenuItem,Dialog,dButton,queryDialog){
                 
+                let analyzeMenus = browser.jbanalyze.analyzeMenus;
+
+                console.log("JBAnalyze toolmenu init",analyzeMenus);//Object.keys(analyzeMenus).length);
                 
+                for(let i in analyzeMenus) {
+                    console.log("Analyze menu",i);
+                    analyzeMenus[i].init(queryDialog);
+                }
+
                 browser.addGlobalMenuItem( 'tools', new dijitMenuItem({
                     id: 'menubar_submit_seq',
                     label: 'Submit DNA sequence',

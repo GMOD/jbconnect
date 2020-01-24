@@ -35,9 +35,7 @@ return declare( JBrowsePlugin,
         var thisB = this;
         var browser = this.browser;
 
-        browser.jbmenuDialog = thisB.Browser_jbmenuDialog;
-
-        browser.jbmenu = {
+        browser.jbanalyze = {
             asset: null,
             browser: browser,
             focusQueue: [],
@@ -45,10 +43,13 @@ return declare( JBrowsePlugin,
             panelDelayTimer: null,
             bpSizeLimit: args.bpSizeLimit || 0,
             getWorkflows: this.getWorkflows,
+            analyzeDialog: thisB.Browser_analyzeDialog,
+            countSequence: thisB.countSequence,
+            analyzeMenus: {},
 
             // check if bpSize > bpSizeLimit, if bpSizeLimit is defined
             isOversized(bpSize) {
-                let bpSizeLimit = JBrowse.jbmenu.bpSizeLimit;
+                let bpSizeLimit = JBrowse.jbanalyze.bpSizeLimit;
 
                 if (bpSizeLimit && bpSize > bpSizeLimit) {
                     // oversize message
@@ -58,6 +59,9 @@ return declare( JBrowsePlugin,
                 else return false;
             }
         };
+
+        // if (!browser.jbconnect) browser.jbconnect = {};
+        // browser.jbconnect.getWorkflows = this.getWorkflows;
 
 
         /*
@@ -98,7 +102,7 @@ return declare( JBrowsePlugin,
         var browser = this.browser;
         let bpSize = browser._highlight.end - browser._highlight.start;
 
-        if (browser.jbmenu.isOversized(bpSize))  return;
+        if (browser.jbanalyze.isOversized(bpSize))  return;
 
         browser.getStore('refseqs', dojo.hitch(this,function( refSeqStore ) {
             if( refSeqStore ) {
@@ -113,7 +117,7 @@ return declare( JBrowsePlugin,
                             var fastaData = fasta.renderText(hilite,seq);
                             //console.log('FASTA',fastaData);
                             //delete fasta;
-                            browser.jbmenuDialog(fastaData,bpSize);
+                            browser.analyzeDialog(fastaData,bpSize);
                         });                                
 
                     })
@@ -123,13 +127,13 @@ return declare( JBrowsePlugin,
     },
 
     // display blast dialog
-    Browser_jbmenuDialog: function (region,bpSize) {
+    Browser_analyzeDialog: function (region,bpSize) {
         var regionB = region;
         var thisB = this;
         var comboData = [];
 
         //console.log("plugin",this);
-        this.jbmenu.getWorkflows(function(workflows){
+        this.jbconnect.getWorkflows(function(workflows){
 
             if (workflows.length==0) {
                 alert("no workflows found");
@@ -255,6 +259,19 @@ return declare( JBrowsePlugin,
         }).fail(function(jqxhr, textStatus, errorThrown) {
             alert('get_workflows failed',textStatus);
         });;
+    },
+    countSequence(seq) {
+        let lines = seq.split("\n");
+        let count = 0;
+
+        for(let i=0;i<lines.length;i++) {
+            console.log(i,lines[i]);
+            if (lines[i].charAt(0) !== ">") {
+                count += lines[i].length;
+            }
+        }
+    
+        return count;
     }
 
 });

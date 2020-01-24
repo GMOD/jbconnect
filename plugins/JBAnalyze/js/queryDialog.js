@@ -45,6 +45,7 @@ constructor: function(args) {
 
 _dialogContent: function () {
     
+    console.log("_dialogContent");
     let workflows =this.workflows;
     let wfStr = "";
     for(var i in workflows) {
@@ -64,9 +65,17 @@ _dialogContent: function () {
     },container);
 
     let cfg = this.browser.config;
+
+    console.log("queryDialog.analyzeMenu",this.analyzeMenu);
+
+    if (this.analyzeMenu && this.analyzeMenu.contents)
+        this.analyzeMenu.contents(container);
+
+
     
     //console.log("demo",cfg);
     // if demo.blastButtons section is defined in trackList, display the buttons.
+    /*
     if (cfg.demo && cfg.demo.blastButtons && cfg.demo.blastButtons[0]) {
         let blastButtons = dom.create('div', {
             id: 'blastButtons',
@@ -87,15 +96,16 @@ _dialogContent: function () {
             .placeAt( blastButtons );
         }
     }
+    */
 
 
     // Render textarea box
-    var searchBoxDiv = dom.create('div', {
-        className: "section",
-        innerHTML:
-            '<span classs="header">Input sequence to submit</span><br />'+ 
-            '<textarea id="sequence-text" class="seq-text" />'
-    }, container );
+    // var searchBoxDiv = dom.create('div', {
+    //     className: "section",
+    //     innerHTML:
+    //         '<span classs="header">Input sequence to submit</span><br />'+ 
+    //         '<textarea id="sequence-text" class="seq-text" />'
+    // }, container );
 
     /*
     function makeRadio( args, parent ) {
@@ -118,13 +128,14 @@ _getSearchParams: function() {
     //console.log("dialog result",$('.search-dialog #workflow-combo').find('option:selected').val(),$('.search-dialog #sequence-text').val());
     return {
         workflow: $('.search-dialog #workflow-combo').find('option:selected').val(),
-        sequence: $('.search-dialog #sequence-text').val()
+        //sequence: $('.search-dialog #sequence-text').val()
     };
 },
 
 _fillActionBar: function ( actionBar ) {
     let thisB = this;
     let browser = this.browser;
+    console.log("_fillActionBar()");
 
     new dButton({
             label: 'Submit',
@@ -134,18 +145,30 @@ _fillActionBar: function ( actionBar ) {
                 thisB.callback( searchParams );
                 thisB.hide();
 
-                // check if query size too big
-                let bpSize = thisB.countSequence(searchParams.sequence);
-                if (browser.jbmenu.isOversized(bpSize)) return;
+                console.log("queryDialog submit");
 
-                var postData = {
-                    service: "workflow",
-                    dataset: browser.config.dataRoot,
-                    region: searchParams.sequence,
-                    workflow: searchParams.workflow,
-                    refseq:Object.keys(browser.allRefs)[0],
-                    unmappedSeq: true
-                };
+                var postData = null;
+                if (thisB.analyzeMenu && thisB.analyzeMenu.process)
+                    postData = thisB.analyzeMenu.process();
+
+                if (!postData) {
+                    //todo: handle errors better
+                    return;
+                }
+        
+                // var postData = {
+                //     service: "workflow",
+                //     dataset: browser.config.dataRoot,
+                //     region: searchParams.sequence,
+                //     workflow: searchParams.workflow,
+                //     refseq:Object.keys(browser.allRefs)[0],
+                //     unmappedSeq: true
+                // };
+
+                postData.service = "workflow";
+                postData.dataset = browser.config.dataRoot;
+                postData.workflow = searchParams.workflow;
+
                 console.log("post data",postData);
                 $.post( "/job/submit", postData , function( result ) {
 
@@ -182,26 +205,15 @@ _fillActionBar: function ( actionBar ) {
 },
 
 show: function ( callback ) {
+    
+    if (this.analyzeMenu && this.analyzeMenu.process)
+        this.set( 'title', this.analyzeMenu.title);
+
     this.callback = callback || function() {};
-    this.set( 'title', "BLAST a DNA sequence");
     this.set( 'content', this._dialogContent() );
     this.inherited( arguments );
     focus.focus( this.closeButtonNode );
 },
-
-countSequence(seq) {
-    let lines = seq.split("\n");
-    let count = 0;
-
-    for(let i=0;i<lines.length;i++) {
-        console.log(i,lines[i]);
-        if (lines[i].charAt(0) !== ">") {
-            count += lines[i].length;
-        }
-    }
-   
-    return count;
-}
 
 
 });
