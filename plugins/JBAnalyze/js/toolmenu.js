@@ -5,16 +5,16 @@ define(function(){
             let thisb = this;
             this.browser = browser;
             this.plugin = plugin; 
-            console.log("JBMenu toolmenu init",this);
+            console.log("JBAnalyze toolmenu init",this);
             require([
                 'dojo/dom-construct',
                 'dijit/MenuItem',
                 'dijit/Dialog',
                 'dijit/form/Button',
-                'plugins/JBMenu/js/queryDialog'
+                'plugins/JBAnalyze/js/queryDialog'
             ], function(dom,dijitMenuItem,Dialog,dButton,queryDialog){
                 
-                /*
+                
                 browser.addGlobalMenuItem( 'tools', new dijitMenuItem({
                     id: 'menubar_submit_seq',
                     label: 'Submit DNA sequence',
@@ -38,7 +38,7 @@ define(function(){
                         });                       
                     }
                 }));
-                */
+                
                 browser.addGlobalMenuItem( 'tools', new dijitMenuItem({
                     id: 'menubar_blast_hilite',
                     label: 'Primer3 - Submit highlighted region',
@@ -60,15 +60,15 @@ define(function(){
                             txt += 'This feature allows you to select an arbitrary region to submit for analysis using the highlight region feature of JBrowse. <p/>';
                             
                             if (btnState==='false') {
-                                txt += 'To begin, click the highlight button <img src="plugins/JBMenu/img/hilite_unselected.PNG" height="22px" /> on the toolbar to begin the highlight mode. ';
+                                txt += 'To begin, click the highlight button <img src="plugins/JBAnalyze/img/hilite_unselected.PNG" height="22px" /> on the toolbar to begin the highlight mode. ';
                             }
                             if (btnState==='true') {
-                                txt += 'You have selected the highlight button, which now appears yellow <img src="plugins/JBMenu/img/hilite_selected.PNG" height="22px" />. ';
+                                txt += 'You have selected the highlight button, which now appears yellow <img src="plugins/JBAnalyze/img/hilite_selected.PNG" height="22px" />. ';
                             }
                             txt += 'Highlight the region by clicking the start coordinate in the track area of the genome browser, ';
                             txt += 'holding down and dragging to the end coordinate and releasing. ';
 
-                            //txt += 'The BLAST button <img src="plugins/JBMenu/img/blast_btn.PNG" height="22px"/> will ';
+                            //txt += 'The BLAST button <img src="plugins/JBAnalyze/img/blast_btn.PNG" height="22px"/> will ';
                             //txt += 'then appear in the tool button area. Click the BLAST button to blast the highlighted region.';                                            
     
 

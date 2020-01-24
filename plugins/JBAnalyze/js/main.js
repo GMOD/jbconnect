@@ -1,5 +1,5 @@
 /* 
-    JBMenu - Client Menu and other interface integrations
+    JBAnalyze - Client Menu and other interface integrations
     Author     : ey
 */
 
@@ -30,7 +30,7 @@ define([
 return declare( JBrowsePlugin,
 {
     constructor: function( args ) {
-        console.log("plugin: JBMenu ",args);
+        console.log("plugin: JBAnalyze ",args);
         
         var thisB = this;
         var browser = this.browser;
@@ -80,7 +80,7 @@ return declare( JBrowsePlugin,
             // },2000);
 
             // load toolmenu "Analyze menu"
-            require(["plugins/JBMenu/js/toolmenu"], function(toolmenu){
+            require(["plugins/JBAnalyze/js/toolmenu"], function(toolmenu){
                 toolmenu.init(browser,thisB);
             });        
         });
@@ -150,6 +150,10 @@ return declare( JBrowsePlugin,
                 }
             });
             
+            var ddd = dojo.create('div', {
+                innerHTML: "xxx"
+            }, dialog.containerNode);
+
             dojo.create('span', {
                 innerHTML: 'Workflow '
             }, dialog.containerNode);
