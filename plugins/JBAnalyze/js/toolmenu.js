@@ -45,7 +45,8 @@ define(function(){
                         });                       
                     }
                 }));
-*/                
+*/              
+/*  
                 browser.addGlobalMenuItem( 'tools', new dijitMenuItem({
                     id: 'menubar_blast_hilite',
                     label: 'Primer3 - Submit highlighted region',
@@ -104,6 +105,7 @@ define(function(){
                         }
                     }
                 }));
+*/
                 /*
                 browser.addGlobalMenuItem( 'tools', new dijitMenuItem({
                     id: 'menubar_jblast_dbclean',
