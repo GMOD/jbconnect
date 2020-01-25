@@ -42,7 +42,7 @@ try {
     parser.parse(primer3out); 
 
     let pairs = parseInt(parser.get("", "PRIMER_PAIR_NUM_RETURNED"),10);
-    console.log("PRIMER_PAIR_NUM_RETURNED",pairs);
+    //console.log("PRIMER_PAIR_NUM_RETURNED",pairs);
 
 
     let gff = "";
@@ -86,7 +86,7 @@ try {
     
         // global and pair attributes
         gff +=  seq.seq + '\t'
-                + "primer3" + '\t'
+                + "JBPrimer3" + '\t'
                 + "primer" + '\t'
                 + (0+start+lPrimer.pos) +'\t'
                 + (0+start+rPrimer.pos) +'\t'
@@ -99,7 +99,7 @@ try {
                 + '\n';
         // left primer
         gff +=  seq.seq + '\t'
-                + "primer3" + '\t'
+                + "JBPrimer3" + '\t'
                 + "primer" + '\t'
                 + (0+start + lPrimer.pos) +'\t'
                 + (0+start + lPrimer.pos + lPrimer.len -1) +'\t'
@@ -112,7 +112,7 @@ try {
                 + '\n';
         // right primer        
         gff +=  seq.seq + '\t'
-                + "primer3" + '\t'
+                + "JBPrimer3" + '\t'
                 + "primer" + '\t'
                 + (0+start + rPrimer.pos - rPrimer.len+1) +'\t'
                 + (0+start + rPrimer.pos) +'\t'

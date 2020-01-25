@@ -50,24 +50,79 @@ return declare( JBrowsePlugin,
                 label: 'Primer3 - submit',
                 //iconClass: 'dijitIconFilter',
                 onClick: function() {
-                    //console.log(thisb,thisb.plugin);
-                    browser.jbanalyze.getWorkflows(function(workflows){
 
-                        if (workflows.length==0) {
-                            alert("no workflows found");
-                            return;
+                    let btnState = $("[widgetid*='highlight-btn'] > input").attr('aria-checked');
+                    console.log("btnState",btnState,typeof btnState);
+                    if (btnState==='mixed') {
+                        // launch blast dialog
+                        console.log("launch blast dialog");
+                        //plugin.startBlast();
+                        startBlastDialog();
+
+                    }
+                    if (btnState==='false' || btnState==='true') {
+                        // false - highlight button hasn't been pressed
+                        // true - highlight button has been pressed but region not selected yet.
+
+                        let txt = "";
+                        txt += 'This feature allows you to select an arbitrary region to submit for analysis using the highlight region feature of JBrowse. <p/>';
+                        
+                        if (btnState==='false') {
+                            txt += 'To begin, click the highlight button <img src="plugins/JBAnalyze/img/hilite_unselected.PNG" height="22px" /> on the toolbar to begin the highlight mode. ';
                         }
-                                        
-                        var dialog = new queryDialog({
-                            browser:thisb.browser,
-                            plugin:thisb.plugin,
-                            workflows:workflows
-                        });
-                        dialog.analyzeMenu = browser.jbanalyze.analyzeMenus.testmenu; 
-                        dialog.show(function(x) {});
-                    });                       
+                        if (btnState==='true') {
+                            txt += 'You have selected the highlight button, which now appears yellow <img src="plugins/JBAnalyze/img/hilite_selected.PNG" height="22px" />. ';
+                        }
+                        txt += 'Highlight the region by clicking the start coordinate in the track area of the genome browser, ';
+                        txt += 'holding down and dragging to the end coordinate and releasing. ';
+
+                        //txt += 'The BLAST button <img src="plugins/JBAnalyze/img/blast_btn.PNG" height="22px"/> will ';
+                        //txt += 'then appear in the tool button area. Click the BLAST button to blast the highlighted region.';                                            
+
+
+
+                        // show highlight instruct box
+                        var confirmBox = new Dialog({ title: 'Highlight region to submit for analysis' });
+                        dojo.create('div', {
+                            id: 'confirm-btn',
+                            style: "width: 700px;padding:15px",
+                            innerHTML: txt
+        
+                        }, confirmBox.containerNode );
+                        new Button({
+                            id: 'ok-btn1',
+                            label: 'Ok',
+                            //iconClass: 'dijitIconDelete',
+                            onClick: function() {
+                                confirmBox.destroyRecursive();
+                                //confirmCleanBox.hide();
+                            }
+                        })
+                        .placeAt( confirmBox.containerNode );
+
+                        confirmBox.show();
+
+                    }
                 }
             }));
+            //console.log(thisb,thisb.plugin);
+            function startBlastDialog() {
+                browser.jbanalyze.getWorkflows(function(workflows){
+
+                    if (workflows.length==0) {
+                        alert("no workflows found");
+                        return;
+                    }
+                                    
+                    var dialog = new queryDialog({
+                        browser:thisb.browser,
+                        plugin:thisb.plugin,
+                        workflows:workflows
+                    });
+                    dialog.analyzeMenu = browser.jbanalyze.analyzeMenus.testmenu; 
+                    dialog.show(function(x) {});
+                });             
+            }          
         }
         function dialogContent(container) {
             //Render textarea box
@@ -123,11 +178,20 @@ return declare( JBrowsePlugin,
             },200);
         }
         function processInput(cb) {
-            console.log ('jbprimer3 process',browser);
-            let bpSize = browser._highlight.end - browser._highlight.start;
+            console.log ('jbprimer3 processInput',browser);
 
+            // check if bpSize is oversized
+            let bpSize = browser._highlight.end - browser._highlight.start;
             if (browser.jbanalyze.isOversized(bpSize))  return {err: "oversized"};
-    
+
+            // get parameter list
+            let params = {}; 
+            $( ".pr-params .pr-data" ).each(function( i ) {
+                console.log( $(this).attr('name')+ ": " + $( this ).val() );
+                params[$(this).attr('name')] = $( this ).val();
+            });            
+            
+
             browser.getStore('refseqs', dojo.hitch(this,function( refSeqStore ) {
                 if( refSeqStore ) {
                     var hilite = browser._highlight;
@@ -144,7 +208,8 @@ return declare( JBrowsePlugin,
                                 //browser.analyzeDialog(fastaData,bpSize);
                                 cb({
                                     region:fastaData,
-                                    bpSize:bpSize
+                                    bpSize:bpSize,
+                                    params:params
                                 });
                             });                                
                         })
