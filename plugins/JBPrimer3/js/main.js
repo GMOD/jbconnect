@@ -79,49 +79,79 @@ return declare( JBrowsePlugin,
                     +'<tr>'
                     +'    <td class="pr-head">Primer Size</td>'
                     +'    <td>Min</td>'
-                    +'    <td><input type="text" name="PRIMER_MIN_SIZE"></td>'
+                    +'    <td><input class="pr-data" type="text" name="PRIMER_MIN_SIZE"></td>'
                     +'    <td>Opt</td>'
-                    +'    <td><input type="text" name="PRIMER_MIN_SIZE"></td>'
+                    +'    <td><input class="pr-data" type="text" name="PRIMER_OPT_SIZE"></td>'
                     +'    <td>Max</td>'
-                    +'    <td><input type="text" name="PRIMER_MIN_SIZE"></td>'
+                    +'    <td><input class="pr-data" type="text" name="PRIMER_MAX_SIZE"></td>'
                     +'</tr>'
                     +'<tr>'
                     +'    <td class="pr-head">Primer GC%</td>'
                     +'    <td>Min</td>'
-                    +'    <td><input type="text" name="PRIMER_MIN_GC"></td>'
+                    +'    <td><input class="pr-data" type="text" name="PRIMER_MIN_GC"></td>'
                     +'    <td>Opt</td>'
-                    +'    <td><input type="text" name="PRIMER_OPT_GC"></td>'
+                    +'    <td><input class="pr-data" type="text" name="PRIMER_OPT_GC"></td>'
                     +'    <td>Max</td>'
-                    +'    <td><input type="text" name="PRIMER_MAX_GC"></td>'
+                    +'    <td><input class="pr-data" type="text" name="PRIMER_MAX_GC"></td>'
                     +'</tr>'
                     +'<tr>'
                     +'    <td class="pr-head">Primer Tm</td>'
                     +'    <td>Min</td>'
-                    +'    <td><input type="text" name="PRIMER_MIN_TM"></td>'
+                    +'    <td><input class="pr-data" type="text" name="PRIMER_MIN_TM"></td>'
                     +'    <td>Opt</td>'
-                    +'    <td><input type="text" name="PRIMER_OPT_TM"></td>'
+                    +'    <td><input class="pr-data" type="text" name="PRIMER_OPT_TM"></td>'
                     +'    <td>Max</td>'
-                    +'    <td><input type="text" name="PRIMER_MAX_TM"></td>'
+                    +'    <td><input class="pr-data" type="text" name="PRIMER_MAX_TM"></td>'
                     +'</tr>'
                     +'</table>'
                     +'</div>'
                     //'<span classs="header">Input sequence to submit</span><br />'+ 
                     //</tr>/'<textarea id="sequence-text" class="seq-text" />'
             }, container );
+
+            // setup default values for fields
+            setTimeout(function() {
+                $('.pr-data[name=PRIMER_MIN_SIZE]').val(18);
+                $('.pr-data[name=PRIMER_OPT_SIZE]').val(20);
+                $('.pr-data[name=PRIMER_MAX_SIZE]').val(27);
+                $('.pr-data[name=PRIMER_MIN_GC]').val(20.0);
+                $('.pr-data[name=PRIMER_OPT_GC]').val(50.0);
+                $('.pr-data[name=PRIMER_MAX_GC]').val(80.0);
+                $('.pr-data[name=PRIMER_MIN_TM]').val(57);
+                $('.pr-data[name=PRIMER_OPT_TM]').val(60);
+                $('.pr-data[name=PRIMER_MAX_TM]').val(63);
+            },200);
         }
-        function processInput() {
-            console.log ('jbprimer3 process');
+        function processInput(cb) {
+            console.log ('jbprimer3 process',browser);
+            let bpSize = browser._highlight.end - browser._highlight.start;
 
-            let sequence = $('.search-dialog #sequence-text').val();
-            let bpSize = browser.jbanalyze.countSequence(sequence);
-            if (browser.jbanalyze.isOversized(bpSize)) return 0;    // failed
-
-            var postData = {
-                region: sequence
-            }
-            return postData;
-    }
-
+            if (browser.jbanalyze.isOversized(bpSize))  return {err: "oversized"};
+    
+            browser.getStore('refseqs', dojo.hitch(this,function( refSeqStore ) {
+                if( refSeqStore ) {
+                    var hilite = browser._highlight;
+                    refSeqStore.getReferenceSequence(
+                        hilite,
+                        dojo.hitch( this, function( seq ) {
+                            let bpSize = hilite.end-hilite.start;
+                            //console.log('startBlast() found sequence',hilite,bpSize);
+                            require(["JBrowse/View/FASTA"], function(FASTA){
+                                var fasta = new FASTA();
+                                var fastaData = fasta.renderText(hilite,seq);
+                                //console.log('FASTA',fastaData);
+                                //delete fasta;
+                                //browser.analyzeDialog(fastaData,bpSize);
+                                cb({
+                                    region:fastaData,
+                                    bpSize:bpSize
+                                });
+                            });                                
+                        })
+                    );
+                }
+            }));             
+        }
     }
 });
 });

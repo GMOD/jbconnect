@@ -138,70 +138,65 @@ _fillActionBar: function ( actionBar ) {
     console.log("_fillActionBar()");
 
     new dButton({
-            label: 'Submit',
-            //iconClass: 'dijitIconBookmark',
-            onClick: function() {
-                var searchParams = thisB._getSearchParams();
-                thisB.callback( searchParams );
-                thisB.hide();
+        label: 'Submit',
+        //iconClass: 'dijitIconBookmark',
+        onClick: function() {
+            var searchParams = thisB._getSearchParams();
+            thisB.callback( searchParams );
+            thisB.hide();
 
-                console.log("queryDialog submit");
+            console.log("queryDialog submit");
 
-                var postData = null;
-                if (thisB.analyzeMenu && thisB.analyzeMenu.process)
-                    postData = thisB.analyzeMenu.process();
+            if (thisB.analyzeMenu && thisB.analyzeMenu.process) {
 
-                if (!postData) {
-                    //todo: handle errors better
-                    return;
-                }
-        
-                // var postData = {
-                //     service: "workflow",
-                //     dataset: browser.config.dataRoot,
-                //     region: searchParams.sequence,
-                //     workflow: searchParams.workflow,
-                //     refseq:Object.keys(browser.allRefs)[0],
-                //     unmappedSeq: true
-                // };
+                thisB.analyzeMenu.process((postData) => {
+                    if (postData.err) {
+                        alert(postData.err);
+                        return;
+                    }
+                    postData.service = "workflow";
+                    postData.dataset = browser.config.dataRoot;
+                    postData.workflow = searchParams.workflow;
 
-                postData.service = "workflow";
-                postData.dataset = browser.config.dataRoot;
-                postData.workflow = searchParams.workflow;
-
-                console.log("post data",postData);
-                $.post( "/job/submit", postData , function( result ) {
-
-                    // open job queue panel
-                    $('#extruderRight').openMbExtruder(true);$('#extruderRight').openPanel();
-
-                    // show confirm submit box
-                    var confirmBox = new Dialog({ title: 'Confirmation' });
-                    dojo.create('div', {
-                        id: 'confirm-btn',
-                        innerHTML: 'submitted...'
-                    }, confirmBox.containerNode );
-                    confirmBox.show();
-
-                    // close confirm box
-                    setTimeout(function(){ confirmBox.destroyRecursive(); }, 2000);
-
-                }, "json")
-                .fail(function(jqxhr, textStatus, errorThrown) {
-                    alert( "Job submit failed: "+jqxhr.responseText+" ("+jqxhr.status+"-"+jqxhr.statusText+")" );
+                    thisB.postSubmit(postData);
                 });
             }
-        })
-        .placeAt( actionBar );
+        }
+    })
+    .placeAt( actionBar );
+
     new dButton({
-            label: 'Cancel',
-            //iconClass: 'dijitIconDelete',
-            onClick: function() {
-                thisB.callback( false );
-                thisB.hide();
-            }
-        })
-        .placeAt( actionBar );
+        label: 'Cancel',
+        //iconClass: 'dijitIconDelete',
+        onClick: function() {
+            thisB.callback( false );
+            thisB.hide();
+        }
+    })
+    .placeAt( actionBar );
+},
+postSubmit(postData) {
+    console.log("postSubmit",postData);
+    $.post( "/job/submit", postData , function( result ) {
+
+        // open job queue panel
+        $('#extruderRight').openMbExtruder(true);$('#extruderRight').openPanel();
+
+        // show confirm submit box
+        var confirmBox = new Dialog({ title: 'Confirmation' });
+        dojo.create('div', {
+            id: 'confirm-btn',
+            innerHTML: 'submitted...'
+        }, confirmBox.containerNode );
+        confirmBox.show();
+
+        // close confirm box
+        setTimeout(function(){ confirmBox.destroyRecursive(); }, 2000);
+
+    }, "json")
+    .fail(function(jqxhr, textStatus, errorThrown) {
+        alert( "Job submit failed: "+jqxhr.responseText+" ("+jqxhr.status+"-"+jqxhr.statusText+")" );
+    });
 },
 
 show: function ( callback ) {
