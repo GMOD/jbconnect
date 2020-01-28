@@ -271,10 +271,10 @@ return declare( JBrowsePlugin,
      * @param {type} cb - cb(workflows]]
      * @returns {getWorkflows}
      */
-    getWorkflows(cb) {
+    getWorkflows(cb,service) {
         let browser = this.browser;
         
-        let xhr = $.get( "/service/exec/get_workflows?dataset="+browser.config.dataRoot, function( data ) {
+        let xhr = $.get( "/service/exec/get_workflows?dataset="+browser.config.dataRoot+"&service="+service, function( data ) {
             console.log("get workflows result", data);
             cb(data);
         }).fail(function(jqxhr, textStatus, errorThrown) {

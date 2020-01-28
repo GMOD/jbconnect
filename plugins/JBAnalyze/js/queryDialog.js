@@ -113,6 +113,8 @@ _fillActionBar: function ( actionBar ) {
                     thisB.postSubmit(postData);
                 });
             }
+            else 
+                alert('analyzeMenu undefined');
         }
     })
     .placeAt( actionBar );

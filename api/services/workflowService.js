@@ -58,8 +58,14 @@ module.exports = {
         let params = req.allParams();
         let g = sails.config.globals.jbrowse;
         let ds = params.dataset;
+        let service = params.service;
         
-        var wfpath = './workflows/';
+        let wfpath = './workflows/';
+
+        let filter = '.wf';
+
+        if (g.plugins && g.plugins[params.service])
+        filter = g.plugins[params.service].filter;
         
         sails.log(wfpath,process.cwd());
         
@@ -68,9 +74,9 @@ module.exports = {
         wflist = [];
         
         fs.readdirSync(wfpath).forEach(function(file) {
-            if (file.indexOf('.wf.') !== -1) {
+            if (file.indexOf(filter) !== -1) {
                 
-                var name = file.split('.wf.');
+                var name = file.split(filter);
                 
                 wflist.push( {
                    id: file,

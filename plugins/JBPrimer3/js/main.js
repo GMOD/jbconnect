@@ -1,5 +1,5 @@
 /* 
-    JBMenu - Client Menu and other interface integrations
+    JBPrimer3 - Client Menu and other interface integrations
     Author     : ey
 */
 
@@ -37,12 +37,18 @@ return declare( JBrowsePlugin,
         var thisb = this;
         var browser = this.browser;
 
-        browser.jbanalyze.analyzeMenus.testmenu = {
+        browser.jbanalyze.analyzeMenus.JBPrimer3 = {
             title: 'Primer3 Test',
+            service: 'JBPrimer3',
             init:initMenu,
             contents:dialogContent,
             process:processInput
         };
+
+        browser.jbanalyze.getWorkflows(function(workflows){
+            browser.jbanalyze.analyzeMenus.JBPrimer3.workflows = workflows;
+        }, 'JBPrimer3');
+
         
         function initMenu(menuName,queryDialog,container) {
             browser.addGlobalMenuItem( menuName, new MenuItem({
@@ -119,7 +125,7 @@ return declare( JBrowsePlugin,
                         plugin:thisb.plugin,
                         workflows:workflows
                     });
-                    dialog.analyzeMenu = browser.jbanalyze.analyzeMenus.testmenu; 
+                    dialog.analyzeMenu = browser.jbanalyze.analyzeMenus.JBPrimer3; 
                     dialog.show(function(x) {});
                 });             
             }          
