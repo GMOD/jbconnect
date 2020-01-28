@@ -79,14 +79,11 @@ return declare( JBrowsePlugin,
             //     } 
             // },2000);
 
-            // load toolmenu "Analyze menu"
-            // require(["plugins/JBAnalyze/js/toolmenu"], function(toolmenu){
-            //     toolmenu.init(browser,thisB);
-            // });        
-            thisB.initAnalyzeMenu();
+            // insert Analyze menu
+            setTimeout(function() {
+                thisB.initAnalyzeMenu();
+            }, 500);
         });
-
-
     },
     initAnalyzeMenu() {
         let thisb = this;
