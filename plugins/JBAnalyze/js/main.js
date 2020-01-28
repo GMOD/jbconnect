@@ -60,10 +60,6 @@ return declare( JBrowsePlugin,
             }
         };
 
-        // if (!browser.jbconnect) browser.jbconnect = {};
-        // browser.jbconnect.getWorkflows = this.getWorkflows;
-
-
         /*
          * class override function intercepts
          */
@@ -84,14 +80,43 @@ return declare( JBrowsePlugin,
             // },2000);
 
             // load toolmenu "Analyze menu"
-            require(["plugins/JBAnalyze/js/toolmenu"], function(toolmenu){
-                toolmenu.init(browser,thisB);
-            });        
+            // require(["plugins/JBAnalyze/js/toolmenu"], function(toolmenu){
+            //     toolmenu.init(browser,thisB);
+            // });        
+            thisB.initAnalyzeMenu();
         });
 
 
     },
+    initAnalyzeMenu() {
+        let thisb = this;
+        let browser = this.browser;
+        this.plugin = this;
+        let menuName = "analyze"; 
+        require([
+            'dojo/dom-construct',
+            'dijit/MenuItem',
+            'dijit/Dialog',
+            'dijit/form/Button',
+            'plugins/JBAnalyze/js/queryDialog'
+        ], function(dom,dijitMenuItem,Dialog,dButton,queryDialog){
+            
+            let analyzeMenus = browser.jbanalyze.analyzeMenus;
 
+            //console.log("JBAnalyze toolmenu init",analyzeMenus);//Object.keys(analyzeMenus).length);
+            
+            for(let i in analyzeMenus) {
+                console.log("Analyze menu",i);
+                analyzeMenus[i].init(menuName,queryDialog);
+            }
+            browser.renderGlobalMenu( menuName,'AnalyzeTools', browser.menuBar );
+
+            // reorder the menubar
+            $("[widgetid*='dropdownbutton_analyze']").insertBefore("[widgetid*='dropdownbutton_help']");
+            $("[widgetid*='dropdownbutton_analyze'] span.dijitButtonNode").html(" Analyze");
+
+        });
+    },
     /**
      * Display blast dialog box
      * @returns {undefined}
@@ -125,7 +150,6 @@ return declare( JBrowsePlugin,
             }
         }));             
     },
-
     // display blast dialog
     Browser_analyzeDialog: function (region,bpSize) {
         var regionB = region;

@@ -44,8 +44,8 @@ return declare( JBrowsePlugin,
             process:processInput
         };
         
-        function initMenu(queryDialog,container) {
-            browser.addGlobalMenuItem( 'tools', new MenuItem({
+        function initMenu(menuName,queryDialog,container) {
+            browser.addGlobalMenuItem( menuName, new MenuItem({
                 id: 'menubar_submit_primer3',
                 label: 'Primer3 - Submit Highlighted Region',
                 //iconClass: 'dijitIconFilter',
