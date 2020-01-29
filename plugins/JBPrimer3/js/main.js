@@ -39,7 +39,7 @@ return declare( JBrowsePlugin,
 
         browser.jbanalyze.analyzeMenus.JBPrimer3 = {
             title: 'Primer3 Test',
-            service: 'JBPrimer3',
+            module: 'JBPrimer3',
             init:initMenu,
             contents:dialogContent,
             process:processInput
@@ -47,6 +47,7 @@ return declare( JBrowsePlugin,
 
         browser.jbanalyze.getWorkflows(function(workflows){
             browser.jbanalyze.analyzeMenus.JBPrimer3.workflows = workflows;
+            thisb.workflows = workflows;
         }, 'JBPrimer3');
 
         
@@ -113,21 +114,21 @@ return declare( JBrowsePlugin,
             }));
             //console.log(thisb,thisb.plugin);
             function startBlastDialog() {
-                browser.jbanalyze.getWorkflows(function(workflows){
+                //browser.jbanalyze.getWorkflows(function(workflows){
 
-                    if (workflows.length==0) {
-                        alert("no workflows found");
-                        return;
-                    }
+                //    if (workflows.length==0) {
+                //        alert("no workflows found");
+                //        return;
+                //    }
                                     
                     var dialog = new queryDialog({
                         browser:thisb.browser,
                         plugin:thisb.plugin,
-                        workflows:workflows
+                        workflows:thisb.workflows
                     });
                     dialog.analyzeMenu = browser.jbanalyze.analyzeMenus.JBPrimer3; 
                     dialog.show(function(x) {});
-                });             
+                //});             
             }          
         }
         function dialogContent(container) {

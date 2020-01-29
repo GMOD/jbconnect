@@ -58,14 +58,16 @@ module.exports = {
         let params = req.allParams();
         let g = sails.config.globals.jbrowse;
         let ds = params.dataset;
-        let service = params.service;
-        
+        let servModule = params.module;
         let wfpath = './workflows/';
-
         let filter = '.wf';
+        
+        //console.log(">> get_workflows params",params,g.plugins);
+        //console.log(">> get_workflows g.plugins",g.plugins);
+        //console.log(">> ",servModule,g.plugins[servModule]);
 
-        if (g.plugins && g.plugins[params.service])
-        filter = g.plugins[params.service].filter;
+        if (g.plugins && g.plugins[servModule])
+        filter = g.plugins[servModule].filter;
         
         sails.log(wfpath,process.cwd());
         

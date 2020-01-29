@@ -43,7 +43,6 @@ return declare( JBrowsePlugin,
             panelDelayTimer: null,
             bpSizeLimit: args.bpSizeLimit || 0,
             getWorkflows: this.getWorkflows,
-            analyzeDialog: thisB.Browser_analyzeDialog,
             countSequence: thisB.countSequence,
             analyzeMenus: {},
 
@@ -118,6 +117,7 @@ return declare( JBrowsePlugin,
      * Display blast dialog box
      * @returns {undefined}
      */
+    /*
     startBlast: function() {
         console.log("startBlast()");
         var thisB = this;
@@ -147,7 +147,9 @@ return declare( JBrowsePlugin,
             }
         }));             
     },
+    */
     // display blast dialog
+    /*
     Browser_analyzeDialog: function (region,bpSize) {
         var regionB = region;
         var thisB = this;
@@ -265,16 +267,16 @@ return declare( JBrowsePlugin,
 
         });
     },
-
+    */
     /**
      * get galaxy workflows (using jbrowse api)
      * @param {type} cb - cb(workflows]]
      * @returns {getWorkflows}
      */
-    getWorkflows(cb,service) {
+    getWorkflows(cb,servModule) {
         let browser = this.browser;
         
-        let xhr = $.get( "/service/exec/get_workflows?dataset="+browser.config.dataRoot+"&service="+service, function( data ) {
+        let xhr = $.get( "/service/exec/get_workflows?dataset="+browser.config.dataRoot+"&module="+servModule, function( data ) {
             console.log("get workflows result", data);
             cb(data);
         }).fail(function(jqxhr, textStatus, errorThrown) {
