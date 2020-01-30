@@ -91,8 +91,8 @@ module.exports = {
                     
                     //var s = params;
                     let serv = service.name;
-                    if (service.path && fs.existsSync(service.path+'.js'))
-                        serv = require (service.path);
+                    //if (service.path && fs.existsSync(service.path+'.js'))
+                    //    serv = require (service.path);
 
                     try {
                         
