@@ -3,7 +3,8 @@
  * @description 
  * Support functions for Service model.
  */
-var async = require('async');
+const async = require('async');
+const fs = require('fs-extra');
 
 module.exports = {
     
@@ -79,21 +80,27 @@ module.exports = {
                     var params = {
                         name:   service.name,
                         type:   service.type,
-                        module: 'jblast'
+                        module: 'jbconnect'
                     };
+                    if (service.module)
+                        params.module = service.module;
                     
                     // istanbul ignore next
                     if (typeof service.alias !== 'undefined')
                         params.alias = service.alias;
                     
-                    var s = params;
-                   
+                    //var s = params;
+                    let serv = service.name;
+                    if (service.path && fs.existsSync(service.path+'.js'))
+                        serv = require (service.path);
+
                     try {
-                        params.handler = eval(service.name);
+                        
+                        params.handler = eval(serv);
                     }
                     // istanbul ignore next 
                     catch(err) {
-                        sails.log.error('Service',service.name,'not found');
+                        sails.log.error('Service',service.name,'not found',err);
                         return cb1();
                     }
                     thisb.addService(params,cb1);
@@ -157,7 +164,7 @@ module.exports = {
         var handler = service.handler;
         var cb2 = cb;
         
-        sails.log.info('addService',service.name, service.type, service.module);
+        sails.log.info('addService',service.name, service.type, '('+service.module+')');
         
         // istanbul ignore next
         if (typeof service.name === 'undefined') {
