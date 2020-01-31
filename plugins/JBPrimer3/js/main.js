@@ -32,13 +32,13 @@ define([
 return declare( JBrowsePlugin,
 {
     constructor: function( args ) {
-        console.log("plugin: JBPrimer3 ",args);
+        console.log("plugin: JBPrimer3",args);
         
         var thisb = this;
         var browser = this.browser;
 
         browser.jbanalyze.analyzeMenus.JBPrimer3 = {
-            title: 'Primer3 Test',
+            title: 'Primer3 Analysis',
             module: 'JBPrimer3',
             init:initMenu,
             contents:dialogContent,
