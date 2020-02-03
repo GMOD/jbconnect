@@ -105,6 +105,55 @@ return declare( JBrowsePlugin,
                 console.log("Analyze menu",i);
                 analyzeMenus[i].init(menuName,queryDialog);
             }
+
+            browser.addGlobalMenuItem( menuName, new dijitMenuItem({
+                id: 'menubar_jblast_dbclean',
+                label: 'Reset Analysis Results',
+                //iconClass: 'dijitIconFilter',
+                onClick: function() {
+
+                    // show confirm dialog
+                    let confirmCleanBox = new Dialog({ title: 'Confirm Demo Cleanup',id:'demo-clean-confirm-dialog' });
+
+                    dom.create('div', {
+                        id: 'descript',
+                        innerHTML: 'This is a demo-only feature that will clean up the<br>job queue and tracks.  Are you sure you want to do this?'
+                    }, confirmCleanBox.containerNode );
+
+                    new dButton({
+                        id: 'yes',
+                        label: 'Yes',
+                        //iconClass: 'dijitIconDelete',
+                        onClick: function() {
+                            //alert('ding');
+                            $.post( "/util/democleanup",{}, function( data) {
+                                console.log("demo cleaned up");
+                                setTimeout(function() {
+                                    location.reload();
+                                },1000);
+                            });
+                            confirmCleanBox.destroyRecursive();
+                            //confirmCleanBox.hide();
+                        }
+                    })
+                    .placeAt( confirmCleanBox.containerNode );
+            
+                    new dButton({
+                        id: 'no',
+                        label: 'No',
+                        //iconClass: 'dijitIconDelete',
+                        onClick: function() {
+                            confirmCleanBox.destroyRecursive();
+                            //confirmCleanBox.hide();
+                        }
+                    })
+                    .placeAt( confirmCleanBox.containerNode );
+            
+                    confirmCleanBox.show();
+                
+                }
+            }));
+
             browser.renderGlobalMenu( menuName,'AnalyzeTools', browser.menuBar );
 
             // reorder the menubar
