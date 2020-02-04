@@ -64,12 +64,13 @@ _dialogContent: function () {
 
     },container);
 
-    let cfg = this.browser.config;
-
-    console.log("queryDialog.analyzeMenu",this.analyzeMenu);
-
     if (this.analyzeMenu && this.analyzeMenu.contents)
         this.analyzeMenu.contents(container);
+
+    // hide workflow selectr if only one entry.
+    setTimeout(function() {
+        if (workflows.length <= 1)  $('#workflow-div').hide();
+    },200);
 
 
     return container;

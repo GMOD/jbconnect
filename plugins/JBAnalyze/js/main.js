@@ -35,6 +35,7 @@ return declare( JBrowsePlugin,
         var thisB = this;
         var browser = this.browser;
 
+        
         browser.jbconnect = {
             asset: null,
             browser: browser,
