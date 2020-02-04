@@ -35,7 +35,7 @@ return declare( JBrowsePlugin,
         var thisB = this;
         var browser = this.browser;
 
-        browser.jbanalyze = {
+        browser.jbconnect = {
             asset: null,
             browser: browser,
             focusQueue: [],
@@ -48,7 +48,7 @@ return declare( JBrowsePlugin,
 
             // check if bpSize > bpSizeLimit, if bpSizeLimit is defined
             isOversized(bpSize) {
-                let bpSizeLimit = JBrowse.jbanalyze.bpSizeLimit;
+                let bpSizeLimit = JBrowse.jbconnect.bpSizeLimit;
 
                 if (bpSizeLimit && bpSize > bpSizeLimit) {
                     // oversize message
@@ -97,7 +97,7 @@ return declare( JBrowsePlugin,
             'plugins/JBAnalyze/js/queryDialog'
         ], function(dom,dijitMenuItem,Dialog,dButton,queryDialog){
             
-            let analyzeMenus = browser.jbanalyze.analyzeMenus;
+            let analyzeMenus = browser.jbconnect.analyzeMenus;
 
             //console.log("JBAnalyze toolmenu init",analyzeMenus);//Object.keys(analyzeMenus).length);
             
@@ -113,7 +113,7 @@ return declare( JBrowsePlugin,
                 onClick: function() {
 
                     // show confirm dialog
-                    let confirmCleanBox = new Dialog({ title: 'Confirm Demo Cleanup',id:'demo-clean-confirm-dialog' });
+                    let confirmCleanBox = new Dialog({ title: 'Confirm reset',id:'demo-clean-confirm-dialog' });
 
                     dom.create('div', {
                         id: 'descript',
@@ -173,7 +173,7 @@ return declare( JBrowsePlugin,
         var browser = this.browser;
         let bpSize = browser._highlight.end - browser._highlight.start;
 
-        if (browser.jbanalyze.isOversized(bpSize))  return;
+        if (browser.jbconnect.isOversized(bpSize))  return;
 
         browser.getStore('refseqs', dojo.hitch(this,function( refSeqStore ) {
             if( refSeqStore ) {

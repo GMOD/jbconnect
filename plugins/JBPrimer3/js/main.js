@@ -37,7 +37,7 @@ return declare( JBrowsePlugin,
         var thisb = this;
         var browser = this.browser;
 
-        browser.jbanalyze.analyzeMenus.JBPrimer3 = {
+        browser.jbconnect.analyzeMenus.JBPrimer3 = {
             title: 'Primer3 Analysis',
             module: 'JBPrimer3',
             init:initMenu,
@@ -45,8 +45,8 @@ return declare( JBrowsePlugin,
             process:processInput
         };
 
-        browser.jbanalyze.getWorkflows(function(workflows){
-            browser.jbanalyze.analyzeMenus.JBPrimer3.workflows = workflows;
+        browser.jbconnect.getWorkflows(function(workflows){
+            browser.jbconnect.analyzeMenus.JBPrimer3.workflows = workflows;
             thisb.workflows = workflows;
         }, 'JBPrimer3');
 
@@ -114,7 +114,7 @@ return declare( JBrowsePlugin,
             }));
             //console.log(thisb,thisb.plugin);
             function startBlastDialog() {
-                //browser.jbanalyze.getWorkflows(function(workflows){
+                //browser.jbconnect.getWorkflows(function(workflows){
 
                 //    if (workflows.length==0) {
                 //        alert("no workflows found");
@@ -126,7 +126,7 @@ return declare( JBrowsePlugin,
                         plugin:thisb.plugin,
                         workflows:thisb.workflows
                     });
-                    dialog.analyzeMenu = browser.jbanalyze.analyzeMenus.JBPrimer3; 
+                    dialog.analyzeMenu = browser.jbconnect.analyzeMenus.JBPrimer3; 
                     dialog.show(function(x) {});
                 //});             
             }          
@@ -189,7 +189,7 @@ return declare( JBrowsePlugin,
 
             // check if bpSize is oversized
             let bpSize = browser._highlight.end - browser._highlight.start;
-            if (browser.jbanalyze.isOversized(bpSize))  return {err: "oversized"};
+            if (browser.jbconnect.isOversized(bpSize))  return {err: "oversized"};
 
             // get parameter list
             let params = {}; 

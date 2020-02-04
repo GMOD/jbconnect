@@ -28,7 +28,9 @@ define(function(){
         initQueue(browser) {
             let thisb = this;
             this.browser = browser;
-            //browser.jbanalyze = { queue: this }
+            if (!browser.jbconnect)
+                browser.jbconnect = {};
+            browser.jbconnect.queue = this;
     
             // subscribe to all job objects including new
             io.socket.get('/job', function(resData, jwres) {console.log(resData);});
