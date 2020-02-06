@@ -272,7 +272,7 @@ module.exports = {
 
         let trackLabel = kJob.id+' '+kJob.data.name+' job results';
         //newTrackJson[0].category = kJob.name,
-        newTrackJson[0].label = kJob.name+"_"+kJob.id+Math.random(); 
+        newTrackJson[0].label = kJob.data.name+"_"+kJob.id+'-'+Math.random(); 
         newTrackJson[0].key = trackLabel;     
         newTrackJson[0].urlTemplate = kJob.data.name+'/'+kJob.id+'-'+kJob.data.name+'.gff3',
 
