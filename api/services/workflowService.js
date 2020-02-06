@@ -66,8 +66,8 @@ module.exports = {
         //console.log(">> get_workflows g.plugins",g.plugins);
         //console.log(">> ",servModule,g.plugins[servModule]);
 
-        if (g.plugins && g.plugins[servModule])
-        filter = g.plugins[servModule].filter;
+        if (g.workflowFilterEnable && g.workflowFilter && g.workflowFilter[servModule])
+            filter = g.workflowFilter[servModule].filter;
         
         sails.log(wfpath,process.cwd());
         

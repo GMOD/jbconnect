@@ -53,7 +53,9 @@ var g = {
           'nothingBurgerService': {name: 'nothingBurgerService',  type: 'service'}
         },
 
-        plugins: {
+        workflowFilterEnable: true,
+
+        workflowFilter: {
           JBPrimer3: {filter: '.p3.wf'},
           default: {filter: '.wf'}
         },
