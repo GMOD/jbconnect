@@ -142,7 +142,7 @@ postSubmit(postData) {
         var confirmBox = new Dialog({ title: 'Confirmation' });
         dojo.create('div', {
             id: 'confirm-btn',
-            innerHTML: 'submitted...'
+            innerHTML: 'Primer3 job submitted...'
         }, confirmBox.containerNode );
         confirmBox.show();
 
