@@ -113,7 +113,6 @@ describe('Primer3 integration test', function(){
                             console.log("track data",trackData);
                             
                             expect(res).to.have.status(200,'/track/get status 200');
-                            expect(trackData.trackData.jblast).to.equal(1,'the new track jblast field should be 1');
                             expect(trackData.trackData.label).to.equal(trackLabel,'track label verify '+trackLabel);
                             expect(trackData.lkey).to.equal(trackLabel+'|'+ds.id,'lkey verify'+trackData.lkey);
 
