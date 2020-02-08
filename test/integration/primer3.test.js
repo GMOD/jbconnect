@@ -50,7 +50,8 @@ describe('Primer3 integration test', function(){
                 expect(res).to.have.status(200, '/get_workflows api status 200');
                 let data = res.body;
                 //console.log("return data: ",data);
-                expect(data[0].id).to.equal('primer3.p3.wf.sh','id[0] is not NCBI.blast.workflow.js');
+                expect(data.length).to.not.equal(0,'get_workflow returns array > 0');
+                expect(data[0].id).to.equal('primer3.p3.wf.sh','id[0] is not primer3.p3.wf.js');
                 done();
             });
     });

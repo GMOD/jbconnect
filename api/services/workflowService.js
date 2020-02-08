@@ -59,20 +59,16 @@ module.exports = {
         let g = sails.config.globals.jbrowse;
         let ds = params.dataset;
         let servModule = params.module;
-        let wfpath = './workflows/';
+        let wfpath = approot+'/workflows/';
         let filter = '.wf';
         
-        //console.log(">> get_workflows params",params,g.plugins);
-        //console.log(">> get_workflows g.plugins",g.plugins);
-        //console.log(">> ",servModule,g.plugins[servModule]);
+        console.log("primer3.get_workflows",params);
 
         if (g.workflowFilterEnable && g.workflowFilter && g.workflowFilter[servModule])
             filter = g.workflowFilter[servModule].filter;
         
         sails.log(wfpath,process.cwd());
         
-        var fs = require('fs-extra');
-
         wflist = [];
         
         fs.readdirSync(wfpath).forEach(function(file) {
