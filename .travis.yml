@@ -13,7 +13,6 @@ script:
   - npm i @gmod/jbrowse@1.15.1
   - patch node_modules/@gmod/jbrowse/setup.sh fix_jbrowse_setup.patch
   - ./utils/jb_setup.js
-  - apt-get install -y build-essential g++ cmake git-all
   - git clone https://github.com/primer3-org/primer3.git primer3
   - cd primer3/src
   - make
