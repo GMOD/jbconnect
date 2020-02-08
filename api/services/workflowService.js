@@ -16,7 +16,7 @@
 */
 const path = require('path');
 const fs = require("fs-extra");
-const resolvePath = require('resolve-path');
+//const resolvePath = require('resolve-path');
 const approot = require("app-root-path");
 const shelljs = require('shelljs'); 
 const _ = require('lodash');
@@ -79,8 +79,8 @@ module.exports = {
                 wflist.push( {
                    id: file,
                    name: name[0],
-                   script: file,
-                   path: resolvePath(wfpath)
+                   script: file
+//                   path: resolvePath(wfpath)
                 });
             }
         });
