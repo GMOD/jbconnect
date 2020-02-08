@@ -40,7 +40,7 @@ describe('Primer3 integration test', function(){
                   });
           });
     });
-    it('get_workflows api',function(done) {
+    it('primer3 get_workflows api',function(done) {
         let conf = sails.config.globals.jbrowse.services;
 
         agent
@@ -62,7 +62,7 @@ describe('Primer3 integration test', function(){
 
             let ds = Dataset.Resolve('sample_data/json/volvox');      
             
-            let testWorkflow = 'Primer3.p3.wf.js';
+            let testWorkflow = 'primer3.p3.wf.sh';
             let testRegion = ">ctgA ctgA:7294..7962 length=669\n"+
             'aactccagcgtgcttagtgcaggcggagaacgtccgttcagtggtgcgtgctttatttttcaatctgacccgacctgc\n'+
             'gctcaagggttgcaagttgttgtgcgcccgagtaataggcgactcgtcgcaatgggtctggtacattgcattttcatc\n'+
