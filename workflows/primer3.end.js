@@ -2,16 +2,15 @@
  * complete primer3 processing 
  * primer3.end.js <jobDataFile> <primer3.out> <prier3.gff3>
  */
-
-// convert output file to 
+// convert output
 
 const fs = require('fs-extra');
 const jblib = require('../api/services/jbutillib');
 const util = require('./primer3.utils');
 const replaceall = require ('replaceall');
-var iniParser = require("config-ini-parser").ConfigIniParser;
 let getopt = require('node-getopt');
-
+var ConfigIniParser = require("config-ini-parser").ConfigIniParser;
+parser = new ConfigIniParser('\n');
 
 let options= [
     ['h','help', 'display this help']
@@ -23,26 +22,37 @@ let argv = opt.parsedOption.argv;
 
 console.log('> primer3.end',argv[0],argv[1],argv[2]);
 
+if (!fs.pathExistsSync(argv[1])) {
+    console.log(argv[1], 'does not exist');
+    process.exit(1);
+}
+
 try {
     console.log("cwd",process.cwd());
+
     // insert sequence into primer3 template
     let jobdata = JSON.parse(fs.readFileSync(argv[0], 'utf8'));
 
     let seq = util.parseSeqData(jobdata.region);
     let start = parseInt(util.getRegionStart(jobdata.region),10);   // todo: use wider int
 
-    console.log(start,seq);
+    console.log(argv[1],start,seq);
 
     let primer3out = fs.readFileSync(argv[1], 'utf8');
+
+    if (primer3out.length === 0) {
+        console.error(argv[1],'has no data');
+        process.exit(1);
+    }
+
     primer3out = primer3out.replace('=\n','');  // remove list terminator
 
-    console.log('out',primer3out);
+    console.log('primer3out',primer3out+"xxxxx",primer3out.length);
 
-    parser = new iniParser();
     parser.parse(primer3out); 
 
     let pairs = parseInt(parser.get("", "PRIMER_PAIR_NUM_RETURNED"),10);
-    //console.log("PRIMER_PAIR_NUM_RETURNED",pairs);
+    console.log("PRIMER_PAIR_NUM_RETURNED",pairs);
 
 
     let gff = "";
