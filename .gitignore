@@ -121,6 +121,7 @@ nbproject
 #jbconnect specific
 /workflows/
 /utils/
+/primer3/
 #!*/utils/*
 #!*/utils/**
 
