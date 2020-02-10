@@ -35,7 +35,9 @@ return declare( JBrowsePlugin,
         var thisB = this;
         var browser = this.browser;
 
-        
+        // skip the following if not logged in  <-------------------------
+        if (!this.browser.loginState) return;
+
         browser.jbconnect = {
             asset: null,
             browser: browser,
@@ -59,32 +61,14 @@ return declare( JBrowsePlugin,
                 else return false;
             }
         };
-
-        /*
-         * class override function intercepts
-         */
-        browser.afterMilestone( 'initView', function() {
-            
-         
-            // skip the following if not logged in  <-------------------------
-            if (!thisB.browser.loginState) return;
-
-            if (typeof browser.config.classInterceptList === 'undefined') {
-                browser.config.classInterceptList = {};
-            }
-            
-            // setInterval(function() {
-            //     if ($('div.popup-dialog div.feature-detail')[0]) {
-            //         thisB.insertFeatureDetail();
-            //     } 
-            // },2000);
-
-            // insert Analyze menu
-            setTimeout(function() {
-                thisB.initAnalyzeMenu();
-            }, 500);
+        // insert Analyze menu
+        browser.afterMilestone( '/jbrowse/jbclient_ready', function() {
+        
+            thisB.initAnalyzeMenu();
         });
+        
     },
+
     initAnalyzeMenu() {
         let thisb = this;
         let browser = this.browser;

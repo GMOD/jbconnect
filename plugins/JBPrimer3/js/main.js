@@ -37,6 +37,8 @@ return declare( JBrowsePlugin,
         var thisb = this;
         var browser = this.browser;
 
+        if (!this.browser.loginState) return;
+
         browser.jbconnect.analyzeMenus.JBPrimer3 = {
             title: 'Primer3 Analysis',
             module: 'JBPrimer3',
