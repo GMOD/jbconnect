@@ -10,7 +10,7 @@ install:
 before_script:
   - npm i -g sails@1.0.2
 script:
-  - npm i gmod/jbrowse@jbconnectdemo
+  - npm i gmod/jbrowse#jbconnectdemo
   - cat node_modules/@gmod/jbrowse/package.json
   - ./utils/jb_setup.js
   - git clone https://github.com/primer3-org/primer3.git primer3
