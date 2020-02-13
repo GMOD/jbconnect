@@ -35,9 +35,6 @@ return declare( JBrowsePlugin,
         var thisB = this;
         var browser = this.browser;
 
-        // skip the following if not logged in  <-------------------------
-        if (!this.browser.loginState) return;
-
         browser.jbconnect = {
             asset: null,
             browser: browser,
@@ -62,8 +59,12 @@ return declare( JBrowsePlugin,
             }
         };
         // insert Analyze menu
-        browser.afterMilestone( '/jbrowse/jbclient_ready', function() {
-        
+        browser.afterMilestone( 'initView', function() {    
+            //console.log(">>>>> Analyze Menu",thisB.browser.loginState);
+
+            // skip the following if not logged in  <-------------------------
+            if (!thisB.browser.loginState) return;
+            
             thisB.initAnalyzeMenu();
         });
         
@@ -84,15 +85,18 @@ return declare( JBrowsePlugin,
             
             let analyzeMenus = browser.jbconnect.analyzeMenus;
 
-            //console.log("JBAnalyze toolmenu init",analyzeMenus);//Object.keys(analyzeMenus).length);
+            console.log("JBAnalyze toolmenu init",analyzeMenus);//Object.keys(analyzeMenus).length);
             
             for(let i in analyzeMenus) {
                 console.log("Analyze menu",i);
-                analyzeMenus[i].init(menuName,queryDialog);
+                if (analyzeMenus[i].queryDialog) 
+                    analyzeMenus[i].init(menuName,analyzeMenus[i].queryDialog)
+                else
+                    analyzeMenus[i].init(menuName,queryDialog);
             }
 
             browser.addGlobalMenuItem( menuName, new dijitMenuItem({
-                id: 'menubar_jblast_dbclean',
+                id: 'menubar_analyze_dbclean',
                 label: 'Reset Analysis Results',
                 //iconClass: 'dijitIconFilter',
                 onClick: function() {

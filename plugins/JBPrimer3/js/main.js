@@ -32,12 +32,12 @@ define([
 return declare( JBrowsePlugin,
 {
     constructor: function( args ) {
-        console.log("plugin: JBPrimer3",args);
+        console.log("plugin: JBPrimer3",args,"login",this.browser.loginState);
         
         var thisb = this;
         var browser = this.browser;
 
-        if (!this.browser.loginState) return;
+        //if (!this.browser.loginState) return;
 
         browser.jbconnect.analyzeMenus.JBPrimer3 = {
             title: 'Primer3 Analysis',
