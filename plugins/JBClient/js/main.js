@@ -87,7 +87,29 @@ return declare( JBrowsePlugin,
                     }
                 });
             });
-        }); 
+        });
+
+        // if we are not logged in, hide REST tracks.
+        // todo: use include method
+        browser.afterMilestone( 'loadConfig', function() {
+            thisB.loginState = false;
+            $.get("/loginstate",function(data) {
+                //console.log("loginstate",data);
+                thisB.loginState = data.loginstate;
+                if (!thisB.loginState) {
+                    let conf = dojo.clone(browser.config.tracks);
+                    browser.config.tracks = [];
+                    for(let i=0; i < conf.length;i++) {
+                        if (typeof conf[i].urlTemplate === 'undefined' || conf[i].urlTemplate.charAt(0) !== "/") {
+                            browser.config.tracks.push(conf[i]);
+                        }
+                        else {
+                            console.log(conf[i].label, "track requires login");
+                        }
+                    }
+                }
+            });
+        });
         browser.afterMilestone( 'initView', function() {
             // inject the actual login/logou redirect
             $('#form-login').attr('action','/auth/local?next='+thisB.browser.makeCurrentViewURL());

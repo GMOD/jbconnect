@@ -33,12 +33,6 @@ module.exports = function (sails) {
     return {
 
         configure: function() {
-            //sails.log("jbcore configure");
-            //if (typeof sails.config.globals.jbrowse !== 'undefined') sails.log("globals.jbrowse exist");
-            //if (typeof sails.config.globals.jbhooks === 'undefined') sails.config.globals.jbhooks = [];
-            //sails.config.globals.jbhooks.splice(0, 0, "jbcore");
-            
-            //JbUtils.testFunction("called from jbcore.configure()");
         },
         initialize: function(cb) {
             sails.log("Hook: jbcore initialize"); 
@@ -57,8 +51,6 @@ module.exports = function (sails) {
                             });
                         });
                         Job.Init({},function() {
-                            //sails.log("Job.start done");
-                            //return cb();
                         });
 
                     });
@@ -67,8 +59,6 @@ module.exports = function (sails) {
                 return cb();
                 
             });
-            
-            //return cb();
         },
         routes: {
             before: {

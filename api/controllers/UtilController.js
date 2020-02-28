@@ -119,8 +119,13 @@ module.exports = {
 						for(var i in records ) {
 							if (!_.isUndefined(records[i].trackData.keep)) continue;
 
-							if ( !_.isUndefined(records[i].trackData.category) && records[i].trackData.category==="JBlast Results" ) {
-								deleteRecs.push(records[i]);
+							if ( !_.isUndefined(records[i].trackData.category)
+							    && records[i].trackData.JBConnect && records[i].trackData.JBConnect===true 
+								// && (records[i].trackData.category==="JBlast Results"
+								// ||  records[i].trackData.category==='Primer3')
+								) {
+								
+									deleteRecs.push(records[i]);
 							}
 						}
 						if (deleteRecs.length) {

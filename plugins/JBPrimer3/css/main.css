@@ -1,0 +1,9 @@
+.pr-params .pr-head {
+    color:blue;
+}
+.pr-params input {
+    width: 35px;
+}
+.pr-params td {
+    padding-left:5px;
+}

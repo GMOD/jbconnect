@@ -8,17 +8,26 @@
 const approot = require('app-root-path'); 
 const fs = require("fs-extra");
 const shelljs = require("shelljs");
+const jblib = require('../api/services/jbutillib');
 
 const setupScript = "setup.sh";
 const thisPath = process.cwd();
 
+var config = jblib.getMergedConfig();
+
+console.log("config",config);
+
+
 // check if jbrowse is a module
-if (fs.pathExistsSync(approot+"/node_modules/@gmod/jbrowse/"+setupScript)) {
-    shelljs.cd("node_modules/@gmod/jbrowse");
+//if (fs.pathExistsSync(approot+"/node_modules/@gmod/jbrowse/"+setupScript)) {
+//    shelljs.cd("node_modules/@gmod/jbrowse");
+//}
+if (fs.pathExistsSync(config.jbrowsePath+setupScript)) {
+    shelljs.cd(config.jbrowsePath);
 }
 
 shelljs.exec("./"+setupScript);
 
 shelljs.cd(thisPath);
 
-shelljs.cp(approot+"/node_modules/@gmod/jbrowse/setup.log",approot+"/jbrowse-setup.log");
+shelljs.cp(config.jbrowsePath+"/setup.log",approot+"/jbrowse-setup.log");

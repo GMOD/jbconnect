@@ -24,10 +24,15 @@ module.exports = {
                   }
                   else if (job[0].state === "error"){
                       clearInterval(loop);
-                      console.log("*** error job data",job[0]);
+                      console.error("*** error job data",job[0]);
                       return complete(0,"job completed in error");
                   }
               });
         },3000);
+        setTimeout(function() {
+            clearInterval(loop);
+            console.error('*** error waitForJobComplete timeout');
+            return complete(0,"timeout");
+        },20000);
     }
 }

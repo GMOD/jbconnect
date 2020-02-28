@@ -121,6 +121,7 @@ nbproject
 #jbconnect specific
 /workflows/
 /utils/
+/primer3/
 #!*/utils/*
 #!*/utils/**
 
@@ -129,7 +130,6 @@ nbproject
 /blastbin
 /config.js
 /jbconnect.config.js
-/workflows
 /assets/jblib
 /test/data/localDb.db
 /tmp

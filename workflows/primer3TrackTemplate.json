@@ -1,0 +1,22 @@
+{
+  "JBConnect":true,
+  "maxFeatureScreenDensity": 16,
+  "style": {
+    "_defaultLabelScale": 30,
+    "_defaultDescriptionScale": 120,
+    "showLabels": true,
+    "showTooltips": true,
+    "label": "name,id",
+    "description": "customdescription",
+    "color": "#E32A3A"
+  },
+
+  "displayMode": "normal",
+  "storeClass": "JBrowse/Store/SeqFeature/GFF3",
+  "urlTemplate": "../../raw/volvox/volvox.gff3",
+  "type": "JBrowse/View/Track/CanvasFeatures",  
+  "metadata": {
+    "description": "Primer3"
+  },
+  "category": "Primer3"
+}
