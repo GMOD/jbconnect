@@ -98,7 +98,7 @@
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-publish": "^1.0.0",
     "istanbul": "^0.4.5",
-    "jsdoc": "^3.5.4",
+    "jsdoc": "^3.6.3",
     "jsdoc-sphinx": "0.0.6",
     "minimist": "^1.2.0",
     "mocha": "^5.2.0",
