@@ -6,9 +6,9 @@
     module.exports  = {
         jbrowse: {
             services: {
-                'sampleJobService':         {enable: true,  name: 'sampleJobService    ',  type: 'workflow', alias: "jblast"},
-                'basicWorkflowService':     {enable: false, name: 'basicWorkflowService',  type: 'workflow', alias: "jblast"},
-                'galaxyService':            {enable: false, name: 'galaxyService',         type: 'workflow', alias: "jblast"}
+                'sampleJobService':      {enable: true,  name: 'sampleJobService',   type: 'workflow', alias: "jblast"},
+                'localBlastService':     {enable: false, name: 'localBlastService',  type: 'workflow', alias: "jblast"},
+                'galaxyBlastService':    {enable: false, name: 'galaxyBlastService', type: 'workflow', alias: "jblast"}
             },
         }
     };
@@ -62,7 +62,7 @@ module.exports = {
         let wfpath = approot+'/workflows/';
         let filter = '.wf';
         
-        console.log("primer3.get_workflows",params);
+        console.log("localCommonService.get_workflows",params);
 
         if (g.workflowFilterEnable && g.workflowFilter && g.workflowFilter[servModule])
             filter = g.workflowFilter[servModule].filter;
@@ -121,7 +121,7 @@ module.exports = {
 
         console.log('jobdata',JSON.stringify(kJob,null,2));
 
-        let nothingName = "sample nothing ";
+        //let nothingName = "sample nothing ";
         
         kJob.data.name = jobClass
         kJob.update(function() {});
