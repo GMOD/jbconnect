@@ -49,7 +49,6 @@ var g = {
         // search job service registration
         services: {
           'localCommonService':       {enable: true, name: 'localCommonService',  type: 'workflow', alias:'workflow'},
-          'serverSearchService':  {enable: false, name: 'serverSearchService',  type: 'service'},
           'nothingBurgerService': {name: 'nothingBurgerService',  type: 'service'}
         },
 
