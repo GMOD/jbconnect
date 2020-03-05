@@ -112,10 +112,10 @@ module.exports = {
         let thisb = this;
         let g = sails.config.globals.jbrowse;
         let tmpdir = approot+'/tmp';
-        let jobClass = kJob.data.workflow.split('.')[0];
-        let jobName = kJob.id + '-'+jobClass;
+        this.jobClass = kJob.data.workflow.split('.')[0];
+        let jobName = kJob.id + '-'+this.jobClass;
         let wf = approot+'/workflows/'+kJob.data.workflow;
-        let outPath = g.jbrowsePath + kJob.data.dataset + '/' + jobClass;
+        let outPath = g.jbrowsePath + kJob.data.dataset + '/' + this.jobClass;
 
         let jobDataFile = tmpdir+'/'+jobName + '-jobdata.json'; 
 
@@ -123,13 +123,13 @@ module.exports = {
 
         //let nothingName = "sample nothing ";
         
-        kJob.data.name = jobClass
+        kJob.data.name = this.jobClass
         kJob.update(function() {});
 
         let jobData = _.clone(kJob.data);
         jobData.id = kJob.id;
         jobData.name = jobName;
-        jobData.class = jobClass;      
+        jobData.class = this.jobClass;      
 
         try {
             fs.ensureDirSync(tmpdir);
@@ -180,6 +180,7 @@ module.exports = {
             postAction.addToTrackList(kJob,newTrackJson);
         });
     },
+    /*
     _runWorkflow: function(kJob) {
 
         var thisb = this;
@@ -257,13 +258,13 @@ module.exports = {
         //sails.log('>>> Workflow complete');
         
     },
-
+    */
     //  (not required)
     //  here, we do some arbitrary post prosessing.
     //  in this example, we are setting a dummy jbrowse track data.    
     postDoNothing(kJob,cb) {
 
-        let templateFile = approot+'/workflows/primer3TrackTemplate.json';
+        let templateFile = approot+'/workflows/'+this.jobClass+'.TrackTemplate.json';
         let newTrackJson = [JSON.parse(fs.readFileSync(templateFile))];
 
         let trackLabel = kJob.id+' '+kJob.data.name+' job results';
