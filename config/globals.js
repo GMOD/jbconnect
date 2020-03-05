@@ -56,6 +56,7 @@ var g = {
 
         workflowFilter: {
           JBPrimer3: {filter: '.p3.wf'},
+          JBSample: {filter: '.samp.wf'},
           default: {filter: '.wf'}
         },
         
