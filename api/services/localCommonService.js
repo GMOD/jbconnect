@@ -17,8 +17,8 @@
 const path = require('path');
 const fs = require("fs-extra");
 const approot = require("app-root-path");
-const shelljs = require('shelljs'); 
 const _ = require('lodash');
+const utils = require('./seqUtils');
 const { exec, spawn } = require('child_process');
 
 module.exports = {
@@ -104,9 +104,12 @@ module.exports = {
 
         console.log('jobdata',JSON.stringify(kJob,null,2));
 
-        //let nothingName = "sample nothing ";
-        
-        kJob.data.name = this.jobClass
+        kJob.data.sequence = utils.parseSeqData(kJob.data.region);
+
+        let seq = kJob.data.sequence;
+        kJob.data.name = this.jobClass+' '+seq.seq+':'+seq.start+'..'+seq.end;
+        kJob.data.workflowName = this.jobClass;
+
         kJob.update(function() {});
 
         let jobData = _.clone(kJob.data);
@@ -163,11 +166,11 @@ module.exports = {
         let templateFile = approot+'/workflows/'+this.jobClass+'.TrackTemplate.json';
         let newTrackJson = [JSON.parse(fs.readFileSync(templateFile))];
 
-        let trackLabel = kJob.id+' '+kJob.data.name+' job results';
+        let trackLabel = kJob.id+' '+this.jobClass+' job results';
         //newTrackJson[0].category = kJob.name,
-        newTrackJson[0].label = kJob.data.name+"_"+kJob.id+'-'+Math.random(); 
+        newTrackJson[0].label = this.jobClass+"_"+kJob.id+'-'+Math.random(); 
         newTrackJson[0].key = trackLabel;     
-        newTrackJson[0].urlTemplate = kJob.data.name+'/'+kJob.id+'-'+kJob.data.name+'.gff3',
+        newTrackJson[0].urlTemplate = this.jobClass+'/'+kJob.id+'-'+this.jobClass+'.gff3',
 
         kJob.data.track = newTrackJson[0];
         kJob.update(function() {});
