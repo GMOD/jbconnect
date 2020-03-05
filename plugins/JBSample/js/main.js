@@ -138,8 +138,8 @@ return declare( JBrowsePlugin,
             var searchBoxDiv = dom.create('div', {
                 className: "section",
                 innerHTML:
-                    '<div class="pr-params">'
-                    +'    <input class="pr-data" type="text" name="CUSTOM_DATA">'
+                    '<div class="s-params">'
+                    +'    <input class="s-data" type="text" name="CUSTOM_DATA">'
                     +'</div>'
                     //'<span classs="header">Input sequence to submit</span><br />'+ 
                     //</tr>/'<textarea id="sequence-text" class="seq-text" />'
@@ -147,7 +147,7 @@ return declare( JBrowsePlugin,
 
             // setup default values for fields
             setTimeout(function() {
-                $('.pr-data[name=CUSTOM_DATA]').val('hello world');
+                $('.s-data[name=CUSTOM_DATA]').val('hello world');
             },200);
         }
         function processInput(cb) {
@@ -159,7 +159,7 @@ return declare( JBrowsePlugin,
 
             // get parameter list
             let params = {}; 
-            $( ".pr-params .pr-data" ).each(function( i ) {
+            $( ".s-params .s-data" ).each(function( i ) {
                 console.log( $(this).attr('name')+ ": " + $( this ).val() );
                 params[$(this).attr('name')] = $( this ).val();
             });            
