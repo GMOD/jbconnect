@@ -6,7 +6,7 @@
     module.exports  = {
         jbrowse: {
             services: {
-                'sampleJobService':      {enable: true,  name: 'sampleJobService',   type: 'workflow', alias: "jblast"},
+                'sampleJobService':      {enable: true,  name: 'sampleJobService',   type: 'workflow'},
                 'localBlastService':     {enable: false, name: 'localBlastService',  type: 'workflow', alias: "jblast"},
                 'galaxyBlastService':    {enable: false, name: 'galaxyBlastService', type: 'workflow', alias: "jblast"}
             },
@@ -16,7 +16,6 @@
 */
 const path = require('path');
 const fs = require("fs-extra");
-//const resolvePath = require('resolve-path');
 const approot = require("app-root-path");
 const shelljs = require('shelljs'); 
 const _ = require('lodash');
@@ -85,22 +84,6 @@ module.exports = {
             }
         });
 
-        // handle filtering of workflow names (ref #225)
-        // if (g.jblast.workflowFilterEnable && g.jblast.workflowFilter && g.jblast.workflowFilter.galaxy && g.jblast.workflowFilter.galaxy[ds]) {
-        //     let workflows = _.cloneDeep(wflist);
-        //     let nf = g.jblast.workflowFilter.galaxy[ds].nameFilter;
-        //     let filtered = [];
-            
-        //     for(let i in workflows) {
-        //         if (workflows[i].name.indexOf(nf) >= 0) {
-        //             workflows[i].name = workflows[i].name.replace(nf,"");
-        //             filtered.push(workflows[i]);
-        //         }
-        //     }
-        //     console.log("get_workflows filtered",filtered);
-        //     return res.ok(filtered);
-        // }
-        
         console.log("get_workflows",wflist);
 
         res.ok(wflist);
@@ -159,15 +142,6 @@ module.exports = {
           thisb._postProcess(kJob);
         });        
 
-
-        // let f1 = setInterval(function() {
-        //     if (kJob.data.count===0) {
-        //         clearInterval(f1);
-        //         thisb._postProcess(kJob);
-        //     }
-        //     kJob.data.name = nothingName+kJob.data.count--;
-        //     kJob.update(function() {});
-        // },1000);
     },
 
     //  (not required)
@@ -176,14 +150,15 @@ module.exports = {
     _postProcess(kJob) {
         
         // insert track into trackList.json
-        this.postDoNothing(kJob,function(newTrackJson) {
+        this.insertTrack(kJob,function(newTrackJson) {
             postAction.addToTrackList(kJob,newTrackJson);
         });
     },
+
     //  (not required)
     //  here, we do some arbitrary post prosessing.
     //  in this example, we are setting a dummy jbrowse track data.    
-    postDoNothing(kJob,cb) {
+    insertTrack(kJob,cb) {
 
         let templateFile = approot+'/workflows/'+this.jobClass+'.TrackTemplate.json';
         let newTrackJson = [JSON.parse(fs.readFileSync(templateFile))];
