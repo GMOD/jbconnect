@@ -6,28 +6,18 @@
 define([
     'dojo/_base/declare',
     'dojo/dom-construct',
-    'dojo/_base/lang',
-    'dojo/Deferred',
-    'dojo/dom-construct',
-    'dojo/query',
     'JBrowse/Plugin',
-       'dijit/form/Button',
-       'dijit/Dialog',
-       "dojo/store/Memory",
-       "dijit/form/ComboBox",
-        'dijit/Menu',
-        'dijit/MenuItem',
-       'JBrowse/has'
+    'dijit/form/Button',
+    'dijit/Dialog',
+    'dijit/MenuItem'
    ],
    function(
     declare,
     dom,
-    lang,
-    Deferred,
-    domConstruct,
-    query,
     JBrowsePlugin,
-    Button, Dialog, Memory, ComboBox,Menu,MenuItem,has
+    Button, 
+    Dialog, 
+    MenuItem
    ) {
 return declare( JBrowsePlugin,
 {
@@ -36,8 +26,6 @@ return declare( JBrowsePlugin,
         
         var thisb = this;
         var browser = this.browser;
-
-        //if (!this.browser.loginState) return;
 
         browser.jbconnect.analyzeMenus.JBPrimer3 = {
             title: 'Primer3 Analysis',
@@ -65,8 +53,7 @@ return declare( JBrowsePlugin,
                     if (btnState==='mixed') {
                         // launch blast dialog
                         console.log("launch blast dialog");
-                        //plugin.startBlast();
-                        startBlastDialog();
+                        startPrimer3Dialog();
 
                     }
                     if (btnState==='false' || btnState==='true') {
@@ -84,11 +71,6 @@ return declare( JBrowsePlugin,
                         }
                         txt += 'Highlight the region by clicking the start coordinate in the track area of the genome browser, ';
                         txt += 'holding down and dragging to the end coordinate and releasing. ';
-
-                        //txt += 'The BLAST button <img src="plugins/JBAnalyze/img/blast_btn.PNG" height="22px"/> will ';
-                        //txt += 'then appear in the tool button area. Click the BLAST button to blast the highlighted region.';                                            
-
-
 
                         // show highlight instruct box
                         var confirmBox = new Dialog({ title: 'Highlight region to submit for analysis' });
@@ -114,14 +96,7 @@ return declare( JBrowsePlugin,
                     }
                 }
             }));
-            //console.log(thisb,thisb.plugin);
-            function startBlastDialog() {
-                //browser.jbconnect.getWorkflows(function(workflows){
-
-                //    if (workflows.length==0) {
-                //        alert("no workflows found");
-                //        return;
-                //    }
+            function startPrimer3Dialog() {
                                     
                     var dialog = new queryDialog({
                         browser:thisb.browser,
@@ -130,7 +105,6 @@ return declare( JBrowsePlugin,
                     });
                     dialog.analyzeMenu = browser.jbconnect.analyzeMenus.JBPrimer3; 
                     dialog.show(function(x) {});
-                //});             
             }          
         }
         function dialogContent(container) {
@@ -208,13 +182,9 @@ return declare( JBrowsePlugin,
                         hilite,
                         dojo.hitch( this, function( seq ) {
                             let bpSize = hilite.end-hilite.start;
-                            //console.log('startBlast() found sequence',hilite,bpSize);
                             require(["JBrowse/View/FASTA"], function(FASTA){
                                 var fasta = new FASTA();
                                 var fastaData = fasta.renderText(hilite,seq);
-                                //console.log('FASTA',fastaData);
-                                //delete fasta;
-                                //browser.analyzeDialog(fastaData,bpSize);
                                 cb({
                                     region:fastaData,
                                     bpSize:bpSize,
