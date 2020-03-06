@@ -2,6 +2,111 @@
 Tutorials
 *********
 
+Creating a workflow that uses localCommonService Job Service
+============================================================
+localCommonService is a workflow processing Job Service that can be used to execute general workflows scripts.
+In this example, we present sample analysis module (JBSample).  We show how to create a client-side JBrowse plugin that integrates with JBrowse, 
+adding a menu item under Analyze menu.  It's a fully functional demo module that has a server-side execution shell script and performs
+some arbitrary processing.  The example also demonstrates the client-side plugin collects user data in its submit dialog box and passes it
+to be used by the execution script.
+
+JBSample JBrowse Plugin
+-----------------------
+
+A sample plugin, JBSample source code can be found `here <https://github.com/GMOD/jbconnect/blob/master/plugins/JBSample/js/main.js>`_
+
+In the file constructor of main.js, we find: 
+::
+    // analyze menu structure
+    browser.jbconnect.analyzeMenus.JBSample = {
+        title: 'Sample Analysis',
+        module: 'JBSample',
+        init:initMenu,
+        contents:dialogContent,
+        process:processInput
+    };
+
+
+where, 
+* ``title`` is the title of the dialog box that is launched from the Analyze Menu.
+* ``module`` is the module that is module name.  Coincides with module name used in `Configuration the sample workflow script`_
+* ``init`` is the function that initializes the selection items in the Analyze Menu for the module.
+* ``contents`` is a function that builds the contents of the dialog box.  This can be used to collect custom data prior to submitting.
+* ``process`` is a function that collects the custom data from the fields created by ``contents`` to pass through the submit function.
+
+In our example, the ``initMenu()`` does the setup of the Analyze menu item and when the item is selected by the user, it detects if a region has been 
+highlighted.  This is a pretty common thing that is check by nearly all our processing modules.  If the region is not highlighted,
+We show an instructional dialog box instructing the user to highlight a region using JBrowse's highlight feature.
+
+In ``dialogContent()``, we render an additional field in the submit dialog box for CUSTOM_DATA.  The user can type any value in the input box.
+Upon submitting the job, the demonstration shows how data is passed from the user end to the execution script.
+
+``processInput()`` is called when the user clicks submit.  Here we show the custom input field data are cellected and we show how to pass the 
+field data to the system and ultimately submitted to JBConnect.
+
+Again, processing begins through localCommonService.js, the thing that takes control of the job and launches the workflow script that was selected by the user.
+Note, the user may will not see the workflow selection unless there are more than one workflow.  In our case, there is only one workflow script, so 
+it will automatically be selected by the client plugin code.
+
+
+sample.samp.wf.js Worflow Script
+--------------------------------
+
+The workflow script resides in the workflow directory.
+In this example sample.samp.wf.js is a very simple script that copies sample.gff3 to the target directory; in demonstrating 
+the passing of data from the client side to the server side script, it extracts the CUSTOM_DATA field that was captured
+by the JBSample plugin and appends the value to every feature of sample.gff3. 
+::
+    # cmd <id> <jobid> <jobdata> <tmpdir> <outdir>
+    echo "> my.sample.wf.sh " $0 $1 $2 $3 $4 $5
+
+    # copy sample.gff3 to target dir
+    cp ./bin/sample.gff3 "$5/$2.gff3"
+
+    # extract value of CUSTOM_DATA
+    MYVALUE=$(awk -v k=CUSTOM_DATA -F: '/{|}/{next}{gsub(/^ +|,$/,"");gsub(/"/,"");if($1==k)print $2}' $3)
+
+    # add CUSTOM_DATA=MYVALUE as attribute to all features
+    sed -e "s/$/;CUSTOM_DATA=$MYVALUE/" -i "$5/$2.gff3"
+
+Note the 5 parameters that are passed to the command by ``localCommonService``.  
+
+* $0  is the script path (ie: "/home/theuser/jbconnect/workflows/sample.samp.wf.sh")
+* $1 <id> the job id (ie: "32")
+* $2 <jobid> the job name (ie: "32-sample")
+* $3 <jobdata> path of the job data file (ie: "/home/theuser/jbconnect/tmp/32-sample-jobdata.json")
+* $4 <tmpdir> the directory where temporary or intermediate files might be placed.
+* $5 <outdir> is the target directory where result files (like gff3 files) might be placed.
+
+The full command looks something like this: 
+``/home/theuser/jbconnect/workflows/sample.samp.wf.sh 32 32-sample /home/theuser/jbconnect/tmp/32-sample-jobdata.json /home/theuser/jbconnect/tmp /home/theuser/jb1151/sample_data/json/volvox/sample``
+
+``localCommonService`` expects to see a file <outdir>/<jobid>.gff3.  So, the script creates this result file in the target directory based on the given
+input parameters of the script.  This is just the way ``localCommonService`` works.  If the application requires other result files, a another Job Service would need to be
+created.  (see `Creating a Stand-Alone Job Service for local workflow processing`_)
+
+The script can be found under the workflows dir, `here <https://github.com/GMOD/jbconnect/blob/master/workflows/sample.samp.wf.sh>`_
+
+
+Configuration the sample workflow script
+----------------------------------------
+
+Configuration can be applied in ``globals.js`` or in ``JBConnect.config.js``
+::
+
+    workflowFilter: {
+        JBSample: {filter: '.samp.wf'},
+    },
+
+The filter value corresponding to the module name, JBSample, is a filter that get_workflow uses to filter scripts that work with the particular module.
+
+This configuration is required to enable the system to recognize the Job Service exists.
+::
+    services: {
+        'localCommonService':       {enable: true, name: 'localCommonService',  type: 'workflow', alias:'workflow'}
+    },
+
+
 Creating a Stand-Alone Job Service for local workflow processing
 ================================================================
 
@@ -150,9 +255,9 @@ To enable: edit jbconnect.config.js add the ``sampleJobService`` line under ``se
     module.exports  = {
         jbrowse: {
             services: {
-                'sampleJobService':         {enable: true,  name: 'sampleJobService    ',  type: 'workflow', alias: "jblast"},
-                'basicWorkflowService':     {enable: false, name: 'basicWorkflowService',  type: 'workflow', alias: "jblast"},
-                'galaxyService':            {enable: false, name: 'galaxyService',         type: 'workflow', alias: "jblast"}
+                'sampleJobService':         {enable: true,  name: 'sampleJobService',   type: 'workflow'},                    <====
+                'localBlastService':        {enable: false, name: 'localBlastService',  type: 'workflow', alias: "jblast"},
+                'galaxyBlastService':       {enable: false, name: 'galaxyBlastService', type: 'workflow', alias: "jblast"}
             },
         }
     };
