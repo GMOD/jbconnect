@@ -36,7 +36,7 @@ return declare( JBrowsePlugin,
         };
 
         browser.jbconnect.getWorkflows(function(workflows){
-            browser.jbconnect.analyzeMenus.JBPrimer3.workflows = workflows;
+            browser.jbconnect.analyzeMenus.JBSample.workflows = workflows;
             thisb.workflows = workflows;
         }, 'JBSample');
 
