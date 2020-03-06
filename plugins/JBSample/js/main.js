@@ -114,6 +114,7 @@ return declare( JBrowsePlugin,
                 className: "section",
                 innerHTML:
                     '<div class="s-params">'
+                    +'    Add CUSTOM_DATA= attribute to all features in the sample result.<br/>'
                     +'    <input class="s-data" type="text" name="CUSTOM_DATA">'
                     +'</div>'
             }, container );
