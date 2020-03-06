@@ -4,7 +4,7 @@ Tutorials
 
 Creating a workflow that uses localCommonService Job Service
 ============================================================
-localCommonService is a workflow processing Job Service that can be used to execute general workflows scripts.
+``localCommonService`` is a workflow processing Job Service that can be used to execute general workflows scripts.
 In this example, we present sample analysis module (JBSample).  We show how to create a client-side JBrowse plugin that integrates with JBrowse, 
 adding a menu item under Analyze menu.  
 
@@ -35,8 +35,9 @@ In the file constructor of main.js, we find:
 
 
 where, 
+
 * ``title`` is the title of the dialog box that is launched from the Analyze Menu.
-* ``module`` is the module that is module name.  Coincides with module name used in `Configuration the sample workflow script`_
+* ``module`` is the module that is module name.  Coincides with module name used in `Configuration of sample workflow script`_
 * ``init`` is the function that initializes the selection items in the Analyze Menu for the module.
 * ``contents`` is a function that builds the contents of the dialog box.  This can be used to collect custom data prior to submitting.
 * ``process`` is a function that collects the custom data from the fields created by ``contents`` to pass through the submit function.
@@ -86,7 +87,9 @@ Note the 5 parameters that are passed to the command by ``localCommonService``.
 * $5 <outdir> is the target directory where result files (like gff3 files) might be placed.
 
 The full command looks something like this: 
-``/home/theuser/jbconnect/workflows/sample.samp.wf.sh 32 32-sample /home/theuser/jbconnect/tmp/32-sample-jobdata.json /home/theuser/jbconnect/tmp /home/theuser/jb1151/sample_data/json/volvox/sample``
+``/home/theuser/jbconnect/workflows/sample.samp.wf.sh 32 32-sample 
+    /home/theuser/jbconnect/tmp/32-sample-jobdata.json 
+    /home/theuser/jbconnect/tmp /home/theuser/jb1151/sample_data/json/volvox/sample``
 
 ``localCommonService`` expects to see a file <outdir>/<jobid>.gff3.  So, the script creates this result file in the target directory based on the given
 input parameters of the script.  This is just the way ``localCommonService`` works.  If the application requires other result files, a another Job Service would need to be
@@ -95,8 +98,8 @@ created.  (see `Creating a Stand-Alone Job Service for local workflow processing
 The script can be found under the workflows dir, `here <https://github.com/GMOD/jbconnect/blob/master/workflows/sample.samp.wf.sh>`_
 
 
-Configuration the sample workflow script
-----------------------------------------
+Configuration of sample workflow script
+---------------------------------------
 
 Configuration can be applied in ``globals.js`` or in ``JBConnect.config.js``
 ::
@@ -105,7 +108,7 @@ Configuration can be applied in ``globals.js`` or in ``JBConnect.config.js``
         JBSample: {filter: '.samp.wf'},
     },
 
-The filter value corresponding to the module name, JBSample, is a filter that get_workflow uses to filter scripts that work with the particular module.
+The filter value corresponding to the module name, JBSample, is a filter that ``get_workflow`` of ``localCommonService`` uses to filter scripts that work with the particular module.
 
 This configuration is required to enable the system to recognize the Job Service exists.
 ::
