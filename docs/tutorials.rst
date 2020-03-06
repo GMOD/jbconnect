@@ -87,9 +87,11 @@ Note the 5 parameters that are passed to the command by ``localCommonService``.
 * $5 <outdir> is the target directory where result files (like gff3 files) might be placed.
 
 The full command looks something like this: 
-``/home/theuser/jbconnect/workflows/sample.samp.wf.sh 32 32-sample 
-    /home/theuser/jbconnect/tmp/32-sample-jobdata.json 
-    /home/theuser/jbconnect/tmp /home/theuser/jb1151/sample_data/json/volvox/sample``
+::
+    /home/theuser/jbconnect/workflows/sample.samp.wf.sh 32 32-sample 
+      /home/theuser/jbconnect/tmp/32-sample-jobdata.json 
+      /home/theuser/jbconnect/tmp /home/theuser/jb1151/sample_data/json/volvox/sample
+      
 
 ``localCommonService`` expects to see a file <outdir>/<jobid>.gff3.  So, the script creates this result file in the target directory based on the given
 input parameters of the script.  This is just the way ``localCommonService`` works.  If the application requires other result files, a another Job Service would need to be
