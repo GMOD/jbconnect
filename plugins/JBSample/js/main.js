@@ -40,7 +40,7 @@ return declare( JBrowsePlugin,
             thisb.workflows = workflows;
         }, 'JBSample');
 
-        
+        // initMenu sets up Analyze Menu item(s)
         function initMenu(menuName,queryDialog,container) {
             browser.addGlobalMenuItem( menuName, new MenuItem({
                 id: 'menubar_submit_sample',
@@ -107,6 +107,8 @@ return declare( JBrowsePlugin,
                     dialog.show(function(x) {});
             }          
         }
+
+        // setup content of submit dialog box
         function dialogContent(container) {
             //Render textarea box
 
@@ -124,6 +126,8 @@ return declare( JBrowsePlugin,
                 $('.s-data[name=CUSTOM_DATA]').val('hello world');
             },200);
         }
+
+        // after Submit button is pressed, this processes input from the dialog prior to submitting the job.
         function processInput(cb) {
             console.log ('JBSample processInput',browser);
 
@@ -138,7 +142,7 @@ return declare( JBrowsePlugin,
                 params[$(this).attr('name')] = $( this ).val();
             });            
             
-
+            // get the highlighted region data
             browser.getStore('refseqs', dojo.hitch(this,function( refSeqStore ) {
                 if( refSeqStore ) {
                     var hilite = browser._highlight;
