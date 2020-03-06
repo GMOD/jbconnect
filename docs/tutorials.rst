@@ -6,9 +6,16 @@ Creating a workflow that uses localCommonService Job Service
 ============================================================
 localCommonService is a workflow processing Job Service that can be used to execute general workflows scripts.
 In this example, we present sample analysis module (JBSample).  We show how to create a client-side JBrowse plugin that integrates with JBrowse, 
-adding a menu item under Analyze menu.  It's a fully functional demo module that has a server-side execution shell script and performs
+adding a menu item under Analyze menu.  
+
+.. image:: img/sample-menu.png
+
+It's a fully functional demo module that has a server-side execution shell script and performs
 some arbitrary processing.  The example also demonstrates the client-side plugin collects user data in its submit dialog box and passes it
 to be used by the execution script.
+
+.. image:: img/sample-dialog.png
+
 
 JBSample JBrowse Plugin
 -----------------------
