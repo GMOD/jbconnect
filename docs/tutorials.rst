@@ -4,7 +4,7 @@ Tutorials
 
 Creating a workflow that uses localCommonService Job Service
 ============================================================
-``localCommonService`` is a workflow processing Job Service that can be used to execute general workflows scripts.
+``api/services/localCommonService.js`` is a workflow processing Job Service that can be used to execute general workflows scripts.
 In this example, we present sample analysis module (JBSample).  We show how to create a client-side JBrowse plugin that integrates with JBrowse, 
 adding a menu item under Analyze menu.  
 
@@ -52,8 +52,8 @@ Upon submitting the job, the demonstration shows how data is passed from the use
 ``processInput()`` is called when the user clicks submit.  Here we show the custom input field data are cellected and we show how to pass the 
 field data to the system and ultimately submitted to JBConnect.
 
-Again, processing begins through localCommonService.js, the thing that takes control of the job and launches the workflow script that was selected by the user.
-Note, the user may will not see the workflow selection unless there are more than one workflow.  In our case, there is only one workflow script, so 
+Again, processing begins through ``localCommonService.js``, the thing that takes control of the job and launches the workflow script that was selected by the user.
+Note, the user will not see the workflow selection box unless there are more than one workflow.  In our case, there is only one workflow script, so 
 it will automatically be selected by the client plugin code.
 
 
@@ -91,7 +91,7 @@ The full command looks something like this:
     /home/theuser/jbconnect/workflows/sample.samp.wf.sh 32 32-sample 
       /home/theuser/jbconnect/tmp/32-sample-jobdata.json 
       /home/theuser/jbconnect/tmp /home/theuser/jb1151/sample_data/json/volvox/sample
-      
+
 
 ``localCommonService`` expects to see a file <outdir>/<jobid>.gff3.  So, the script creates this result file in the target directory based on the given
 input parameters of the script.  This is just the way ``localCommonService`` works.  If the application requires other result files, a another Job Service would need to be
@@ -117,6 +117,11 @@ This configuration is required to enable the system to recognize the Job Service
     services: {
         'localCommonService':       {enable: true, name: 'localCommonService',  type: 'workflow', alias:'workflow'}
     },
+
+
+
+
+
 
 
 Creating a Stand-Alone Job Service for local workflow processing
