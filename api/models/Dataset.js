@@ -112,21 +112,25 @@ module.exports = {
         var g = sails.config.globals.jbrowse;
         var thisb = this;
 
-        // this will be an assoc array referenced by dataset id and path
-        //g.datasets = {};
-
-        // these will be associative arrays
-        var modelItems = {};                    // Dataset db items
-        //sails.log('g.dataSet',g.dataSet);
-
         // convert to assoc array in confItems
         for(var i in g.dataSet) {
             thisb._dataSets[g.dataSet[i].path] = g.dataSet[i];
             thisb._dataSets[g.dataSet[i].path].name = i;
         }
 
+        (async () => {
+            await Dataset.destroy({});
+
+            for(var i in thisb._dataSets) {
+                var created = await Dataset.create(thisb._dataSets[i]);
+                console.log("created dataset id",created.id);
+                thisb._dataSets[created.path].id = created.id;
+            }
+            cb();
+        })();
+
+/*
         Dataset.find({}, function(err,mItems) {
-            /* istanbul ignore if */
             if (err) {
                 cb(err);
                 return;
@@ -136,7 +140,6 @@ module.exports = {
 
             async.each(thisb._dataSets,function(item,cb1) {
                 //console.log('item',item,modelItems);
-                /* istanbul ignore else */
                 if (typeof modelItems[item.path] !== 'undefined') {     
 
                     thisb._dataSets[item.path].id = modelItems[item.path].id;
@@ -174,7 +177,6 @@ module.exports = {
                     });
                 }
             },function asyncEachDone(err) {
-                /* istanbul ignore if */
                 if (err) {
                     sails.log.error("asyncEachDone failed",err);
                     return cb(err);
@@ -201,9 +203,7 @@ module.exports = {
                     if (typeof thisb._dataSets[item.path] === 'undefined') {
                         //sails.log('deleting dataset',j);
 
-                        /* istanbul ignore next  */
                         Dataset.destroy(item.id,function(err) {
-                            /* istanbul ignore else  */
                             if (err) {
                                 sails.log.error('Dataset.destroy failed - id=',item.id);
                                 return cb(err);
@@ -215,7 +215,6 @@ module.exports = {
                         });
                     }
                 }, 
-                /* istanbul ignore next */ 
                 function(err) {
                     if (err) {
                         sails.log.error("deleteItems failed");
@@ -225,6 +224,7 @@ module.exports = {
                 });
             }
         });
+        */
     }
 };
 

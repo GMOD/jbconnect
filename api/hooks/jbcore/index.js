@@ -46,12 +46,9 @@ module.exports = function (sails) {
                     Service.Init({},function() {
 
                         Dataset.Init({},function(){
-                            Track.Init({}, function() {
-                                
-                            });
+                            Track.Init({}, function() {});
                         });
-                        Job.Init({},function() {
-                        });
+                        Job.Init({},function() {});
 
                     });
                 },1000);

@@ -61,7 +61,8 @@ module.exports = {
      */
     Init: function(params,cb) {
         //Track.startWatch();
-        return cb();
+        this.Sync(cb);
+        //return cb();
     },
     /*
      * Start watching trackList.json
@@ -373,8 +374,51 @@ module.exports = {
      * @param {string} dataset   ie. ("sample_data/json/volvox")
      * 
      */
-    
-    Sync: function(dataset,cb) {
+
+    Sync: function(cb) {
+        const g = sails.config.globals.jbrowse;
+        const datasets = Dataset._dataSets;
+
+        (async () => {
+            try {
+                await Track.destroy({});
+            }
+            catch(err) {
+                sails.log.error("faild to delete old tracks");
+                cb(err);
+            }
+
+            for(var i in datasets) {
+
+                let ds = datasets[i];
+
+                let trackListPath = g.jbrowsePath + ds.path + '/trackList.json';
+                let fTracks = JSON.parse(fs.readFileSync(trackListPath,"utf8")).tracks;
+
+                for(var k in fTracks) {
+                    let data = {
+                        dataset: ds.id,
+                        path: ds.path,
+                        lkey: fTracks[k].label+'|'+ds.id,
+                        trackData: fTracks[k]
+                    };
+
+                    try {
+                        var created = await Track.create(data);
+                        sails.log("created track id",created.id,created.lkey);
+                    }
+                    catch(err) {
+                        sails.log.error("failed to create track:",err);
+                        cb(err);
+                    }
+                }
+            }
+            cb();
+        })();
+
+    },
+
+    SyncOld: function(dataset,cb) {
         var g = sails.config.globals.jbrowse;
 
         let ds = Dataset.Resolve(dataset);
