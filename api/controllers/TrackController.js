@@ -31,6 +31,7 @@ module.exports = {
      */
     get: function(req,res) {
         var params = req.allParams();
+        params.session = req.session;
         sails.log("/track/get",params);
         /* istanbul ignore else */
         if (req.method === 'GET') {
@@ -45,6 +46,34 @@ module.exports = {
         else 
             return res.forbidden('requires POST');
     },
+
+    /**
+     * get JBrowse tracklist
+     * 
+     * ``GET /track/get_tracklist``
+     * 
+     * @param {object} req - request
+     * @param {object} res - response
+     * 
+     */
+    get_tracklist: function(req,res) {
+        var params = req.allParams();
+        params.session = req.session;
+        sails.log("/track/get_tracklist",params);
+        /* istanbul ignore else */
+        if (req.method === 'GET') {
+            Track.GetTrackList(params,function(err,data) {
+                /* istanbul ignore next */
+                if (err) res.serverError(err);
+                /* istanbul ignore next */
+                if (data.length===0) return res.notFound();
+                return res.ok(data);
+            });
+        } 
+        else 
+            return res.forbidden('requires POST');
+    },
+
     /**
      * add a new track
      * 
@@ -82,6 +111,7 @@ module.exports = {
      */
     add: function(req,res) {
         var params = req.allParams();
+        params.session = req.session;
         var track = params;
         //console.log("TrackController /track/add track",track);
 
@@ -135,6 +165,7 @@ module.exports = {
      */
     modify: function(req,res) {
         var params = req.allParams();
+        params.session = req.session;
         var track = params;
         // istanbul ignore else
         if (req.method === 'POST') {
@@ -165,6 +196,7 @@ module.exports = {
      */
     remove: function(req,res) {
         let params = req.allParams();
+        params.session = req.session;
         //let id = params.id;
         //let dataset = Dataset.Resolve(params.dataset);
         //let label = params.label;

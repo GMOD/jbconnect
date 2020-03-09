@@ -47,7 +47,8 @@ module.exports.policies = {
     },
     'TrackController' : {
         '*': ['passport','isAdmin'],
-        'get': true
+        'get': true,
+        'get_tracklist': true
     },
     'UserController' : {
         '*': ['passport','sessionAuth','isAdmin']

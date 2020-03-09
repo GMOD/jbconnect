@@ -168,6 +168,7 @@ module.exports = {
      * 
      */
     Get: function(params,cb) {
+        delete params.session;
         this.find(params).then(function(foundList) {
            return cb(null,foundList); 
         }).catch(function(err){
@@ -181,6 +182,7 @@ module.exports = {
      * @param (function) cb - callback function(err,
      */
     Remove: function(params,cb) {
+        delete params.session;
         let thisb = this;
         let g = sails.config.globals.jbrowse;
         if (_.isUndefined(params.id)) return cb("id not defined");
@@ -234,8 +236,14 @@ module.exports = {
             return cb(err);
         }
 
+        var user = params.session.user.username;
+        delete params.session;
+
         var jobdata = params;
-        
+
+        // user tha that created the job
+        jobdata.user = user;
+
         // generate name
         jobdata.name = service.generateName(params);
 

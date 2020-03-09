@@ -226,6 +226,7 @@ module.exports = {
         
         // given the route /service/exec/mycmd, id will be 'mycmd', the command
         var cmdName = req.params['id'];
+        var session = req.session;
         
         // if it contains a ':', it is a long form command
         if (cmdName.indexOf(':') !== -1) {
