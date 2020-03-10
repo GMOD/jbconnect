@@ -168,9 +168,19 @@ module.exports = {
      * 
      */
     Get: function(params,cb) {
+        const user = params.session.user.username;
         delete params.session;  // not using this yet
+
         this.find(params).then(function(foundList) {
-           return cb(null,foundList); 
+            let filteredList = [];
+
+            for (var i in foundList) {
+                let job = foundList[i];
+                if (job.data.user === user) {
+                    filteredList.push(job);
+                }
+            }
+            return cb(null,filteredList); 
         }).catch(function(err){
             // istanbul ignore next
             return cb(err);
