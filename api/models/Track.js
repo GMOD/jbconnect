@@ -108,9 +108,34 @@ module.exports = {
      * 
      */
     Get(params,cb) {
-        delete params.session;  // we don't use this yet
+        let dataset = null;
+        let user = null;
+        if (params.dataset) dataset = params.dataset.split('?')[0];
+        if (params.session || params.session.user || params.session.user.username) user = params.session.user.username;
+        if (params.user) user = params.user;
+
+        delete params.dataset;
+        delete params.user;
+        delete params.session;
+
+        // number of parameters to match filter
+        let match = 0;
+        if (dataset) match++;
+        if (user) match++;
+
+          // we don't use this yet
         this.find(params).then(function(foundList) {
-           cb(null,foundList) 
+            let filteredList = [];
+
+            for (var i in foundList) {
+                let track = foundList[i];
+                let c = 0;
+                if (dataset && track.path===dataset) c++;
+                if (user && track.trackData.user === user) c++;
+
+                if (c===match)  filteredList.push(track);
+            }
+            cb(null,filteredList) 
         }).catch(function(err){
             // istanbul ignore next
             cb(err);
@@ -125,7 +150,7 @@ module.exports = {
      */
     GetTrackList(params,cb) {
         if (!params.session.authenticated) {
-            cb(null,{});
+            cb(null,{});    // return nothing if not logged in
         }
         else { 
             if (!params.dataset) {
@@ -438,7 +463,7 @@ module.exports = {
                 // create if it doesn't exist
                 if (!fs.existsSync(trackListPath))
                     fs.writeFileSync(trackListPath,JSON.stringify({tracks:[]}));
-                    
+
                 let fTracks = JSON.parse(fs.readFileSync(trackListPath,"utf8")).tracks;
 
                 for(var k in fTracks) {
