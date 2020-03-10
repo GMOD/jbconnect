@@ -123,7 +123,7 @@ module.exports = {
 
             for(var i in thisb._dataSets) {
                 var created = await Dataset.create(thisb._dataSets[i]);
-                console.log("created dataset id",created.id);
+                console.log("dataset id",created.id,created.path);
                 thisb._dataSets[created.path].id = created.id;
             }
             cb();

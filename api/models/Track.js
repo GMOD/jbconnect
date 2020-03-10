@@ -35,6 +35,8 @@ const deferred = require('deferred');
 const deepmerge = require('deepmerge');
 const _ = require('lodash');
 
+const trackList_json = "jbconnect-tracks.json";
+
 module.exports = {
 
     attributes: {
@@ -106,6 +108,7 @@ module.exports = {
      * 
      */
     Get(params,cb) {
+        delete params.session;  // we don't use this yet
         this.find(params).then(function(foundList) {
            cb(null,foundList) 
         }).catch(function(err){
@@ -113,13 +116,51 @@ module.exports = {
             cb(err);
         });
     },
+    /**
+     * Get JBrowse tracklist in JSON format of tracks based on critera in params
+     *   
+     * @param {object} params - search critera
+     * @param {function} cb - callback ``function(err,json)``
+     * 
+     */
+    GetTrackList(params,cb) {
+        if (!params.session.authenticated) {
+            cb(null,{});
+        }
+        else { 
+            if (!params.dataset) {
+                cb('missing dataset parameter');
+                return;
+            }
+            const dataset = params.dataset.split('?')[0];
+            const g = sails.config.globals.jbrowse;
+            const user = params.session.user.username;
+
+            this.find({}).then(function(foundList) {
+                let filteredList = { tracks:[] };
+
+                for (var i in foundList) {
+                    let track = foundList[i].trackData;
+                    sails.log("track",track.key);
+                    if (track.user === user) {
+                        track.urlTemplate = '../'+g.routePrefix+'/'+dataset+'/'+track.urlTemplate;
+                        filteredList.tracks.push(track);
+                    }
+                }
+                cb(null,filteredList) 
+            }).catch(function(err){
+                // istanbul ignore next
+                cb(err);
+            });
+        }
+    },    
     /*
-     * Add a track. into trackList.json and db.
+     * Add a track. into jbconnect-tracks.json and db.
      * addTrack.dataset must be defined as either int ( of db dataset id) or string (dataset string ie. ref of data = "sample_data/json/volvox")
      * addTrack.label must be defined and unique
      * dataset must exist with a physical location.
      * 
-     * @param {object} track - this is a object that is essentially a track in trackList.json
+     * @param {object} track - this is a object that is essentially a track in jbconnect-tracks.json
      * @returns {object} lkey (ie. {lkey:"xxxx"})
      */
     Add: function(addTrack,cb) {
@@ -128,7 +169,7 @@ module.exports = {
         var g = sails.config.globals.jbrowse;
         if (_.isUndefined(addTrack.dataset)) return cb("dataset not defined");
         var ds = Dataset.Resolve(addTrack.dataset);
-        var trackListPath = g.jbrowsePath + ds.path + '/' + 'trackList.json';
+        var trackListPath = g.jbrowsePath + ds.path + '/' + trackList_json;
 
         // validate
         if (ds===null) return cb("dataset does not exist");
@@ -139,7 +180,7 @@ module.exports = {
         //addTrack.dataset = ds.id;
         delete addTrack.dataset;
         
-        // save track to trackList.json
+        // save track to jbconnect-tracks.json
         try {
           var trackListData = fs.readFileSync (trackListPath);
           var config = JSON.parse(trackListData);
@@ -236,7 +277,7 @@ module.exports = {
         var thisb = this;
         var g = sails.config.globals.jbrowse;
         var ds = Dataset.Resolve(updateTrack.dataset);
-        var trackListPath = g.jbrowsePath + ds.path + '/trackList.json';
+        var trackListPath = g.jbrowsePath + ds.path + '/'+trackList_json;
 
         Track.PauseWatch(ds.id);
         
@@ -312,7 +353,7 @@ module.exports = {
 
             // save track to tracklist json
             
-            var trackListPath = g.jbrowsePath + dataSet.path + '/' + 'trackList.json';
+            var trackListPath = g.jbrowsePath + dataSet.path + '/' + trackList_json;
             try {
               var trackListData = fs.readFileSync (trackListPath);
               var config = JSON.parse(trackListData);
@@ -392,7 +433,7 @@ module.exports = {
 
                 let ds = datasets[i];
 
-                let trackListPath = g.jbrowsePath + ds.path + '/trackList.json';
+                let trackListPath = g.jbrowsePath + ds.path + '/'+trackList_json;
                 let fTracks = JSON.parse(fs.readFileSync(trackListPath,"utf8")).tracks;
 
                 for(var k in fTracks) {
@@ -405,7 +446,7 @@ module.exports = {
 
                     try {
                         var created = await Track.create(data);
-                        sails.log("created track id",created.id,created.lkey);
+                        sails.log("track id",created.id,created.lkey);
                     }
                     catch(err) {
                         sails.log.error("failed to create track:",err);
@@ -424,10 +465,10 @@ module.exports = {
         let ds = Dataset.Resolve(dataset);
         console.log("Track.sync dataset",ds);
 
-        var trackListPath = g.jbrowsePath + ds.path + '/' + 'trackList.json';
+        var trackListPath = g.jbrowsePath + ds.path + '/' + trackList_json;
 
         var mTracks = {};       // model db tracks
-        var fTracks = {};       // file (trackList.json) tracks
+        var fTracks = {};       // file (jbconnect-tracks.json) tracks
 
         Track.find({path:ds.path})
             .then(function(modelTracks) {
