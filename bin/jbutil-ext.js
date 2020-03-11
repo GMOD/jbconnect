@@ -16,7 +16,8 @@ module.exports = {
             ['r' , 'removeall'      , 'remove JBConnect components from JBrowse'],
             [''  ,'pushplugins'     , 'link plugins into JBrowse dir'],
             [''  ,'coverage=PLUGIN' , 'used with --pushplugins to add coverage instrumentation'],
-            [''  ,'buildwebpack'    , 'build jbrowse webpack']
+            [''  ,'buildwebpack'    , 'build jbrowse webpack'],
+            [''  ,'settrackinc'     , 'push track includes to trackList.json for datasets']
         ];        
     },
     getHelpText: function() {
@@ -62,6 +63,9 @@ module.exports = {
         }
         if (opt.options['buildwebpack']) {
             jblib.buildWebpack();
+        }
+        if (opt.options['settrackinc']) {
+            jblib.inject_tracklist();
         }
     },
     init: function(config) {

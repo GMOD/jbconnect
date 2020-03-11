@@ -20,6 +20,7 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
       'jb-inject-plugins',
       'jb-inject-index',
+      'jb-inject-tracklist',
       'compileAssets', 
       'linkAssets',
       'watch'

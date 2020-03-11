@@ -15,6 +15,7 @@ module.exports = function(grunt) {
   grunt.registerTask('prod', [
     'jb-inject-plugins',
     'jb-inject-index',
+    'jb-inject-tracklist',
     'compileAssets',
     'concat',
     'uglify',
