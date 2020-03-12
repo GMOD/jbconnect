@@ -54,7 +54,8 @@ module.exports.policies = {
         '*': ['passport','sessionAuth','isAdmin']
     },    
     'UtilController' : {
-        '*': ['passport','isAdmin']
+        '*': ['passport','isAdmin'],
+        'testfn':true
     }    
     
   /***************************************************************************

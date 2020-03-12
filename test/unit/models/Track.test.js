@@ -49,7 +49,7 @@ describe('Track Model', function() {
   describe('verify boostrap Track.Sync was successful', function() {
     it('should verify boostrap Track.Sync was successful', function(done) {
       // only test the first dataset    
-      let dataset = Dataset.Resolve(1);
+      let dataset = Dataset.Resolve('sample_data/json/volvox');
 
       read_db_and_f(dataset.path,function(t) {
 
@@ -79,7 +79,7 @@ describe('Track Model', function() {
   describe('test Track.Sync after adding new db items', function() {
     it('should test Track.Sync after adding new db items', function(done) {
       // only test the first dataset    
-      let dataset = Dataset.Resolve(1);
+      let dataset = Dataset.Resolve('sample_data/json/volvox');
 
       let cr1,cr2;
 
@@ -157,7 +157,7 @@ describe('Track Model', function() {
   describe('verify trackcounts should be original value', function() {
     it('should verify boostrap Track.Sync was successful', function(done) {
       // only test the first dataset    
-      let dataset = Dataset.Resolve(1);
+      let dataset = Dataset.Resolve('sample_data/json/volvox');
 
       read_db_and_f(dataset.path,function(t) {
 
@@ -188,7 +188,7 @@ describe('Track Model', function() {
   describe('test Track.Sync after adding new file items', function() {
     it('should test Track.Sync after adding new db items', function(done) {
       // only test the first dataset    
-      let ds = Dataset.Resolve(1);
+      let ds = Dataset.Resolve('sample_data/json/volvox');
 
       let cr1,cr2;
 
@@ -266,7 +266,7 @@ describe('Track Model', function() {
   describe('test Track.Sync after modifying a file track', function() {
     it('should test Track.Sync after modifying file track', function(done) {
       // only test the first dataset    
-      let ds = Dataset.Resolve(1);
+      let ds = Dataset.Resolve('sample_data/json/volvox');
 
       let cr1,cr2;
 
@@ -315,7 +315,7 @@ describe('Track Model', function() {
   describe(' call /track/add', function() {
     it('should call /track/add', function(done) {
           
-      let ds = Dataset.Resolve(1);
+      let ds = Dataset.Resolve('sample_data/json/volvox');
       let t1 = {
           "dataset":ds.id,
           "label": "test5",
@@ -371,7 +371,7 @@ describe('Track Model', function() {
   describe('test /track/remove & Track.Remove', function() {
     it('should call /track/remove', function(done) {
           
-      let dataset = Dataset.Resolve(1);
+      let dataset = Dataset.Resolve('sample_data/json/volvox');
 
       Track.findOne({lkey: "test4|1"}).exec(function(err,found) {
         console.log("track remove findeOne",found);
@@ -412,8 +412,7 @@ describe('Track Model', function() {
   describe('test /track/modify & Track.Modify', function() {
     it('should call /track/modify', function(done) {
           
-      let dataset = Dataset.Resolve(1);
-      let ds = Dataset.Resolve(1);
+      let ds = Dataset.Resolve('sample_data/json/volvox');
 
       let teststr1 = "best modified ho";
       let teststr2 = "best things for last";

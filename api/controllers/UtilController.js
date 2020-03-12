@@ -169,5 +169,9 @@ module.exports = {
         else 
             return res.forbidden('requires POST');
 
+	},
+	testfn: function(req, res) {
+		console.log(Dataset.Resolve('sample_data/json/volvox'));
+		res.ok();
 	}
 };
