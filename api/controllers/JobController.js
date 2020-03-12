@@ -86,6 +86,7 @@ module.exports = {
      */
     get: function(req,res) {
         var params = req.allParams();
+        params.session = req.session;
         sails.log("/job/get",params);
         // istanbul ignore else
         if (req.method === 'GET') {
@@ -123,6 +124,7 @@ module.exports = {
      */
     submit: function(req,res) {
         var params = req.allParams();
+        params.session = req.session;
         sails.log("/job/submit",params);
         // istanbul ignore else
         if (req.method === 'POST') {

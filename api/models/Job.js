@@ -168,8 +168,35 @@ module.exports = {
      * 
      */
     Get: function(params,cb) {
+        let user = null;
+        let remoteClient = false;
+        
+        if (params.session) remoteClient=true;
+
+        if (params.session && params.session.user && params.session.user.username) {
+            if (params.session.authenticated)
+                user = params.session.user.username;
+            else
+                user = null;
+        }
+        delete params.session;  // not using this yet
+
+        // return nothing if we are a remote client and user is not logged in.
+        if (remoteClient && !user)
+            return cb(null,[]);
+
         this.find(params).then(function(foundList) {
-           return cb(null,foundList); 
+            let filteredList = [];
+            if (user) {
+                for (var i in foundList) {
+                    let job = foundList[i];
+                    if (job.data.user === user) {
+                        filteredList.push(job);
+                    }
+                }
+                return cb(null,filteredList)
+            }
+            return cb(null,foundList); 
         }).catch(function(err){
             // istanbul ignore next
             return cb(err);
@@ -234,7 +261,13 @@ module.exports = {
             return cb(err);
         }
 
+        var user = params.session.user.username;
+        delete params.session;
+
         var jobdata = params;
+
+        // user tha that created the job
+        jobdata.user = user;        
         
         // generate name
         jobdata.name = service.generateName(params);

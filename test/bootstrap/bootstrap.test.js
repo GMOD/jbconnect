@@ -8,7 +8,10 @@
 sails = require('sails');
 const shell = require('shelljs');
 const _ = require("lodash");
-const async = require("async");
+//const async = require("async");
+const jblib = require('../../api/services/jbutillib');
+const fs = require('fs-extra')
+
 
 before(function(done) {
     console.log("Lifting SAILS...");
@@ -63,55 +66,24 @@ before(function(done) {
         setTimeout(function() {
             console.log(">>>post timeout",typeof done);
 
-            Track.find({}).then(function(records) {
-                //console.log('xxxbootstrap records',records)
-                if (err) {
-                    console.log("bootstrap failed to get tracks",err);
-                    return done();
-                }
-                if (_.isUndefined(records)) {
-                    sails.log.error("Track.Get undefined records");
-                    return done();
-                }
-                if (records.length > 0) {
-                    
-                    let deleteRecs = [];
-                    for(var i in records ) {
-                        if ( !_.isUndefined(records[i].trackData.category) && records[i].trackData.category==='JBConnectTest' ) {
-                            deleteRecs.push(records[i]);
-                        }
-                        if ( !_.isUndefined(records[i].trackData.testtrack) && records[i].trackData.testtrack===true ) {
-                            deleteRecs.push(records[i]);
-                        }
-                    }
-                    if (deleteRecs.length) {
-                        sails.log.info("Removing test tracks with category test tracks");
-                    
-                        async.eachLimit(deleteRecs,1,
-                            function(rec,cb){
-                                console.log("remove rec",rec);
-                                
-                                Track.Remove(rec,function(err,id) {
-                                    if (err) {
-                                        sails.log.error("failed to remove",err);
-                                        return cb(err);
-                                    }
-                                    sails.log.info("removed",rec.lkey);
-                                    return cb();
-                                });
-                                
-                                //return cb();
-                            },
-                            function(err){
-                                // all done
-                                done();
-                            }
-                        );
-                    }
-                    else done();
-                }
-                else 
-                    done();
+            const g = jblib.getMergedConfig();
+            const dataset = 'sample_data/json/volvox';
+            //const file = g.jbrowsePath+dataset+'/trackList.json';
+            const file = g.jbrowsePath+dataset+'/jbconnect-tracks.json';
+
+            let config = JSON.parse(fs.readFileSync(file,'utf8'));
+            let tracks = config.tracks;
+            let updatedTracks = [];
+
+            for(var i in tracks) {
+                if ( (tracks[i].category && tracks[i].category==='JBConnectTest') || (tracks[i].testtrack && tracks[i].testtrack===true)) {}
+                else updatedTracks.push(tracks[i]);
+            }
+            config.tracks = updatedTracks;
+            fs.writeFileSync(file,JSON.stringify(config,null,2));
+
+            Track.Sync(function() {
+                done();
             });
         },2000);
     });

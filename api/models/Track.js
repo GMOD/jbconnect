@@ -35,6 +35,8 @@ const deferred = require('deferred');
 const deepmerge = require('deepmerge');
 const _ = require('lodash');
 
+const trackList_json = "jbconnect-tracks.json";
+
 module.exports = {
 
     attributes: {
@@ -106,20 +108,85 @@ module.exports = {
      * 
      */
     Get(params,cb) {
+        let dataset = null;
+        let user = null;
+        if (params.dataset) dataset = params.dataset.split('?')[0];
+        if (params.session || params.session.user || params.session.user.username) user = params.session.user.username;
+        if (params.user) user = params.user;
+
+        delete params.dataset;
+        delete params.user;
+        delete params.session;
+
+        // number of parameters to match filter
+        let match = 0;
+        if (dataset) match++;
+        if (user) match++;
+
+          // we don't use this yet
         this.find(params).then(function(foundList) {
-           cb(null,foundList) 
+            cb(null,foundList);
+            // let filteredList = [];
+
+            // for (var i in foundList) {
+            //     let track = foundList[i];
+            //     let c = 0;
+            //     if (dataset && track.path===dataset) c++;
+            //     if (user && track.trackData.user === user) c++;
+
+            //     if (c===match)  filteredList.push(track);
+            // }
+            // cb(null,filteredList) 
         }).catch(function(err){
             // istanbul ignore next
             cb(err);
         });
     },
+    /**
+     * Get JBrowse tracklist in JSON format of tracks based on critera in params
+     *   
+     * @param {object} params - search critera
+     * @param {function} cb - callback ``function(err,json)``
+     * 
+     */
+    GetTrackList(params,cb) {
+        if (!params.session.authenticated) {
+            cb(null,{});    // return nothing if not logged in
+        }
+        else { 
+            if (!params.dataset) {
+                cb('missing dataset parameter');
+                return;
+            }
+            const dataset = params.dataset.split('?')[0];
+            const g = sails.config.globals.jbrowse;
+            const user = params.session.user.username;
+
+            this.find({}).then(function(foundList) {
+                let filteredList = { tracks:[] };
+
+                for (var i in foundList) {
+                    let track = foundList[i].trackData;
+                    sails.log("track",track.key);
+                    if (track.user === user) {
+                        track.urlTemplate = '../'+g.routePrefix+'/'+dataset+'/'+track.urlTemplate;
+                        filteredList.tracks.push(track);
+                    }
+                }
+                cb(null,filteredList) 
+            }).catch(function(err){
+                // istanbul ignore next
+                cb(err);
+            });
+        }
+    },    
     /*
-     * Add a track. into trackList.json and db.
+     * Add a track. into jbconnect-tracks.json and db.
      * addTrack.dataset must be defined as either int ( of db dataset id) or string (dataset string ie. ref of data = "sample_data/json/volvox")
      * addTrack.label must be defined and unique
      * dataset must exist with a physical location.
      * 
-     * @param {object} track - this is a object that is essentially a track in trackList.json
+     * @param {object} track - this is a object that is essentially a track in jbconnect-tracks.json
      * @returns {object} lkey (ie. {lkey:"xxxx"})
      */
     Add: function(addTrack,cb) {
@@ -128,7 +195,7 @@ module.exports = {
         var g = sails.config.globals.jbrowse;
         if (_.isUndefined(addTrack.dataset)) return cb("dataset not defined");
         var ds = Dataset.Resolve(addTrack.dataset);
-        var trackListPath = g.jbrowsePath + ds.path + '/' + 'trackList.json';
+        var trackListPath = g.jbrowsePath + ds.path + '/' + trackList_json;
 
         // validate
         if (ds===null) return cb("dataset does not exist");
@@ -139,7 +206,7 @@ module.exports = {
         //addTrack.dataset = ds.id;
         delete addTrack.dataset;
         
-        // save track to trackList.json
+        // save track to jbconnect-tracks.json
         try {
           var trackListData = fs.readFileSync (trackListPath);
           var config = JSON.parse(trackListData);
@@ -236,7 +303,7 @@ module.exports = {
         var thisb = this;
         var g = sails.config.globals.jbrowse;
         var ds = Dataset.Resolve(updateTrack.dataset);
-        var trackListPath = g.jbrowsePath + ds.path + '/trackList.json';
+        var trackListPath = g.jbrowsePath + ds.path + '/'+trackList_json;
 
         Track.PauseWatch(ds.id);
         
@@ -312,7 +379,7 @@ module.exports = {
 
             // save track to tracklist json
             
-            var trackListPath = g.jbrowsePath + dataSet.path + '/' + 'trackList.json';
+            var trackListPath = g.jbrowsePath + dataSet.path + '/' + trackList_json;
             try {
               var trackListData = fs.readFileSync (trackListPath);
               var config = JSON.parse(trackListData);
@@ -392,7 +459,12 @@ module.exports = {
 
                 let ds = datasets[i];
 
-                let trackListPath = g.jbrowsePath + ds.path + '/trackList.json';
+                let trackListPath = g.jbrowsePath + ds.path + '/'+trackList_json;
+
+                // create if it doesn't exist
+                if (!fs.existsSync(trackListPath))
+                    fs.writeFileSync(trackListPath,JSON.stringify({tracks:[]}));
+
                 let fTracks = JSON.parse(fs.readFileSync(trackListPath,"utf8")).tracks;
 
                 for(var k in fTracks) {
@@ -405,7 +477,7 @@ module.exports = {
 
                     try {
                         var created = await Track.create(data);
-                        sails.log("created track id",created.id,created.lkey);
+                        sails.log("track id",created.id,created.lkey);
                     }
                     catch(err) {
                         sails.log.error("failed to create track:",err);
@@ -416,165 +488,7 @@ module.exports = {
             cb();
         })();
 
-    },
-
-    SyncOld: function(dataset,cb) {
-        var g = sails.config.globals.jbrowse;
-
-        let ds = Dataset.Resolve(dataset);
-        console.log("Track.sync dataset",ds);
-
-        var trackListPath = g.jbrowsePath + ds.path + '/' + 'trackList.json';
-
-        var mTracks = {};       // model db tracks
-        var fTracks = {};       // file (trackList.json) tracks
-
-        Track.find({path:ds.path})
-            .then(function(modelTracks) {
-                //sails.log.debug("syncTracks modelTracks",modelTracks.length);
-
-                for(var i in modelTracks)
-                  mTracks[modelTracks[i].lkey] = modelTracks[i];
-
-                // read file tracks
-                return fs.readFileAsync(trackListPath);
-            })
-            .then(function(trackListData) {
-                var fileTracks = JSON.parse(trackListData).tracks;
-
-                for(var i in fileTracks) 
-                        fTracks[fileTracks[i].label+"|"+ds.id] = fileTracks[i];
-                
-                //ftracks = fTracks;
-                let c = 0;
-                for(var i in fTracks) console.log("ftracks",c++,i);
-                c = 0;
-                for(var i in mTracks) console.log("mtracks",c++,i, mTracks[i].id);
-
-                deleteModelItems(mTracks,fTracks);
-                addOrUpdateItemsToModel(mTracks,fTracks);            
-            })    
-            .catch(function(err) {
-                // istanbul ignore next
-                sails.log.error(err);
-            });
-
-        // delete items from db if they do not exist in trackList
-        function deleteModelItems(mTracks,fTracks) {
-            var toDel = [];
-            for(var k in mTracks) {
-                if (typeof fTracks[k] === 'undefined')
-                    toDel.push(mTracks[k].id);
-            }
-            if (toDel.length) {
-              sails.log.debug("syncTracks ids to delete",toDel);
-              Track.destroy({id: toDel})
-                .then(function(deleted){
-                  sails.log.debug("syncTracks tracks deleted:",deleted.length);
-                  toDel.forEach(function(id) {
-                      Track.publishDestroy(id);
-                  });
-                })
-                .catch(function(err) {
-                /* istanbul ignore next */
-                sails.log.error("syncTracks tracks delete failed:",toDel);
-                });
-            }
-        };
-        function addOrUpdateItemsToModel(mTracks,fTracks) {
-            // add or update file items to model
-
-            for(var k in fTracks) {
-
-              if (typeof mTracks[k] === 'undefined') {
-                    //var dataset = Dataset.Resolve(ds);
-                    let data = {
-                        dataset: ds.id,
-                        path: ds.path,
-                        lkey: fTracks[k].label+'|'+ds.id,
-                        trackData: fTracks[k]
-                    };
-
-                    //data = deepmerge(data,fTracks[k]);
-                    //sails.log('track',k,data);
-                    Track.create(data)
-                    .then(function(item) {
-                        sails.log.debug("syncTracks track created:",item.id,item.lkey);
-                        Track.publishCreate(item);
-                    })        
-                    .catch(function(err) {
-                        // istanbul ignore next
-                        sails.log.error("syncTracks track create failed",err);
-                    });
-              }
-              // update model if they are different
-              else {
-                  //var toOmit = ['id','createdAt','updatedAt','dataSet','dataset','dataSetPath','ikey'];
-                  //sails.log('omit',mTracks[k].trackData);
-                  if (JSON.stringify(mTracks[k].trackData) !== JSON.stringify(fTracks[k]) || mTracks[k].dataset !== ds.id || mTracks[k].path !== ds.path) {
-                      Track.update({
-                          path:ds.path, 
-                          lkey:fTracks[k].label+'|'+ds.id
-                        },{dataset:ds.id,trackData:fTracks[k]})
-                      .then(function(item) {
-                          /* istanbul ignore else */
-                          if (item.length) {
-                            Track.publishUpdate(0,item[0]);
-                          }
-                          else {
-                              sails.log.error("syncTracks addOrUpdateItemsToModel failed to find", ds, fTracks[k].label);
-                          }
-                      })        
-                      /* istanbul ignore next */
-                      .catch(function(err) {
-                          // istanbul ignore next
-                          sails.log.error("syncTracks  addOrUpdateItemsToModel track update failed:",err);
-                      });
-                  }
-              }
-            }
-        }
-    },
-    
-    /*
-     * Save model tracks to trackList.json (obsolete?)
-     * 
-     * todo: dataSet should accept string or dataSet object id
-     * 
-     * @param {string} dataSet, if dataset is not defined, all models are committed.
-     */
-    /*
-    Save(dataSet) {
-        var g = sails.config.globals.jbrowse;
-        var trackListPath = g.jbrowsePath + dataSet.dataPath + '/' + 'trackList.json';
-        //var dataSet = g.dataSet[0].dataPath;
-        sails.log.debug('saveTracks('+dataSet+')');
-
-        Track.find({dataSetPath:dataSet.path}).exec(function (err, modelTracks){
-          if (err) {
-            sails.log.error('modelTracks, failed to read');
-            return;   // failed
-          }
-          sails.log.debug("modelTracks",modelTracks.length);
-
-          var tracks = [];
-          for(var k in modelTracks)
-              tracks.push(modelTracks[k].trackData);
-
-          // read trackList.json, modify, and write
-          try {
-            var trackListData = fs.readFileSync (trackListPath);
-            var config = JSON.parse(trackListData);
-            config['tracks'] = tracks;
-            fs.writeFileSync(trackListPath,JSON.stringify(config,null,4));
-          }
-          catch(err) {
-              sails.log.error("failed",trackListPath,err);
-          }
-        });
-    },
-    */
-    
+    }
     
 };
 

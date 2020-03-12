@@ -24,6 +24,8 @@ module.exports = {
 
         track.dataset = dataset;
         track.job = kJob.id;
+        track.user = kJob.data.user;
+
 
         Track.Add(track,function(err,added) {
             /* istanbul ignore if */

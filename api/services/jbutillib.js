@@ -698,7 +698,24 @@ module.exports = {
             let str = src.split("/plugins");
             return approot+'/tmp'+str[1];
         }
-    },  
+    },
+    injectTracklist() {
+        const g = this.getMergedConfig();
+        for(var i in g.dataSet) {
+            let dataset = g.dataSet[i].path;
+
+            let file = g.jbrowsePath+dataset+'/trackList.json';
+            console.log(file);
+
+            let config = JSON.parse(fs.readFileSync(file,'utf8'));
+            if (!config.include) config.include = [];
+            if (config.include.findIndex(element => element.includes("/track/get_tracklist")) < 0) {
+                config.include.push("/track/get_tracklist?dataset="+dataset);
+                fs.writeFileSync(file,JSON.stringify(config,null,2));
+            }
+            console.log(config.include);
+        }
+    },
     buildWebpack() {
         const conf = this.getMergedConfig();
         const origPath = process.cwd();
