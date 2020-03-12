@@ -21,6 +21,15 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "track.test",
+            "runtimeVersion": "10.19.0",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/mocha",
+            "args": ["test/unit/models/Track.test.js","test/bootstrap/bootstrap.test.js"],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Mocha Tests",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "args": [

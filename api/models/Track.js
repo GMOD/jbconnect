@@ -125,17 +125,18 @@ module.exports = {
 
           // we don't use this yet
         this.find(params).then(function(foundList) {
-            let filteredList = [];
+            cb(null,foundList);
+            // let filteredList = [];
 
-            for (var i in foundList) {
-                let track = foundList[i];
-                let c = 0;
-                if (dataset && track.path===dataset) c++;
-                if (user && track.trackData.user === user) c++;
+            // for (var i in foundList) {
+            //     let track = foundList[i];
+            //     let c = 0;
+            //     if (dataset && track.path===dataset) c++;
+            //     if (user && track.trackData.user === user) c++;
 
-                if (c===match)  filteredList.push(track);
-            }
-            cb(null,filteredList) 
+            //     if (c===match)  filteredList.push(track);
+            // }
+            // cb(null,filteredList) 
         }).catch(function(err){
             // istanbul ignore next
             cb(err);
