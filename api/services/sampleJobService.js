@@ -6,9 +6,7 @@
     module.exports  = {
         jbrowse: {
             services: {
-                'sampleJobService':         {enable: true,  name: 'sampleJobService    ',  type: 'workflow', alias: "jblast"},
-                'basicWorkflowService':     {enable: false, name: 'basicWorkflowService',  type: 'workflow', alias: "jblast"},
-                'galaxyService':            {enable: false, name: 'galaxyService',         type: 'workflow', alias: "jblast"}
+                'sampleJobService':         {enable: true,  name: 'sampleJobService    ',  type: 'workflow', alias: "jblast"}
             },
         }
     };

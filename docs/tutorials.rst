@@ -2,8 +2,89 @@
 Tutorials
 *********
 
+JBConnect Hook Tutorial
+=======================
+
+The demo hook described in this section can be found here: <https://github.com/GMOD/demo-jbconnect-hook`_
+
+This section describes a complete JBConnect installable hook.  
+
+The directory layout of a hook project is as such:
+::
+    JBConnect project
+    ├── api                             Standard sails API layout, models, controllers, etc.
+    │   └── hook
+    │       └── index.js                hook index
+    ├── bin                             Utilities
+    │   ├── jbutil-ext.js               jbutil command extensions
+    │   └── postinstall.js              package post installation
+    ├── config                          Configuration files.
+    │   └── globals.js                  global config file for module
+    ├── plugins                         Client-side Plugins
+    │   └── JBCdemo                     Demo client plugin             
+    ├── package.json                    Node package description
+    └── workflows                       Workflows directory
+        ├── demo-job.demo.wf.sh         Workflow script
+        └── demo-job.TrackTemplate.json TrackTemplate
+
+
+api/hook/index.js
+-----------------
+
+The main purpose of this file is to facilitate merging the configurations, models and controllers with the main JBConnect,
+making them available globally.
+
+
+Extending jbtuil command
+------------------------
+
+jbutil-ext.js provides a means for the hook to extend the `jbutil` command.
+
+This is further described in `https://jbconnect.readthedocs.io/en/latest/configuration.html#extending-jbutil`_
+
+
+bin/postinstall.js
+------------------
+
+This performs the important roll of copying the workflows in the hook project into the workflows directory of JBConnect.
+
+It can also be use to perform other post-install setup.
+
+
+globals.js & workflowFilter
+---------------------------
+
+globals.js are merged with globals.js in JBConnect.
+
+For the demo the workflowFitler applies to the get_workflow enumeration call
+
+In main.js of the plugin the following structure is defined.
+::
+    // analyze menu structure
+    browser.jbconnect.analyzeMenus.demo = {
+        title: 'Demo Analysis',
+        module: 'demo',
+        init:initMenu,
+        contents:dialogContent,
+        process:processInput
+    };
+
+Note that the module, defined as 'demo' here, is used by get_workflows call to filter the available workflows for a particular plugin.
+The definition in workflowFilter for 'demo' describes the filter.  Only files that contain '.demo.wf' will be returned by get_workflows.
+::
+    module.exports.globals = {
+        jbrowse: {
+            workflowFilter: {
+                demo: {filter: '.demo.wf'},
+            },
+            ...
+        }
+    };
+
+
+
 Creating a workflow that uses localCommonService Job Service
-============================================================
+------------------------------------------------------------
 ``api/services/localCommonService.js`` is a workflow processing Job Service that can be used to execute general workflows scripts.
 In this example, we present sample analysis module (JBSample).  We show how to create a client-side JBrowse plugin that integrates with JBrowse, 
 adding a menu item under Analyze menu.  
@@ -17,22 +98,21 @@ to be used by the execution script.
 .. image:: img/sample-dialog.png
 
 
-JBSample JBrowse Plugin
------------------------
-
-A sample plugin, JBSample source code can be found `here <https://github.com/GMOD/jbconnect/blob/master/plugins/JBSample/js/main.js>`_
+JBCdemo JBrowse Plugin
+----------------------
 
 In the file constructor of main.js, we find: 
 ::
     // analyze menu structure
-    browser.jbconnect.analyzeMenus.JBSample = {
-        title: 'Sample Analysis',
-        module: 'JBSample',
+    browser.jbconnect.analyzeMenus.demo = {
+        title: 'Demo Analysis',
+        module: 'demo',
         init:initMenu,
         contents:dialogContent,
         process:processInput
     };
 
+The source can be found here: `https://github.com/GMOD/demo-jbconnect-hook/blob/master/plugins/JBCdemo/js/main.js`_
 
 where, 
 
@@ -57,8 +137,8 @@ Note, the user will not see the workflow selection box unless there are more tha
 it will automatically be selected by the client plugin code.
 
 
-sample.samp.wf.js Worflow Script
---------------------------------
+demo-job.demo.wf.js Worflow Script
+----------------------------------
 
 The workflow script resides in the workflow directory.
 In this example sample.samp.wf.js is a very simple script that copies sample.gff3 to the target directory; in demonstrating 
@@ -100,25 +180,14 @@ created.  (see `Creating a Stand-Alone Job Service for local workflow processing
 The script can be found under the workflows dir, `here <https://github.com/GMOD/jbconnect/blob/master/workflows/sample.samp.wf.sh>`_
 
 
-Configuration of sample workflow script
----------------------------------------
+Configuration of localCommonService
+-----------------------------------
 
-Configuration can be applied in ``globals.js`` or in ``JBConnect.config.js``
-::
-
-    workflowFilter: {
-        JBSample: {filter: '.samp.wf'},
-    },
-
-The filter value corresponding to the module name, JBSample, is a filter that ``get_workflow`` of ``localCommonService`` uses to filter scripts that work with the particular module.
-
-This configuration is required to enable the system to recognize the Job Service exists.
+The configuration is required to enable the system to recognize that the Job Service exists.
 ::
     services: {
         'localCommonService':       {enable: true, name: 'localCommonService',  type: 'workflow', alias:'workflow'}
     },
-
-
 
 
 

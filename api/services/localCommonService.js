@@ -20,6 +20,7 @@ const approot = require("app-root-path");
 const _ = require('lodash');
 const utils = require('./seqUtils');
 const { exec, spawn } = require('child_process');
+const jblib = require(approot+"/api/services/jbutillib");
 
 module.exports = {
 
@@ -55,18 +56,16 @@ module.exports = {
     get_workflows (req, res) {
         
         let params = req.allParams();
-        let g = sails.config.globals.jbrowse;
+        let g = jblib.getMergedConfig(); //sails.config.globals.jbrowse;
         let ds = params.dataset;
         let servModule = params.module;
         let wfpath = approot+'/workflows/';
         let filter = '.wf';
         
-        console.log("localCommonService.get_workflows",params);
-
         if (g.workflowFilterEnable && g.workflowFilter && g.workflowFilter[servModule])
             filter = g.workflowFilter[servModule].filter;
         
-        sails.log(wfpath,process.cwd());
+        sails.log("localCommonService.get_workflows",params,'filters',g.workflowFilter,'selected filter',filter);
         
         wflist = [];
         
@@ -84,7 +83,7 @@ module.exports = {
             }
         });
 
-        console.log("get_workflows",wflist);
+        sails.log("available workflows",wflist);
 
         res.ok(wflist);
     },

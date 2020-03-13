@@ -539,6 +539,22 @@ Get filtered tracks by dataset:
     :param object req: request
     :param object res: response
     
+.. _module-controllers_TrackController.get_tracklist:
+
+
+Function: ``get_tracklist``
+===========================
+
+get JBrowse tracklist
+
+``GET /track/get_tracklist``
+
+.. js:function:: get_tracklist(req, res)
+
+    
+    :param object req: request
+    :param object res: response
+    
 .. _module-controllers_TrackController.add:
 
 
@@ -1419,6 +1435,20 @@ Get list of tracks based on critera in params
     :param object params: search critera
     :param function cb: callback ``function(err,array)``
     
+.. _module-models_Track.GetTrackList:
+
+
+Function: ``GetTrackList``
+==========================
+
+Get JBrowse tracklist in JSON format of tracks based on critera in params
+
+.. js:function:: GetTrackList(params, cb)
+
+    
+    :param object params: search critera
+    :param function cb: callback ``function(err,json)``
+    
 .. _module-models_Track.Add:
 
 
@@ -1496,6 +1526,10 @@ Constant: ``deepmerge``:
 .. _module-models_Track._:
 
 Constant: ``_``: 
+
+.. _module-models_Track.trackList_json:
+
+Constant: ``trackList_json``: 
 
 
 
@@ -1877,6 +1911,18 @@ Example:
     
     :param string plugin: if defined (ie. "JBClient"), it will instrument the given plugin
     :return injectPlugins(plugin): (int) count - count of plugins injected.
+    
+.. _module-services_jbutillib.injectTracklist:
+
+
+Function: ``injectTracklist``
+=============================
+
+
+
+.. js:function:: injectTracklist()
+
+    
     
 .. _module-services_jbutillib.buildWebpack:
 

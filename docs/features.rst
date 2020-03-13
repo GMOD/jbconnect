@@ -188,6 +188,9 @@ Get Login State: ``http://<address>:1337/loginstate``
 
 The routes are defined in `config/routes.js`.
 
+At the moment, these are the only user related GUI interfaces there are.  It is intended to add more complete 
+management and password management interfaces down the road.
+
 *Note: Stand-alone interfaces use `bootstrap <http://getbootstrap.com/>`_*
  
 
