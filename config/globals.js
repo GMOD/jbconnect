@@ -38,15 +38,7 @@ var g = {
 	      // default dataset after successful login (optional.  if not defined then the first dataSet is used)
 	      defaultDataSet: "Volvox",
         
-        // search service settings
-//        serverSearch: {
-//            resultPath: "ServerSearch",
-//            resultCategory: "Search Results",
-//            trackTemplate: "ServerSearchTrackTemplate.json",
-//            workflowScript: "ServerSearch.workflow.js",
-//            processScript:   'ServerSearchProcess.html'
-//        },
-        // search job service registration
+        // job service registration
         services: {
           'localCommonService':       {enable: true, name: 'localCommonService',  type: 'workflow', alias:'workflow'},
           'nothingBurgerService': {name: 'nothingBurgerService',  type: 'service'}
@@ -55,8 +47,6 @@ var g = {
         workflowFilterEnable: true,
 
         workflowFilter: {
-          JBPrimer3: {filter: '.p3.wf'},
-          JBSample: {filter: '.samp.wf'},
           default: {filter: '.wf'}
         },
         
@@ -79,7 +69,7 @@ var g = {
             "js-mbextruder":         {lib: "/jblib/mb.extruder/mbExtruder.js"}
         },
         excludePlugins: {
-            "ServerSearch": true    // doesn't work with JBrowse 1.13.0+
+//            "ServerSearch": true    // doesn't work with JBrowse 1.13.0+
         }
     }
 
