@@ -5,7 +5,24 @@ Tutorials
 JBConnect Hook Tutorial
 =======================
 
+``api/services/localCommonService.js`` is a workflow processing Job Service that can be used to execute general workflows scripts.
+In this example, we present demo analysis hook (demo-jbconnect-hook).  We show how to create a client-side JBrowse plugin that integrates with JBrowse, 
+adding a menu item under Analyze menu.  
+
+.. image:: img/sample-menu.png
+
+It's a fully functional demo module that has a server-side execution shell script and performs
+some arbitrary processing.  The example also demonstrates the client-side plugin collects user data in its submit dialog box and passes it
+to be used by the execution script.
+
+.. image:: img/sample-dialog.png
+
+
 The demo hook described in this section can be found here: <https://github.com/GMOD/demo-jbconnect-hook`_
+
+
+JBCdemo JBrowse Plugin
+----------------------
 
 This section describes a complete JBConnect installable hook.  
 
@@ -81,25 +98,6 @@ The definition in workflowFilter for 'demo' describes the filter.  Only files th
         }
     };
 
-
-
-Creating a workflow that uses localCommonService Job Service
-------------------------------------------------------------
-``api/services/localCommonService.js`` is a workflow processing Job Service that can be used to execute general workflows scripts.
-In this example, we present sample analysis module (JBSample).  We show how to create a client-side JBrowse plugin that integrates with JBrowse, 
-adding a menu item under Analyze menu.  
-
-.. image:: img/sample-menu.png
-
-It's a fully functional demo module that has a server-side execution shell script and performs
-some arbitrary processing.  The example also demonstrates the client-side plugin collects user data in its submit dialog box and passes it
-to be used by the execution script.
-
-.. image:: img/sample-dialog.png
-
-
-JBCdemo JBrowse Plugin
-----------------------
 
 In the file constructor of main.js, we find: 
 ::
