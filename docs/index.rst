@@ -100,17 +100,10 @@ The default username/password: juser/password
 Vulnerabilty Warnings
 ---------------------
 
-We don't consider the application production ready.  It's more of a proof of concept.
-The project currently has a number of vulnerability warnings of varying degrees, 
-much of which are due to the fact that we are complying with an older version Sails.  
-That is, the version of Sails is can be current, but the structure of the application is built
-on an older version.  As such, this causes Sails to operate in legacy mode.
+npm currently reports a number of vulnerability warnings of various degrees of severity, 
+most of which are coming from Sails. Many of these warnings are fixed in a later version 
+of SailsJS. We hope in a future release of the software to correct more of these warnings.
 
-We continue to work on the project moving forward to reduce the vulnerabilities. 
-One such important step will be to advance the support of Sails JS version 1.x.
-
-One way to reduce the warnings is to upgrade the various npm modules.  We chose, for the time being
-to focus on the function concept before the inevitable code hardening.
 
 
 
