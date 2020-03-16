@@ -23,7 +23,8 @@ var g = {
         jbrowseRest: "http://localhost:1337",
         jbrowsePath: jbPath,                        // or "/var/www/jbrowse/"
         routePrefix: "jbrowse",                     // jbrowse is accessed with http://<addr>/jbrowse
-        
+        trackListFile: "jbconnect-tracks.json", 
+
         /*
          * Datasets
          * (paths relative the JBrowse directory)
