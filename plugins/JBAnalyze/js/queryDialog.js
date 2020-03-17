@@ -69,7 +69,11 @@ _dialogContent: function () {
 
     // hide workflow selectr if only one entry.
     setTimeout(function() {
-        if (workflows.length <= 1)  $('#workflow-div').hide();
+        if (workflows.length===1)  $('#workflow-div').hide();
+        if (workflows.length===0) {
+            $('span[widgetid=analyze-submit]')
+            alert("no workflows detected");
+        }
     },200);
 
 
@@ -93,6 +97,7 @@ _fillActionBar: function ( actionBar ) {
     new dButton({
         label: 'Submit',
         //iconClass: 'dijitIconBookmark',
+        id: "analyze-submit",
         onClick: function() {
             var searchParams = thisB._getSearchParams();
             thisB.callback( searchParams );
