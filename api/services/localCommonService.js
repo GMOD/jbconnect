@@ -40,6 +40,7 @@ module.exports = {
     //  provides mechanism to validate parameters of the job service
     validateParams(params) {
         if (typeof params.region === 'undefined') return "region not undefined";
+        if (!params.workflow) return "undefined workflow";
         return 0;   // success
     },
 
