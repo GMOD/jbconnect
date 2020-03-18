@@ -22,7 +22,7 @@ module.exports = function (grunt) {
       'jb-inject-index',
       'jb-inject-tracklist',
       'compileAssets', 
-      'linkAssets',
-      'watch'
+      'linkAssets'
+      //'watch'
   ]);
 };
