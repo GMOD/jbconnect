@@ -35,8 +35,6 @@ const deferred = require('deferred');
 const deepmerge = require('deepmerge');
 const _ = require('lodash');
 
-const trackList_json = "jbconnect-tracks.json";
-
 module.exports = {
 
     attributes: {
@@ -195,7 +193,7 @@ module.exports = {
         var g = sails.config.globals.jbrowse;
         if (_.isUndefined(addTrack.dataset)) return cb("dataset not defined");
         var ds = Dataset.Resolve(addTrack.dataset);
-        var trackListPath = g.jbrowsePath + ds.path + '/' + trackList_json;
+        var trackListPath = g.jbrowsePath + ds.path + '/' + g.trackListFile;
 
         // validate
         if (ds===null) return cb("dataset does not exist");
@@ -303,7 +301,7 @@ module.exports = {
         var thisb = this;
         var g = sails.config.globals.jbrowse;
         var ds = Dataset.Resolve(updateTrack.dataset);
-        var trackListPath = g.jbrowsePath + ds.path + '/'+trackList_json;
+        var trackListPath = g.jbrowsePath + ds.path + '/'+g.trackListFile;
 
         Track.PauseWatch(ds.id);
         
@@ -379,7 +377,7 @@ module.exports = {
 
             // save track to tracklist json
             
-            var trackListPath = g.jbrowsePath + dataSet.path + '/' + trackList_json;
+            var trackListPath = g.jbrowsePath + dataSet.path + '/' + g.trackListFile;
             try {
               var trackListData = fs.readFileSync (trackListPath);
               var config = JSON.parse(trackListData);
@@ -444,7 +442,7 @@ module.exports = {
 
     Sync: function(cb) {
         const g = sails.config.globals.jbrowse;
-        const datasets = Dataset._dataSets;
+        const datasets = g.dataSet;
 
         (async () => {
             try {
@@ -457,9 +455,8 @@ module.exports = {
 
             for(var i in datasets) {
 
-                let ds = datasets[i];
-
-                let trackListPath = g.jbrowsePath + ds.path + '/'+trackList_json;
+                let ds = Dataset.Resolve(datasets[i].path);
+                let trackListPath = g.jbrowsePath + ds.path + '/'+g.trackListFile;
 
                 // create if it doesn't exist
                 if (!fs.existsSync(trackListPath))
@@ -477,7 +474,7 @@ module.exports = {
 
                     try {
                         var created = await Track.create(data);
-                        sails.log("track id",created.id,created.lkey);
+                        sails.log.info("track id",created.id,created.lkey,created.path,'('+created.trackData.user+')');
                     }
                     catch(err) {
                         sails.log.error("failed to create track:",err);
@@ -487,6 +484,23 @@ module.exports = {
             }
             cb();
         })();
+
+    },
+    SyncTest(cb) {
+        setTimeout(function() {
+            cb();
+        },2000);
+    },
+    /**
+     * remove all tracks for a given user.
+     * if params.session does not exist or user not logged in, returns false.
+     * @param {object} params 
+     * @returns {int} returns true if successful, false if nothing done
+     */
+    async cleanTracks(params) {
+        let user = User.GetUser(params);
+        if (!user) return false;
+        
 
     }
     

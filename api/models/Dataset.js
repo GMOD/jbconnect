@@ -95,7 +95,7 @@ module.exports = {
      *      
      */
     Resolve(dval){
-        if (typeof this._dataSets[dval] !== 'undefined')
+        if (this._dataSets[dval])
             return this._dataSets[dval];
         sails.log.error('Dataset.Resolve not found (we shouldnt get here)',dval);
         return null;
@@ -109,22 +109,26 @@ module.exports = {
      */
     Sync(cb) {
         sails.log.debug('Dataset.Sync()');
-        var g = sails.config.globals.jbrowse;
-        var thisb = this;
-
-        // convert to assoc array in confItems
-        for(var i in g.dataSet) {
-            thisb._dataSets[g.dataSet[i].path] = g.dataSet[i];
-            thisb._dataSets[g.dataSet[i].path].name = i;
-        }
 
         (async () => {
+            let g = sails.config.globals.jbrowse;
+            let thisb = this;
+            
             await Dataset.destroy({});
 
-            for(var i in thisb._dataSets) {
-                var created = await Dataset.create(thisb._dataSets[i]);
-                console.log("dataset id",created.id,created.path);
-                thisb._dataSets[created.path].id = created.id;
+            for(var i in g.dataSet) {
+                let data = {
+                    name: i,
+                    path: g.dataSet[i].path
+                }
+                let created = await Dataset.create(data);
+                if (!created) {
+                    sails.log.error("failed to create dataset",data.path);
+                    continue;
+                }
+                sails.log.info("dataset id",created.id,created.path);
+                thisb._dataSets[created.id] = created;
+                thisb._dataSets[created.path] = created;
             }
             cb();
         })();

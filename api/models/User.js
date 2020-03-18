@@ -118,6 +118,27 @@ var User = {
             else return;
             
         });
+    },
+    /**
+     * return username or null if no user logged in
+     * if param does not include a session, it returns null
+     * @param {object} param 
+     * @returns {string} username
+     */
+    GetUserLogin(params) {
+        let user = null;
+
+        if (!params.session) {sails.log.error('xxx'); return null;}
+
+        if (params.session && params.session.user && params.session.user.username) {
+            if (params.session.authenticated)
+                user = params.session.user.username;
+        }
+        if (user) 
+            sails.log.info('user -',user);
+        else
+            sails.log.info('user - not logged in');
+        return user;
     }
 };
 
