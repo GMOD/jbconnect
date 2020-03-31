@@ -1,6 +1,6 @@
 {
   "name": "jbconnect",
-  "version": "0.10.0",
+  "version": "0.20.0",
   "description": "JBrowse Server Component (preliminary)",
   "keywords": [],
   "scripts": {
@@ -50,6 +50,7 @@
     "grunt-sync": "0.7.0",
     "html2json": "^1.0.2",
     "include-all": "^0.1.6",
+    "demo-jbconnect-hook" : "git://github.com/gmod/demo-jbconnect-hook",
     "jquery": "^3.4.0",
     "jquery-ui-dist": "^1.12.1",
     "jquery.mb.extruder": "^2.6.0",
@@ -96,7 +97,6 @@
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-publish": "^1.0.0",
     "istanbul": "^0.4.5",
-    "demo-jbconnect-hook" : "git://github.com/gmod/demo-jbconnect-hook",
     "jsdoc": "^3.6.3",
     "jsdoc-sphinx": "0.0.6",
     "minimist": "^1.2.0",
