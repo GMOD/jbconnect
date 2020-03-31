@@ -47,15 +47,16 @@ describe('Track Model', function() {
   });
 
     it('should verify boostrap Track.Sync was successful', function(done) {
+      console.log("should verify bootstrap Trak.Sync");
       // only test the first dataset    
       let dataset = Dataset.Resolve('sample_data/json/volvox');
 
       read_db_and_f(dataset.path,function(t) {
 
-        //console.log("count",Object.keys(t.mtracks).length,Object.keys(t.ftracks).length);
+        console.log("count",Object.keys(t.mtracks).length,Object.keys(t.ftracks).length);
 
-        assert.isAbove(Object.keys(t.mtracks).length,0,"model tracks > 0");
-        assert.isAbove(Object.keys(t.ftracks).length,0,"file tracks > 0");
+        assert.equal(Object.keys(t.mtracks).length,0,"model tracks > 0");
+        assert.equal(Object.keys(t.ftracks).length,0,"file tracks > 0");
         assert.equal(Object.keys(t.mtracks).length,Object.keys(t.ftracks).length,"length of countm and countf are equal");
 
         // save original lengths for future tests
