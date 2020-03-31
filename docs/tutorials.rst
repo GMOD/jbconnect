@@ -6,7 +6,7 @@ JBConnect Hook Tutorial
 =======================
 
 ``api/services/localCommonService.js`` is a workflow processing Job Service that can be used to execute general workflows scripts.
-In this example, we present demo analysis hook (demo-jbconnect-hook).  We show how to create a client-side JBrowse plugin that integrates with JBrowse, 
+In this example, we present demo analysis hook (`demo-jbconnect-hook <https://github.com/GMOD/demo-jbconnect-hook>`_).  We show how to create a client-side JBrowse plugin that integrates with JBrowse, 
 adding a menu item under Analyze menu.  
 
 .. image:: img/sample-menu.png
