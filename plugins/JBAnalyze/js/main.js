@@ -115,7 +115,7 @@ return declare( JBrowsePlugin,
                         //iconClass: 'dijitIconDelete',
                         onClick: function() {
                             //alert('ding');
-                            $.post( "/util/democleanup",{}, function( data) {
+                            $.post( "/util/democleanup",{dataset:browser.config.dataRoot}, function( data) {
                                 console.log("demo cleaned up");
                                 setTimeout(function() {
                                     location.reload();
