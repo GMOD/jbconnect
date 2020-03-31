@@ -1501,6 +1501,34 @@ Sync tracklist.json tracks with Track model (promises version)
     
     :param string dataset: ie. ("sample_data/json/volvox")
     
+.. _module-models_Track.SyncTest:
+
+
+Function: ``SyncTest``
+======================
+
+
+
+.. js:function:: SyncTest()
+
+    
+    
+.. _module-models_Track.cleanTracks:
+
+
+Function: ``cleanTracks``
+=========================
+
+remove all tracks for a given user.
+if params.session does not exist or user not logged in, returns false.
+
+.. js:function:: cleanTracks(params)
+
+    
+    :param object params: remove all tracks for a given user.
+    if params.session does not exist or user not logged in, returns false.
+    :return int: returns true if successful, false if nothing done
+    
 
 
 .. _module-models_Track.Promise:
@@ -1526,10 +1554,6 @@ Constant: ``deepmerge``:
 .. _module-models_Track._:
 
 Constant: ``_``: 
-
-.. _module-models_Track.trackList_json:
-
-Constant: ``trackList_json``: 
 
 
 

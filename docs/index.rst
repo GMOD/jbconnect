@@ -87,7 +87,7 @@ Launch the server.
 
 From a web browser, access the application.
 
-``http://localhost:1337/jbrowse``
+``http://localhost:1337/login``
 
 You will arrive at the following screen
 
