@@ -165,9 +165,9 @@ module.exports = {
 
                 for (var i in foundList) {
                     let track = foundList[i].trackData;
-                    sails.log("track",track.key);
-                    if (track.user === user) {
-                        track.urlTemplate = '../'+g.routePrefix+'/'+dataset+'/'+track.urlTemplate;
+                    if (track.user === user && Dataset.Resolve(foundList[i].dataset).path===dataset) {
+                    sails.log("track",track.key,'dataset',Dataset.Resolve(foundList[i].dataset).path);
+                    track.urlTemplate = '../'+g.routePrefix+'/'+dataset+'/'+track.urlTemplate;
                         filteredList.tracks.push(track);
                     }
                 }
