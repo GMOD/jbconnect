@@ -165,9 +165,12 @@ module.exports = {
 
                 for (var i in foundList) {
                     let track = foundList[i].trackData;
-                    if (track.user === user && Dataset.Resolve(foundList[i].dataset).path===dataset) {
-                    sails.log("track",track.key,'dataset',Dataset.Resolve(foundList[i].dataset).path);
-                    track.urlTemplate = '../'+g.routePrefix+'/'+dataset+'/'+track.urlTemplate;
+                    
+                    if ((track.user === user || track.user==="*") && Dataset.Resolve(foundList[i].dataset).path===dataset) {
+                        sails.log("track",track.key,'dataset',Dataset.Resolve(foundList[i].dataset).path);
+                        if (!track.urlTemplate.startsWith('/'))
+                            track.urlTemplate = '../'+g.routePrefix+'/'+dataset+'/'+track.urlTemplate;
+                        //track.urlTemplate = track.urlTemplate;
                         filteredList.tracks.push(track);
                     }
                 }
@@ -474,7 +477,7 @@ module.exports = {
 
                     try {
                         var created = await Track.create(data);
-                        sails.log.info("track id",created.id,created.lkey,created.path,'('+created.trackData.user+')');
+                        sails.log.info("track id",created.id,created.lkey,created.path,'('+created.trackData.user+')',created.trackData.label);
                     }
                     catch(err) {
                         sails.log.error("failed to create track:",err);
