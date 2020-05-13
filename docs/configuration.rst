@@ -107,6 +107,30 @@ Edit config file: ``nano config/globals.js``
     }
 
 
+Limiting Query Size
+===================
+
+The query size (# of base pairs) can be limited.  This might be necessary to contain the 
+processing or contain memory consumption of client and server., 
+particularly with operations like BLAST where the BLAST database may be very large.
+
+Add the following option to the trackList.json of the dataset configuration:
+
+::
+
+  {
+      ...
+      "bpSizeLimit": 25000,
+      ...
+  },
+
+This will cause an alert message when the selected query size exceeds 25000 bp.
+
+If omitted, the allowed size will be unlimited.
+
+We definitely recommend using this setting for larger assemblies. 
+
+
 .. _jbs-hook-install:
 
 Installing JBConnect jbh-hooks
