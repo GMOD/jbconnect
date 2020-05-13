@@ -117,10 +117,8 @@ module.exports = {
             await Dataset.destroy({});
 
             for(var i in g.dataSet) {
-                let data = {
-                    name: i,
-                    path: g.dataSet[i].path
-                }
+                let data = g.dataSet[i];
+                data.name = i;
                 let created = await Dataset.create(data);
                 if (!created) {
                     sails.log.error("failed to create dataset",data.path);
