@@ -41,18 +41,19 @@ return declare( JBrowsePlugin,
             focusQueue: [],
             focusQueueProc: 0,
             panelDelayTimer: null,
-            bpSizeLimit: args.bpSizeLimit || 0,
+            bpSizeLimit: browser.config.bpSizeLimit || 0,
             getWorkflows: this.getWorkflows,
             countSequence: thisB.countSequence,
             analyzeMenus: {},
 
             // check if bpSize > bpSizeLimit, if bpSizeLimit is defined
             isOversized(bpSize) {
+                console.log('checking size',bpSize,'/',bpSizeLimit);
                 let bpSizeLimit = JBrowse.jbconnect.bpSizeLimit;
 
                 if (bpSizeLimit && bpSize > bpSizeLimit) {
                     // oversize message
-                    alert("Query size is "+bpSize+".  The query size is limited to "+bpSizeLimit+" bp for demonstration purposes.  bpSizeLimit is set in trackList.json.");
+                    alert("The selected query size is "+bpSize+" bp.  Query is limited to "+bpSizeLimit+" bp.  bpSizeLimit can be set in trackList.json.");
                     return true;
                 }
                 else return false;
