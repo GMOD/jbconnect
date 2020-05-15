@@ -289,6 +289,48 @@ module.exports = {
         }
     },
     /**
+     * inject bpSizeLimit setting into trackList.json of datasets.
+     * if already defined, leave it untouched.
+     * 
+     */
+    inject_bpSizeLimit: function() {
+        let g = this.getMergedConfig();
+
+        // get dataSet
+        var dataSet = "-----";
+        for(var i in g.dataSet) {
+            dataSet = g.dataSet[i].path;
+
+            console.log('Adding bpSizeLimit to', dataSet);
+
+            var trackListPath = g.jbrowsePath + dataSet + '/trackList.json';
+
+            // read trackList.json
+            var error = 0;
+            try {
+              var trackListData = fs.readFileSync (trackListPath);
+            }
+            catch(err) {
+                console.log("inject_bpSizeLimit failed read",trackListPath,err);
+                error = 1;
+            }
+            if (error) return;
+
+            var conf = JSON.parse(trackListData);
+
+            if (!conf.bpSizeLimit) {
+                conf.bpSizeLimit = 15000;
+            }
+            // write trackList.json
+            try {
+              fs.writeFileSync(trackListPath,JSON.stringify(conf,null,4));
+            }
+            catch(err) {
+              console.log("inject_bpSizeLimit failed write",trackListPath,err);
+            }
+        }
+    },
+    /**
      * remove css/js from JBrowse index.html
      * 
      */

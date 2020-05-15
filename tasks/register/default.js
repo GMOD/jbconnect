@@ -21,6 +21,7 @@ module.exports = function (grunt) {
       'jb-inject-plugins',
       'jb-inject-index',
       'jb-inject-tracklist',
+      'jb-inject-sizelimit',
       'compileAssets', 
       'linkAssets'
       //'watch'
