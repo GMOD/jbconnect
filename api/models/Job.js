@@ -123,7 +123,15 @@ module.exports = {
             JobActive.Init(null,function() {});
             //_debugPushEvents();
             //_debug1();
-        },1000);
+
+            (async() => {
+                try {
+                    await thisb._cleanActive();   
+                } catch (err) {
+                    sails.log.error("_cleanActive error",err);
+                }
+            })();            
+        },200);
         
         // display methods in Job
         // istanbul ignore next
@@ -681,5 +689,24 @@ module.exports = {
                 }
             }
         );
+    },
+    /*
+     * _cleanActive()
+     * if active jobs exist, change their state to 'failed'
+     */
+    _cleanActive:async function() {
+        console.log("Job._cleanActive");
+        const thisb = this;
+        const g = sails.config.globals;
+        const queue = g.kue.createQueue();
+
+        queue.active( function( err, ids ) {
+            if (ids.length < 0) return;
+            ids.forEach( function( id ) {
+                thisb.Remove({id:id},function() {
+                    sails.log.info("Removed crashed job",id);
+                })
+            });
+        });
     }
 };

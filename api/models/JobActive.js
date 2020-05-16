@@ -30,8 +30,12 @@ module.exports = {
      *    
      */
     Init: function(params,cb) {
-        this._activeMonitor();
-        cb();
+        let thisb = this;
+
+        setTimeout(function() {
+            thisb._activeMonitor();
+            cb();
+        },500);
     },
     /**
      * Get list of tracks based on critera in params  
