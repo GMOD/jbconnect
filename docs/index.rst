@@ -4,9 +4,8 @@ JBConnect
 
 .. image:: img/jb-jbs-diagram.png
 
-**Paper:** 
-
-(`JBrowse Connect: A server API to connect JBrowse instances and users <https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007261&rev=2>`_), 
+**Paper:**  
+`JBrowse Connect: A server API to connect JBrowse instances and users <https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007261&rev=2>`_, 
 Yao, Buels, Stein, Sen, Holmes, et al. 2020; PLOS Computational Biology
 
 
