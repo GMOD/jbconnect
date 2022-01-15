@@ -75,7 +75,7 @@
     "sails": "^0.12.14",
     "sails-disk": "^0.10.10",
     "sails-hook-update-or-create": "^0.1.4",
-    "shelljs": "^0.7.8",
+    "shelljs": "^0.8.5",
     "sleep-promise": "^6.0.0",
     "socket.io-redis": "^1.1.1",
     "string": "^3.3.3",
